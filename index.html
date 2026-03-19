@@ -1,69 +1,983 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>多语言网站</title>
+    <title>Carval Auto Parts - Professional Auto Parts Supplier</title>
+    <!-- 外部资源引入 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        .lang-btn{padding:8px 16px;margin:5px;cursor:pointer;border:1px solid #ccc;border-radius:4px;}
-        .lang-btn.active{background:#2196F3;color:#fff;border-color:#2196F3;}
-        .content{margin:20px;font-size:16px;line-height:1.8;}
+        /* 全局重置与基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #222;
+            background-color: #f1f1f1;
+            line-height: 1.6;
+        }
+
+        /* 核心配色（汽配工业风格） */
+        :root {
+            --primary-color: #0f4c81;    /* 深海蓝 */
+            --accent-color: #e63946;     /* 工业红 */
+            --dark-color: #1a1a1a;       /* 深黑 */
+            --light-color: #f8f9fa;      /* 浅灰 */
+            --border-color: #dee2e6;     /* 边框色 */
+        }
+
+        /* 顶部头部：语言切换 + Logo区（居中） */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: var(--dark-color);
+            color: white;
+            border-bottom: 4px solid var(--accent-color);
+        }
+
+        /* 语言切换栏 */
+        .language-switch select {
+            padding: 8px 18px;
+            border: 2px solid var(--accent-color);
+            background-color: var(--dark-color);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .language-switch select:hover {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+        }
+
+        /* Logo和口号（横向居中） */
+        .header-brand {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .header-logo-text {
+            font-family: 'Oswald', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .header-slogan {
+            font-size: 14px;
+            color: #ccc;
+            font-style: italic;
+            max-width: none;
+            text-align: left;
+        }
+
+        /* 导航栏（靠左排列） */
+        nav {
+            background-color: var(--primary-color);
+            padding: 20px 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 45px;
+            justify-content: flex-start;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 17px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 公司名称+Logo（横向居中） */
+        .company-identity {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 45px 30px;
+            background-color: white;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 40px;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .company-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        .company-name span {
+            color: var(--accent-color);
+        }
+
+        /* Logo放置框 */
+        .logo-upload-box {
+            width: 160px;
+            height: 160px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light-color);
+        }
+
+        .logo-upload-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* 公司介绍部分 */
+        .company-intro {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 0 30px 50px;
+        }
+
+        .intro-text-container {
+            background-color: white;
+            padding: 45px;
+            margin-bottom: 60px;
+            border-left: 6px solid var(--accent-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .intro-text {
+            font-size: 18px;
+            line-height: 1.9;
+            color: #444;
+            text-align: justify;
+        }
+
+        .intro-text p {
+            margin-bottom: 25px;
+        }
+
+        .intro-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 场地展示区（Office/Repair Shop/Factory） */
+        .facility-section {
+            margin-bottom: 70px;
+        }
+
+        .facility-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 32px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .facility-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background-color: var(--accent-color);
+        }
+
+        .facility-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        @media (max-width: 992px) {
+            .facility-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .facility-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .gallery-item {
+            background-color: white;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            border-bottom: 4px solid var(--primary-color);
+            height: 100%;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-color: var(--accent-color);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-caption {
+            display: none;
+        }
+
+        /* 产品分类（适配800×800图片） */
+        .product-section {
+            background-color: var(--dark-color);
+            padding: 70px 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 38px;
+            color: white;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .product-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background-color: var(--accent-color);
+        }
+
+        .product-grid {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .product-card:hover::before {
+            width: 10px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        }
+
+        /* 产品图片（适配800×800） */
+        .product-img {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background-color: #ffffff;
+            padding: 10px;
+        }
+
+        .product-content {
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 24px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .product-desc {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            flex: 1;
+        }
+
+        .view-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: none;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .view-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            transform: translateX(5px);
+        }
+
+        /* 联系表单（已对接Formspree，ID已替换） */
+        .contact-form-section {
+            max-width: 1000px;
+            margin: 0 auto 70px;
+            padding: 0 30px;
+        }
+
+        .contact-card {
+            background-color: white;
+            padding: 50px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            border-top: 6px solid var(--accent-color);
+        }
+
+        .contact-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 32px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 17px;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 15px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            padding: 18px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(15, 76, 129, 0.3);
+        }
+
+        /* 社交媒体图标（固定悬浮） */
+        .social-icons {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 999;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 26px;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .social-icon:hover {
+            transform: scale(1.15) rotate(8deg);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .facebook { background-color: #3b5998; }
+        .instagram { background-color: #e1306c; }
+        .whatsapp { background-color: #25d366; }
+
+        /* 联系方式+谷歌地图 */
+        .contact-info-section {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 70px 30px;
+        }
+
+        .contact-info-container {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        @media (max-width: 992px) {
+            .contact-info-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .map-wrapper {
+            height: 450px;
+            border: 6px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
+        }
+
+        .contact-icon {
+            font-size: 32px;
+            color: var(--accent-color);
+            margin-top: 5px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .contact-content h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 24px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .contact-content p {
+            font-size: 17px;
+            color: #ddd;
+            line-height: 1.8;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: var(--dark-color);
+            color: #ccc;
+            padding: 40px 30px;
+            text-align: center;
+            font-size: 15px;
+            border-top: 6px solid var(--accent-color);
+        }
+
+        .footer-slogan {
+            font-family: 'Oswald', sans-serif;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-copyright {
+            margin-bottom: 10px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .top-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .header-brand {
+                position: static;
+                transform: none;
+                margin-top: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 20px;
+                justify-content: flex-start;
+            }
+
+            .company-identity {
+                padding: 30px 20px;
+                flex-direction: column;
+            }
+
+            .company-name {
+                font-size: 32px;
+            }
+
+            .intro-text-container {
+                padding: 25px;
+            }
+
+            .intro-text {
+                font-size: 16px;
+            }
+
+            .contact-card {
+                padding: 30px 20px;
+            }
+
+            .product-img {
+                height: 300px;
+            }
+
+            .social-icons {
+                flex-direction: row;
+                bottom: 20px;
+                right: 50%;
+                transform: translateX(50%);
+                gap: 15px;
+            }
+
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- 语言切换按钮 -->
-    <button class="lang-btn active" onclick="changeLang('zh')">中文</button>
-    <button class="lang-btn" onclick="changeLang('en')">英语</button>
-    <button class="lang-btn" onclick="changeLang('es')">西班牙语</button>
-    <button class="lang-btn" onclick="changeLang('fr')">法语</button>
-    <button class="lang-btn" onclick="changeLang('de')">德语</button>
-    <button class="lang-btn" onclick="changeLang('ru')">俄语</button>
-    <button class="lang-btn" onclick="changeLang('ja')">日语</button>
-    <button class="lang-btn" onclick="changeLang('ko')">韩语</button>
-    <button class="lang-btn" onclick="changeLang('ar')">阿拉伯语</button>
-    <button class="lang-btn" onclick="changeLang('pt')">葡萄牙语</button>
-    <button class="lang-btn" onclick="changeLang('it')">意大利语</button>
+    <!-- 顶部头部 -->
+    <header class="top-header">
+        <div class="language-switch">
+            <select id="language-select">
+                <option value="en">English</option>
+                <option value="es">Español (Spanish)</option>
+                <option value="fr">Français (French)</option>
+                <option value="ar">العربية (Arabic)</option>
+                <option value="vi">Tiếng Việt (Vietnamese)</option>
+                <option value="zh">中文 (Chinese)</option>
+                <option value="ru">Русский (Russian)</option>
+                <option value="pt">Português (Portuguese)</option>
+                <option value="de">Deutsch (German)</option>
+                <option value="it">Italiano (Italian)</option>
+                <option value="tr">Türkçe (Turkish)</option>
+            </select>
+        </div>
 
-    <!-- 网站内容 -->
-    <div class="content">
-        <h1 data-lang="title">欢迎访问我们的网站</h1>
-        <p data-lang="home">首页</p>
-        <p data-lang="product">产品展示</p>
-        <p data-lang="price">价格优惠</p>
-        <p data-lang="service">优质服务</p>
-        <p data-lang="contact">联系我们：123456789</p>
+        <div class="header-brand">
+            <div class="header-logo-text">CARVAL AUTO-</div>
+            <div class="header-slogan">Given your car a second life</div>
+        </div>
+    </header>
+
+    <!-- 导航栏 -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">Company</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- 公司名称+Logo -->
+    <section class="company-identity">
+        <div class="company-name">
+            Guang zhou <span>carval</span> auto part co.,ltd
+        </div>
+        <div class="logo-upload-box">
+            <img src="carval-auto-logo.png" alt="Carval Auto Logo - Given Your Car A Second Life">
+        </div>
+    </section>
+
+    <!-- 公司介绍 -->
+    <section id="about" class="company-intro">
+        <div class="intro-text-container">
+            <div class="intro-text">
+                <p>Guangzhou CarvalAuto part co,.ltd Founded in 2008, our company started as a professional auto parts store. With over a decade of deep cultivation in the automotive service industry, we have achieved a leap from a single auto parts retailer to a comprehensive automotive service provider, relying on solid technical expertise, rigorous service standards and an excellent market reputation. Today, we have become an influential one-stop automotive service brand in the Guangzhou and Foshan region.</p>
+                
+                <p>After years of in-depth development and layout, our company has established a service network consisting of 6 self-operated auto repair shops and 2 directly-operated auto parts stores in the core areas of Guangzhou and Foshan, with a team of more than 80 professional technical and service personnel. Our business fully covers a full chain of automotive services including original-equivalent auto parts supply, vehicle repair of various models, routine maintenance, fault detection and care upgrades, providing professional, efficient and reliable one-stop vehicle solutions for individual car owners, corporate fleets and other customers.</p>
+                
+                <p>In the core auto parts supply system, the company adheres to quality first and has established long-term and stable cooperation with a number of professional manufacturers. All auto parts strictly comply with 100 %original quality standards, featuring high cost performance and wide adaptability, covering many mainstream models on the market. More importantly, each auto part is first subjected to actual vehicle installation, road testing and long-term verification in our self-operated repair shops to ensure stable performance and safety, escorting customers' driving safety from the source.</p>
+                
+                <p>In terms of service models, the company focused on Japanese and German models with high technical barriers at the initial stage, accumulating rich maintenance experience and auto parts inventory. In 2020, responding to the rapid rise of China's independent brand automotive market and changes in customer demand, the company took the initiative to expand its service scope, adding maintenance and auto parts supply services for mainstream domestic models such as Baojun, Wuling and Geely, and continuously improving its service matrix. With a more comprehensive model coverage and more professional technical capabilities, we meet the diversified vehicle needs of different customers.</p>
+                
+                <p>In the future, the company will continue to uphold the business philosophy of "Ingenious Service, Quality First", constantly optimize the service network and improve technical levels, striving to become a benchmark enterprise of comprehensive automotive services trusted by customers and recognized by the industry in the region.</p>
+            </div>
+        </div>
+
+        <!-- 办公区展示 -->
+        <div class="facility-section">
+            <h2 class="facility-title">OUR OFFICE</h2>
+            <div class="facility-gallery">
+                <div class="gallery-item"><img src="office1.jpg" alt="Our Office - Reception Area"></div>
+                <div class="gallery-item"><img src="office2.jpg" alt="Our Office - Meeting Room"></div>
+                <div class="gallery-item"><img src="office3.jpg" alt="Our Office - Sales Department"></div>
+                <div class="gallery-item"><img src="office4.jpg" alt="Our Office - Admin Office"></div>
+                <div class="gallery-item"><img src="office5.jpg" alt="Our Office - Customer Service"></div>
+                <div class="gallery-item"><img src="office6.jpg" alt="Our Office - Manager Office"></div>
+                <div class="gallery-item"><img src="office7.jpg" alt="Our Office - Conference Hall"></div>
+                <div class="gallery-item"><img src="office8.jpg" alt="Our Office - Break Area"></div>
+                <div class="gallery-item"><img src="office9.jpg" alt="Our Office - Team Photo"></div>
+            </div>
+        </div>
+
+        <!-- 维修车间展示 -->
+        <div class="facility-section">
+            <h2 class="facility-title">OUR REPAIR SHOP</h2>
+            <div class="facility-gallery">
+                <div class="gallery-item"><img src="repair1.jpg" alt="Our Repair Shop - Main Workshop"></div>
+                <div class="gallery-item"><img src="repair2.jpg" alt="Our Repair Shop - Diagnostic Area"></div>
+                <div class="gallery-item"><img src="repair3.jpg" alt="Our Repair Shop - Tool Room"></div>
+                <div class="gallery-item"><img src="repair4.jpg" alt="Our Repair Shop - Lift Area"></div>
+                <div class="gallery-item"><img src="repair5.jpg" alt="Our Repair Shop - Parts Storage"></div>
+                <div class="gallery-item"><img src="repair6.jpg" alt="Our Repair Shop - Painting Booth"></div>
+                <div class="gallery-item"><img src="repair7.jpg" alt="Our Repair Shop - Tire Service"></div>
+                <div class="gallery-item"><img src="repair8.jpg" alt="Our Repair Shop - Technician Team"></div>
+                <div class="gallery-item"><img src="repair9.jpg" alt="Our Repair Shop - Quality Check"></div>
+            </div>
+        </div>
+
+        <!-- 工厂展示 -->
+        <div class="facility-section">
+            <h2 class="facility-title">OUR FACTORY</h2>
+            <div class="facility-gallery">
+                <div class="gallery-item"><img src="factory1.jpg" alt="Our Factory - Main Production Line"></div>
+                <div class="gallery-item"><img src="factory2.jpg" alt="Our Factory - CNC Machine Shop"></div>
+                <div class="gallery-item"><img src="factory3.jpg" alt="Our Factory - Assembly Line"></div>
+                <div class="gallery-item"><img src="factory4.jpg" alt="Our Factory - Raw Material Storage"></div>
+                <div class="gallery-item"><img src="factory5.jpg" alt="Our Factory - Quality Control Lab"></div>
+                <div class="gallery-item"><img src="factory6.jpg" alt="Our Factory - Packaging Area"></div>
+                <div class="gallery-item"><img src="factory7.jpg" alt="Our Factory - Warehouse"></div>
+                <div class="gallery-item"><img src="factory8.jpg" alt="Our Factory - Shipping Area"></div>
+                <div class="gallery-item"><img src="factory9.jpg" alt="Our Factory - Factory Team"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品分类 -->
+    <section id="products" class="product-section">
+        <h2 class="product-title">Our Product Range</h2>
+        <div class="product-grid">
+            <!-- 日系车配件 -->
+            <div class="product-card">
+                <img src="japanese-cars.jpg" alt="Japanese Car Parts - 800x800" class="product-img">
+                <div class="product-content">
+                    <h3 class="product-name">Japanese Car Parts</h3>
+                    <p class="product-desc">Complete range of genuine and aftermarket auto parts for all major Japanese car models including Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu, and Daihatsu. Our product line covers full vehicle components including engine parts, suspension, brake systems, electrical parts, body parts, and more - all manufactured to OEM standards for perfect fit and performance.</p>
+                    <a href="#" class="view-btn">View Products</a>
+                </div>
+            </div>
+
+            <!-- 德系车配件 -->
+            <div class="product-card">
+                <img src="german-cars.jpg" alt="German Car Parts - 800x800" class="product-img">
+                <div class="product-content">
+                    <h3 class="product-name">German Car Parts</h3>
+                    <p class="product-desc">Premium quality auto parts for German luxury and commercial vehicles including BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda, and Seat. We specialize in precision-engineered components that meet the strict quality requirements of German automotive engineering, covering engine systems, transmission parts, steering components, electrical systems, and body parts.</p>
+                    <a href="#" class="view-btn">View Products</a>
+                </div>
+            </div>
+
+            <!-- 韩系车配件 -->
+            <div class="product-card">
+                <img src="korean-cars.jpg" alt="Korean Car Parts - 800x800" class="product-img">
+                <div class="product-content">
+                    <h3 class="product-name">Korean Car Parts</h3>
+                    <p class="product-desc">Comprehensive auto parts solutions for Korean vehicle brands including Hyundai, Kia, SsangYong, and Genesis. Our product range includes all essential components for these popular models, with a focus on durability, performance, and cost-effectiveness. We offer complete coverage of engine parts, chassis components, electrical systems, and body parts for both passenger and commercial Korean vehicles.</p>
+                    <a href="#" class="view-btn">View Products</a>
+                </div>
+            </div>
+
+            <!-- 国产车配件（宝骏五菱） -->
+            <div class="product-card">
+                <img src="chinese-cars.jpg" alt="Chinese Car Parts - 800x800" class="product-img">
+                <div class="product-content">
+                    <h3 class="product-name">Chinese Car Parts (Baojun & Wuling)</h3>
+                    <p class="product-desc">Specialized in high-quality auto parts for China's most popular commercial and passenger vehicle brands - Baojun and Wuling. We offer a complete range of genuine replacement parts covering engine systems, transmission components, suspension parts, brake systems, electrical parts, and body components. Our parts are designed to meet the specific requirements of these Chinese models with reliable quality and competitive pricing.</p>
+                    <a href="#" class="view-btn">View Products</a>
+                </div>
+            </div>
+
+            <!-- 机油产品 -->
+            <div class="product-card">
+                <img src="engine-oil.jpg" alt="Engine Oil - 800x800" class="product-img">
+                <div class="product-content">
+                    <h3 class="product-name">Engine Oil</h3>
+                    <p class="product-desc">Full range of premium engine oil products to meet all vehicle requirements, including mineral oil, semi-synthetic oil, and fully synthetic oil in various viscosity grades (0W20, 5W30, 10W40, 15W40, 20W50, etc.). Our engine oils are formulated to provide superior lubrication, engine protection, and performance in all climate conditions, suitable for gasoline, diesel, and hybrid engines of all vehicle types.</p>
+                    <a href="#" class="view-btn">View Products</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系表单（Formspree ID已替换为xyknoyzw，可直接收邮件） -->
+    <section id="contact" class="contact-form-section">
+        <div class="contact-card">
+            <h2 class="contact-title">Send Us a Message</h2>
+            <form class="contact-form" id="contactForm" action="https://formspree.io/f/xyknoyzw" method="POST">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">pls send us OEM number with your message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 社交媒体图标（已更新链接） -->
+    <div class="social-icons">
+        <a href="https://www.facebook.com/share/18W9wuCPT4/?mibextid=wwXIfr" class="social-icon facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/carval_auto?igsh=MXd0Nm1wenJyZm96ag%3D%3D&utm_source=qr" class="social-icon instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/8619521228657" class="social-icon whatsapp" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
     </div>
 
+    <!-- 联系方式+谷歌地图 -->
+    <section class="contact-info-section">
+        <div class="contact-info-container">
+            <div class="map-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3689.220426912191!2d113.2704!3d23.1645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3402f85d0d5d5d5d%3A0x0!2sNo.%20450%2C%20Huangshi%20East%20Road%2C%20Baiyun%20District%2C%20Guangzhou%2C%20Guangdong!5e0!3m2!1sen!2sus!4v1710898765432!5m2!1sen!2sus" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+
+            <div class="contact-details">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt contact-icon"></i>
+                    <div class="contact-content">
+                        <h3>Address</h3>
+                        <p>No. 450, Huangshi East Road, Baiyun District, Guangzhou City, Guangdong Province</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fas fa-phone contact-icon"></i>
+                    <div class="contact-content">
+                        <h3>Phone</h3>
+                        <p>+86 195 2122 8657</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp contact-icon"></i>
+                    <div class="contact-content">
+                        <h3>WhatsApp</h3>
+                        <p>+86 195 2122 8657</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fas fa-clock contact-icon"></i>
+                    <div class="contact-content">
+                        <h3>Working Hours</h3>
+                        <p>Monday - Saturday: 10:00 AM - 6:00 PM (GMT+8)</p>
+                        <p>Sunday & Public Holidays: Closed</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fas fa-envelope contact-icon"></i>
+                    <div class="contact-content">
+                        <h3>Email</h3>
+                        <p>carvalxie@foxmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-slogan">Carvalauto- Given your car a second life</div>
+        <p class="footer-copyright">&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.</p>
+        <p>Professional Auto Parts Manufacturer & Global Supplier</p>
+    </footer>
+
+    <!-- JavaScript 功能（Formspree提交+弹窗提示+错误处理） -->
     <script>
-        // 11种语言包
-        const langs = {
-            zh: {title:"欢迎访问我们的网站",home:"首页",product:"产品展示",price:"价格优惠",service:"优质服务",contact:"联系我们：123456789"},
-            en: {title:"Welcome to our website",home:"Home",product:"Product Display",price:"Price Discount",service:"Quality Service",contact:"Contact us: 123456789"},
-            es: {title:"Bienvenido a nuestro sitio web",home:"Inicio",product:"Exhibición de productos",price:"Descuento de precio",service:"Servicio de calidad",contact:"Contáctenos: 123456789"},
-            fr: {title:"Bienvenue sur notre site web",home:"Accueil",product:"Exposition de produits",price:"Remise sur le prix",service:"Service de qualité",contact:"Contactez-nous: 123456789"},
-            de: {title:"Willkommen auf unserer Website",home:"Startseite",product:"Produktpräsentation",price:"Preisnachlass",service:"Qualitativ hochwertiger Service",contact:"Kontaktiere uns: 123456789"},
-            ru: {title:"Добро пожаловать на наш сайт",home:"Главная страница",product:"Показ товаров",price:"Скидка на цену",service:"Высококачественное обслуживание",contact:"Свяжитесь с нами: 123456789"},
-            ja: {title:"当社のウェブサイトへようこそ",home:"ホーム",product:"製品ディスプレイ",price:"価格割引",service:"高品質なサービス",contact:"お問い合わせ：123456789"},
-            ko: {title:"우리 웹사이트에 오신 것을 환영합니다",home:"홈",product:"제품 디스플레이",price:"가격 할인",service:"고품질 서비스",contact:"연락처: 123456789"},
-            ar: {title:"مرحبًا بك في موقعنا على الويب",home:"الصفحة الرئيسية",product:"عرض المنتجات",price:"خصم السعر",service:"خدمة عالية الجودة",contact:"اتصل بنا: 123456789"},
-            pt: {title:"Bem-vindo ao nosso site",home:"Início",product:"Exibição de produtos",price:"Desconto de preço",service:"Serviço de qualidade",contact:"Entre em contato conosco: 123456789"},
-            it: {title:"Benvenuto sul nostro sito web",home:"Home",product:"Mostra di prodotti",price:"Sconto sul prezzo",service:"Servizio di qualità",contact:"Contattaci: 123456789"}
-        };
+        // 语言切换提示
+        const languageSelect = document.getElementById('language-select');
+        languageSelect.addEventListener('change', function() {
+            const selectedLang = this.options[this.selectedIndex].text;
+            alert(`Language switched to ${selectedLang}. Full translation functionality can be integrated with backend support.`);
+        });
 
-        // 核心切换函数
-        function changeLang(code) {
-            // 切换按钮样式
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            // 替换文本
-            document.querySelectorAll('[data-lang]').forEach(el => {
-                const key = el.getAttribute('data-lang');
-                el.textContent = langs[code][key];
+        // Formspree表单提交逻辑（带弹窗提示+错误处理）
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault(); // 阻止默认提交
+            try {
+                // 提交表单数据到Formspree
+                const response = await fetch(this.action, {
+                    method: this.method,
+                    body: new FormData(this),
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    // 提交成功弹窗
+                    alert('Your inquiry has been submitted successfully! Our sales team will contact you within 24 business hours.');
+                    this.reset(); // 清空表单
+                } else {
+                    // 提交失败提示
+                    alert('Oops! Something went wrong. Please try again later.');
+                }
+            } catch (error) {
+                // 网络错误提示
+                alert('Network error! Please check your internet connection and try again.');
+            }
+        });
+
+        // 图片加载失败兜底
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.onerror = function() {
+                    this.src = `https://via.placeholder.com/800x800?text=${this.alt.replace(/ /g, '+')}`;
+                    this.alt = 'Carval Auto Parts - High Quality Automotive Components';
+                }
             });
-        }
-
-        // 默认加载中文
-        window.onload = () => changeLang('zh');
+        });
     </script>
 </body>
 </html>
