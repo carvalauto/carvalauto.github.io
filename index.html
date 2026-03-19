@@ -3,195 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>多语言切换网站</title>
+    <title>多语言网站</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        body {
-            padding: 50px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .lang-switch {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        .lang-btn {
-            padding: 8px 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-            background: #f5f5f5;
-            transition: background 0.2s;
-        }
-        .lang-btn:hover {
-            background: #e0e0e0;
-        }
-        .lang-btn.active {
-            background: #2196F3;
-            color: white;
-            border-color: #2196F3;
-        }
-        .content {
-            line-height: 1.8;
-            font-size: 16px;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        p {
-            margin-bottom: 15px;
-        }
+        .lang-btn{padding:8px 16px;margin:5px;cursor:pointer;border:1px solid #ccc;border-radius:4px;}
+        .lang-btn.active{background:#2196F3;color:#fff;border-color:#2196F3;}
+        .content{margin:20px;font-size:16px;line-height:1.8;}
     </style>
 </head>
 <body>
-    <div class="lang-switch">
-        <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
-        <button class="lang-btn" onclick="switchLanguage('en')">English</button>
-        <button class="lang-btn" onclick="switchLanguage('es')">Español</button>
-        <button class="lang-btn" onclick="switchLanguage('fr')">Français</button>
-        <button class="lang-btn" onclick="switchLanguage('de')">Deutsch</button>
-        <button class="lang-btn" onclick="switchLanguage('ru')">Русский</button>
-        <button class="lang-btn" onclick="switchLanguage('ja')">日本語</button>
-        <button class="lang-btn" onclick="switchLanguage('ko')">한국어</button>
-        <button class="lang-btn" onclick="switchLanguage('ar')">العربية</button>
-        <button class="lang-btn" onclick="switchLanguage('pt')">Português</button>
-        <button class="lang-btn" onclick="switchLanguage('it')">Italiano</button>
-    </div>
+    <!-- 语言切换按钮 -->
+    <button class="lang-btn active" onclick="changeLang('zh')">中文</button>
+    <button class="lang-btn" onclick="changeLang('en')">英语</button>
+    <button class="lang-btn" onclick="changeLang('es')">西班牙语</button>
+    <button class="lang-btn" onclick="changeLang('fr')">法语</button>
+    <button class="lang-btn" onclick="changeLang('de')">德语</button>
+    <button class="lang-btn" onclick="changeLang('ru')">俄语</button>
+    <button class="lang-btn" onclick="changeLang('ja')">日语</button>
+    <button class="lang-btn" onclick="changeLang('ko')">韩语</button>
+    <button class="lang-btn" onclick="changeLang('ar')">阿拉伯语</button>
+    <button class="lang-btn" onclick="changeLang('pt')">葡萄牙语</button>
+    <button class="lang-btn" onclick="changeLang('it')">意大利语</button>
 
+    <!-- 网站内容 -->
     <div class="content">
-        <h1 data-i18n="title">欢迎来到我的网站</h1>
-        <p data-i18n="home">首页</p>
-        <p data-i18n="product">产品中心</p>
-        <p data-i18n="service">售后服务</p>
-        <p data-i18n="contact">联系我们</p>
-        <p data-i18n="desc">我们提供高品质的产品和专业的服务，满足您的所有需求。</p>
+        <h1 data-lang="title">欢迎访问我们的网站</h1>
+        <p data-lang="home">首页</p>
+        <p data-lang="product">产品展示</p>
+        <p data-lang="price">价格优惠</p>
+        <p data-lang="service">优质服务</p>
+        <p data-lang="contact">联系我们：123456789</p>
     </div>
 
     <script>
-        const languagePacks = {
-            zh: {
-                title: "欢迎来到我的网站",
-                home: "首页",
-                product: "产品中心",
-                service: "售后服务",
-                contact: "联系我们",
-                desc: "我们提供高品质的产品和专业的服务，满足您的所有需求。"
-            },
-            en: {
-                title: "Welcome to my website",
-                home: "Home",
-                product: "Product Center",
-                service: "After-sales Service",
-                contact: "Contact Us",
-                desc: "We provide high-quality products and professional services to meet all your needs."
-            },
-            es: {
-                title: "Bienvenido a mi sitio web",
-                home: "Inicio",
-                product: "Centro de Productos",
-                service: "Servicio Postventa",
-                contact: "Contáctenos",
-                desc: "Ofrecemos productos de alta calidad y servicios profesionales para satisfacer todas sus necesidades."
-            },
-            fr: {
-                title: "Bienvenue sur mon site web",
-                home: "Accueil",
-                product: "Centre de produits",
-                service: "Service après-vente",
-                contact: "Nous contacter",
-                desc: "Nous offrons des produits de haute qualité et des services professionnels pour répondre à tous vos besoins."
-            },
-            de: {
-                title: "Willkommen auf meiner Website",
-                home: "Startseite",
-                product: "Produktzentrum",
-                service: "After-Sales-Service",
-                contact: "Kontaktiere uns",
-                desc: "Wir bieten hochwertige Produkte und professionelle Dienstleistungen, um all Ihre Bedürfnisse zu erfüllen."
-            },
-            ru: {
-                title: "Добро пожаловать на мой сайт",
-                home: "Главная страница",
-                product: "Центр продуктов",
-                service: "Послепродажное обслуживание",
-                contact: "Свяжитесь с нами",
-                desc: "Мы предлагаем высококачественные продукты и профессиональные услуги, удовлетворяющие все ваши потребности."
-            },
-            ja: {
-                title: "私のウェブサイトへようこそ",
-                home: "ホーム",
-                product: "製品センター",
-                service: "アフターサービス",
-                contact: "お問い合わせ",
-                desc: "私たちは高品質な製品と専門的なサービスを提供し、あなたのすべてのニーズに応えます。"
-            },
-            ko: {
-                title: "내 웹사이트에 오신 것을 환영합니다",
-                home: "홈",
-                product: "제품 센터",
-                service: "애프터 서비스",
-                contact: "연락처",
-                desc: "우리는 고품질의 제품과 전문적인 서비스를 제공하여 귀하의 모든 요구를 충족시킵니다."
-            },
-            ar: {
-                title: "مرحبًا بك في موقعي الإلكتروني",
-                home: "الصفحة الرئيسية",
-                product: "مركز المنتجات",
-                service: "خدمة ما بعد البيع",
-                contact: "اتصل بنا",
-                desc: "نحن نقدم منتجات عالية الجودة وخدمات احترافية لتلبية جميع احتياجاتك."
-            },
-            pt: {
-                title: "Bem-vindo ao meu site",
-                home: "Início",
-                product: "Centro de Produtos",
-                service: "Serviço Pós-venda",
-                contact: "Entre em contato conosco",
-                desc: "Oferecemos produtos de alta qualidade e serviços profissionais para atender a todas as suas necessidades."
-            },
-            it: {
-                title: "Benvenuto nel mio sito web",
-                home: "Home",
-                product: "Centro prodotti",
-                service: "Servizio post-vendita",
-                contact: "Contattaci",
-                desc: "Offriamo prodotti di alta qualità e servizi professionali per soddisfare tutte le tue esigenze."
-            }
+        // 11种语言包
+        const langs = {
+            zh: {title:"欢迎访问我们的网站",home:"首页",product:"产品展示",price:"价格优惠",service:"优质服务",contact:"联系我们：123456789"},
+            en: {title:"Welcome to our website",home:"Home",product:"Product Display",price:"Price Discount",service:"Quality Service",contact:"Contact us: 123456789"},
+            es: {title:"Bienvenido a nuestro sitio web",home:"Inicio",product:"Exhibición de productos",price:"Descuento de precio",service:"Servicio de calidad",contact:"Contáctenos: 123456789"},
+            fr: {title:"Bienvenue sur notre site web",home:"Accueil",product:"Exposition de produits",price:"Remise sur le prix",service:"Service de qualité",contact:"Contactez-nous: 123456789"},
+            de: {title:"Willkommen auf unserer Website",home:"Startseite",product:"Produktpräsentation",price:"Preisnachlass",service:"Qualitativ hochwertiger Service",contact:"Kontaktiere uns: 123456789"},
+            ru: {title:"Добро пожаловать на наш сайт",home:"Главная страница",product:"Показ товаров",price:"Скидка на цену",service:"Высококачественное обслуживание",contact:"Свяжитесь с нами: 123456789"},
+            ja: {title:"当社のウェブサイトへようこそ",home:"ホーム",product:"製品ディスプレイ",price:"価格割引",service:"高品質なサービス",contact:"お問い合わせ：123456789"},
+            ko: {title:"우리 웹사이트에 오신 것을 환영합니다",home:"홈",product:"제품 디스플레이",price:"가격 할인",service:"고품질 서비스",contact:"연락처: 123456789"},
+            ar: {title:"مرحبًا بك في موقعنا على الويب",home:"الصفحة الرئيسية",product:"عرض المنتجات",price:"خصم السعر",service:"خدمة عالية الجودة",contact:"اتصل بنا: 123456789"},
+            pt: {title:"Bem-vindo ao nosso site",home:"Início",product:"Exibição de produtos",price:"Desconto de preço",service:"Serviço de qualidade",contact:"Entre em contato conosco: 123456789"},
+            it: {title:"Benvenuto sul nostro sito web",home:"Home",product:"Mostra di prodotti",price:"Sconto sul prezzo",service:"Servizio di qualità",contact:"Contattaci: 123456789"}
         };
 
-        function switchLanguage(langCode) {
-            if (!languagePacks[langCode]) {
-                alert("该语言包暂未配置！");
-                return;
-            }
-
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+        // 核心切换函数
+        function changeLang(code) {
+            // 切换按钮样式
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-
-            const currentLang = languagePacks[langCode];
-            
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (currentLang[key]) {
-                    element.textContent = currentLang[key];
-                }
+            // 替换文本
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const key = el.getAttribute('data-lang');
+                el.textContent = langs[code][key];
             });
-
-            alert(`语言已切换为：${event.target.textContent}`);
         }
 
-        window.onload = function() {
-            switchLanguage('zh');
-        };
+        // 默认加载中文
+        window.onload = () => changeLang('zh');
     </script>
 </body>
 </html>
