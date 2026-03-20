@@ -481,8 +481,8 @@ const countryFlags = {'China':'🇨🇳','United States':'🇺🇸','Japan':'�
 
 window.onload = function() {
     renderList(); generateCode(); updateStats();
-    const saved = sessionStorage.getItem('ga_token');
-    if (saved) { accessToken = saved; showDashboard(JSON.parse(sessionStorage.getItem('ga_user')||'{}')); }
+    const saved = localStorage.getItem('ga_token');
+    if (saved) { accessToken = saved; showDashboard(JSON.parse(localStorage.getItem('ga_user')||'{}')); }
 };
 
 function handleLogin() {
@@ -491,9 +491,9 @@ function handleLogin() {
         callback: async res => {
             if (res.error) { alert('登录失败：' + res.error); return; }
             accessToken = res.access_token;
-            sessionStorage.setItem('ga_token', accessToken);
+            localStorage.setItem('ga_token', accessToken);
             const u = await (await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {headers:{Authorization:`Bearer ${accessToken}`}})).json();
-            sessionStorage.setItem('ga_user', JSON.stringify(u));
+            localStorage.setItem('ga_user', JSON.stringify(u));
             showDashboard(u);
         }
     });
@@ -509,7 +509,7 @@ function showDashboard(user) {
 }
 
 function handleLogout() {
-    sessionStorage.clear(); accessToken = null;
+    localStorage.removeItem('ga_token'); localStorage.removeItem('ga_user'); accessToken = null;
     document.getElementById('loginSection').style.display = 'block';
     document.getElementById('dashboardSection').style.display = 'none';
 }
