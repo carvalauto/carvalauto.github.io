@@ -4,678 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carval Auto Parts - Professional Auto Parts Supplier</title>
-    <!-- 外部资源引入 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        /* 全局重置与基础样式 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            color: #222;
-            background-color: #f1f1f1;
-            line-height: 1.6;
-        }
-
-        /* 核心配色（汽配工业风格） */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; color: #222; background-color: #f1f1f1; line-height: 1.6; }
         :root {
-            --primary-color: #0f4c81;    /* 深海蓝 */
-            --accent-color: #e63946;     /* 工业红 */
-            --dark-color: #1a1a1a;       /* 深黑 */
-            --light-color: #f8f9fa;      /* 浅灰 */
-            --border-color: #dee2e6;     /* 边框色 */
+            --primary-color: #0f4c81;
+            --accent-color: #e63946;
+            --dark-color: #1a1a1a;
+            --light-color: #f8f9fa;
+            --border-color: #dee2e6;
         }
-
-        /* 顶部头部：语言切换 + Logo区（居中） */
         .top-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background-color: var(--dark-color);
-            color: white;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px; background-color: var(--dark-color); color: white;
             border-bottom: 4px solid var(--accent-color);
         }
-
-        /* 语言切换栏 */
         .language-switch select {
-            padding: 8px 18px;
-            border: 2px solid var(--accent-color);
-            background-color: var(--dark-color);
-            color: white;
-            font-family: 'Roboto', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 0;
-            transition: all 0.3s ease;
-            font-size: 14px;
+            padding: 8px 18px; border: 2px solid var(--accent-color);
+            background-color: var(--dark-color); color: white;
+            font-family: 'Roboto', sans-serif; font-weight: 500;
+            cursor: pointer; border-radius: 0; transition: all 0.3s ease; font-size: 14px;
         }
-
-        .language-switch select:hover {
-            background-color: var(--accent-color);
-            color: var(--dark-color);
-        }
-
-        /* Logo和口号（横向居中） */
+        .language-switch select:hover { background-color: var(--accent-color); color: var(--dark-color); }
         .header-brand {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-            margin: 0 auto;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            display: flex; flex-direction: row; align-items: center; gap: 10px;
+            margin: 0 auto; position: absolute; left: 50%; transform: translateX(-50%);
         }
-
-        .header-logo-text {
-            font-family: 'Oswald', sans-serif;
-            font-size: 26px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .header-slogan {
-            font-size: 14px;
-            color: #ccc;
-            font-style: italic;
-            max-width: none;
-            text-align: left;
-        }
-
-        /* 导航栏（靠左排列） */
-        nav {
-            background-color: var(--primary-color);
-            padding: 20px 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 45px;
-            justify-content: flex-start;
-        }
-
+        .header-logo-text { font-family: 'Oswald', sans-serif; font-size: 26px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+        .header-slogan { font-size: 14px; color: #ccc; font-style: italic; max-width: none; text-align: left; }
+        nav { background-color: var(--primary-color); padding: 20px 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .nav-links { display: flex; list-style: none; gap: 45px; justify-content: flex-start; }
         .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-family: 'Oswald', sans-serif;
-            font-size: 17px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            position: relative;
-            padding: 5px 0;
+            color: white; text-decoration: none; font-family: 'Oswald', sans-serif;
+            font-size: 17px; text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.3s ease; position: relative; padding: 5px 0;
         }
-
         .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background-color: var(--accent-color);
-            transition: width 0.3s ease;
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px;
+            background-color: var(--accent-color); transition: width 0.3s ease;
         }
-
-        .nav-links a:hover {
-            color: var(--accent-color);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* 公司名称+Logo（横向居中） */
+        .nav-links a:hover { color: var(--accent-color); }
+        .nav-links a:hover::after { width: 100%; }
         .company-identity {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            padding: 45px 30px;
-            background-color: white;
-            border-bottom: 2px solid var(--border-color);
-            margin-bottom: 40px;
-            gap: 30px;
-            flex-wrap: wrap;
+            display: flex; flex-direction: row; justify-content: center; align-items: center;
+            padding: 45px 30px; background-color: white; border-bottom: 2px solid var(--border-color);
+            margin-bottom: 40px; gap: 30px; flex-wrap: wrap;
         }
-
-        .company-name {
-            font-family: 'Oswald', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            line-height: 1.2;
-            text-align: center;
-        }
-
-        .company-name span {
-            color: var(--accent-color);
-        }
-
-        /* Logo放置框 */
-        .logo-upload-box {
-            width: 160px;
-            height: 160px;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--light-color);
-        }
-
-        .logo-upload-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        /* 公司介绍部分 */
-        .company-intro {
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 0 30px 50px;
-        }
-
-        .intro-text-container {
-            background-color: white;
-            padding: 45px;
-            margin-bottom: 60px;
-            border-left: 6px solid var(--accent-color);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .intro-text {
-            font-size: 18px;
-            line-height: 1.9;
-            color: #444;
-            text-align: justify;
-        }
-
-        .intro-text p {
-            margin-bottom: 25px;
-        }
-
-        .intro-text p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* 场地展示区（Office/Repair Shop/Factory） */
-        .facility-section {
-            margin-bottom: 70px;
-        }
-
-        .facility-title {
-            font-family: 'Oswald', sans-serif;
-            font-size: 32px;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            margin-bottom: 40px;
-            text-align: center;
-            position: relative;
-            padding-bottom: 20px;
-        }
-
-        .facility-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 4px;
-            background-color: var(--accent-color);
-        }
-
-        .facility-gallery {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-        }
-
-        @media (max-width: 992px) {
-            .facility-gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 576px) {
-            .facility-gallery {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .gallery-item {
-            background-color: white;
-            border-radius: 0;
-            overflow: hidden;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-            transition: all 0.4s ease;
-            border-bottom: 4px solid var(--primary-color);
-            height: 100%;
-        }
-
-        .gallery-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            border-color: var(--accent-color);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.08);
-        }
-
-        .gallery-caption {
-            display: none;
-        }
-
-        /* 产品分类（适配800×800图片） */
-        .product-section {
-            background-color: var(--dark-color);
-            padding: 70px 30px;
-            margin-bottom: 60px;
-        }
-
-        .product-title {
-            font-family: 'Oswald', sans-serif;
-            font-size: 38px;
-            color: white;
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: 60px;
-            letter-spacing: 2px;
-            position: relative;
-            padding-bottom: 20px;
-        }
-
-        .product-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 4px;
-            background-color: var(--accent-color);
-        }
-
-        .product-grid {
-            max-width: 1500px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 40px;
-        }
-
-        .product-card {
-            background-color: white;
-            border-radius: 0;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            position: relative;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 6px;
-            height: 100%;
-            background-color: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-
-        .product-card:hover::before {
-            width: 10px;
-        }
-
-        .product-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
-        }
-
-        /* 产品图片（适配800×800） */
-        .product-img {
-            width: 100%;
-            height: 400px;
-            object-fit: contain;
-            background-color: #ffffff;
-            padding: 10px;
-        }
-
-        .product-content {
-            padding: 30px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-name {
-            font-family: 'Oswald', sans-serif;
-            font-size: 24px;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        .product-desc {
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.8;
-            flex: 1;
-        }
-
-        .view-btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background-color: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: none;
-            transition: all 0.3s ease;
-            align-self: flex-start;
-        }
-
-        .view-btn:hover {
-            background-color: var(--accent-color);
-            color: var(--dark-color);
-            transform: translateX(5px);
-        }
-
-        /* 联系表单（已对接Formspree，ID已替换） */
-        .contact-form-section {
-            max-width: 1000px;
-            margin: 0 auto 70px;
-            padding: 0 30px;
-        }
-
-        .contact-card {
-            background-color: white;
-            padding: 50px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-            border-top: 6px solid var(--accent-color);
-        }
-
-        .contact-title {
-            font-family: 'Oswald', sans-serif;
-            font-size: 32px;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            color: var(--dark-color);
-            font-size: 17px;
-            font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            padding: 15px 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 0;
-            font-family: 'Roboto', sans-serif;
-            font-size: 16px;
-            transition: border 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: var(--accent-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
-        }
-
-        .form-group textarea {
-            min-height: 200px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            padding: 18px;
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
-        }
-
-        .submit-btn:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(15, 76, 129, 0.3);
-        }
-
-        /* 社交媒体图标（固定悬浮） */
-        .social-icons {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            z-index: 999;
-        }
-
-        .social-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 26px;
-            transition: all 0.4s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        .social-icon:hover {
-            transform: scale(1.15) rotate(8deg);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-        }
-
+        .company-name { font-family: 'Oswald', sans-serif; font-size: 42px; font-weight: 700; color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px; line-height: 1.2; text-align: center; }
+        .company-name span { color: var(--accent-color); }
+        .logo-upload-box { width: 160px; height: 160px; border: none; display: flex; align-items: center; justify-content: center; background-color: var(--light-color); }
+        .logo-upload-box img { width: 100%; height: 100%; object-fit: contain; }
+        .company-intro { max-width: 1500px; margin: 0 auto; padding: 0 30px 50px; }
+        .intro-text-container { background-color: white; padding: 45px; margin-bottom: 60px; border-left: 6px solid var(--accent-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .intro-text { font-size: 18px; line-height: 1.9; color: #444; text-align: justify; }
+        .intro-text p { margin-bottom: 25px; }
+        .intro-text p:last-child { margin-bottom: 0; }
+        .facility-section { margin-bottom: 70px; }
+        .facility-title { font-family: 'Oswald', sans-serif; font-size: 32px; color: var(--primary-color); text-transform: uppercase; margin-bottom: 40px; text-align: center; position: relative; padding-bottom: 20px; }
+        .facility-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 4px; background-color: var(--accent-color); }
+        .facility-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        @media (max-width: 992px) { .facility-gallery { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 576px) { .facility-gallery { grid-template-columns: 1fr; } }
+        .gallery-item { background-color: white; border-radius: 0; overflow: hidden; box-shadow: 0 5px 10px rgba(0,0,0,0.1); transition: all 0.4s ease; border-bottom: 4px solid var(--primary-color); height: 100%; }
+        .gallery-item:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); border-color: var(--accent-color); }
+        .gallery-item img { width: 100%; height: 240px; object-fit: cover; transition: transform 0.6s ease; }
+        .gallery-item:hover img { transform: scale(1.08); }
+        .gallery-caption { display: none; }
+        .product-section { background-color: var(--dark-color); padding: 70px 30px; margin-bottom: 60px; }
+        .product-title { font-family: 'Oswald', sans-serif; font-size: 38px; color: white; text-transform: uppercase; text-align: center; margin-bottom: 60px; letter-spacing: 2px; position: relative; padding-bottom: 20px; }
+        .product-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 150px; height: 4px; background-color: var(--accent-color); }
+        .product-grid { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; }
+        .product-card { background-color: white; border-radius: 0; overflow: hidden; transition: all 0.4s ease; position: relative; height: 100%; display: flex; flex-direction: column; }
+        .product-card::before { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background-color: var(--accent-color); transition: width 0.3s ease; }
+        .product-card:hover::before { width: 10px; }
+        .product-card:hover { transform: translateY(-12px); box-shadow: 0 12px 24px rgba(0,0,0,0.3); }
+        .product-img { width: 100%; height: 400px; object-fit: contain; background-color: #ffffff; padding: 10px; }
+        .product-content { padding: 30px; flex: 1; display: flex; flex-direction: column; }
+        .product-name { font-family: 'Oswald', sans-serif; font-size: 24px; color: var(--primary-color); text-transform: uppercase; margin-bottom: 20px; }
+        .product-desc { color: #666; margin-bottom: 30px; line-height: 1.8; flex: 1; }
+        .view-btn { display: inline-block; padding: 12px 30px; background-color: var(--primary-color); color: white; text-decoration: none; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1.5px; border: none; transition: all 0.3s ease; align-self: flex-start; }
+        .view-btn:hover { background-color: var(--accent-color); color: var(--dark-color); transform: translateX(5px); }
+        .contact-form-section { max-width: 1000px; margin: 0 auto 70px; padding: 0 30px; }
+        .contact-card { background-color: white; padding: 50px; box-shadow: 0 6px 20px rgba(0,0,0,0.15); border-top: 6px solid var(--accent-color); }
+        .contact-title { font-family: 'Oswald', sans-serif; font-size: 32px; color: var(--primary-color); text-transform: uppercase; text-align: center; margin-bottom: 40px; }
+        .contact-form { display: flex; flex-direction: column; gap: 25px; }
+        .form-group { display: flex; flex-direction: column; gap: 10px; }
+        .form-group label { font-weight: 600; color: var(--dark-color); font-size: 17px; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group textarea { padding: 15px 20px; border: 1px solid var(--border-color); border-radius: 0; font-family: 'Roboto', sans-serif; font-size: 16px; transition: border 0.3s ease; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--accent-color); outline: none; box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1); }
+        .form-group textarea { min-height: 200px; resize: vertical; }
+        .submit-btn { padding: 18px; background-color: var(--accent-color); color: white; border: none; font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 18px; cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; }
+        .submit-btn:hover { background-color: var(--primary-color); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(15, 76, 129, 0.3); }
+        .social-icons { position: fixed; bottom: 40px; right: 40px; display: flex; flex-direction: column; gap: 20px; z-index: 999; }
+        .social-icon { width: 60px; height: 60px; border-radius: 0; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 26px; transition: all 0.4s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .social-icon:hover { transform: scale(1.15) rotate(8deg); box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
         .facebook { background-color: #3b5998; }
         .instagram { background-color: #e1306c; }
         .whatsapp { background-color: #25d366; }
-
-        /* 联系方式+谷歌地图 */
-        .contact-info-section {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 70px 30px;
-        }
-
-        .contact-info-container {
-            max-width: 1500px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-        }
-
-        @media (max-width: 992px) {
-            .contact-info-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .map-wrapper {
-            height: 450px;
-            border: 6px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .map-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .contact-details {
-            display: flex;
-            flex-direction: column;
-            gap: 35px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 25px;
-        }
-
-        .contact-icon {
-            font-size: 32px;
-            color: var(--accent-color);
-            margin-top: 5px;
-            width: 40px;
-            text-align: center;
-        }
-
-        .contact-content h3 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 24px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            color: white;
-        }
-
-        .contact-content p {
-            font-size: 17px;
-            color: #ddd;
-            line-height: 1.8;
-        }
-
-        /* 页脚 */
-        footer {
-            background-color: var(--dark-color);
-            color: #ccc;
-            padding: 40px 30px;
-            text-align: center;
-            font-size: 15px;
-            border-top: 6px solid var(--accent-color);
-        }
-
-        .footer-slogan {
-            font-family: 'Oswald', sans-serif;
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .footer-copyright {
-            margin-bottom: 10px;
-        }
-
-        /* 移动端适配 */
+        .contact-info-section { background-color: var(--primary-color); color: white; padding: 70px 30px; }
+        .contact-info-container { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        @media (max-width: 992px) { .contact-info-container { grid-template-columns: 1fr; } }
+        .map-wrapper { height: 450px; border: 6px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .map-wrapper iframe { width: 100%; height: 100%; border: none; }
+        .contact-details { display: flex; flex-direction: column; gap: 35px; }
+        .contact-item { display: flex; align-items: flex-start; gap: 25px; }
+        .contact-icon { font-size: 32px; color: var(--accent-color); margin-top: 5px; width: 40px; text-align: center; }
+        .contact-content h3 { font-family: 'Oswald', sans-serif; font-size: 24px; margin-bottom: 12px; text-transform: uppercase; color: white; }
+        .contact-content p { font-size: 17px; color: #ddd; line-height: 1.8; }
+        footer { background-color: var(--dark-color); color: #ccc; padding: 40px 30px; text-align: center; font-size: 15px; border-top: 6px solid var(--accent-color); }
+        .footer-slogan { font-family: 'Oswald', sans-serif; font-size: 18px; margin-bottom: 15px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; }
+        .footer-copyright { margin-bottom: 10px; }
         @media (max-width: 768px) {
-            .top-header {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-                padding: 20px;
-            }
-            
-            .header-brand {
-                position: static;
-                transform: none;
-                margin-top: 10px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .nav-links {
-                flex-direction: column;
-                gap: 20px;
-                justify-content: flex-start;
-            }
-
-            .company-identity {
-                padding: 30px 20px;
-                flex-direction: column;
-            }
-
-            .company-name {
-                font-size: 32px;
-            }
-
-            .intro-text-container {
-                padding: 25px;
-            }
-
-            .intro-text {
-                font-size: 16px;
-            }
-
-            .contact-card {
-                padding: 30px 20px;
-            }
-
-            .product-img {
-                height: 300px;
-            }
-
-            .social-icons {
-                flex-direction: row;
-                bottom: 20px;
-                right: 50%;
-                transform: translateX(50%);
-                gap: 15px;
-            }
-
-            .social-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 22px;
-            }
+            .top-header { flex-direction: column; gap: 20px; text-align: center; padding: 20px; }
+            .header-brand { position: static; transform: none; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+            .nav-links { flex-direction: column; gap: 20px; justify-content: flex-start; }
+            .company-identity { padding: 30px 20px; flex-direction: column; }
+            .company-name { font-size: 32px; }
+            .intro-text-container { padding: 25px; }
+            .intro-text { font-size: 16px; }
+            .contact-card { padding: 30px 20px; }
+            .product-img { height: 300px; }
+            .social-icons { flex-direction: row; bottom: 20px; right: 50%; transform: translateX(50%); gap: 15px; }
+            .social-icon { width: 50px; height: 50px; font-size: 22px; }
         }
     </style>
 </head>
@@ -697,7 +149,6 @@
                 <option value="tr">Türkçe (Turkish)</option>
             </select>
         </div>
-
         <div class="header-brand">
             <div class="header-logo-text" data-lang="header_logo">CARVAL AUTO-</div>
             <div class="header-slogan" data-lang="header_slogan">Given your car a second life</div>
@@ -728,15 +179,10 @@
     <section id="about" class="company-intro">
         <div class="intro-text-container">
             <div class="intro-text" data-lang="company_intro">
-                <p>Guangzhou CarvalAuto part co,.ltd Founded in 2008, our company started as a professional auto parts store. With over a decade of deep cultivation in the automotive service industry, we have achieved a leap from a single auto parts retailer to a comprehensive automotive service provider, relying on solid technical expertise, rigorous service standards and an excellent market reputation. Today, we have become an influential one-stop automotive service brand in the Guangzhou and Foshan region.</p>
-                
-                <p>After years of in-depth development and layout, our company has established a service network consisting of 6 self-operated auto repair shops and 2 directly-operated auto parts stores in the core areas of Guangzhou and Foshan, with a team of more than 80 professional technical and service personnel. Our business fully covers a full chain of automotive services including original-equivalent auto parts supply, vehicle repair of various models, routine maintenance, fault detection and care upgrades, providing professional, efficient and reliable one-stop vehicle solutions for individual car owners, corporate fleets and other customers.</p>
-                
-                <p>In the core auto parts supply system, the company adheres to quality first and has established long-term and stable cooperation with a number of professional manufacturers. All auto parts strictly comply with 100 %original quality standards, featuring high cost performance and wide adaptability, covering many mainstream models on the market. More importantly, each auto part is first subjected to actual vehicle installation, road testing and long-term verification in our self-operated repair shops to ensure stable performance and safety, escorting customers' driving safety from the source.</p>
-                
-                <p>In terms of service models, the company focused on Japanese and German models with high technical barriers at the initial stage, accumulating rich maintenance experience and auto parts inventory. In 2020, responding to the rapid rise of China's independent brand automotive market and changes in customer demand, the company took the initiative to expand its service scope, adding maintenance and auto parts supply services for mainstream domestic models such as Baojun, Wuling and Geely, and continuously improving its service matrix. With a more comprehensive model coverage and more professional technical capabilities, we meet the diversified vehicle needs of different customers.</p>
-                
-                <p>In the future, the company will continue to uphold the business philosophy of "Ingenious Service, Quality First", constantly optimize the service network and improve technical levels, striving to become a benchmark enterprise of comprehensive automotive services trusted by customers and recognized by the industry in the region.</p>
+                <p>Guangzhou Carval Auto Parts Co., Ltd. was founded in 2008. After years of development, we have become a trusted one-stop automotive service provider in Guangzhou and Foshan.</p>
+                <p>We own 6 repair shops, 2 offices and 5 spare parts stores, supported by a professional team of over 80 members. We provide 100% original quality auto parts and full-range services including vehicle repair, maintenance and fault diagnosis.</p>
+                <p>All our parts strictly follow OEM standards and are verified by real-vehicle tests. Starting with Japanese, Korean, German models, we now also serve Baojun, Wuling, Geely and other mainstream Chinese brands.</p>
+                <p>With the philosophy of "Ingenious Service, Quality First", we are committed to becoming a leading benchmark in the regional automotive service industry.</p>
             </div>
         </div>
 
@@ -793,7 +239,6 @@
     <section id="products" class="product-section">
         <h2 class="product-title" data-lang="product_title">Our Product Range</h2>
         <div class="product-grid">
-            <!-- 日系车配件 -->
             <div class="product-card">
                 <img src="japanese-cars.jpg" alt="Japanese Car Parts - 800x800" class="product-img" data-lang="japanese_cars_alt">
                 <div class="product-content">
@@ -802,8 +247,6 @@
                     <a href="#" class="view-btn" data-lang="view_products">View Products</a>
                 </div>
             </div>
-
-            <!-- 德系车配件 -->
             <div class="product-card">
                 <img src="german-cars.jpg" alt="German Car Parts - 800x800" class="product-img" data-lang="german_cars_alt">
                 <div class="product-content">
@@ -812,8 +255,6 @@
                     <a href="#" class="view-btn" data-lang="view_products">View Products</a>
                 </div>
             </div>
-
-            <!-- 韩系车配件 -->
             <div class="product-card">
                 <img src="korean-cars.jpg" alt="Korean Car Parts - 800x800" class="product-img" data-lang="korean_cars_alt">
                 <div class="product-content">
@@ -822,8 +263,6 @@
                     <a href="#" class="view-btn" data-lang="view_products">View Products</a>
                 </div>
             </div>
-
-            <!-- 国产车配件（宝骏五菱） -->
             <div class="product-card">
                 <img src="chinese-cars.jpg" alt="Chinese Car Parts - 800x800" class="product-img" data-lang="chinese_cars_alt">
                 <div class="product-content">
@@ -832,8 +271,6 @@
                     <a href="#" class="view-btn" data-lang="view_products">View Products</a>
                 </div>
             </div>
-
-            <!-- 机油产品 -->
             <div class="product-card">
                 <img src="engine-oil.jpg" alt="Engine Oil - 800x800" class="product-img" data-lang="engine_oil_alt">
                 <div class="product-content">
@@ -845,7 +282,7 @@
         </div>
     </section>
 
-    <!-- 联系表单（Formspree ID已替换为xyknoyzw，可直接收邮件） -->
+    <!-- 联系表单 -->
     <section id="contact" class="contact-form-section">
         <div class="contact-card">
             <h2 class="contact-title" data-lang="contact_title">Send Us a Message</h2>
@@ -867,7 +304,7 @@
         </div>
     </section>
 
-    <!-- 社交媒体图标（已更新链接） -->
+    <!-- 社交媒体图标 -->
     <div class="social-icons">
         <a href="https://www.facebook.com/share/18W9wuCPT4/?mibextid=wwXIfr" class="social-icon facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
         <a href="https://www.instagram.com/carval_auto?igsh=MXd0Nm1wenJyZm96ag%3D%3D&utm_source=qr" class="social-icon instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
@@ -880,7 +317,6 @@
             <div class="map-wrapper">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3689.220426912191!2d113.2704!3d23.1645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3402f85d0d5d5d5d%3A0x0!2sNo.%20450%2C%20Huangshi%20East%20Road%2C%20Baiyun%20District%2C%20Guangzhou%2C%20Guangdong!5e0!3m2!1sen!2sus!4v1710898765432!5m2!1sen!2sus" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
-
             <div class="contact-details">
                 <div class="contact-item">
                     <i class="fas fa-map-marker-alt contact-icon"></i>
@@ -889,7 +325,6 @@
                         <p data-lang="contact_address_value">No. 450, Huangshi East Road, Baiyun District, Guangzhou City, Guangdong Province</p>
                     </div>
                 </div>
-
                 <div class="contact-item">
                     <i class="fas fa-phone contact-icon"></i>
                     <div class="contact-content">
@@ -897,7 +332,6 @@
                         <p data-lang="contact_phone_value">+86 195 2122 8657</p>
                     </div>
                 </div>
-
                 <div class="contact-item">
                     <i class="fab fa-whatsapp contact-icon"></i>
                     <div class="contact-content">
@@ -905,7 +339,6 @@
                         <p data-lang="contact_whatsapp_value">+86 195 2122 8657</p>
                     </div>
                 </div>
-
                 <div class="contact-item">
                     <i class="fas fa-clock contact-icon"></i>
                     <div class="contact-content">
@@ -914,7 +347,6 @@
                         <p data-lang="contact_hours_2">Sunday & Public Holidays: Closed</p>
                     </div>
                 </div>
-
                 <div class="contact-item">
                     <i class="fas fa-envelope contact-icon"></i>
                     <div class="contact-content">
@@ -930,12 +362,11 @@
     <footer>
         <div class="footer-slogan" data-lang="footer_slogan">Carvalauto- Given your car a second life</div>
         <p class="footer-copyright" data-lang="footer_copyright">&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.</p>
-        <p data-lang="footer_prof">Professional Auto Parts Manufacturer & Global Supplier</p>
+        <p data-lang="footer_prof">Professional Auto Parts Manufacturer &amp; Global Supplier</p>
     </footer>
 
-    <!-- JavaScript 功能（Formspree提交+弹窗提示+错误处理+多语言切换） -->
     <script>
-    // 11种热门语言的翻译数据（英/中/西/法/德/意/葡/俄/阿/越/土）
+    // ===== 11种语言翻译数据 =====
     const translations = {
         // 英语
         en: {
@@ -947,21 +378,61 @@
             nav_contact: "Contact",
             company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
             logo_alt: "Carval Auto Logo - Given Your Car A Second Life",
-            company_intro: `<p>Guangzhou CarvalAuto part co.,ltd Founded in 2008, our company started as a professional auto parts store. With over a decade of deep cultivation in the automotive service industry, we have achieved a leap from a single auto parts retailer to a comprehensive automotive service provider.</p>`,
+            company_intro: `<p>Guangzhou Carval Auto Parts Co., Ltd. was founded in 2008. After years of development, we have become a trusted one-stop automotive service provider in Guangzhou and Foshan.</p>
+<p>We own 6 repair shops, 2 offices and 5 spare parts stores, supported by a professional team of over 80 members. We provide 100% original quality auto parts and full-range services including vehicle repair, maintenance and fault diagnosis.</p>
+<p>All our parts strictly follow OEM standards and are verified by real-vehicle tests. Starting with Japanese, Korean, German models, we now also serve Baojun, Wuling, Geely and other mainstream Chinese brands.</p>
+<p>With the philosophy of "Ingenious Service, Quality First", we are committed to becoming a leading benchmark in the regional automotive service industry.</p>`,
             facility_office: "OUR OFFICE",
+            office1_alt: "Our Office - Reception Area",
+            office2_alt: "Our Office - Meeting Room",
+            office3_alt: "Our Office - Sales Department",
+            office4_alt: "Our Office - Admin Office",
+            office5_alt: "Our Office - Customer Service",
+            office6_alt: "Our Office - Manager Office",
+            office7_alt: "Our Office - Conference Hall",
+            office8_alt: "Our Office - Break Area",
+            office9_alt: "Our Office - Team Photo",
             facility_repair: "OUR REPAIR SHOP",
+            repair1_alt: "Our Repair Shop - Main Workshop",
+            repair2_alt: "Our Repair Shop - Diagnostic Area",
+            repair3_alt: "Our Repair Shop - Tool Room",
+            repair4_alt: "Our Repair Shop - Lift Area",
+            repair5_alt: "Our Repair Shop - Parts Storage",
+            repair6_alt: "Our Repair Shop - Painting Booth",
+            repair7_alt: "Our Repair Shop - Tire Service",
+            repair8_alt: "Our Repair Shop - Technician Team",
+            repair9_alt: "Our Repair Shop - Quality Check",
             facility_factory: "OUR FACTORY",
+            factory1_alt: "Our Factory - Main Production Line",
+            factory2_alt: "Our Factory - CNC Machine Shop",
+            factory3_alt: "Our Factory - Assembly Line",
+            factory4_alt: "Our Factory - Raw Material Storage",
+            factory5_alt: "Our Factory - Quality Control Lab",
+            factory6_alt: "Our Factory - Packaging Area",
+            factory7_alt: "Our Factory - Warehouse",
+            factory8_alt: "Our Factory - Shipping Area",
+            factory9_alt: "Our Factory - Factory Team",
             product_title: "Our Product Range",
             product_japanese: "Japanese Car Parts",
+            japanese_cars_alt: "Japanese Car Parts - 800x800",
+            product_japanese_desc: "Complete range of genuine and aftermarket auto parts for all major Japanese car models including Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu, and Daihatsu. Our product line covers full vehicle components including engine parts, suspension, brake systems, electrical parts, body parts, and more - all manufactured to OEM standards for perfect fit and performance.",
             product_german: "German Car Parts",
+            german_cars_alt: "German Car Parts - 800x800",
+            product_german_desc: "Premium quality auto parts for German luxury and commercial vehicles including BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda, and Seat. We specialize in precision-engineered components that meet the strict quality requirements of German automotive engineering, covering engine systems, transmission parts, steering components, electrical systems, and body parts.",
             product_korean: "Korean Car Parts",
+            korean_cars_alt: "Korean Car Parts - 800x800",
+            product_korean_desc: "Comprehensive auto parts solutions for Korean vehicle brands including Hyundai, Kia, SsangYong, and Genesis. Our product range includes all essential components for these popular models, with a focus on durability, performance, and cost-effectiveness. We offer complete coverage of engine parts, chassis components, electrical systems, and body parts for both passenger and commercial Korean vehicles.",
             product_chinese: "Chinese Car Parts (Baojun & Wuling)",
+            chinese_cars_alt: "Chinese Car Parts - 800x800",
+            product_chinese_desc: "Specialized in high-quality auto parts for China's most popular commercial and passenger vehicle brands - Baojun and Wuling. We offer a complete range of genuine replacement parts covering engine systems, transmission components, suspension parts, brake systems, electrical parts, and body components. Our parts are designed to meet the specific requirements of these Chinese models with reliable quality and competitive pricing.",
             product_oil: "Engine Oil",
+            engine_oil_alt: "Engine Oil - 800x800",
+            product_oil_desc: "Full range of premium engine oil products to meet all vehicle requirements, including mineral oil, semi-synthetic oil, and fully synthetic oil in various viscosity grades (0W20, 5W30, 10W40, 15W40, 20W50, etc.). Our engine oils are formulated to provide superior lubrication, engine protection, and performance in all climate conditions, suitable for gasoline, diesel, and hybrid engines of all vehicle types.",
             view_products: "View Products",
             contact_title: "Send Us a Message",
             form_name: "Your Name",
             form_email: "Your Email",
-            form_message: "Please provide OEM number in your message (if available)",
+            form_message: "pls send us OEM number with your message",
             form_submit: "Send Message",
             contact_address: "Address",
             contact_address_value: "No. 450, Huangshi East Road, Baiyun District, Guangzhou City, Guangdong Province",
@@ -969,29 +440,75 @@
             contact_phone_value: "+86 195 2122 8657",
             contact_whatsapp: "WhatsApp",
             contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "Given your car a second life",
-            footer_copyright: "© 2025 Carval Auto Parts. All Rights Reserved."
+            contact_hours: "Working Hours",
+            contact_hours_1: "Monday - Saturday: 10:00 AM - 6:00 PM (GMT+8)",
+            contact_hours_2: "Sunday & Public Holidays: Closed",
+            contact_email: "Email",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "Carvalauto- Given your car a second life",
+            footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.",
+            footer_prof: "Professional Auto Parts Manufacturer & Global Supplier"
         },
         // 中文
         zh: {
-            header_logo: "卡沃汽配-",
-            header_slogan: "赋予您的爱车第二次生命",
+            header_logo: "卡沃尔汽配-",
+            header_slogan: "给您的爱车第二次生命",
             nav_home: "首页",
-            nav_company: "公司介绍",
+            nav_company: "关于我们",
             nav_products: "产品中心",
             nav_contact: "联系我们",
-            company_name: "广州市 <span>卡沃</span> 汽车配件有限公司",
-            logo_alt: "卡沃汽配标志 - 赋予您的爱车第二次生命",
-            company_intro: `<p>广州市卡沃汽车配件有限公司成立于2008年，最初以专业汽配门店起家。凭借十多年在汽车服务行业的深耕细作，实现了从单一汽配零售商到综合汽车服务提供商的跨越。</p>`,
+            company_name: "广州 <span>卡沃尔</span> 汽车配件有限公司",
+            logo_alt: "卡沃尔汽配logo - 给您的爱车第二次生命",
+            company_intro: `<p>广州卡沃尔汽车配件有限公司成立于2008年，经过多年发展，已成为广州及佛山地区值得信赖的一站式汽车服务提供商。</p>
+<p>公司拥有6家维修店、2间办公室及5家汽配门店，并由超过80名专业团队成员提供支持。我们提供100%原厂品质汽配零件，以及包括车辆维修、保养和故障诊断在内的全方位服务。</p>
+<p>所有配件严格遵循OEM标准，并经过实车测试验证。从日系、韩系、德系车型起步，现已扩展服务至宝骏、五菱、吉利等主流国产品牌。</p>
+<p>秉承"匠心服务、品质至上"的理念，我们致力于成为区域汽车服务行业的领先标杆企业。</p>`,
             facility_office: "我们的办公区",
+            office1_alt: "我们的办公区 - 前台接待区",
+            office2_alt: "我们的办公区 - 会议室",
+            office3_alt: "我们的办公区 - 销售部",
+            office4_alt: "我们的办公区 - 行政办公室",
+            office5_alt: "我们的办公区 - 客户服务部",
+            office6_alt: "我们的办公区 - 经理办公室",
+            office7_alt: "我们的办公区 - 会议厅",
+            office8_alt: "我们的办公区 - 休息区",
+            office9_alt: "我们的办公区 - 团队合影",
             facility_repair: "我们的维修车间",
+            repair1_alt: "我们的维修车间 - 主车间",
+            repair2_alt: "我们的维修车间 - 诊断区",
+            repair3_alt: "我们的维修车间 - 工具室",
+            repair4_alt: "我们的维修车间 - 举升区",
+            repair5_alt: "我们的维修车间 - 配件仓库",
+            repair6_alt: "我们的维修车间 - 烤漆房",
+            repair7_alt: "我们的维修车间 - 轮胎服务区",
+            repair8_alt: "我们的维修车间 - 技术团队",
+            repair9_alt: "我们的维修车间 - 质量检测区",
             facility_factory: "我们的工厂",
+            factory1_alt: "我们的工厂 - 主生产线",
+            factory2_alt: "我们的工厂 - CNC加工车间",
+            factory3_alt: "我们的工厂 - 组装线",
+            factory4_alt: "我们的工厂 - 原材料仓库",
+            factory5_alt: "我们的工厂 - 质量控制实验室",
+            factory6_alt: "我们的工厂 - 包装区",
+            factory7_alt: "我们的工厂 - 仓库",
+            factory8_alt: "我们的工厂 - 发货区",
+            factory9_alt: "我们的工厂 - 工厂团队",
             product_title: "我们的产品系列",
             product_japanese: "日系车配件",
+            japanese_cars_alt: "日系车配件 - 800x800",
+            product_japanese_desc: "全系列原厂及配套汽车配件，适用于丰田、本田、日产、三菱、铃木、马自达、斯巴鲁、五十铃、大发等主流日系车型。产品线涵盖发动机配件、悬挂系统、制动系统、电器件、车身件等全车零部件，均按原厂标准生产，适配性与性能俱佳。",
             product_german: "德系车配件",
+            german_cars_alt: "德系车配件 - 800x800",
+            product_german_desc: "高品质德系豪华及商用车配件，适用于宝马、奔驰、大众、奥迪、保时捷、欧宝、斯柯达、西雅特等车型。专注于符合德国汽车工程严苛质量要求的精密加工部件，涵盖发动机系统、传动部件、转向组件、电气系统、车身部件等。",
             product_korean: "韩系车配件",
+            korean_cars_alt: "韩系车配件 - 800x800",
+            product_korean_desc: "全面的韩系车配件解决方案，适用于现代、起亚、双龙、捷尼赛思等品牌车型。产品系列涵盖这些热门车型的所有核心部件，注重耐用性、性能和性价比，全面覆盖韩系乘用及商用车的发动机配件、底盘部件、电气系统、车身部件等。",
             product_chinese: "国产车配件（宝骏&五菱）",
+            chinese_cars_alt: "国产车配件 - 800x800",
+            product_chinese_desc: "专业提供宝骏、五菱等中国主流商用及乘用车品牌的高品质汽车配件。提供涵盖发动机系统、传动部件、悬挂配件、制动系统、电器件及车身部件的完整原厂替代零件，以可靠品质和具竞争力的价格满足这些国产车型的专属需求。",
             product_oil: "发动机机油",
+            engine_oil_alt: "发动机机油 - 800x800",
+            product_oil_desc: "全系列优质发动机机油，满足各类车辆需求，包括矿物油、半合成油及全合成油，多种粘度等级可选（0W20、5W30、10W40、15W40、20W50等）。所有机油配方均可在各种气候条件下提供卓越润滑、发动机保护和性能表现，适用于各类车辆的汽油、柴油及混合动力发动机。",
             view_products: "查看产品",
             contact_title: "给我们留言",
             form_name: "您的姓名",
@@ -1004,8 +521,14 @@
             contact_phone_value: "+86 195 2122 8657",
             contact_whatsapp: "微信/WhatsApp",
             contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "赋予您的爱车第二次生命",
-            footer_copyright: "© 2025 卡沃汽配 版权所有"
+            contact_hours: "工作时间",
+            contact_hours_1: "周一至周六：上午10:00 - 下午6:00（GMT+8）",
+            contact_hours_2: "周日及公共假日：休息",
+            contact_email: "电子邮件",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "卡沃尔汽配 - 给您的爱车第二次生命",
+            footer_copyright: "&copy; 2026 广州卡沃尔汽车配件有限公司 版权所有",
+            footer_prof: "专业汽车配件制造商及全球供应商"
         },
         // 西班牙语
         es: {
@@ -1017,30 +540,76 @@
             nav_contact: "Contacto",
             company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
             logo_alt: "Logotipo de Carval Auto - Darle a tu coche una segunda vida",
-            company_intro: `<p>Guangzhou CarvalAuto part co.,ltd Fundada en 2008, nuestra empresa comenzó como una tienda profesional de repuestos automotrices. Con más de una década de trabajo en la industria de servicios automotrices, hemos logrado un salto de minorista de repuestos único a proveedor integral de servicios automotrices.</p>`,
+            company_intro: `<p>Guangzhou Carval Auto Parts Co., Ltd. fue fundada en 2008. Tras años de desarrollo, nos hemos convertido en un proveedor integral de servicios automotrices de confianza en Guangzhou y Foshan.</p>
+<p>Contamos con 6 talleres de reparación, 2 oficinas y 5 tiendas de repuestos, respaldados por un equipo profesional de más de 80 personas. Ofrecemos repuestos de calidad 100% original y servicios completos que incluyen reparación, mantenimiento y diagnóstico de fallos.</p>
+<p>Todas nuestras piezas siguen estrictamente los estándares OEM y están verificadas mediante pruebas en vehículos reales. Comenzando con modelos japoneses, coreanos y alemanes, ahora también atendemos Baojun, Wuling, Geely y otras marcas chinas principales.</p>
+<p>Con la filosofía de "Servicio Ingenioso, Calidad Primero", estamos comprometidos a convertirnos en un referente líder en la industria de servicios automotrices regional.</p>`,
             facility_office: "NUESTRA OFICINA",
+            office1_alt: "Nuestra Oficina - Área de Recepción",
+            office2_alt: "Nuestra Oficina - Sala de Reuniones",
+            office3_alt: "Nuestra Oficina - Departamento de Ventas",
+            office4_alt: "Nuestra Oficina - Oficina de Administración",
+            office5_alt: "Nuestra Oficina - Atención al Cliente",
+            office6_alt: "Nuestra Oficina - Oficina del Gerente",
+            office7_alt: "Nuestra Oficina - Salón de Conferencias",
+            office8_alt: "Nuestra Oficina - Área de Descanso",
+            office9_alt: "Nuestra Oficina - Foto de Equipo",
             facility_repair: "NUESTRO TALLER DE REPARACIÓN",
+            repair1_alt: "Nuestro Taller - Taller Principal",
+            repair2_alt: "Nuestro Taller - Área de Diagnóstico",
+            repair3_alt: "Nuestro Taller - Sótano de Herramientas",
+            repair4_alt: "Nuestro Taller - Área de Elevación",
+            repair5_alt: "Nuestro Taller - Almacén de Piezas",
+            repair6_alt: "Nuestro Taller - Cabina de Pintura",
+            repair7_alt: "Nuestro Taller - Servicio de Neumáticos",
+            repair8_alt: "Nuestro Taller - Equipo de Técnicos",
+            repair9_alt: "Nuestro Taller - Control de Calidad",
             facility_factory: "NUESTRA FÁBRICA",
-            product_title: "Nuestra gama de productos",
-            product_japanese: "Piezas de coches japoneses",
-            product_german: "Piezas de coches alemanes",
-            product_korean: "Piezas de coches coreanos",
-            product_chinese: "Piezas de coches chinos (Baojun & Wuling)",
-            product_oil: "Aceite de motor",
-            view_products: "Ver productos",
-            contact_title: "Envíanos un mensaje",
-            form_name: "Tu nombre",
-            form_email: "Tu correo electrónico",
-            form_message: "Por favor, indica el número OEM en tu mensaje (si está disponible)",
-            form_submit: "Enviar mensaje",
+            factory1_alt: "Nuestra Fábrica - Línea de Producción Principal",
+            factory2_alt: "Nuestra Fábrica - Taller CNC",
+            factory3_alt: "Nuestra Fábrica - Línea de Ensamblaje",
+            factory4_alt: "Nuestra Fábrica - Almacén de Materias Primas",
+            factory5_alt: "Nuestra Fábrica - Laboratorio de Calidad",
+            factory6_alt: "Nuestra Fábrica - Área de Empaquetado",
+            factory7_alt: "Nuestra Fábrica - Almacén",
+            factory8_alt: "Nuestra Fábrica - Área de Envío",
+            factory9_alt: "Nuestra Fábrica - Equipo de la Fábrica",
+            product_title: "Nuestra Gama de Productos",
+            product_japanese: "Repuestos para Coches Japoneses",
+            japanese_cars_alt: "Repuestos para Coches Japoneses - 800x800",
+            product_japanese_desc: "Amplia gama de repuestos originales y de recambio para todos los principales modelos japoneses, incluyendo Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu y Daihatsu. Nuestra línea cubre piezas de motor, suspensión, frenos, electricidad y carrocería, todos bajo estándares OEM.",
+            product_german: "Repuestos para Coches Alemanes",
+            german_cars_alt: "Repuestos para Coches Alemanes - 800x800",
+            product_german_desc: "Repuestos de alta calidad para vehículos alemanes de lujo y comerciales, incluyendo BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda y Seat. Especializados en componentes de ingeniería de precisión que cumplen los estrictos estándares alemanes.",
+            product_korean: "Repuestos para Coches Coreanos",
+            korean_cars_alt: "Repuestos para Coches Coreanos - 800x800",
+            product_korean_desc: "Soluciones integrales de repuestos para marcas coreanas como Hyundai, Kia, SsangYong y Genesis. Cobertura completa de motor, chasis, sistemas eléctricos y carrocería para vehículos coreanos de pasajeros y comerciales.",
+            product_chinese: "Repuestos para Coches Chinos (Baojun & Wuling)",
+            chinese_cars_alt: "Repuestos para Coches Chinos - 800x800",
+            product_chinese_desc: "Especializados en repuestos de alta calidad para las marcas chinas Baojun y Wuling. Ofrecemos una gama completa de piezas que cubren motor, transmisión, suspensión, frenos, electricidad y carrocería, con calidad fiable y precios competitivos.",
+            product_oil: "Aceite de Motor",
+            engine_oil_alt: "Aceite de Motor - 800x800",
+            product_oil_desc: "Gama completa de aceites de motor premium, incluyendo mineral, semisintético y totalmente sintético en varios grados de viscosidad (0W20, 5W30, 10W40, 15W40, 20W50, etc.). Formulados para motores de gasolina, diésel e híbridos en todas las condiciones climáticas.",
+            view_products: "Ver Productos",
+            contact_title: "Envíanos un Mensaje",
+            form_name: "Tu Nombre",
+            form_email: "Tu Correo Electrónico",
+            form_message: "por favor envíanos el número OEM con tu mensaje",
+            form_submit: "Enviar Mensaje",
             contact_address: "Dirección",
-            contact_address_value: "N° 450, Calle Huangshi Este, Distrito Baiyun, Ciudad de Guangzhou, Provincia de Guangdong",
+            contact_address_value: "Nº 450, Calle Huangshi Este, Distrito Baiyun, Ciudad de Guangzhou, Provincia de Guangdong",
             contact_phone: "Teléfono",
             contact_phone_value: "+86 195 2122 8657",
             contact_whatsapp: "WhatsApp",
             contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "Darle a tu coche una segunda vida",
-            footer_copyright: "© 2025 Carval Auto Parts. Todos los derechos reservados."
+            contact_hours: "Horario de Trabajo",
+            contact_hours_1: "Lunes a Sábado: 10:00 AM - 6:00 PM (GMT+8)",
+            contact_hours_2: "Domingo y Fiestas Públicas: Cerrado",
+            contact_email: "Correo Electrónico",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "Carvalauto- Darle a tu coche una segunda vida",
+            footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. Todos los Derechos Reservados.",
+            footer_prof: "Fabricante Profesional de Repuestos Automotrices y Proveedor Global"
         },
         // 法语
         fr: {
@@ -1052,170 +621,76 @@
             nav_contact: "Contact",
             company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
             logo_alt: "Logo de Carval Auto - Donnez à votre voiture une seconde vie",
-            company_intro: `<p>Guangzhou CarvalAuto part co.,ltd Fondée en 2008, notre entreprise a débuté comme un magasin professionnel de pièces automobiles. Avec plus d'une décennie d'implantation dans le secteur des services automobiles, nous avons réalisé un saut d'un détaillant de pièces automobiles unique à un fournisseur complet de services automobiles.</p>`,
+            company_intro: `<p>Guangzhou Carval Auto Parts Co., Ltd. a été fondée en 2008. Après des années de développement, nous sommes devenus un prestataire de services automobiles intégré de confiance à Guangzhou et Foshan.</p>
+<p>Nous possédons 6 ateliers de réparation, 2 bureaux et 5 magasins de pièces détachées, soutenus par une équipe professionnelle de plus de 80 membres. Nous fournissons des pièces automobiles de qualité 100% d'origine et des services complets incluant la réparation, la maintenance et le diagnostic.</p>
+<p>Toutes nos pièces respectent strictement les normes OEM et sont vérifiées par des tests sur véhicules réels. À partir des modèles japonais, coréens et allemands, nous servons désormais aussi Baojun, Wuling, Geely et d'autres marques chinoises principales.</p>
+<p>Avec la philosophie "Service Ingénieux, Qualité en Premier", nous nous engageons à devenir un référent leader dans le secteur des services automobiles régionaux.</p>`,
             facility_office: "NOTRE BUREAU",
+            office1_alt: "Notre Bureau - Accueil",
+            office2_alt: "Notre Bureau - Salle de Réunion",
+            office3_alt: "Notre Bureau - Département des Ventes",
+            office4_alt: "Notre Bureau - Bureau Administratif",
+            office5_alt: "Notre Bureau - Service Client",
+            office6_alt: "Notre Bureau - Bureau du Directeur",
+            office7_alt: "Notre Bureau - Salle de Conférence",
+            office8_alt: "Notre Bureau - Espace Détente",
+            office9_alt: "Notre Bureau - Photo d'Équipe",
             facility_repair: "NOTRE ATELIER DE RÉPARATION",
+            repair1_alt: "Notre Atelier - Atelier Principal",
+            repair2_alt: "Notre Atelier - Zone de Diagnostic",
+            repair3_alt: "Notre Atelier - Salle des Outils",
+            repair4_alt: "Notre Atelier - Zone de Levage",
+            repair5_alt: "Notre Atelier - Stockage des Pièces",
+            repair6_alt: "Notre Atelier - Cabine de Peinture",
+            repair7_alt: "Notre Atelier - Service Pneus",
+            repair8_alt: "Notre Atelier - Équipe de Techniciens",
+            repair9_alt: "Notre Atelier - Contrôle Qualité",
             facility_factory: "NOTRE USINE",
-            product_title: "Notre gamme de produits",
-            product_japanese: "Pièces de voitures japonaises",
-            product_german: "Pièces de voitures allemandes",
-            product_korean: "Pièces de voitures coréennes",
-            product_chinese: "Pièces de voitures chinoises (Baojun & Wuling)",
-            product_oil: "Huile moteur",
-            view_products: "Voir les produits",
-            contact_title: "Envoyez-nous un message",
-            form_name: "Votre nom",
-            form_email: "Votre email",
-            form_message: "Veuillez indiquer le numéro OEM dans votre message (si disponible)",
-            form_submit: "Envoyer le message",
+            factory1_alt: "Notre Usine - Ligne de Production Principale",
+            factory2_alt: "Notre Usine - Atelier CNC",
+            factory3_alt: "Notre Usine - Ligne d'Assemblage",
+            factory4_alt: "Notre Usine - Stockage Matières Premières",
+            factory5_alt: "Notre Usine - Laboratoire Qualité",
+            factory6_alt: "Notre Usine - Zone d'Emballage",
+            factory7_alt: "Notre Usine - Entrepôt",
+            factory8_alt: "Notre Usine - Zone d'Expédition",
+            factory9_alt: "Notre Usine - Équipe Usine",
+            product_title: "Notre Gamme de Produits",
+            product_japanese: "Pièces pour Voitures Japonaises",
+            japanese_cars_alt: "Pièces pour Voitures Japonaises - 800x800",
+            product_japanese_desc: "Gamme complète de pièces automobiles d'origine et de rechange pour tous les grands modèles japonais, incluant Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu et Daihatsu. Notre gamme couvre tous les composants du véhicule, tous fabriqués selon les normes OEM.",
+            product_german: "Pièces pour Voitures Allemandes",
+            german_cars_alt: "Pièces pour Voitures Allemandes - 800x800",
+            product_german_desc: "Pièces automobiles de haute qualité pour véhicules de luxe et commerciaux allemands, incluant BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda et Seat. Spécialisés dans les composants de précision répondant aux exigences strictes de l'ingénierie allemande.",
+            product_korean: "Pièces pour Voitures Coréennes",
+            korean_cars_alt: "Pièces pour Voitures Coréennes - 800x800",
+            product_korean_desc: "Solutions complètes de pièces pour marques coréennes incluant Hyundai, Kia, SsangYong et Genesis. Couverture totale des pièces moteur, châssis, systèmes électriques et carrosserie pour véhicules coréens.",
+            product_chinese: "Pièces pour Voitures Chinoises (Baojun & Wuling)",
+            chinese_cars_alt: "Pièces pour Voitures Chinoises - 800x800",
+            product_chinese_desc: "Spécialisés dans les pièces haute qualité pour les marques chinoises Baojun et Wuling. Gamme complète couvrant moteur, transmission, suspension, freins, électricité et carrosserie, avec qualité fiable et prix compétitifs.",
+            product_oil: "Huile Moteur",
+            engine_oil_alt: "Huile Moteur - 800x800",
+            product_oil_desc: "Gamme complète d'huiles moteur premium, incluant huile minérale, semi-synthétique et totalement synthétique en différentes viscosités (0W20, 5W30, 10W40, 15W40, 20W50, etc.). Convient aux moteurs essence, diesel et hybrides.",
+            view_products: "Voir les Produits",
+            contact_title: "Envoyez-nous un Message",
+            form_name: "Votre Nom",
+            form_email: "Votre Email",
+            form_message: "Veuillez indiquer le numéro OEM dans votre message",
+            form_submit: "Envoyer le Message",
             contact_address: "Adresse",
             contact_address_value: "N° 450, Rue Huangshi Est, District de Baiyun, Ville de Guangzhou, Province du Guangdong",
             contact_phone: "Téléphone",
             contact_phone_value: "+86 195 2122 8657",
             contact_whatsapp: "WhatsApp",
             contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "Donnez à votre voiture une seconde vie",
-            footer_copyright: "© 2025 Carval Auto Parts. Tous droits réservés."
-        },
-        // 德语
-        de: {
-            header_logo: "CARVAL AUTO-",
-            header_slogan: "Gib deinem Auto ein zweites Leben",
-            nav_home: "Startseite",
-            nav_company: "Unternehmen",
-            nav_products: "Produkte",
-            nav_contact: "Kontakt",
-            company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
-            logo_alt: "Carval Auto Logo - Gib deinem Auto ein zweites Leben",
-            company_intro: `<p>Guangzhou CarvalAuto part co.,ltd Gegründet im Jahr 2008, startete unser Unternehmen als professioneller Autoteileladen. Mit über einem Jahrzehnt der Vertiefung in der Automobildienstleistungsbranche haben wir einen Sprung von einem einzigen Autoteilehändler zu einem umfassenden Automobildienstleister erreicht.</p>`,
-            facility_office: "UNSER BÜRO",
-            facility_repair: "UNSER REPARATURWERKSTATT",
-            facility_factory: "UNSER WERK",
-            product_title: "Unser Produktangebot",
-            product_japanese: "Japanische Autoteile",
-            product_german: "Deutsche Autoteile",
-            product_korean: "Koreanische Autoteile",
-            product_chinese: "Chinesische Autoteile (Baojun & Wuling)",
-            product_oil: "Motorenöl",
-            view_products: "Produkte anzeigen",
-            contact_title: "Senden Sie uns eine Nachricht",
-            form_name: "Ihr Name",
-            form_email: "Ihre E-Mail",
-            form_message: "Geben Sie bitte die OEM-Nummer in Ihrer Nachricht an (falls vorhanden)",
-            form_submit: "Nachricht senden",
-            contact_address: "Adresse",
-            contact_address_value: "Nr. 450, Huangshi Oststraße, Baiyun-Distrikt, Stadt Guangzhou, Provinz Guangdong",
-            contact_phone: "Telefon",
-            contact_phone_value: "+86 195 2122 8657",
-            contact_whatsapp: "WhatsApp",
-            contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "Gib deinem Auto ein zweites Leben",
-            footer_copyright: "© 2025 Carval Auto Parts. Alle Rechte vorbehalten."
-        },
-        // 意大利语
-        it: {
-            header_logo: "CARVAL AUTO-",
-            header_slogan: "Dai alla tua auto una seconda vita",
-            nav_home: "Home",
-            nav_company: "Azienda",
-            nav_products: "Prodotti",
-            nav_contact: "Contatto",
-            company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
-            logo_alt: "Logo Carval Auto - Dai alla tua auto una seconda vita",
-            company_intro: `<p>Guangzhou CarvalAuto part co.,ltd Fondata nel 2008, la nostra azienda è iniziata come un negozio professionale di ricambi auto. Con oltre un decennio di approfondimento nel settore dei servizi automobilistici, abbiamo raggiunto un salto da un singolo rivenditore di ricambi auto a un fornitore completo di servizi automobilistici.</p>`,
-            facility_office: "IL NOSTRO UFFICIO",
-            facility_repair: "IL NOSTRO OFFICINA DI RIPARAZIONE",
-            facility_factory: "LA NOSTRA FABBRICA",
-            product_title: "La nostra gamma di prodotti",
-            product_japanese: "Ricambi per auto giapponesi",
-            product_german: "Ricambi per auto tedesche",
-            product_korean: "Ricambi per auto coreane",
-            product_chinese: "Ricambi per auto cinesi (Baojun & Wuling)",
-            product_oil: "Olio motore",
-            view_products: "Visualizza prodotti",
-            contact_title: "Inviaci un messaggio",
-            form_name: "Il tuo nome",
-            form_email: "La tua email",
-            form_message: "Indica il numero OEM nel tuo messaggio (se disponibile)",
-            form_submit: "Invia messaggio",
-            contact_address: "Indirizzo",
-            contact_address_value: "N. 450, Via Huangshi Est, Distretto Baiyun, Città di Guangzhou, Provincia di Guangdong",
-            contact_phone: "Telefono",
-            contact_phone_value: "+86 195 2122 8657",
-            contact_whatsapp: "WhatsApp",
-            contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "Dai alla tua auto una seconda vita",
-            footer_copyright: "© 2025 Carval Auto Parts. Tutti i diritti riservati."
-        },
-        // 葡萄牙语
-        pt: {
-            header_logo: "CARVAL AUTO-",
-            header_slogan: "Dê uma segunda vida ao seu carro",
-            nav_home: "Início",
-            nav_company: "Empresa",
-            nav_products: "Produtos",
-            nav_contact: "Contato",
-            company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
-            logo_alt: "Logo Carval Auto - Dê uma segunda vida ao seu carro",
-            company_intro: `<p>Guangzhou CarvalAuto part co.,ltd Fundada em 2008, nossa empresa começou como uma loja profissional de peças automotivas. Com mais de uma década de trabalho na indústria de serviços automotivos, alcançamos um salto de um único revendedor de peças automotivas para um fornecedor completo de serviços automotivos.</p>`,
-            facility_office: "NOSSO ESCritório",
-            facility_repair: "NOSSA OFICINA DE REPARO",
-            facility_factory: "NOSSA FÁBRICA",
-            product_title: "Nossa linha de produtos",
-            product_japanese: "Peças de carros japoneses",
-            product_german: "Peças de carros alemães",
-            product_korean: "Peças de carros coreanos",
-            product_chinese: "Peças de carros chineses (Baojun & Wuling)",
-            product_oil: "Óleo de motor",
-            view_products: "Ver produtos",
-            contact_title: "Envie-nos uma mensagem",
-            form_name: "Seu nome",
-            form_email: "Seu e-mail",
-            form_message: "Informe o número OEM em sua mensagem (se disponível)",
-            form_submit: "Enviar mensagem",
-            contact_address: "Endereço",
-            contact_address_value: "N° 450, Rua Huangshi Leste, Distrito Baiyun, Cidade de Guangzhou, Província de Guangdong",
-            contact_phone: "Telefone",
-            contact_phone_value: "+86 195 2122 8657",
-            contact_whatsapp: "WhatsApp",
-            contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "Dê uma segunda vida ao seu carro",
-            footer_copyright: "© 2025 Carval Auto Parts. Todos os direitos reservados."
-        },
-        // 俄语
-        ru: {
-            header_logo: "CARVAL AUTO-",
-            header_slogan: "Дайте вашему автомобилю вторую жизнь",
-            nav_home: "Главная",
-            nav_company: "Компания",
-            nav_products: "Продукты",
-            nav_contact: "Контакт",
-            company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
-            logo_alt: "Логотип Carval Auto - Дайте вашему автомобилю вторую жизнь",
-            company_intro: `<p>Guangzhou CarvalAuto part co.,ltd Основана в 2008 году, наша компания начинала как профессиональный магазин автозапчастей. За более чем десять лет работы в автомобильной сервисной индустрии мы совершили скачок от единственного розничного продавца автозапчастей до всеобъемлющего поставщика автомобильных услуг.</p>`,
-            facility_office: "НАША ОФИС",
-            facility_repair: "НАША РЕМОНТНАЯ МАСТЕРСКАЯ",
-            facility_factory: "НАША ФАБРИКА",
-            product_title: "Наш ассортимент продуктов",
-            product_japanese: "Японские автозапчасти",
-            product_german: "Немецкие автозапчасти",
-            product_korean: "Корейские автозапчасти",
-            product_chinese: "Китайские автозапчасти (Baojun & Wuling)",
-            product_oil: "Моторное масло",
-            view_products: "Посмотреть продукты",
-            contact_title: "Отправьте нам сообщение",
-            form_name: "Ваше имя",
-            form_email: "Ваш электронный адрес",
-            form_message: "Укажите OEM-номер в вашем сообщении (если доступно)",
-            form_submit: "Отправить сообщение",
-            contact_address: "Адрес",
-            contact_address_value: "№ 450, Восточная улица Хуанши, район Байюнь, город Гуанчжоу, провинция Гуандун",
-            contact_phone: "Телефон",
-            contact_phone_value: "+86 195 2122 8657",
-            contact_whatsapp: "WhatsApp",
-            contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "Дайте вашему автомобилю вторую жизнь",
-            footer_copyright: "© 2025 Carval Auto Parts. Все права защищены."
+            contact_hours: "Horaires de Travail",
+            contact_hours_1: "Lundi - Samedi : 10h00 - 18h00 (GMT+8)",
+            contact_hours_2: "Dimanche et Jours Fériés : Fermé",
+            contact_email: "Email",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "Carvalauto- Donnez à votre voiture une seconde vie",
+            footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. Tous droits réservés.",
+            footer_prof: "Fabricant Professionnel de Pièces Auto & Fournisseur Mondial"
         },
         // 阿拉伯语
         ar: {
@@ -1227,30 +702,76 @@
             nav_contact: "اتصل بنا",
             company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
             logo_alt: "شعار Carval Auto - أعطِ سيارتك حياة ثانية",
-            company_intro: `<p>Guangzhou CarvalAuto part co.,ltd تأسست في عام 2008، بدأت شركتنا كمتجر محترف لأقطاب السيارات. بعد أكثر من عقد من العمل في صناعة خدمات السيارات، حققنا قفزة من بائع قطع غيار سيارات فردي إلى مقدم خدمات سيارات شامل.</p>`,
+            company_intro: `<p>تأسست شركة Guangzhou Carval Auto Parts Co., Ltd. عام 2008، وبعد سنوات من التطور، أصبحنا مزوداً موثوقاً لخدمات السيارات المتكاملة في قوانغتشو وفوشان.</p>
+<p>نمتلك 6 ورش إصلاح، ومكتبين، و5 متاجر لقطع الغيار، يدعمها فريق محترف يضم أكثر من 80 عضواً. نقدم قطع غيار بجودة أصلية 100% وخدمات شاملة تشمل الإصلاح والصيانة وتشخيص الأعطال.</p>
+<p>جميع قطعنا تتبع معايير OEM بدقة وتم التحقق منها باختبارات على المركبات الفعلية. بدأنا بالسيارات اليابانية والكورية والألمانية، والآن نخدم أيضاً Baojun وWuling وGeely وغيرها من العلامات الصينية الرئيسية.</p>
+<p>بفلسفة "الخدمة الحرفية، الجودة أولاً"، نلتزم بأن نصبح معياراً رائداً في صناعة خدمات السيارات الإقليمية.</p>`,
             facility_office: "مكتبنا",
+            office1_alt: "مكتبنا - الاستقبال",
+            office2_alt: "مكتبنا - غرفة الاجتماعات",
+            office3_alt: "مكتبنا - قسم المبيعات",
+            office4_alt: "مكتبنا - المكتب الإداري",
+            office5_alt: "مكتبنا - خدمة العملاء",
+            office6_alt: "مكتبنا - مكتب المدير",
+            office7_alt: "مكتبنا - قاعة المؤتمرات",
+            office8_alt: "مكتبنا - منطقة الاسترخاء",
+            office9_alt: "مكتبنا - صورة الفريق",
             facility_repair: "ورشة الإصلاح لدينا",
+            repair1_alt: "ورشة الإصلاح - الورشة الرئيسية",
+            repair2_alt: "ورشة الإصلاح - منطقة التشخيص",
+            repair3_alt: "ورشة الإصلاح - غرفة الأدوات",
+            repair4_alt: "ورشة الإصلاح - منطقة الرفع",
+            repair5_alt: "ورشة الإصلاح - مستودع القطع",
+            repair6_alt: "ورشة الإصلاح - كابينة الطلاء",
+            repair7_alt: "ورشة الإصلاح - خدمة الإطارات",
+            repair8_alt: "ورشة الإصلاح - فريق الفنيين",
+            repair9_alt: "ورشة الإصلاح - مراقبة الجودة",
             facility_factory: "مصنعنا",
+            factory1_alt: "مصنعنا - خط الإنتاج الرئيسي",
+            factory2_alt: "مصنعنا - ورشة CNC",
+            factory3_alt: "مصنعنا - خط التجميع",
+            factory4_alt: "مصنعنا - مستودع المواد الخام",
+            factory5_alt: "مصنعنا - مختبر الجودة",
+            factory6_alt: "مصنعنا - منطقة التعبئة",
+            factory7_alt: "مصنعنا - المستودع",
+            factory8_alt: "مصنعنا - منطقة الشحن",
+            factory9_alt: "مصنعنا - فريق المصنع",
             product_title: "مجموعة منتجاتنا",
-            product_japanese: "أقطاب سيارات يابانية",
-            product_german: "أقطاب سيارات ألمانية",
-            product_korean: "أقطاب سيارات كورية",
-            product_chinese: "أقطاب سيارات صينية (Baojun & Wuling)",
+            product_japanese: "قطع غيار السيارات اليابانية",
+            japanese_cars_alt: "قطع غيار السيارات اليابانية - 800x800",
+            product_japanese_desc: "مجموعة كاملة من قطع الغيار الأصلية والبديلة لجميع طرازات السيارات اليابانية الكبرى بما فيها تويوتا وهوندا ونيسان وميتسوبيشي وسوزوكي ومازدا وسوبارو وإيسوزو ودايهاتسو. تشمل مكونات المحرك والتعليق والفرامل والكهرباء والهيكل وفق معايير OEM.",
+            product_german: "قطع غيار السيارات الألمانية",
+            german_cars_alt: "قطع غيار السيارات الألمانية - 800x800",
+            product_german_desc: "قطع غيار عالية الجودة للسيارات الألمانية الفاخرة والتجارية بما فيها BMW وMercedes-Benz وVolkswagen وAudi وPorsche وOpel وSkoda وSeat. متخصصون في مكونات دقيقة الهندسة تلبي متطلبات الجودة الصارمة.",
+            product_korean: "قطع غيار السيارات الكورية",
+            korean_cars_alt: "قطع غيار السيارات الكورية - 800x800",
+            product_korean_desc: "حلول شاملة لقطع غيار العلامات الكورية كهيونداي وكيا وسانغيونغ وجينيسيس. تغطية كاملة للمحرك والهيكل والكهرباء والجسم للسيارات الكورية.",
+            product_chinese: "قطع غيار السيارات الصينية (Baojun & Wuling)",
+            chinese_cars_alt: "قطع غيار السيارات الصينية - 800x800",
+            product_chinese_desc: "متخصصون في قطع غيار عالية الجودة لعلامتي Baojun وWuling الصينيتين. مجموعة كاملة تغطي المحرك والناقل والتعليق والفرامل والكهرباء والهيكل بجودة موثوقة وأسعار تنافسية.",
             product_oil: "زيت المحرك",
+            engine_oil_alt: "زيت المحرك - 800x800",
+            product_oil_desc: "مجموعة كاملة من زيوت المحرك الممتازة تشمل الزيت المعدني وشبه الاصطناعي والاصطناعي الكامل بدرجات لزوجة متعددة (0W20، 5W30، 10W40، 15W40، 20W50، إلخ). مناسبة لمحركات البنزين والديزل والهجينة.",
             view_products: "عرض المنتجات",
             contact_title: "أرسل لنا رسالة",
             form_name: "اسمك",
             form_email: "بريدك الإلكتروني",
-            form_message: "يرجى تحديد رقم OEM في رسالتك (إذا كان متاحًا)",
-            form_submit: "أرسل الرسالة",
+            form_message: "يرجى تحديد رقم OEM في رسالتك",
+            form_submit: "إرسال الرسالة",
             contact_address: "العنوان",
             contact_address_value: "رقم 450، شارع هوانغشي الشرقي، منطقة بايون، مدينة قوانغتشو، مقاطعة قوانغدونغ",
             contact_phone: "الهاتف",
             contact_phone_value: "+86 195 2122 8657",
             contact_whatsapp: "واتساب",
             contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "أعطِ سيارتك حياة ثانية",
-            footer_copyright: "© 2025 Carval Auto Parts. جميع الحقوق محفوظة."
+            contact_hours: "ساعات العمل",
+            contact_hours_1: "الاثنين - السبت: 10:00 ص - 6:00 م (GMT+8)",
+            contact_hours_2: "الأحد والعطلات الرسمية: مغلق",
+            contact_email: "البريد الإلكتروني",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "Carvalauto- أعطِ سيارتك حياة ثانية",
+            footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. جميع الحقوق محفوظة.",
+            footer_prof: "مصنع محترف لقطع غيار السيارات ومورد عالمي"
         },
         // 越南语
         vi: {
@@ -1262,30 +783,400 @@
             nav_contact: "Liên hệ",
             company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
             logo_alt: "Logo Carval Auto - Đem lại cuộc sống thứ hai cho xe của bạn",
-            company_intro: `<p>Guangzhou CarvalAuto part co.,ltd Thành lập năm 2008, công ty chúng tôi bắt đầu là một cửa hàng chuyên bán linh kiện ô tô. Với hơn một thập kỷ phát triển trong ngành dịch vụ ô tô, chúng tôi đã bước ngoặt từ nhà bán lẻ linh kiện ô tô duy nhất thành nhà cung cấp dịch vụ ô tô toàn diện.</p>`,
+            company_intro: `<p>Guangzhou Carval Auto Parts Co., Ltd. được thành lập năm 2008. Qua nhiều năm phát triển, chúng tôi đã trở thành nhà cung cấp dịch vụ ô tô toàn diện đáng tin cậy tại Quảng Châu và Phật Sơn.</p>
+<p>Chúng tôi sở hữu 6 xưởng sửa chữa, 2 văn phòng và 5 cửa hàng phụ tùng, được hỗ trợ bởi đội ngũ chuyên nghiệp hơn 80 thành viên. Chúng tôi cung cấp phụ tùng chất lượng 100% chính hãng và dịch vụ toàn diện bao gồm sửa chữa, bảo dưỡng và chẩn đoán lỗi.</p>
+<p>Tất cả phụ tùng của chúng tôi tuân thủ nghiêm ngặt tiêu chuẩn OEM và được xác minh qua thử nghiệm trên xe thực tế. Bắt đầu với các dòng Nhật, Hàn, Đức, chúng tôi nay cũng phục vụ Baojun, Wuling, Geely và các thương hiệu Trung Quốc chính thống khác.</p>
+<p>Với triết lý "Dịch vụ Tận tâm, Chất lượng Hàng đầu", chúng tôi cam kết trở thành chuẩn mực hàng đầu trong ngành dịch vụ ô tô khu vực.</p>`,
             facility_office: "VĂN PHÒNG CỦA CHÚNG TÔI",
+            office1_alt: "Văn phòng - Khu vực Tiếp tân",
+            office2_alt: "Văn phòng - Phòng họp",
+            office3_alt: "Văn phòng - Phòng Kinh doanh",
+            office4_alt: "Văn phòng - Phòng Hành chính",
+            office5_alt: "Văn phòng - Dịch vụ Khách hàng",
+            office6_alt: "Văn phòng - Phòng Giám đốc",
+            office7_alt: "Văn phòng - Hội trường",
+            office8_alt: "Văn phòng - Khu vực Nghỉ ngơi",
+            office9_alt: "Văn phòng - Ảnh Nhóm",
             facility_repair: "XƯỞNG SỬA CHỮA CỦA CHÚNG TÔI",
+            repair1_alt: "Xưởng Sửa chữa - Xưởng Chính",
+            repair2_alt: "Xưởng Sửa chữa - Khu vực Chẩn đoán",
+            repair3_alt: "Xưởng Sửa chữa - Phòng Dụng cụ",
+            repair4_alt: "Xưởng Sửa chữa - Khu vực Nâng xe",
+            repair5_alt: "Xưởng Sửa chữa - Kho Phụ tùng",
+            repair6_alt: "Xưởng Sửa chữa - Buồng Sơn",
+            repair7_alt: "Xưởng Sửa chữa - Dịch vụ Lốp xe",
+            repair8_alt: "Xưởng Sửa chữa - Đội Kỹ thuật viên",
+            repair9_alt: "Xưởng Sửa chữa - Kiểm soát Chất lượng",
             facility_factory: "NHÀ MÁY CỦA CHÚNG TÔI",
-            product_title: "Danh mục sản phẩm của chúng tôi",
-            product_japanese: "Linh kiện xe Nhật",
-            product_german: "Linh kiện xe Đức",
-            product_korean: "Linh kiện xe Hàn",
-            product_chinese: "Linh kiện xe Trung (Baojun & Wuling)",
+            factory1_alt: "Nhà máy - Dây chuyền Sản xuất Chính",
+            factory2_alt: "Nhà máy - Xưởng CNC",
+            factory3_alt: "Nhà máy - Dây chuyền Lắp ráp",
+            factory4_alt: "Nhà máy - Kho Nguyên liệu",
+            factory5_alt: "Nhà máy - Phòng Kiểm soát Chất lượng",
+            factory6_alt: "Nhà máy - Khu vực Đóng gói",
+            factory7_alt: "Nhà máy - Kho Hàng",
+            factory8_alt: "Nhà máy - Khu vực Vận chuyển",
+            factory9_alt: "Nhà máy - Đội Nhà máy",
+            product_title: "Danh mục Sản phẩm của Chúng tôi",
+            product_japanese: "Phụ tùng xe Nhật",
+            japanese_cars_alt: "Phụ tùng xe Nhật - 800x800",
+            product_japanese_desc: "Phụ tùng chính hãng và thay thế cho các dòng xe Nhật lớn như Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu và Daihatsu. Bao gồm động cơ, hệ thống treo, phanh, điện và thân xe theo tiêu chuẩn OEM.",
+            product_german: "Phụ tùng xe Đức",
+            german_cars_alt: "Phụ tùng xe Đức - 800x800",
+            product_german_desc: "Phụ tùng chất lượng cao cho xe sang và thương mại Đức như BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda và Seat. Chuyên các linh kiện chính xác đáp ứng yêu cầu kỹ thuật khắt khe của Đức.",
+            product_korean: "Phụ tùng xe Hàn",
+            korean_cars_alt: "Phụ tùng xe Hàn - 800x800",
+            product_korean_desc: "Giải pháp phụ tùng toàn diện cho Hyundai, Kia, SsangYong và Genesis. Bao gồm đầy đủ linh kiện động cơ, khung gầm, điện và thân xe.",
+            product_chinese: "Phụ tùng xe Trung (Baojun & Wuling)",
+            chinese_cars_alt: "Phụ tùng xe Trung - 800x800",
+            product_chinese_desc: "Chuyên phụ tùng chất lượng cao cho Baojun và Wuling. Phạm vi đầy đủ từ động cơ, hộp số, hệ thống treo, phanh đến điện và thân xe với chất lượng đáng tin cậy và giá cạnh tranh.",
             product_oil: "Dầu động cơ",
-            view_products: "Xem sản phẩm",
-            contact_title: "Gửi tin nhắn cho chúng tôi",
+            engine_oil_alt: "Dầu động cơ - 800x800",
+            product_oil_desc: "Dầu động cơ cao cấp đa dạng gồm dầu khoáng, bán tổng hợp và tổng hợp hoàn toàn với nhiều độ nhớt (0W20, 5W30, 10W40, 15W40, 20W50...). Phù hợp cho động cơ xăng, diesel và hybrid trong mọi điều kiện thời tiết.",
+            view_products: "Xem Sản phẩm",
+            contact_title: "Gửi Tin nhắn cho Chúng tôi",
             form_name: "Tên của bạn",
             form_email: "Email của bạn",
-            form_message: "Vui lòng cung cấp số OEM trong tin nhắn của bạn (nếu có)",
-            form_submit: "Gửi tin nhắn",
+            form_message: "Vui lòng cung cấp số OEM trong tin nhắn của bạn",
+            form_submit: "Gửi Tin nhắn",
             contact_address: "Địa chỉ",
-            contact_address_value: "Số 450, Đường Hoàng Thạch Đông, Quận Bạch Vân, Thành phố Quảng Châu, Tỉnh Quảng Đông",
+            contact_address_value: "Số 450, Đường Hoàng Thạch Đông, Quận Bạch Vân, TP. Quảng Châu, Tỉnh Quảng Đông",
             contact_phone: "Điện thoại",
             contact_phone_value: "+86 195 2122 8657",
             contact_whatsapp: "WhatsApp",
             contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "Đem lại cuộc sống thứ hai cho xe của bạn",
-            footer_copyright: "© 2025 Carval Auto Parts. Tất cả các quyền được bảo lưu."
+            contact_hours: "Giờ Làm việc",
+            contact_hours_1: "Thứ Hai - Thứ Bảy: 10:00 SA - 6:00 CH (GMT+8)",
+            contact_hours_2: "Chủ nhật & Ngày lễ: Đóng cửa",
+            contact_email: "Email",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "Carvalauto- Đem lại cuộc sống thứ hai cho xe của bạn",
+            footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. Tất cả quyền được bảo lưu.",
+            footer_prof: "Nhà sản xuất Phụ tùng Ô tô chuyên nghiệp & Nhà cung cấp Toàn cầu"
+        },
+        // 俄语
+        ru: {
+            header_logo: "CARVAL AUTO-",
+            header_slogan: "Дайте вашему автомобилю вторую жизнь",
+            nav_home: "Главная",
+            nav_company: "Компания",
+            nav_products: "Продукты",
+            nav_contact: "Контакты",
+            company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
+            logo_alt: "Логотип Carval Auto - Дайте вашему автомобилю вторую жизнь",
+            company_intro: `<p>Компания Guangzhou Carval Auto Parts Co., Ltd. основана в 2008 году. За годы развития мы стали надёжным поставщиком комплексных автосервисных услуг в Гуанчжоу и Фошане.</p>
+<p>Мы располагаем 6 ремонтными мастерскими, 2 офисами и 5 магазинами запчастей, поддерживаемыми профессиональной командой свыше 80 человек. Мы предоставляем запчасти 100%-ного оригинального качества и полный спектр услуг, включая ремонт, техобслуживание и диагностику неисправностей.</p>
+<p>Все наши детали строго соответствуют стандартам OEM и проверяются на реальных автомобилях. Начав с японских, корейских и немецких моделей, мы теперь также обслуживаем Baojun, Wuling, Geely и другие ведущие китайские марки.</p>
+<p>Придерживаясь философии «Мастерский сервис, Качество прежде всего», мы стремимся стать ведущим эталоном в региональной отрасли автомобильных услуг.</p>`,
+            facility_office: "НАШ ОФИС",
+            office1_alt: "Наш Офис - Рецепция",
+            office2_alt: "Наш Офис - Переговорная",
+            office3_alt: "Наш Офис - Отдел продаж",
+            office4_alt: "Наш Офис - Административный офис",
+            office5_alt: "Наш Офис - Служба поддержки",
+            office6_alt: "Наш Офис - Кабинет директора",
+            office7_alt: "Наш Офис - Конференц-зал",
+            office8_alt: "Наш Офис - Зона отдыха",
+            office9_alt: "Наш Офис - Фото команды",
+            facility_repair: "НАША РЕМОНТНАЯ МАСТЕРСКАЯ",
+            repair1_alt: "Мастерская - Основной цех",
+            repair2_alt: "Мастерская - Зона диагностики",
+            repair3_alt: "Мастерская - Инструментальная",
+            repair4_alt: "Мастерская - Зона подъёмников",
+            repair5_alt: "Мастерская - Склад запчастей",
+            repair6_alt: "Мастерская - Покрасочная камера",
+            repair7_alt: "Мастерская - Шиномонтаж",
+            repair8_alt: "Мастерская - Команда техников",
+            repair9_alt: "Мастерская - Контроль качества",
+            facility_factory: "НАШ ЗАВОД",
+            factory1_alt: "Завод - Главная производственная линия",
+            factory2_alt: "Завод - Цех ЧПУ",
+            factory3_alt: "Завод - Сборочная линия",
+            factory4_alt: "Завод - Склад сырья",
+            factory5_alt: "Завод - Лаборатория контроля качества",
+            factory6_alt: "Завод - Зона упаковки",
+            factory7_alt: "Завод - Склад",
+            factory8_alt: "Завод - Зона отгрузки",
+            factory9_alt: "Завод - Команда завода",
+            product_title: "Наш Ассортимент Продукции",
+            product_japanese: "Японские Автозапчасти",
+            japanese_cars_alt: "Японские Автозапчасти - 800x800",
+            product_japanese_desc: "Полный ассортимент оригинальных и аналоговых запчастей для японских автомобилей Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu и Daihatsu. Двигатель, подвеска, тормоза, электрика и кузов — всё по стандартам OEM.",
+            product_german: "Немецкие Автозапчасти",
+            german_cars_alt: "Немецкие Автозапчасти - 800x800",
+            product_german_desc: "Высококачественные запчасти для немецких люксовых и коммерческих автомобилей BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda и Seat. Специализируемся на прецизионных компонентах, соответствующих строгим стандартам немецкого автомобилестроения.",
+            product_korean: "Корейские Автозапчасти",
+            korean_cars_alt: "Корейские Автозапчасти - 800x800",
+            product_korean_desc: "Комплексные решения по запчастям для корейских марок Hyundai, Kia, SsangYong и Genesis. Полное покрытие двигателя, шасси, электрики и кузова для пассажирских и коммерческих корейских автомобилей.",
+            product_chinese: "Китайские Автозапчасти (Baojun & Wuling)",
+            chinese_cars_alt: "Китайские Автозапчасти - 800x800",
+            product_chinese_desc: "Специализируемся на высококачественных запчастях для популярных китайских марок Baojun и Wuling. Полный ассортимент: двигатель, трансмиссия, подвеска, тормоза, электрика и кузов с надёжным качеством и конкурентными ценами.",
+            product_oil: "Моторное масло",
+            engine_oil_alt: "Моторное масло - 800x800",
+            product_oil_desc: "Полный ассортимент премиальных моторных масел: минеральное, полусинтетическое и синтетическое разной вязкости (0W20, 5W30, 10W40, 15W40, 20W50 и др.). Подходит для бензиновых, дизельных и гибридных двигателей в любых климатических условиях.",
+            view_products: "Смотреть продукты",
+            contact_title: "Отправьте нам сообщение",
+            form_name: "Ваше имя",
+            form_email: "Ваш Email",
+            form_message: "Укажите OEM-номер в вашем сообщении",
+            form_submit: "Отправить",
+            contact_address: "Адрес",
+            contact_address_value: "№ 450, Восточная улица Хуанши, район Байюнь, г. Гуанчжоу, провинция Гуандун",
+            contact_phone: "Телефон",
+            contact_phone_value: "+86 195 2122 8657",
+            contact_whatsapp: "WhatsApp",
+            contact_whatsapp_value: "+86 195 2122 8657",
+            contact_hours: "Рабочие часы",
+            contact_hours_1: "Пн - Сб: 10:00 - 18:00 (GMT+8)",
+            contact_hours_2: "Вс и праздники: Закрыто",
+            contact_email: "Электронная почта",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "Carvalauto- Дайте вашему автомобилю вторую жизнь",
+            footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. Все права защищены.",
+            footer_prof: "Профессиональный производитель автозапчастей и мировой поставщик"
+        },
+        // 葡萄牙语
+        pt: {
+            header_logo: "CARVAL AUTO-",
+            header_slogan: "Dê uma segunda vida ao seu carro",
+            nav_home: "Início",
+            nav_company: "Empresa",
+            nav_products: "Produtos",
+            nav_contact: "Contato",
+            company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
+            logo_alt: "Logo Carval Auto - Dê uma segunda vida ao seu carro",
+            company_intro: `<p>A Guangzhou Carval Auto Parts Co., Ltd. foi fundada em 2008. Após anos de desenvolvimento, tornamo-nos um fornecedor de serviços automotivos integrados de confiança em Guangzhou e Foshan.</p>
+<p>Possuímos 6 oficinas de reparação, 2 escritórios e 5 lojas de peças, apoiados por uma equipe profissional com mais de 80 membros. Fornecemos peças de qualidade 100% original e serviços completos, incluindo reparação, manutenção e diagnóstico de falhas.</p>
+<p>Todas as nossas peças seguem rigorosamente os padrões OEM e são verificadas por testes em veículos reais. Começando com modelos japoneses, coreanos e alemães, agora também atendemos Baojun, Wuling, Geely e outras marcas chinesas principais.</p>
+<p>Com a filosofia de "Serviço Habilidoso, Qualidade em Primeiro", estamos comprometidos a nos tornar um referencial líder no setor de serviços automotivos regional.</p>`,
+            facility_office: "NOSSO ESCRITÓRIO",
+            office1_alt: "Nosso Escritório - Recepção",
+            office2_alt: "Nosso Escritório - Sala de Reuniões",
+            office3_alt: "Nosso Escritório - Departamento de Vendas",
+            office4_alt: "Nosso Escritório - Escritório Administrativo",
+            office5_alt: "Nosso Escritório - Atendimento ao Cliente",
+            office6_alt: "Nosso Escritório - Sala do Gerente",
+            office7_alt: "Nosso Escritório - Salão de Conferências",
+            office8_alt: "Nosso Escritório - Área de Descanso",
+            office9_alt: "Nosso Escritório - Foto da Equipe",
+            facility_repair: "NOSSA OFICINA DE REPARO",
+            repair1_alt: "Oficina - Oficina Principal",
+            repair2_alt: "Oficina - Área de Diagnóstico",
+            repair3_alt: "Oficina - Sala de Ferramentas",
+            repair4_alt: "Oficina - Área de Elevação",
+            repair5_alt: "Oficina - Armazém de Peças",
+            repair6_alt: "Oficina - Cabine de Pintura",
+            repair7_alt: "Oficina - Serviço de Pneus",
+            repair8_alt: "Oficina - Equipe de Técnicos",
+            repair9_alt: "Oficina - Controle de Qualidade",
+            facility_factory: "NOSSA FÁBRICA",
+            factory1_alt: "Fábrica - Linha de Produção Principal",
+            factory2_alt: "Fábrica - Oficina CNC",
+            factory3_alt: "Fábrica - Linha de Montagem",
+            factory4_alt: "Fábrica - Armazém de Matérias-Primas",
+            factory5_alt: "Fábrica - Laboratório de Qualidade",
+            factory6_alt: "Fábrica - Área de Embalagem",
+            factory7_alt: "Fábrica - Armazém",
+            factory8_alt: "Fábrica - Área de Despacho",
+            factory9_alt: "Fábrica - Equipe da Fábrica",
+            product_title: "Nossa Linha de Produtos",
+            product_japanese: "Peças para Carros Japoneses",
+            japanese_cars_alt: "Peças para Carros Japoneses - 800x800",
+            product_japanese_desc: "Gama completa de peças originais e reposição para modelos japoneses como Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu e Daihatsu. Motor, suspensão, freios, elétrica e carroceria conforme padrões OEM.",
+            product_german: "Peças para Carros Alemães",
+            german_cars_alt: "Peças para Carros Alemães - 800x800",
+            product_german_desc: "Peças de alta qualidade para veículos de luxo e comerciais alemães incluindo BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda e Seat. Especializados em componentes de precisão conformes com os rigorosos padrões alemães.",
+            product_korean: "Peças para Carros Coreanos",
+            korean_cars_alt: "Peças para Carros Coreanos - 800x800",
+            product_korean_desc: "Soluções completas para Hyundai, Kia, SsangYong e Genesis. Cobertura total de motor, chassi, sistemas elétricos e carroceria para veículos coreanos.",
+            product_chinese: "Peças para Carros Chineses (Baojun & Wuling)",
+            chinese_cars_alt: "Peças para Carros Chineses - 800x800",
+            product_chinese_desc: "Especializados em peças de alta qualidade para Baojun e Wuling. Gama completa de motor, transmissão, suspensão, freios, elétrica e carroceria com qualidade fiável e preços competitivos.",
+            product_oil: "Óleo de Motor",
+            engine_oil_alt: "Óleo de Motor - 800x800",
+            product_oil_desc: "Gama completa de óleos de motor premium, incluindo mineral, semissintético e sintético total em várias viscosidades (0W20, 5W30, 10W40, 15W40, 20W50, etc.). Adequado para motores a gasolina, diesel e híbridos.",
+            view_products: "Ver Produtos",
+            contact_title: "Envie-nos uma Mensagem",
+            form_name: "Seu Nome",
+            form_email: "Seu Email",
+            form_message: "Informe o número OEM em sua mensagem",
+            form_submit: "Enviar Mensagem",
+            contact_address: "Endereço",
+            contact_address_value: "Nº 450, Rua Huangshi Leste, Distrito Baiyun, Cidade de Guangzhou, Província de Guangdong",
+            contact_phone: "Telefone",
+            contact_phone_value: "+86 195 2122 8657",
+            contact_whatsapp: "WhatsApp",
+            contact_whatsapp_value: "+86 195 2122 8657",
+            contact_hours: "Horário de Funcionamento",
+            contact_hours_1: "Segunda - Sábado: 10h00 - 18h00 (GMT+8)",
+            contact_hours_2: "Domingo e Feriados: Fechado",
+            contact_email: "Email",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "Carvalauto- Dê uma segunda vida ao seu carro",
+            footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. Todos os direitos reservados.",
+            footer_prof: "Fabricante Profissional de Peças Automotivas e Fornecedor Global"
+        },
+        // 德语
+        de: {
+            header_logo: "CARVAL AUTO-",
+            header_slogan: "Gib deinem Auto ein zweites Leben",
+            nav_home: "Startseite",
+            nav_company: "Unternehmen",
+            nav_products: "Produkte",
+            nav_contact: "Kontakt",
+            company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
+            logo_alt: "Carval Auto Logo - Gib deinem Auto ein zweites Leben",
+            company_intro: `<p>Die Guangzhou Carval Auto Parts Co., Ltd. wurde 2008 gegründet. Nach Jahren der Entwicklung sind wir zu einem vertrauenswürdigen Rundum-Automobildienstleister in Guangzhou und Foshan geworden.</p>
+<p>Wir betreiben 6 Reparaturwerkstätten, 2 Büros und 5 Ersatzteilläden, unterstützt von einem professionellen Team mit über 80 Mitgliedern. Wir bieten Kfz-Teile in 100 % Originalqualität und ein Vollsortiment an Dienstleistungen einschließlich Fahrzeugreparatur, Wartung und Fehlerdiagnose.</p>
+<p>Alle unsere Teile entsprechen strikt den OEM-Standards und werden durch Fahrzeugtests verifiziert. Angefangen mit japanischen, koreanischen und deutschen Modellen beliefern wir jetzt auch Baojun, Wuling, Geely und andere führende chinesische Marken.</p>
+<p>Mit der Philosophie „Meisterhafter Service, Qualität zuerst" streben wir danach, ein führendes Vorbild in der regionalen Kfz-Serviceindustrie zu werden.</p>`,
+            facility_office: "UNSER BÜRO",
+            office1_alt: "Unser Büro - Empfang",
+            office2_alt: "Unser Büro - Besprechungsraum",
+            office3_alt: "Unser Büro - Vertriebsabteilung",
+            office4_alt: "Unser Büro - Verwaltungsbüro",
+            office5_alt: "Unser Büro - Kundenservice",
+            office6_alt: "Unser Büro - Chefbüro",
+            office7_alt: "Unser Büro - Konferenzsaal",
+            office8_alt: "Unser Büro - Pausenbereich",
+            office9_alt: "Unser Büro - Teamfoto",
+            facility_repair: "UNSERE REPARATURWERKSTATT",
+            repair1_alt: "Werkstatt - Hauptwerkstatt",
+            repair2_alt: "Werkstatt - Diagnosebereich",
+            repair3_alt: "Werkstatt - Werkzeugkammer",
+            repair4_alt: "Werkstatt - Hebeanlage",
+            repair5_alt: "Werkstatt - Teilelager",
+            repair6_alt: "Werkstatt - Lackierkabine",
+            repair7_alt: "Werkstatt - Reifenservice",
+            repair8_alt: "Werkstatt - Technikerteam",
+            repair9_alt: "Werkstatt - Qualitätskontrolle",
+            facility_factory: "UNSERE FABRIK",
+            factory1_alt: "Fabrik - Hauptproduktionslinie",
+            factory2_alt: "Fabrik - CNC-Werkstatt",
+            factory3_alt: "Fabrik - Montagelinie",
+            factory4_alt: "Fabrik - Rohstofflager",
+            factory5_alt: "Fabrik - Qualitätslabor",
+            factory6_alt: "Fabrik - Verpackungsbereich",
+            factory7_alt: "Fabrik - Lager",
+            factory8_alt: "Fabrik - Versandbereich",
+            factory9_alt: "Fabrik - Fabrikteam",
+            product_title: "Unser Produktangebot",
+            product_japanese: "Japanische Kfz-Teile",
+            japanese_cars_alt: "Japanische Kfz-Teile - 800x800",
+            product_japanese_desc: "Vollständiges Sortiment an Original- und Ersatzteilen für japanische Modelle wie Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu und Daihatsu. Motor, Fahrwerk, Bremsen, Elektrik und Karosserie nach OEM-Standard.",
+            product_german: "Deutsche Kfz-Teile",
+            german_cars_alt: "Deutsche Kfz-Teile - 800x800",
+            product_german_desc: "Hochwertige Teile für deutsche Luxus- und Nutzfahrzeuge wie BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda und Seat. Spezialisiert auf Präzisionskomponenten gemäß den hohen deutschen Qualitätsstandards.",
+            product_korean: "Koreanische Kfz-Teile",
+            korean_cars_alt: "Koreanische Kfz-Teile - 800x800",
+            product_korean_desc: "Umfassende Teilelösungen für Hyundai, Kia, SsangYong und Genesis. Vollständige Abdeckung von Motor, Fahrwerk, Elektrik und Karosserie für koreanische Fahrzeuge.",
+            product_chinese: "Chinesische Kfz-Teile (Baojun & Wuling)",
+            chinese_cars_alt: "Chinesische Kfz-Teile - 800x800",
+            product_chinese_desc: "Spezialisiert auf hochwertige Teile für Baojun und Wuling. Volles Sortiment: Motor, Getriebe, Fahrwerk, Bremsen, Elektrik und Karosserie mit zuverlässiger Qualität und wettbewerbsfähigen Preisen.",
+            product_oil: "Motoröl",
+            engine_oil_alt: "Motoröl - 800x800",
+            product_oil_desc: "Komplettes Sortiment an Premium-Motorölen: Mineral-, Halbsynthese- und Vollsyntheseöl in verschiedenen Viskositätsklassen (0W20, 5W30, 10W40, 15W40, 20W50 usw.). Für Benzin-, Diesel- und Hybridmotoren in allen Klimabedingungen.",
+            view_products: "Produkte anzeigen",
+            contact_title: "Senden Sie uns eine Nachricht",
+            form_name: "Ihr Name",
+            form_email: "Ihre E-Mail",
+            form_message: "Bitte OEM-Nummer in Ihrer Nachricht angeben",
+            form_submit: "Nachricht senden",
+            contact_address: "Adresse",
+            contact_address_value: "Nr. 450, Huangshi-Oststraße, Baiyun-Bezirk, Stadt Guangzhou, Provinz Guangdong",
+            contact_phone: "Telefon",
+            contact_phone_value: "+86 195 2122 8657",
+            contact_whatsapp: "WhatsApp",
+            contact_whatsapp_value: "+86 195 2122 8657",
+            contact_hours: "Arbeitszeiten",
+            contact_hours_1: "Mo - Sa: 10:00 - 18:00 Uhr (GMT+8)",
+            contact_hours_2: "So und Feiertage: Geschlossen",
+            contact_email: "E-Mail",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "Carvalauto- Gib deinem Auto ein zweites Leben",
+            footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. Alle Rechte vorbehalten.",
+            footer_prof: "Professioneller Kfz-Teilehersteller & Globaler Lieferant"
+        },
+        // 意大利语
+        it: {
+            header_logo: "CARVAL AUTO-",
+            header_slogan: "Dai alla tua auto una seconda vita",
+            nav_home: "Home",
+            nav_company: "Azienda",
+            nav_products: "Prodotti",
+            nav_contact: "Contatti",
+            company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
+            logo_alt: "Logo Carval Auto - Dai alla tua auto una seconda vita",
+            company_intro: `<p>Guangzhou Carval Auto Parts Co., Ltd. è stata fondata nel 2008. Dopo anni di sviluppo, siamo diventati un fornitore di servizi automobilistici integrati di fiducia a Guangzhou e Foshan.</p>
+<p>Disponiamo di 6 officine di riparazione, 2 uffici e 5 negozi di ricambi, supportati da un team professionale di oltre 80 membri. Forniamo ricambi di qualità 100% originale e servizi completi tra cui riparazione, manutenzione e diagnosi dei guasti.</p>
+<p>Tutti i nostri ricambi seguono rigorosamente gli standard OEM e sono verificati da test su veicoli reali. Partendo dai modelli giapponesi, coreani e tedeschi, ora serviamo anche Baojun, Wuling, Geely e altri marchi cinesi principali.</p>
+<p>Con la filosofia "Servizio Ingegnoso, Qualità Prima di Tutto", ci impegniamo a diventare un punto di riferimento leader nel settore dei servizi automobilistici regionali.</p>`,
+            facility_office: "IL NOSTRO UFFICIO",
+            office1_alt: "Il Nostro Ufficio - Reception",
+            office2_alt: "Il Nostro Ufficio - Sala Riunioni",
+            office3_alt: "Il Nostro Ufficio - Reparto Vendite",
+            office4_alt: "Il Nostro Ufficio - Ufficio Amministrativo",
+            office5_alt: "Il Nostro Ufficio - Servizio Clienti",
+            office6_alt: "Il Nostro Ufficio - Ufficio del Direttore",
+            office7_alt: "Il Nostro Ufficio - Sala Conferenze",
+            office8_alt: "Il Nostro Ufficio - Area Relax",
+            office9_alt: "Il Nostro Ufficio - Foto del Team",
+            facility_repair: "LA NOSTRA OFFICINA",
+            repair1_alt: "Officina - Officina Principale",
+            repair2_alt: "Officina - Area Diagnostica",
+            repair3_alt: "Officina - Sala Attrezzi",
+            repair4_alt: "Officina - Area Sollevatori",
+            repair5_alt: "Officina - Magazzino Ricambi",
+            repair6_alt: "Officina - Cabina di Verniciatura",
+            repair7_alt: "Officina - Servizio Pneumatici",
+            repair8_alt: "Officina - Team di Tecnici",
+            repair9_alt: "Officina - Controllo Qualità",
+            facility_factory: "LA NOSTRA FABBRICA",
+            factory1_alt: "Fabbrica - Linea Produzione Principale",
+            factory2_alt: "Fabbrica - Officina CNC",
+            factory3_alt: "Fabbrica - Linea di Assemblaggio",
+            factory4_alt: "Fabbrica - Magazzino Materie Prime",
+            factory5_alt: "Fabbrica - Laboratorio Qualità",
+            factory6_alt: "Fabbrica - Area Imballaggio",
+            factory7_alt: "Fabbrica - Magazzino",
+            factory8_alt: "Fabbrica - Area Spedizioni",
+            factory9_alt: "Fabbrica - Team Fabbrica",
+            product_title: "La Nostra Gamma di Prodotti",
+            product_japanese: "Ricambi per Auto Giapponesi",
+            japanese_cars_alt: "Ricambi per Auto Giapponesi - 800x800",
+            product_japanese_desc: "Gamma completa di ricambi originali e sostitutivi per modelli giapponesi come Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu e Daihatsu. Motore, sospensioni, freni, elettronica e carrozzeria secondo standard OEM.",
+            product_german: "Ricambi per Auto Tedesche",
+            german_cars_alt: "Ricambi per Auto Tedesche - 800x800",
+            product_german_desc: "Ricambi di alta qualità per veicoli di lusso e commerciali tedeschi tra cui BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda e Seat. Specializzati in componenti di precisione che soddisfano i severi standard tedeschi.",
+            product_korean: "Ricambi per Auto Coreane",
+            korean_cars_alt: "Ricambi per Auto Coreane - 800x800",
+            product_korean_desc: "Soluzioni complete per Hyundai, Kia, SsangYong e Genesis. Copertura completa di motore, telaio, sistemi elettrici e carrozzeria per veicoli coreani.",
+            product_chinese: "Ricambi per Auto Cinesi (Baojun & Wuling)",
+            chinese_cars_alt: "Ricambi per Auto Cinesi - 800x800",
+            product_chinese_desc: "Specializzati in ricambi di alta qualità per Baojun e Wuling. Gamma completa: motore, trasmissione, sospensioni, freni, elettrica e carrozzeria con qualità affidabile e prezzi competitivi.",
+            product_oil: "Olio Motore",
+            engine_oil_alt: "Olio Motore - 800x800",
+            product_oil_desc: "Gamma completa di oli motore premium: minerale, semisintetico e completamente sintetico in varie viscosità (0W20, 5W30, 10W40, 15W40, 20W50, ecc.). Per motori benzina, diesel e ibridi in qualsiasi condizione climatica.",
+            view_products: "Visualizza Prodotti",
+            contact_title: "Inviaci un Messaggio",
+            form_name: "Il tuo nome",
+            form_email: "La tua email",
+            form_message: "Indica il numero OEM nel tuo messaggio",
+            form_submit: "Invia Messaggio",
+            contact_address: "Indirizzo",
+            contact_address_value: "N. 450, Via Huangshi Est, Distretto Baiyun, Città di Guangzhou, Provincia di Guangdong",
+            contact_phone: "Telefono",
+            contact_phone_value: "+86 195 2122 8657",
+            contact_whatsapp: "WhatsApp",
+            contact_whatsapp_value: "+86 195 2122 8657",
+            contact_hours: "Orari di Lavoro",
+            contact_hours_1: "Lunedì - Sabato: 10:00 - 18:00 (GMT+8)",
+            contact_hours_2: "Domenica e Festivi: Chiuso",
+            contact_email: "Email",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "Carvalauto- Dai alla tua auto una seconda vita",
+            footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. Tutti i diritti riservati.",
+            footer_prof: "Produttore Professionale di Ricambi Auto & Fornitore Globale"
         },
         // 土耳其语
         tr: {
@@ -1297,348 +1188,143 @@
             nav_contact: "İletişim",
             company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
             logo_alt: "Carval Auto Logo - Arabınıza ikinci bir hayat verin",
-            company_intro: `<p>Guangzhou CarvalAuto part co.,ltd 2008 yılında kurulan şirketimiz, profesyonel bir oto yedek parça dükkanı olarak başladı. Otomotiv hizmetleri sektöründe on yıldan fazla bir süredir derinlemesine çalışarak, tek bir oto yedek parça perakendecisinden kapsamlı bir otomotiv hizmet sağlayıcısına atılım yaptık.</p>`,
-            facility_office: "BİZİM OFİSİMİZ",
-            facility_repair: "BİZİM ONARIM ATÖLYEMİZ",
-            facility_factory: "BİZİM FABRİKAMIZ",
-            product_title: "Ürün yelpazemiz",
-            product_japanese: "Japon araba parçaları",
-            product_german: "Alman araba parçaları",
-            product_korean: "Koreli araba parçaları",
-            product_chinese: "Çinli araba parçaları (Baojun & Wuling)",
-            product_oil: "Motor yağı",
-            view_products: "Ürünleri gör",
-            contact_title: "Bize mesaj gönderin",
+            company_intro: `<p>Guangzhou Carval Auto Parts Co., Ltd. 2008 yılında kurulmuştur. Yıllar içindeki gelişimimizle Guangzhou ve Foshan'da güvenilir bir tek durak otomotiv hizmet sağlayıcısı haline geldik.</p>
+<p>6 tamir atölyesi, 2 ofis ve 5 yedek parça mağazamız bulunmakta olup 80'den fazla profesyonel ekip üyesi tarafından desteklenmekteyiz. %100 orijinal kalitede yedek parça ve araç tamiri, bakım ve arıza teşhisi dahil tam kapsamlı hizmetler sunmaktayız.</p>
+<p>Tüm parçalarımız OEM standartlarına sıkı sıkıya uymakta ve gerçek araç testleriyle doğrulanmaktadır. Japon, Kore ve Alman modellerinden başlayarak artık Baojun, Wuling, Geely ve diğer ana akım Çin markalarına da hizmet vermekteyiz.</p>
+<p>"Usta Hizmet, Kalite Önce" felsefesiyle bölgesel otomotiv hizmetleri sektöründe önde gelen bir referans olmaya kararlıyız.</p>`,
+            facility_office: "OFİSİMİZ",
+            office1_alt: "Ofisimiz - Resepsiyon",
+            office2_alt: "Ofisimiz - Toplantı Odası",
+            office3_alt: "Ofisimiz - Satış Departmanı",
+            office4_alt: "Ofisimiz - İdari Ofis",
+            office5_alt: "Ofisimiz - Müşteri Hizmetleri",
+            office6_alt: "Ofisimiz - Müdür Ofisi",
+            office7_alt: "Ofisimiz - Konferans Salonu",
+            office8_alt: "Ofisimiz - Dinlenme Alanı",
+            office9_alt: "Ofisimiz - Ekip Fotoğrafı",
+            facility_repair: "TAMİR ATÖLYEMİZ",
+            repair1_alt: "Atölye - Ana Atölye",
+            repair2_alt: "Atölye - Teşhis Alanı",
+            repair3_alt: "Atölye - Alet Odası",
+            repair4_alt: "Atölye - Kaldırma Alanı",
+            repair5_alt: "Atölye - Parça Deposu",
+            repair6_alt: "Atölye - Boya Kabini",
+            repair7_alt: "Atölye - Lastik Servisi",
+            repair8_alt: "Atölye - Teknisyen Ekibi",
+            repair9_alt: "Atölye - Kalite Kontrol",
+            facility_factory: "FABRİKAMIZ",
+            factory1_alt: "Fabrika - Ana Üretim Hattı",
+            factory2_alt: "Fabrika - CNC Atölyesi",
+            factory3_alt: "Fabrika - Montaj Hattı",
+            factory4_alt: "Fabrika - Hammadde Deposu",
+            factory5_alt: "Fabrika - Kalite Kontrol Laboratuvarı",
+            factory6_alt: "Fabrika - Ambalaj Alanı",
+            factory7_alt: "Fabrika - Depo",
+            factory8_alt: "Fabrika - Sevkiyat Alanı",
+            factory9_alt: "Fabrika - Fabrika Ekibi",
+            product_title: "Ürün Yelpazemiz",
+            product_japanese: "Japon Araba Yedek Parçaları",
+            japanese_cars_alt: "Japon Araba Yedek Parçaları - 800x800",
+            product_japanese_desc: "Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu ve Daihatsu dahil tüm büyük Japon modelleri için orijinal ve yedek parça tam aralığı. Motor, süspansiyon, frenler, elektrik ve kaporta OEM standartlarına göre.",
+            product_german: "Alman Araba Yedek Parçaları",
+            german_cars_alt: "Alman Araba Yedek Parçaları - 800x800",
+            product_german_desc: "BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda ve Seat dahil Alman lüks ve ticari araçlar için yüksek kaliteli parçalar. Alman mühendislik standartlarını karşılayan hassas bileşenler.",
+            product_korean: "Kore Araba Yedek Parçaları",
+            korean_cars_alt: "Kore Araba Yedek Parçaları - 800x800",
+            product_korean_desc: "Hyundai, Kia, SsangYong ve Genesis için kapsamlı parça çözümleri. Motor, şasi, elektrik sistemleri ve kaporta için tam kapsam.",
+            product_chinese: "Çin Araba Parçaları (Baojun & Wuling)",
+            chinese_cars_alt: "Çin Araba Parçaları - 800x800",
+            product_chinese_desc: "Baojun ve Wuling için yüksek kaliteli parçalarda uzmanlaşmış. Motor, şanzıman, süspansiyon, frenler, elektrik ve kaporta dahil tam ürün yelpazesi, güvenilir kalite ve rekabetçi fiyatlarla.",
+            product_oil: "Motor Yağı",
+            engine_oil_alt: "Motor Yağı - 800x800",
+            product_oil_desc: "Mineral, yarı sentetik ve tam sentetik çeşitli viskozitelerde (0W20, 5W30, 10W40, 15W40, 20W50 vb.) premium motor yağları tam aralığı. Benzinli, dizel ve hibrit motorlar için tüm iklim koşullarında uygun.",
+            view_products: "Ürünleri Görüntüle",
+            contact_title: "Bize Mesaj Gönderin",
             form_name: "Adınız",
-            form_email: "E-posta adresiniz",
-            form_message: "Lütfen mesajınıza OEM numarasını belirtin (mevcutsa)",
-            form_submit: "Mesaj gönder",
+            form_email: "E-posta Adresiniz",
+            form_message: "Lütfen mesajınıza OEM numarasını belirtin",
+            form_submit: "Mesaj Gönder",
             contact_address: "Adres",
-            contact_address_value: "No. 450, Huangshi Doğu Yolu, Baiyun Bölgesi, Guangzhou Şehri, Guangdong İlçesi",
+            contact_address_value: "No. 450, Huangshi Doğu Yolu, Baiyun İlçesi, Guangzhou Şehri, Guangdong Eyaleti",
             contact_phone: "Telefon",
             contact_phone_value: "+86 195 2122 8657",
             contact_whatsapp: "WhatsApp",
             contact_whatsapp_value: "+86 195 2122 8657",
-            footer_slogan: "Arabınıza ikinci bir hayat verin",
-            footer_copyright: "© 2025 Carval Auto Parts. Tüm hakları saklıdır."
+            contact_hours: "Çalışma Saatleri",
+            contact_hours_1: "Pazartesi - Cumartesi: 10:00 - 18:00 (GMT+8)",
+            contact_hours_2: "Pazar ve Resmi Tatiller: Kapalı",
+            contact_email: "E-posta",
+            contact_email_value: "carvalxie@foxmail.com",
+            footer_slogan: "Carvalauto- Arabınıza ikinci bir hayat verin",
+            footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. Tüm hakları saklıdır.",
+            footer_prof: "Profesyonel Otomotiv Parçaları Üreticisi & Global Tedarikçi"
         }
     };
 
-    // 语言切换核心函数
+    // ===== 语言切换核心函数 =====
     function changeLanguage(lang) {
-        // 验证语言是否存在，默认用英语
         const targetLang = translations[lang] ? lang : 'en';
         const langData = translations[targetLang];
 
-        // 遍历所有带data-lang属性的元素，替换文本/属性
-        document.querySelectorAll('[data-lang]').forEach(element => {
+        document.querySelectorAll('[data-lang]').forEach(function(element) {
             const key = element.getAttribute('data-lang');
-            if (langData[key]) {
-                // 处理img的alt属性
+            if (langData[key] !== undefined) {
                 if (element.tagName === 'IMG') {
                     element.setAttribute('alt', langData[key]);
-                } 
-                // 处理包含HTML的内容
-                else {
+                } else {
                     element.innerHTML = langData[key];
                 }
             }
         });
 
-        // 保存当前语言到本地存储（刷新页面后保留）
+        // 阿拉伯语需要RTL文本方向
+        if (targetLang === 'ar') {
+            document.body.setAttribute('dir', 'rtl');
+        } else {
+            document.body.setAttribute('dir', 'ltr');
+        }
+
         localStorage.setItem('selectedLang', targetLang);
-        // 更新页面html的lang属性（利于SEO）
         document.documentElement.lang = targetLang;
     }
 
-    // 初始化语言切换功能
-    document.addEventListener('DOMContentLoaded', () => {
-        // 获取语言选择下拉框
+    // ===== 初始化 =====
+    document.addEventListener('DOMContentLoaded', function() {
         const langSelect = document.getElementById('language-select');
-        
-        // 监听语言切换事件
+
         if (langSelect) {
-            langSelect.addEventListener('change', (e) => {
+            langSelect.addEventListener('change', function(e) {
                 changeLanguage(e.target.value);
             });
 
-            // 从本地存储读取上次选择的语言，默认英语
             const savedLang = localStorage.getItem('selectedLang') || 'en';
             langSelect.value = savedLang;
             changeLanguage(savedLang);
         }
+
+        // ===== 表单提交处理 =====
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(contactForm);
+                fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                }).then(function(response) {
+                    if (response.ok) {
+                        alert('Your inquiry has been submitted successfully! Our sales team will contact you within 24 business hours.');
+                        contactForm.reset();
+                    } else {
+                        alert('Oops! Something went wrong. Please try again later.');
+                    }
+                }).catch(function() {
+                    alert('Network error! Please check your internet connection and try again.');
+                });
+            });
+        }
     });
-</script>
-        // 多语言文本库
-        const translations = {
-            en: {
-                header_logo: "CARVAL AUTO-",
-                header_slogan: "Given your car a second life",
-                nav_home: "Home",
-                nav_company: "Company",
-                nav_products: "Products",
-                nav_contact: "Contact",
-                company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
-                logo_alt: "Carval Auto Logo - Given Your Car A Second Life",
-                company_intro: `<p>Guangzhou CarvalAuto part co,.ltd Founded in 2008, our company started as a professional auto parts store. With over a decade of deep cultivation in the automotive service industry, we have achieved a leap from a single auto parts retailer to a comprehensive automotive service provider, relying on solid technical expertise, rigorous service standards and an excellent market reputation. Today, we have become an influential one-stop automotive service brand in the Guangzhou and Foshan region.</p>
-                <p>After years of in-depth development and layout, our company has established a service network consisting of 6 self-operated auto repair shops and 2 directly-operated auto parts stores in the core areas of Guangzhou and Foshan, with a team of more than 80 professional technical and service personnel. Our business fully covers a full chain of automotive services including original-equivalent auto parts supply, vehicle repair of various models, routine maintenance, fault detection and care upgrades, providing professional, efficient and reliable one-stop vehicle solutions for individual car owners, corporate fleets and other customers.</p>
-                <p>In the core auto parts supply system, the company adheres to quality first and has established long-term and stable cooperation with a number of professional manufacturers. All auto parts strictly comply with 100 %original quality standards, featuring high cost performance and wide adaptability, covering many mainstream models on the market. More importantly, each auto part is first subjected to actual vehicle installation, road testing and long-term verification in our self-operated repair shops to ensure stable performance and safety, escorting customers' driving safety from the source.</p>
-                <p>In terms of service models, the company focused on Japanese and German models with high technical barriers at the initial stage, accumulating rich maintenance experience and auto parts inventory. In 2020, responding to the rapid rise of China's independent brand automotive market and changes in customer demand, the company took the initiative to expand its service scope, adding maintenance and auto parts supply services for mainstream domestic models such as Baojun, Wuling and Geely, and continuously improving its service matrix. With a more comprehensive model coverage and more professional technical capabilities, we meet the diversified vehicle needs of different customers.</p>
-                <p>In the future, the company will continue to uphold the business philosophy of "Ingenious Service, Quality First", constantly optimize the service network and improve technical levels, striving to become a benchmark enterprise of comprehensive automotive services trusted by customers and recognized by the industry in the region.</p>`,
-                facility_office: "OUR OFFICE",
-                office1_alt: "Our Office - Reception Area",
-                office2_alt: "Our Office - Meeting Room",
-                office3_alt: "Our Office - Sales Department",
-                office4_alt: "Our Office - Admin Office",
-                office5_alt: "Our Office - Customer Service",
-                office6_alt: "Our Office - Manager Office",
-                office7_alt: "Our Office - Conference Hall",
-                office8_alt: "Our Office - Break Area",
-                office9_alt: "Our Office - Team Photo",
-                facility_repair: "OUR REPAIR SHOP",
-                repair1_alt: "Our Repair Shop - Main Workshop",
-                repair2_alt: "Our Repair Shop - Diagnostic Area",
-                repair3_alt: "Our Repair Shop - Tool Room",
-                repair4_alt: "Our Repair Shop - Lift Area",
-                repair5_alt: "Our Repair Shop - Parts Storage",
-                repair6_alt: "Our Repair Shop - Painting Booth",
-                repair7_alt: "Our Repair Shop - Tire Service",
-                repair8_alt: "Our Repair Shop - Technician Team",
-                repair9_alt: "Our Repair Shop - Quality Check",
-                facility_factory: "OUR FACTORY",
-                factory1_alt: "Our Factory - Main Production Line",
-                factory2_alt: "Our Factory - CNC Machine Shop",
-                factory3_alt: "Our Factory - Assembly Line",
-                factory4_alt: "Our Factory - Raw Material Storage",
-                factory5_alt: "Our Factory - Quality Control Lab",
-                factory6_alt: "Our Factory - Packaging Area",
-                factory7_alt: "Our Factory - Warehouse",
-                factory8_alt: "Our Factory - Shipping Area",
-                factory9_alt: "Our Factory - Factory Team",
-                product_title: "Our Product Range",
-                product_japanese: "Japanese Car Parts",
-                japanese_cars_alt: "Japanese Car Parts - 800x800",
-                product_japanese_desc: "Complete range of genuine and aftermarket auto parts for all major Japanese car models including Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu, and Daihatsu. Our product line covers full vehicle components including engine parts, suspension, brake systems, electrical parts, body parts, and more - all manufactured to OEM standards for perfect fit and performance.",
-                product_german: "German Car Parts",
-                german_cars_alt: "German Car Parts - 800x800",
-                product_german_desc: "Premium quality auto parts for German luxury and commercial vehicles including BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda, and Seat. We specialize in precision-engineered components that meet the strict quality requirements of German automotive engineering, covering engine systems, transmission parts, steering components, electrical systems, and body parts.",
-                product_korean: "Korean Car Parts",
-                korean_cars_alt: "Korean Car Parts - 800x800",
-                product_korean_desc: "Comprehensive auto parts solutions for Korean vehicle brands including Hyundai, Kia, SsangYong, and Genesis. Our product range includes all essential components for these popular models, with a focus on durability, performance, and cost-effectiveness. We offer complete coverage of engine parts, chassis components, electrical systems, and body parts for both passenger and commercial Korean vehicles.",
-                product_chinese: "Chinese Car Parts (Baojun & Wuling)",
-                chinese_cars_alt: "Chinese Car Parts - 800x800",
-                product_chinese_desc: "Specialized in high-quality auto parts for China's most popular commercial and passenger vehicle brands - Baojun and Wuling. We offer a complete range of genuine replacement parts covering engine systems, transmission components, suspension parts, brake systems, electrical parts, and body components. Our parts are designed to meet the specific requirements of these Chinese models with reliable quality and competitive pricing.",
-                product_oil: "Engine Oil",
-                engine_oil_alt: "Engine Oil - 800x800",
-                product_oil_desc: "Full range of premium engine oil products to meet all vehicle requirements, including mineral oil, semi-synthetic oil, and fully synthetic oil in various viscosity grades (0W20, 5W30, 10W40, 15W40, 20W50, etc.). Our engine oils are formulated to provide superior lubrication, engine protection, and performance in all climate conditions, suitable for gasoline, diesel, and hybrid engines of all vehicle types.",
-                view_products: "View Products",
-                contact_title: "Send Us a Message",
-                form_name: "Your Name",
-                form_email: "Your Email",
-                form_message: "pls send us OEM number with your message",
-                form_submit: "Send Message",
-                contact_address: "Address",
-                contact_address_value: "No. 450, Huangshi East Road, Baiyun District, Guangzhou City, Guangdong Province",
-                contact_phone: "Phone",
-                contact_phone_value: "+86 195 2122 8657",
-                contact_whatsapp: "WhatsApp",
-                contact_whatsapp_value: "+86 195 2122 8657",
-                contact_hours: "Working Hours",
-                contact_hours_1: "Monday - Saturday: 10:00 AM - 6:00 PM (GMT+8)",
-                contact_hours_2: "Sunday & Public Holidays: Closed",
-                contact_email: "Email",
-                contact_email_value: "carvalxie@foxmail.com",
-                footer_slogan: "Carvalauto- Given your car a second life",
-                footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.",
-                footer_prof: "Professional Auto Parts Manufacturer & Global Supplier",
-                alert_switch: "Language switched to {lang}. Full content has been translated.",
-                alert_success: "Your inquiry has been submitted successfully! Our sales team will contact you within 24 business hours.",
-                alert_error: "Oops! Something went wrong. Please try again later.",
-                alert_network: "Network error! Please check your internet connection and try again."
-            },
-            es: {
-                header_logo: "CARVAL AUTO-",
-                header_slogan: "Darle a tu coche una segunda vida",
-                nav_home: "Inicio",
-                nav_company: "Empresa",
-                nav_products: "Productos",
-                nav_contact: "Contacto",
-                company_name: "Guang zhou <span>carval</span> auto part co.,ltd",
-                logo_alt: "Logotipo de Carval Auto - Darle a tu coche una segunda vida",
-                company_intro: `<p>Guangzhou CarvalAuto part co,.ltd Fundada en 2008, nuestra empresa comenzó como una tienda profesional de repuestos automotrices. Con más de una década de profunda labor en el sector de servicios automotrices, hemos logrado un salto de minorista único de repuestos automotrices a proveedor integral de servicios automotrices, gracias a nuestra sólida experiencia técnica, rigurosos estándares de servicio y excelente reputación en el mercado. Hoy en día, nos hemos convertido en una marca influyente de servicios automotrices todo en uno en la región de Guangzhou y Foshan.</p>
-                <p>Después de años de desarrollo y disposición en profundidad, nuestra empresa ha establecido una red de servicios compuesta por 6 talleres de reparación automotriz propios y 2 tiendas de repuestos automotrices directamente operadas en las zonas centrales de Guangzhou y Foshan, con un equipo de más de 80 técnicos y personal de servicio profesionales. Nuestro negocio cubre completamente una cadena completa de servicios automotrices que incluye suministro de repuestos automotrices equivalentes a los originales, reparación de vehículos de diversos modelos, mantenimiento rutinario, detección de fallos y mejoras de cuidado, proporcionando soluciones vehiculares profesionales, eficientes y fiables todo en uno para propietarios de coches individuales, flotas corporativas y otros clientes.</p>
-                <p>En el sistema central de suministro de repuestos automotrices, la empresa adhiere a la calidad primero y ha establecido una cooperación a largo plazo y estable con varios fabricantes profesionales. Todos los repuestos automotrices cumplen estrictamente con los estándares de calidad originales al 100%, caracterizándose por una alta relación calidad-precio y una amplia adaptabilidad, cubriendo muchos modelos principales del mercado. Más importante aún, cada repuesto automotriz se somete primero a instalación real en vehículos, pruebas en carretera y verificación a largo plazo en nuestros talleres de reparación propios para garantizar un rendimiento estable y la seguridad, protegiendo la seguridad de conducción de los clientes desde la fuente.</p>
-                <p>En cuanto a los modelos de servicio, la empresa se centró inicialmente en modelos japoneses y alemanes con altas barreras técnicas, acumulando una rica experiencia de mantenimiento y existencias de repuestos automotrices. En 2020, respondiendo al rápido auge del mercado automotriz de marcas independientes de China y los cambios en la demanda de los clientes, la empresa amplió activamente su ámbito de servicio, añadiendo servicios de mantenimiento y suministro de repuestos automotrices para modelos nacionales principales como Baojun, Wuling y Geely, y mejorando continuamente su matriz de servicios. Con una cobertura de modelos más completa y capacidades técnicas más profesionales, satisfacemos las necesidades vehiculares diversificadas de diferentes clientes.</p>
-                <p>En el futuro, la empresa continuará defendiendo la filosofía empresarial de "Servicio Ingenioso, Calidad Primero", optimizando constantemente la red de servicios y mejorando los niveles técnicos, esforzándose por convertirse en una empresa referente de servicios automotrices integrales confiable por los clientes y reconocida por la industria en la región.</p>`,
-                facility_office: "NUESTRA OFICINA",
-                office1_alt: "Nuestra Oficina - Área de Recepción",
-                office2_alt: "Nuestra Oficina - Sala de Reuniones",
-                office3_alt: "Nuestra Oficina - Departamento de Ventas",
-                office4_alt: "Nuestra Oficina - Oficina de Administración",
-                office5_alt: "Nuestra Oficina - Atención al Cliente",
-                office6_alt: "Nuestra Oficina - Oficina del Gerente",
-                office7_alt: "Nuestra Oficina - Salón de Conferencias",
-                office8_alt: "Nuestra Oficina - Área de Descanso",
-                office9_alt: "Nuestra Oficina - Foto de Equipo",
-                facility_repair: "NUESTRO TALLER DE REPARACIÓN",
-                repair1_alt: "Nuestro Taller de Reparación - Taller Principal",
-                repair2_alt: "Nuestro Taller de Reparación - Área de Diagnóstico",
-                repair3_alt: "Nuestro Taller de Reparación - Sótano de Herramientas",
-                repair4_alt: "Nuestro Taller de Reparación - Área de Elevación",
-                repair5_alt: "Nuestro Taller de Reparación - Almacén de Piezas",
-                repair6_alt: "Nuestro Taller de Reparación - Cabina de Pintura",
-                repair7_alt: "Nuestro Taller de Reparación - Servicio de Neumáticos",
-                repair8_alt: "Nuestro Taller de Reparación - Equipo de Técnicos",
-                repair9_alt: "Nuestro Taller de Reparación - Control de Calidad",
-                facility_factory: "NUESTRA FÁBRICA",
-                factory1_alt: "Nuestra Fábrica - Línea de Producción Principal",
-                factory2_alt: "Nuestra Fábrica - Taller de Máquinas CNC",
-                factory3_alt: "Nuestra Fábrica - Línea de Ensamblaje",
-                factory4_alt: "Nuestra Fábrica - Almacén de Materias Primas",
-                factory5_alt: "Nuestra Fábrica - Laboratorio de Control de Calidad",
-                factory6_alt: "Nuestra Fábrica - Área de Empaquetado",
-                factory7_alt: "Nuestra Fábrica - Almacén",
-                factory8_alt: "Nuestra Fábrica - Área de Envío",
-                factory9_alt: "Nuestra Fábrica - Equipo de la Fábrica",
-                product_title: "Nuestra Gama de Productos",
-                product_japanese: "Repuestos para Coches Japoneses",
-                japanese_cars_alt: "Repuestos para Coches Japoneses - 800x800",
-                product_japanese_desc: "Amplia gama de repuestos automotrices originales y de repuesto para todos los principales modelos de coches japoneses, incluyendo Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu y Daihatsu. Nuestra línea de productos cubre todos los componentes del vehículo, incluidas piezas del motor, suspensión, sistemas de frenos, piezas eléctricas, piezas de carrocería y más, todos fabricados según los estándares OEM para un ajuste y rendimiento perfectos.",
-                product_german: "Repuestos para Coches Alemanes",
-                german_cars_alt: "Repuestos para Coches Alemanes - 800x800",
-                product_german_desc: "Repuestos automotrices de alta calidad para vehículos de lujo y comerciales alemanes, incluyendo BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda y Seat. Nos especializamos en componentes de ingeniería de precisión que cumplen los estrictos requisitos de calidad de la ingeniería automotriz alemana, cubriendo sistemas de motor, piezas de transmisión, componentes de dirección, sistemas eléctricos y piezas de carrocería.",
-                product_korean: "Repuestos para Coches Coreanos",
-                korean_cars_alt: "Repuestos para Coches Coreanos - 800x800",
-                product_korean_desc: "Soluciones integrales de repuestos automotrices para marcas de vehículos coreanos, incluyendo Hyundai, Kia, SsangYong y Genesis. Nuestra gama de productos incluye todos los componentes esenciales para estos modelos populares, con un enfoque en la durabilidad, el rendimiento y la relación calidad-precio. Ofrecemos una cobertura completa de piezas de motor, componentes de chasis, sistemas eléctricos y piezas de carrocería para vehículos coreanos de pasajeros y comerciales.",
-                product_chinese: "Repuestos para Coches Chinos (Baojun & Wuling)",
-                chinese_cars_alt: "Repuestos para Coches Chinos - 800x800",
-                product_chinese_desc: "Especializados en repuestos automotrices de alta calidad para las marcas de vehículos comerciales y de pasajeros más populares de China: Baojun y Wuling. Ofrecemos una gama completa de repuestos originales que cubren sistemas de motor, componentes de transmisión, piezas de suspensión, sistemas de frenos, piezas eléctricas y componentes de carrocería. Nuestras piezas están diseñadas para cumplir los requisitos específicos de estos modelos chinos con una calidad fiable y precios competitivos.",
-                product_oil: "Aceite de Motor",
-                engine_oil_alt: "Aceite de Motor - 800x800",
-                product_oil_desc: "Amplia gama de aceites de motor premium para satisfacer todos los requisitos de los vehículos, incluyendo aceite mineral, aceite semisintético y aceite totalmente sintético en varios grados de viscosidad (0W20, 5W30, 10W40, 15W40, 20W50, etc.). Nuestros aceites de motor están formulados para proporcionar una lubricación superior, protección del motor y rendimiento en todas las condiciones climáticas, adecuados para motores de gasolina, diésel e híbridos de todos los tipos de vehículos.",
-                view_products: "Ver Productos",
-                contact_title: "Envíanos un Mensaje",
-                form_name: "Tu Nombre",
-                form_email: "Tu Correo Electrónico",
-                form_message: "por favor envíanos el número OEM con tu mensaje",
-                form_submit: "Enviar Mensaje",
-                contact_address: "Dirección",
-                contact_address_value: "Número 450, Calle Huangshi Este, Distrito Baiyun, Ciudad de Guangzhou, Provincia de Guangdong",
-                contact_phone: "Teléfono",
-                contact_phone_value: "+86 195 2122 8657",
-                contact_whatsapp: "WhatsApp",
-                contact_whatsapp_value: "+86 195 2122 8657",
-                contact_hours: "Horario de Trabajo",
-                contact_hours_1: "Lunes a Sábado: 10:00 AM - 6:00 PM (GMT+8)",
-                contact_hours_2: "Domingo y Fiestas Públicas: Cerrado",
-                contact_email: "Correo Electrónico",
-                contact_email_value: "carvalxie@foxmail.com",
-                footer_slogan: "Carvalauto- Darle a tu coche una segunda vida",
-                footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. Todos los Derechos Reservados.",
-                footer_prof: "Fabricante Profesional de Repuestos Automotrices y Proveedor Global",
-                alert_switch: "Idioma cambiado a {lang}. Todo el contenido ha sido traducido.",
-                alert_success: "¡Tu consulta ha sido enviada con éxito! Nuestro equipo de ventas se pondrá en contacto contigo dentro de las 24 horas hábiles.",
-                alert_error: "¡Ups! Algo salió mal. Por favor intenta nuevamente más tarde.",
-                alert_network: "¡Error de red! Por favor verifica tu conexión a internet e intenta nuevamente."
-            },
-            zh: {
-                header_logo: "卡沃尔汽配-",
-                header_slogan: "给您的爱车第二次生命",
-                nav_home: "首页",
-                nav_company: "关于我们",
-                nav_products: "产品中心",
-                nav_contact: "联系我们",
-                company_name: "广州 <span>卡沃尔</span> 汽车配件有限公司",
-                logo_alt: "卡沃尔汽配logo - 给您的爱车第二次生命",
-                company_intro: `<p>广州卡沃尔汽车配件有限公司成立于2008年，最初以专业汽车配件门店起家。凭借十多年在汽车服务行业的深耕细作，依托扎实的技术功底、严谨的服务标准和优良的市场口碑，实现了从单一汽配零售商向综合汽车服务提供商的跨越。如今，我们已成为广佛地区颇具影响力的一站式汽车服务品牌。</p>
-                <p>经过多年的深度发展与布局，公司在广州、佛山核心区域建立了由6家自营汽修厂和2家直营汽配店组成的服务网络，拥有80余名专业技术与服务人员。业务全面覆盖原厂级汽配供应、各车型整车维修、常规保养、故障检测、养护升级等汽车服务全链条，为个人车主、企业车队等客户提供专业、高效、可靠的一站式车辆解决方案。</p>
-                <p>在核心的汽配供应体系上，公司坚持品质为先，与多家专业生产厂家建立了长期稳定的合作关系。所有汽配严格遵循100%原厂质量标准，兼具高性价比与广泛适配性，覆盖市场上众多主流车型。更重要的是，每一款汽配都会先在自有维修厂进行实车安装、道路测试和长期验证，确保性能稳定、安全可靠，从源头为客户的行车安全保驾护航。</p>
-                <p>在服务车型上，公司初期聚焦技术壁垒较高的日系、德系车型，积累了丰富的维修经验和汽配库存。2020年，响应中国自主品牌汽车市场的快速崛起和客户需求变化，公司主动拓展服务范围，新增宝骏、五菱、吉利等主流国产车型的维修及汽配供应服务，持续完善服务矩阵。以更全面的车型覆盖和更专业的技术能力，满足不同客户的多元化用车需求。</p>
-                <p>未来，公司将继续秉承“匠心服务、品质至上”的经营理念，不断优化服务网络、提升技术水平，力争成为区域内客户信赖、行业认可的综合汽车服务标杆企业。</p>`,
-                facility_office: "我们的办公区",
-                office1_alt: "我们的办公区 - 前台接待区",
-                office2_alt: "我们的办公区 - 会议室",
-                office3_alt: "我们的办公区 - 销售部",
-                office4_alt: "我们的办公区 - 行政办公室",
-                office5_alt: "我们的办公区 - 客户服务部",
-                office6_alt: "我们的办公区 - 经理办公室",
-                office7_alt: "我们的办公区 - 会议厅",
-                office8_alt: "我们的办公区 - 休息区",
-                office9_alt: "我们的办公区 - 团队合影",
-                facility_repair: "我们的维修车间",
-                repair1_alt: "我们的维修车间 - 主车间",
-                repair2_alt: "我们的维修车间 - 诊断区",
-                repair3_alt: "我们的维修车间 - 工具室",
-                repair4_alt: "我们的维修车间 - 举升区",
-                repair5_alt: "我们的维修车间 - 配件仓库",
-                repair6_alt: "我们的维修车间 - 烤漆房",
-                repair7_alt: "我们的维修车间 - 轮胎服务区",
-                repair8_alt: "我们的维修车间 - 技术团队",
-                repair9_alt: "我们的维修车间 - 质量检测区",
-                facility_factory: "我们的工厂",
-                factory1_alt: "我们的工厂 - 主生产线",
-                factory2_alt: "我们的工厂 - CNC加工车间",
-                factory3_alt: "我们的工厂 - 组装线",
-                factory4_alt: "我们的工厂 - 原材料仓库",
-                factory5_alt: "我们的工厂 - 质量控制实验室",
-                factory6_alt: "我们的工厂 - 包装区",
-                factory7_alt: "我们的工厂 - 仓库",
-                factory8_alt: "我们的工厂 - 发货区",
-                factory9_alt: "我们的工厂 - 工厂团队",
-                product_title: "我们的产品系列",
-                product_japanese: "日系车配件",
-                japanese_cars_alt: "日系车配件 - 800x800",
-                product_japanese_desc: "全系列原厂及配套汽车配件，适用于丰田、本田、日产、三菱、铃木、马自达、斯巴鲁、五十铃、大发等主流日系车型。产品线涵盖发动机配件、悬挂系统、制动系统、电器件、车身件等全车零部件，均按原厂标准生产，适配性与性能俱佳。",
-                product_german: "德系车配件",
-                german_cars_alt: "德系车配件 - 800x800",
-                product_german_desc: "高品质德系豪华及商用车配件，适用于宝马、奔驰、大众、奥迪、保时捷、欧宝、斯柯达、西雅特等车型。我们专注于符合德国汽车工程严苛质量要求的精密加工部件，涵盖发动机系统、传动部件、转向组件、电气系统、车身部件等。",
-                product_korean: "韩系车配件",
-                korean_cars_alt: "韩系车配件 - 800x800",
-                product_korean_desc: "全面的韩系车配件解决方案，适用于现代、起亚、双龙、捷尼赛思等品牌车型。产品系列涵盖这些热门车型的所有核心部件，注重耐用性、性能和性价比，全面覆盖韩系乘用及商用车的发动机配件、底盘部件、电气系统、车身部件等。",
-                product_chinese: "国产车配件（宝骏&五菱）",
-                chinese_cars_
-
-<script>
-const translations = { ... }  //（用我右边完整代码里的）
-
-const elements=document.querySelectorAll("[data-lang]");
-const languageSelect=document.getElementById("language-select");
-
-function switchLanguage(lang){
- const currentLang=translations[lang];
- if(!currentLang)return;
-
-<select id="language-select">
-<option value="en">English</option>
-<option value="es">Español</option>
-<option value="fr">Français</option>
-<option value="ar">العربية</option>
-<option value="vi">Tiếng Việt</option>
-<option value="ru">Русский</option>
-<option value="pt">Português</option>
-<option value="de">Deutsch</option>
-<option value="it">Italiano</option>
-<option value="tr">Türkçe</option>
-<option value="id">Indonesia</option>
-</select>
- elements.forEach(el=>{
-  const key=el.getAttribute("data-lang");
-  if(currentLang[key]){
-   el.innerText=currentLang[key];
-  }
- });
- document.documentElement.lang=lang;
-}
-
-languageSelect.addEventListener("change",function(){
- const lang=this.value;
- switchLanguage(lang);
- localStorage.setItem("lang",lang);
-});
-
-window.addEventListener("DOMContentLoaded",()=>{
- const savedLang=localStorage.getItem("lang")||"en";
- languageSelect.value=savedLang;
- switchLanguage(savedLang);
-});
-</script>
+    </script>
+</body>
+</html>
