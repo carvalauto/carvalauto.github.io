@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Carval Auto Parts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; color: #222; background-color: #f1f1f1; line-height: 1.6; }
+        :root {
+            --primary-color: #0f4c81;
+            --accent-color: #e63946;
+            --dark-color: #1a1a1a;
+            --light-color: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+
+        /* 顶部头部 */
+        .top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px; background-color: var(--dark-color); color: white;
+            border-bottom: 4px solid var(--accent-color); position: relative;
+        }
+        .header-brand {
+            display: flex; flex-direction: row; align-items: center; gap: 10px;
+            position: absolute; left: 50%; transform: translateX(-50%);
+        }
+        .header-logo-text { font-family: 'Oswald', sans-serif; font-size: 26px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+        .header-slogan { font-size: 14px; color: #ccc; font-style: italic; }
+        .language-switch select {
+            padding: 8px 18px; border: 2px solid var(--accent-color);
+            background-color: var(--dark-color); color: white;
+            font-family: 'Roboto', sans-serif; font-weight: 500;
+            cursor: pointer; border-radius: 0; font-size: 14px;
+        }
+
+        /* 导航栏 */
+        nav { background-color: var(--primary-color); padding: 20px 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .nav-links { display: flex; list-style: none; gap: 45px; }
+        .nav-links a {
+            color: white; text-decoration: none; font-family: 'Oswald', sans-serif;
+            font-size: 17px; text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.3s ease; position: relative; padding: 5px 0;
+        }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-color: var(--accent-color); transition: width 0.3s ease; }
+        .nav-links a:hover { color: var(--accent-color); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a.active { color: var(--accent-color); }
+
+        /* 页面标题区 */
+        .page-hero {
+            background-color: var(--dark-color);
+            padding: 60px 30px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-color);
+        }
+        .page-hero h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 48px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+        .page-hero h1 span { color: var(--accent-color); }
+        .page-hero p { color: #ccc; font-size: 16px; max-width: 600px; margin: 0 auto; }
+
+        /* 筛选栏 */
+        .filter-bar {
+            background-color: white;
+            padding: 20px 30px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .filter-bar span {
+            font-family: 'Oswald', sans-serif;
+            font-size: 15px;
+            text-transform: uppercase;
+            color: var(--dark-color);
+            letter-spacing: 1px;
+        }
+        .filter-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--border-color);
+            background: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        .search-box {
+            margin-left: auto;
+            display: flex;
+            gap: 0;
+        }
+        .search-box input {
+            padding: 8px 15px;
+            border: 2px solid var(--border-color);
+            border-right: none;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            width: 220px;
+            outline: none;
+        }
+        .search-box input:focus { border-color: var(--primary-color); }
+        .search-box button {
+            padding: 8px 15px;
+            background-color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .search-box button:hover { background-color: var(--accent-color); border-color: var(--accent-color); }
+
+        /* 商品网格 */
+        .products-section {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 50px 30px;
+        }
+        .products-count {
+            font-family: 'Oswald', sans-serif;
+            color: #888;
+            font-size: 15px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .products-count span { color: var(--accent-color); }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* 商品卡片 */
+        .product-card {
+            background-color: white;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+            border-bottom: 4px solid var(--primary-color);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .product-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.15); border-color: var(--accent-color); }
+        .product-card:hover::before { width: 6px; }
+
+        .product-img-wrap {
+            width: 100%; height: 260px;
+            overflow: hidden; background-color: #f8f8f8;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .product-img-wrap img {
+            width: 100%; height: 100%;
+            object-fit: contain; padding: 10px;
+            transition: transform 0.5s ease;
+        }
+        .product-card:hover .product-img-wrap img { transform: scale(1.05); }
+
+        /* 无图片占位 */
+        .no-image {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            color: #ccc; gap: 10px;
+        }
+        .no-image i { font-size: 48px; }
+        .no-image span { font-size: 13px; font-family: 'Oswald', sans-serif; letter-spacing: 1px; }
+
+        .product-body { padding: 25px 25px 25px 30px; }
+        .product-category {
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .product-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        .product-oem {
+            display: inline-block;
+            background-color: #f1f1f1;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-family: 'Roboto', sans-serif;
+            color: #666;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--accent-color);
+        }
+        .product-desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .inquire-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .inquire-btn:hover { background-color: var(--accent-color); transform: translateX(4px); }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 80px 30px;
+            color: #aaa;
+            grid-column: 1 / -1;
+        }
+        .empty-state i { font-size: 60px; margin-bottom: 20px; display: block; }
+        .empty-state h3 { font-family: 'Oswald', sans-serif; font-size: 24px; margin-bottom: 10px; color: #ccc; text-transform: uppercase; }
+
+        /* 页脚 */
+        footer { background-color: var(--dark-color); color: #ccc; padding: 40px 30px; text-align: center; font-size: 15px; border-top: 6px solid var(--accent-color); }
+        .footer-slogan { font-family: 'Oswald', sans-serif; font-size: 18px; margin-bottom: 15px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; }
+        .footer-copyright { margin-bottom: 10px; }
+
+        /* 社交媒体 */
+        .social-icons { position: fixed; bottom: 40px; right: 40px; display: flex; flex-direction: column; gap: 20px; z-index: 999; }
+        .social-icon { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 26px; transition: all 0.4s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .social-icon:hover { transform: scale(1.15) rotate(8deg); }
+        .facebook { background-color: #3b5998; }
+        .instagram { background-color: #e1306c; }
+        .whatsapp { background-color: #25d366; }
+
+        @media (max-width: 768px) {
+            .top-header { flex-direction: column; gap: 15px; padding: 15px; }
+            .header-brand { position: static; transform: none; }
+            .nav-links { flex-direction: column; gap: 15px; }
+            .filter-bar { flex-direction: column; align-items: flex-start; }
+            .search-box { margin-left: 0; width: 100%; }
+            .search-box input { flex: 1; }
+            .page-hero h1 { font-size: 32px; }
+            .social-icons { flex-direction: row; bottom: 20px; right: 50%; transform: translateX(50%); gap: 15px; }
+            .social-icon { width: 50px; height: 50px; font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部头部 -->
+    <header class="top-header">
+        <div class="language-switch">
+            <select id="language-select" onchange="location.href='index.html'">
+                <option value="en">English</option>
+            </select>
+        </div>
+        <div class="header-brand">
+            <div class="header-logo-text">CARVAL AUTO-</div>
+            <div class="header-slogan">Given your car a second life</div>
+        </div>
+    </header>
+
+    <!-- 导航栏 -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#about">Company</a></li>
+            <li><a href="index.html#products">Parts Category</a></li>
+            <li><a href="products.html" class="active">Product Catalog</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- 页面标题 -->
+    <div class="page-hero">
+        <h1>Our <span>Product</span> Catalog</h1>
+        <p>Browse our full range of OEM-quality auto parts for Japanese, Korean, German and Chinese vehicles</p>
+    </div>
+
+    <!-- 筛选栏 -->
+    <div class="filter-bar">
+        <span>Filter:</span>
+        <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+        <button class="filter-btn" onclick="filterProducts('japanese', this)">Japanese</button>
+        <button class="filter-btn" onclick="filterProducts('korean', this)">Korean</button>
+        <button class="filter-btn" onclick="filterProducts('german', this)">German</button>
+        <button class="filter-btn" onclick="filterProducts('chinese', this)">Chinese</button>
+        <button class="filter-btn" onclick="filterProducts('oil', this)">Engine Oil</button>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by name or OEM number..." oninput="searchProducts()">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <!-- 商品列表 -->
+    <div class="products-section">
+        <div class="products-count">Showing <span id="countDisplay">0</span> products</div>
+        <div class="products-grid" id="productsGrid">
+            <!-- 商品由JS动态生成 -->
+        </div>
+    </div>
+
+    <!-- 社交媒体 -->
+    <div class="social-icons">
+        <a href="https://www.facebook.com/share/18W9wuCPT4/?mibextid=wwXIfr" class="social-icon facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/carval_auto?igsh=MXd0Nm1wenJyZm96ag%3D%3D&utm_source=qr" class="social-icon instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/8619521228657" class="social-icon whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-slogan">Carvalauto- Given your car a second life</div>
+        <p class="footer-copyright">&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.</p>
+        <p>Professional Auto Parts Manufacturer &amp; Global Supplier</p>
+    </footer>
+
+    <script>
+    // ============================================================
+    // 商品数据库 — 在这里添加/编辑商品
+    // 每个商品格式如下，复制粘贴即可新增
+    // ============================================================
+    const productsData = [
+        // 示例商品（可删除）
+        {
+            id: 1,
+            name: "Toyota Camry Brake Pads",
+            category: "japanese",
+            oem: "04465-06110",
+            description: "High-performance brake pads for Toyota Camry 2018-2023. OEM quality, verified by real-vehicle test. Suitable for front axle. Long-lasting and stable braking performance.",
+            image: ""  // 填入图片文件名，例如 "product1.jpg"
+        },
+        {
+            id: 2,
+            name: "Honda Civic Air Filter",
+            category: "japanese",
+            oem: "17220-RNA-A00",
+            description: "Genuine quality air filter for Honda Civic 2016-2021. Improves engine performance and fuel efficiency. Easy installation, direct OEM replacement.",
+            image: ""
+        },
+        {
+            id: 3,
+            name: "BMW 3 Series Oil Filter",
+            category: "german",
+            oem: "11427788454",
+            description: "Premium oil filter for BMW 3 Series (F30/G20). Meets OEM specifications. Ensures clean engine oil circulation and extends engine life.",
+            image: ""
+        }
+        // 在这里继续添加更多商品...
+    ];
+    // ============================================================
+
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    const categoryLabels = {
+        japanese: 'Japanese',
+        korean: 'Korean',
+        german: 'German',
+        chinese: 'Chinese',
+        oil: 'Engine Oil',
+        other: 'Other'
+    };
+
+    function renderProducts() {
+        const grid = document.getElementById('productsGrid');
+        const countEl = document.getElementById('countDisplay');
+
+        let filtered = productsData.filter(p => {
+            const matchCat = currentFilter === 'all' || p.category === currentFilter;
+            const matchSearch = currentSearch === '' ||
+                p.name.toLowerCase().includes(currentSearch) ||
+                p.oem.toLowerCase().includes(currentSearch) ||
+                p.description.toLowerCase().includes(currentSearch);
+            return matchCat && matchSearch;
+        });
+
+        countEl.textContent = filtered.length;
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <h3>No Products Found</h3>
+                    <p>Try adjusting your filter or search keyword.</p>
+                </div>`;
+            return;
+        }
+
+        grid.innerHTML = filtered.map(p => `
+            <div class="product-card" data-category="${p.category}">
+                <div class="product-img-wrap">
+                    ${p.image
+                        ? `<img src="${p.image}" alt="${p.name}" loading="lazy">`
+                        : `<div class="no-image"><i class="fas fa-car"></i><span>Image Coming Soon</span></div>`
+                    }
+                </div>
+                <div class="product-body">
+                    <div class="product-category">${categoryLabels[p.category] || p.category}</div>
+                    <div class="product-name">${p.name}</div>
+                    ${p.oem ? `<div class="product-oem">OEM: ${p.oem}</div>` : ''}
+                    <div class="product-desc">${p.description}</div>
+                    <a href="index.html#contact" class="inquire-btn">Inquire Now</a>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterProducts(cat, btn) {
+        currentFilter = cat;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderProducts();
+    }
+
+    function searchProducts() {
+        currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
+        renderProducts();
+    }
+
+    // 初始化
+    renderProducts();
+    </script>
+
+</body>
+</html>
