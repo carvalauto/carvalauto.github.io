@@ -185,6 +185,83 @@
         .error-msg { background: #fff5f5; border-left: 4px solid var(--accent); padding: 12px 16px; color: #c0392b; font-size: 13px; margin: 10px 0; }
         .section-line { height: 3px; background: linear-gradient(to right, var(--primary), var(--accent)); margin-bottom: 20px; }
 
+        /* ===== 询盘模块样式 ===== */
+        .inq-filter {
+            padding: 6px 16px; border: 2px solid var(--border); background: white;
+            font-family: 'Oswald', sans-serif; font-size: 12px; text-transform: uppercase;
+            cursor: pointer; transition: all 0.3s; letter-spacing: 0.5px;
+        }
+        .inq-filter:hover, .inq-filter.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+        .inq-card {
+            background: white; margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s; position: relative;
+        }
+        .inq-card.unread { border-left-color: var(--accent); }
+        .inq-card:hover { box-shadow: 0 5px 18px rgba(0,0,0,0.13); transform: translateY(-2px); }
+
+        .inq-card-header {
+            display: flex; align-items: center; gap: 15px;
+            padding: 18px 22px 12px; flex-wrap: wrap;
+        }
+        .inq-avatar {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--primary); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .inq-card.unread .inq-avatar { background: var(--accent); }
+        .inq-name { font-family: 'Oswald', sans-serif; font-size: 17px; color: var(--dark); }
+        .inq-email { font-size: 13px; color: #888; margin-top: 2px; }
+        .inq-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-left: auto; align-items: center; }
+        .inq-tag {
+            padding: 3px 10px; font-size: 11px;
+            font-family: 'Oswald', sans-serif; text-transform: uppercase;
+            letter-spacing: 0.5px; border-radius: 2px;
+        }
+        .inq-tag.country { background: #e8f4fd; color: var(--primary); }
+        .inq-tag.source { background: #fef9e7; color: #856404; }
+        .inq-tag.time { background: #f0f0f0; color: #666; }
+        .inq-tag.unread-badge { background: var(--accent); color: white; }
+        .inq-tag.device { background: #e8f8f0; color: #1a7a45; }
+
+        .inq-body { padding: 0 22px 15px 81px; }
+        .inq-oem {
+            display: inline-block; background: #f0f7ff;
+            border-left: 3px solid var(--primary);
+            padding: 4px 12px; font-size: 12px; color: var(--primary);
+            margin-bottom: 10px; font-weight: 500;
+        }
+        .inq-message {
+            background: #f8f9fa; padding: 14px 16px;
+            font-size: 14px; color: #444; line-height: 1.7;
+            border-left: 3px solid #ddd; margin-bottom: 12px;
+        }
+        .inq-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .inq-btn {
+            padding: 7px 16px; font-family: 'Oswald', sans-serif;
+            font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+            border: none; cursor: pointer; transition: all 0.3s;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .inq-btn-reply { background: var(--primary); color: white; }
+        .inq-btn-reply:hover { background: #0a3a6e; }
+        .inq-btn-read { background: #e8f8f0; color: #1a7a45; border: 1px solid #b7dfc9; }
+        .inq-btn-read:hover { background: #2ecc71; color: white; border-color: #2ecc71; }
+        .inq-btn-delete { background: #fff5f5; color: #c0392b; border: 1px solid #f5c6c6; }
+        .inq-btn-delete:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .inq-empty {
+            text-align: center; padding: 80px 30px; color: #ccc;
+            background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .inq-empty i { font-size: 56px; display: block; margin-bottom: 18px; }
+        .inq-empty h3 { font-family: 'Oswald', sans-serif; font-size: 22px; color: #ddd; text-transform: uppercase; }
+        .inq-empty p { font-size: 14px; margin-top: 10px; }
+
         .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 13px 28px; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; transition: transform 0.4s ease; z-index: 9999; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
         .toast.show { transform: translateX(-50%) translateY(0); }
     </style>
@@ -202,6 +279,10 @@
             </button>
             <button class="tab-btn" onclick="switchTab('analytics', this)">
                 <i class="fas fa-chart-line"></i> 流量分析
+            </button>
+            <button class="tab-btn" onclick="switchTab('inquiries', this)" id="inquiriesTabBtn">
+                <i class="fas fa-envelope"></i> 客户询盘
+                <span id="inquiryBadge" style="background:var(--accent);color:white;border-radius:50%;width:18px;height:18px;font-size:11px;display:none;align-items:center;justify-content:center;margin-left:6px;font-family:Roboto,sans-serif;font-weight:bold;"></span>
             </button>
         </div>
     </div>
@@ -378,6 +459,57 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- 客户询盘页 -->
+<div class="page" id="page-inquiries">
+    <div style="padding:30px;max-width:1400px;margin:0 auto;">
+
+        <!-- 顶部统计栏 -->
+        <div style="display:flex;gap:15px;margin-bottom:25px;flex-wrap:wrap;">
+            <div class="stat-mini" style="flex:1;min-width:130px;">
+                <div class="stat-mini-num" id="inq_total">0</div>
+                <div class="stat-mini-label">总询盘数</div>
+            </div>
+            <div class="stat-mini accent" style="flex:1;min-width:130px;">
+                <div class="stat-mini-num" id="inq_unread">0</div>
+                <div class="stat-mini-label">未读</div>
+            </div>
+            <div class="stat-mini" style="flex:1;min-width:130px;border-color:#2ecc71;">
+                <div class="stat-mini-num" style="color:#2ecc71;" id="inq_today">0</div>
+                <div class="stat-mini-label">今日新增</div>
+            </div>
+            <div class="stat-mini" style="flex:1;min-width:130px;border-color:#f39c12;">
+                <div class="stat-mini-num" style="color:#f39c12;" id="inq_countries">0</div>
+                <div class="stat-mini-label">来源国家数</div>
+            </div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <button onclick="clearAllInquiries()" style="padding:8px 16px;background:transparent;border:1px solid #ddd;cursor:pointer;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;color:#888;transition:all 0.3s;" onmouseover="this.style.borderColor='#e63946';this.style.color='#e63946'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">
+                    <i class="fas fa-trash"></i> 清空所有
+                </button>
+                <button onclick="markAllRead()" style="padding:8px 16px;background:var(--primary);border:none;cursor:pointer;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;color:white;transition:all 0.3s;">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+            </div>
+        </div>
+
+        <!-- 筛选栏 -->
+        <div style="background:white;padding:15px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <span style="font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;color:#666;letter-spacing:1px;">筛选：</span>
+            <button class="inq-filter active" onclick="filterInquiries('all',this)">全部</button>
+            <button class="inq-filter" onclick="filterInquiries('unread',this)">未读</button>
+            <button class="inq-filter" onclick="filterInquiries('read',this)">已读</button>
+            <div style="margin-left:auto;display:flex;gap:0;">
+                <input type="text" id="inqSearch" placeholder="搜索姓名/邮箱/内容..." oninput="searchInquiries()" style="padding:7px 14px;border:1.5px solid #ddd;font-size:13px;width:240px;outline:none;border-right:none;">
+                <button style="padding:7px 14px;background:var(--primary);border:none;color:white;cursor:pointer;"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <!-- 询盘列表 -->
+        <div id="inquiryList"></div>
+
+    </div>
+</div>
+
+
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 // ===== Tab切换 =====
@@ -387,6 +519,272 @@ function switchTab(tab, btn) {
     document.getElementById('page-' + tab).classList.add('active');
     btn.classList.add('active');
     if (tab === 'analytics' && accessToken) loadAllData();
+    if (tab === 'inquiries') { renderInquiries(); markAllRead(); }
+}
+
+// ===== 客户询盘模块 =====
+let inquiries = [];
+let inqFilter = 'all';
+let inqSearch = '';
+
+function loadInquiries() {
+    try {
+        const s = localStorage.getItem('carval_inquiries');
+        if (s) inquiries = JSON.parse(s);
+    } catch(e) { inquiries = []; }
+}
+
+function saveInquiries() {
+    try { localStorage.setItem('carval_inquiries', JSON.stringify(inquiries)); } catch(e) {}
+}
+
+// 获取IP和地理位置信息
+async function getGeoInfo() {
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        return {
+            country: data.country_name || 'Unknown',
+            countryCode: data.country_code || '',
+            city: data.city || '',
+            region: data.region || '',
+            ip: data.ip || '',
+            timezone: data.timezone || '',
+            org: data.org || ''
+        };
+    } catch(e) {
+        return { country: 'Unknown', countryCode: '', city: '', region: '', ip: '', timezone: '', org: '' };
+    }
+}
+
+// 获取流量来源
+function getTrafficSource() {
+    const ref = document.referrer;
+    if (!ref) return { source: '直接访问', detail: 'Direct' };
+    if (ref.includes('google')) return { source: '谷歌搜索', detail: ref };
+    if (ref.includes('facebook')) return { source: 'Facebook', detail: ref };
+    if (ref.includes('instagram')) return { source: 'Instagram', detail: ref };
+    if (ref.includes('whatsapp')) return { source: 'WhatsApp', detail: ref };
+    if (ref.includes('twitter') || ref.includes('t.co')) return { source: 'Twitter/X', detail: ref };
+    if (ref.includes('linkedin')) return { source: 'LinkedIn', detail: ref };
+    if (ref.includes('bing')) return { source: 'Bing搜索', detail: ref };
+    if (ref.includes('yahoo')) return { source: 'Yahoo搜索', detail: ref };
+    return { source: '外链引流', detail: ref };
+}
+
+// 获取设备信息
+function getDeviceInfo() {
+    const ua = navigator.userAgent;
+    let device = '电脑';
+    if (/Android|webOS|iPhone|iPad|iPod/i.test(ua)) {
+        if (/iPad/i.test(ua)) device = '平板';
+        else device = '手机';
+    }
+    let browser = 'Unknown';
+    if (ua.includes('Chrome')) browser = 'Chrome';
+    else if (ua.includes('Firefox')) browser = 'Firefox';
+    else if (ua.includes('Safari')) browser = 'Safari';
+    else if (ua.includes('Edge')) browser = 'Edge';
+    return { device, browser, lang: navigator.language || 'Unknown' };
+}
+
+// 提交表单时保存询盘
+async function saveInquiry(name, email, message) {
+    const geo = await getGeoInfo();
+    const source = getTrafficSource();
+    const device = getDeviceInfo();
+    const now = new Date();
+
+    // 解析OEM编号
+    const oemMatch = message.match(/[A-Z0-9]{6,20}[-\/]?[A-Z0-9]*/i);
+    const oem = oemMatch ? oemMatch[0] : '';
+
+    const inquiry = {
+        id: Date.now(),
+        name: name || 'Unknown',
+        email: email || '',
+        message: message || '',
+        oem: oem,
+        country: geo.country,
+        countryCode: geo.countryCode,
+        city: geo.city,
+        region: geo.region,
+        ip: geo.ip,
+        timezone: geo.timezone,
+        source: source.source,
+        sourceDetail: source.detail,
+        device: device.device,
+        browser: device.browser,
+        language: device.lang,
+        localTime: now.toLocaleString(),
+        timestamp: now.getTime(),
+        utcTime: now.toUTCString(),
+        read: false
+    };
+
+    loadInquiries();
+    inquiries.unshift(inquiry);
+    saveInquiries();
+    updateInquiryBadge();
+    return inquiry;
+}
+
+function updateInquiryBadge() {
+    loadInquiries();
+    const unread = inquiries.filter(i => !i.read).length;
+    const badge = document.getElementById('inquiryBadge');
+    if (badge) {
+        badge.textContent = unread;
+        badge.style.display = unread > 0 ? 'inline-flex' : 'none';
+    }
+    document.getElementById('inq_total').textContent = inquiries.length;
+    document.getElementById('inq_unread').textContent = unread;
+    // Today count
+    const today = new Date().toDateString();
+    const todayCount = inquiries.filter(i => new Date(i.timestamp).toDateString() === today).length;
+    document.getElementById('inq_today').textContent = todayCount;
+    // Country count
+    const countries = new Set(inquiries.map(i => i.country).filter(c => c !== 'Unknown'));
+    document.getElementById('inq_countries').textContent = countries.size;
+}
+
+function filterInquiries(filter, btn) {
+    inqFilter = filter;
+    document.querySelectorAll('.inq-filter').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderInquiries();
+}
+
+function searchInquiries() {
+    inqSearch = document.getElementById('inqSearch').value.toLowerCase().trim();
+    renderInquiries();
+}
+
+function getCountryFlag(code) {
+    if (!code || code.length !== 2) return '🌐';
+    const offset = 127397;
+    return String.fromCodePoint(...code.toUpperCase().split('').map(c => c.charCodeAt(0) + offset));
+}
+
+function timeAgo(ts) {
+    const diff = Date.now() - ts;
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return '刚刚';
+    if (mins < 60) return `${mins}分钟前`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `${hours}小时前`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) return `${days}天前`;
+    return new Date(ts).toLocaleDateString();
+}
+
+function renderInquiries() {
+    loadInquiries();
+    updateInquiryBadge();
+    const container = document.getElementById('inquiryList');
+    if (!container) return;
+
+    let filtered = inquiries.filter(i => {
+        const matchFilter = inqFilter === 'all' || (inqFilter === 'unread' && !i.read) || (inqFilter === 'read' && i.read);
+        const matchSearch = !inqSearch || i.name.toLowerCase().includes(inqSearch) || i.email.toLowerCase().includes(inqSearch) || i.message.toLowerCase().includes(inqSearch) || i.country.toLowerCase().includes(inqSearch);
+        return matchFilter && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<div class="inq-empty"><i class="fas fa-inbox"></i><h3>暂无询盘记录</h3><p>客户通过网站联系表单提交后，记录将自动出现在这里</p></div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(inq => `
+        <div class="inq-card ${inq.read ? '' : 'unread'}" id="inq-${inq.id}">
+            <div class="inq-card-header">
+                <div class="inq-avatar">${inq.name.charAt(0).toUpperCase()}</div>
+                <div>
+                    <div class="inq-name">${inq.name} ${!inq.read ? '<span class="inq-tag unread-badge">NEW</span>' : ''}</div>
+                    <div class="inq-email"><a href="mailto:${inq.email}" style="color:#888;text-decoration:none;">${inq.email}</a></div>
+                </div>
+                <div class="inq-meta">
+                    <span class="inq-tag country">${getCountryFlag(inq.countryCode)} ${inq.country}${inq.city ? ' · ' + inq.city : ''}</span>
+                    <span class="inq-tag source"><i class="fas fa-share-alt" style="font-size:10px;"></i> ${inq.source}</span>
+                    <span class="inq-tag device"><i class="fas fa-${inq.device === '手机' ? 'mobile-alt' : inq.device === '平板' ? 'tablet-alt' : 'desktop'}" style="font-size:10px;"></i> ${inq.device} · ${inq.browser}</span>
+                    <span class="inq-tag time"><i class="fas fa-clock" style="font-size:10px;"></i> ${timeAgo(inq.timestamp)}</span>
+                </div>
+            </div>
+            <div class="inq-body">
+                ${inq.oem ? `<div class="inq-oem"><i class="fas fa-barcode"></i> OEM: ${inq.oem}</div>` : ''}
+                <div class="inq-message">${inq.message.replace(/
+/g, '<br>')}</div>
+                <div style="font-size:11px;color:#aaa;margin-bottom:10px;">
+                    <i class="fas fa-map-marker-alt"></i> ${inq.region ? inq.region + ', ' : ''}${inq.country} &nbsp;|&nbsp;
+                    <i class="fas fa-globe"></i> ${inq.language} &nbsp;|&nbsp;
+                    <i class="fas fa-calendar"></i> ${inq.localTime}
+                    ${inq.timezone ? '&nbsp;(' + inq.timezone + ')' : ''}
+                </div>
+                <div class="inq-actions">
+                    <button class="inq-btn inq-btn-reply" onclick="replyInquiry('${inq.email}','${inq.name.replace(/'/g,"\'")}')">
+                        <i class="fas fa-reply"></i> 回复邮件
+                    </button>
+                    <button class="inq-btn inq-btn-reply" onclick="replyWhatsApp('${inq.message.replace(/'/g,"\'").replace(/
+/g,' ')}')">
+                        <i class="fab fa-whatsapp"></i> WhatsApp联系
+                    </button>
+                    ${!inq.read ? `<button class="inq-btn inq-btn-read" onclick="markRead(${inq.id})"><i class="fas fa-check"></i> 标为已读</button>` : ''}
+                    <button class="inq-btn inq-btn-delete" onclick="deleteInquiry(${inq.id})"><i class="fas fa-trash"></i> 删除</button>
+                </div>
+            </div>
+        </div>`).join('');
+}
+
+function markRead(id) {
+    loadInquiries();
+    const inq = inquiries.find(i => i.id === id);
+    if (inq) { inq.read = true; saveInquiries(); renderInquiries(); }
+}
+
+function markAllRead() {
+    loadInquiries();
+    inquiries.forEach(i => i.read = true);
+    saveInquiries();
+    renderInquiries();
+    updateInquiryBadge();
+}
+
+function deleteInquiry(id) {
+    if (!confirm('确认删除这条询盘？')) return;
+    loadInquiries();
+    inquiries = inquiries.filter(i => i.id !== id);
+    saveInquiries();
+    renderInquiries();
+    showToast('询盘已删除', '#e67e22');
+}
+
+function clearAllInquiries() {
+    if (!confirm('确认清空所有询盘记录？此操作不可恢复！')) return;
+    inquiries = [];
+    saveInquiries();
+    renderInquiries();
+    showToast('所有询盘已清空', '#e67e22');
+}
+
+function replyInquiry(email, name) {
+    const subject = encodeURIComponent('Re: Your Inquiry - Carval Auto Parts');
+    const body = encodeURIComponent(`Dear ${name},
+
+Thank you for contacting Carval Auto Parts.
+
+Best regards,
+Carval Auto Parts Team
+https://carvalautopart.com`);
+    window.open(`mailto:${email}?subject=${subject}&body=${body}`);
+    const inq = inquiries.find(i => i.email === email);
+    if (inq) markRead(inq.id);
+}
+
+function replyWhatsApp(message) {
+    const text = encodeURIComponent(`Hi! Thank you for your inquiry about: "${message.substring(0,80)}..."
+
+This is Carval Auto Parts. How can I help you?`);
+    window.open(`https://wa.me/8619521228657?text=${text}`, '_blank');
 }
 
 // ===== 商品管理 =====
@@ -481,9 +879,21 @@ const countryFlags = {'China':'🇨🇳','United States':'🇺🇸','Japan':'�
 
 window.onload = function() {
     renderList(); generateCode(); updateStats();
+    loadInquiries(); updateInquiryBadge();
     const saved = localStorage.getItem('ga_token');
     if (saved) { accessToken = saved; showDashboard(JSON.parse(localStorage.getItem('ga_user')||'{}')); }
 };
+
+// ===== 接收来自网站表单的询盘（通过 localStorage 跨页面通信）=====
+window.addEventListener('storage', function(e) {
+    if (e.key === 'carval_new_inquiry' && e.newValue) {
+        loadInquiries();
+        updateInquiryBadge();
+        // If on inquiries tab, refresh
+        const page = document.getElementById('page-inquiries');
+        if (page && page.classList.contains('active')) renderInquiries();
+    }
+});
 
 function handleLogin() {
     tokenClient = google.accounts.oauth2.initTokenClient({

@@ -589,7 +589,7 @@
                     <i class="fas fa-envelope contact-icon"></i>
                     <div class="contact-content">
                         <h3 data-lang="contact_email">Email</h3>
-                        <p data-lang="contact_email_value">carvalxie@foxmail.com</p>
+                        <p data-lang="contact_email_value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="97f4f6e5e1f6fbeffef2d7f1f8effaf6fefbb9f4f8fa">[email&#160;protected]</a></p>
                     </div>
                 </div>
             </div>
@@ -603,7 +603,7 @@
         <p data-lang="footer_prof">Professional Auto Parts Manufacturer &amp; Global Supplier</p>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // ===== 11种语言翻译数据 =====
     const translations = {
         // 英语
@@ -1543,8 +1543,63 @@
         // ===== 表单提交处理 =====
         const contactForm = document.getElementById('contactForm');
         if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
+            contactForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                // 获取地理位置和设备信息，保存询盘到后台
+                try {
+                    const geoRes = await fetch('https://ipapi.co/json/');
+                    const geo = await geoRes.json();
+                    const ua = navigator.userAgent;
+                    let device = '电脑';
+                    if (/Android|webOS|iPhone|iPad|iPod/i.test(ua)) {
+                        device = /iPad/i.test(ua) ? '平板' : '手机';
+                    }
+                    let browser = 'Unknown';
+                    if (ua.includes('Chrome')) browser = 'Chrome';
+                    else if (ua.includes('Firefox')) browser = 'Firefox';
+                    else if (ua.includes('Safari')) browser = 'Safari';
+                    else if (ua.includes('Edge')) browser = 'Edge';
+                    const ref = document.referrer;
+                    let source = '直接访问';
+                    if (ref.includes('google')) source = '谷歌搜索';
+                    else if (ref.includes('facebook')) source = 'Facebook';
+                    else if (ref.includes('instagram')) source = 'Instagram';
+                    else if (ref.includes('whatsapp')) source = 'WhatsApp';
+                    else if (ref.includes('bing')) source = 'Bing搜索';
+                    else if (ref) source = '外链引流';
+                    const oemMatch = message.match(/[A-Z0-9]{6,20}[-\/]?[A-Z0-9]*/i);
+                    const now = new Date();
+                    const inquiry = {
+                        id: Date.now(),
+                        name: name, email: email, message: message,
+                        oem: oemMatch ? oemMatch[0] : '',
+                        country: geo.country_name || 'Unknown',
+                        countryCode: geo.country_code || '',
+                        city: geo.city || '',
+                        region: geo.region || '',
+                        ip: geo.ip || '',
+                        timezone: geo.timezone || '',
+                        source: source,
+                        sourceDetail: ref || '',
+                        device: device,
+                        browser: browser,
+                        language: navigator.language || 'Unknown',
+                        localTime: now.toLocaleString(),
+                        timestamp: now.getTime(),
+                        utcTime: now.toUTCString(),
+                        read: false
+                    };
+                    const existing = JSON.parse(localStorage.getItem('carval_inquiries') || '[]');
+                    existing.unshift(inquiry);
+                    localStorage.setItem('carval_inquiries', JSON.stringify(existing));
+                    localStorage.setItem('carval_new_inquiry', Date.now().toString());
+                } catch(err) { console.log('Geo fetch failed:', err); }
+
+                // 提交到 Formspree
                 const formData = new FormData(contactForm);
                 fetch(contactForm.action, {
                     method: 'POST',
@@ -1581,14 +1636,4 @@
         const overlay = document.getElementById('navOverlay');
         nav.classList.remove('open');
         btn.classList.remove('open');
-        overlay.classList.remove('show');
-        document.body.style.overflow = '';
-    }
-
-    // 窗口resize时关闭移动菜单
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768) closeNav();
-    });
-    </script>
-</body>
-</html>
+        overlay.classList.remove('show
