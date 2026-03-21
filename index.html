@@ -147,7 +147,9 @@
         .facility-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 4px; background-color: var(--accent-color); }
         .facility-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
         @media (max-width: 992px) { .facility-gallery { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 576px) { .facility-gallery { grid-template-columns: 1fr; } }
+        
+        @media (max-width: 576px) { .facility-gallery { grid-template-columns: 1fr; }
+            .product-grid { grid-template-columns: 1fr; } }
         .gallery-item { background-color: white; border-radius: 0; overflow: hidden; box-shadow: 0 5px 10px rgba(0,0,0,0.1); transition: all 0.4s ease; border-bottom: 4px solid var(--primary-color); height: 100%; }
         .gallery-item:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); border-color: var(--accent-color); }
         .gallery-item img { width: 100%; height: 240px; object-fit: cover; transition: transform 0.6s ease; }
@@ -156,7 +158,7 @@
         .product-section { background-color: var(--dark-color); padding: 70px 30px; margin-bottom: 60px; }
         .product-title { font-family: 'Oswald', sans-serif; font-size: 38px; color: white; text-transform: uppercase; text-align: center; margin-bottom: 60px; letter-spacing: 2px; position: relative; padding-bottom: 20px; }
         .product-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 150px; height: 4px; background-color: var(--accent-color); }
-        .product-grid { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; }
+        .product-grid { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
         .product-card { background-color: white; border-radius: 0; overflow: hidden; transition: all 0.4s ease; position: relative; height: 100%; display: flex; flex-direction: column; }
         .product-card::before { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background-color: var(--accent-color); transition: width 0.3s ease; }
         .product-card:hover::before { width: 10px; }
@@ -233,6 +235,7 @@
         /* ===== 平板端 (768px - 1024px) ===== */
         @media (max-width: 1024px) {
             .product-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+            .facility-gallery { grid-template-columns: repeat(3, 1fr); gap: 20px; }
             .contact-info-container { gap: 30px; }
         }
 
@@ -308,7 +311,7 @@
 
             /* 图片画廊 */
             .facility-title { font-size: 24px; margin-bottom: 25px; }
-            .facility-gallery { gap: 15px; }
+            .facility-gallery { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .gallery-item img { height: 180px; }
 
             /* 产品区 */
@@ -352,7 +355,7 @@
         @media (max-width: 480px) {
             .company-name { font-size: 20px; }
             .header-logo-text { font-size: 18px; }
-            .facility-gallery { grid-template-columns: 1fr; }
+            .facility-gallery { grid-template-columns: repeat(2, 1fr); }
             .gallery-item img { height: 200px; }
             .product-img { height: 240px; }
             .contact-item { gap: 15px; }
@@ -586,7 +589,7 @@
                     <i class="fas fa-envelope contact-icon"></i>
                     <div class="contact-content">
                         <h3 data-lang="contact_email">Email</h3>
-                        <p data-lang="contact_email_value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95f6f4e7e3f4f9edfcf0d5f3faedf8f4fcf9bbf6faf8">[email&#160;protected]</a></p>
+                        <p data-lang="contact_email_value">carvalxie@foxmail.com</p>
                     </div>
                 </div>
             </div>
@@ -600,7 +603,7 @@
         <p data-lang="footer_prof">Professional Auto Parts Manufacturer &amp; Global Supplier</p>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
     // ===== 11种语言翻译数据 =====
     const translations = {
         // 英语
@@ -1553,7 +1556,9 @@
                         contactForm.reset();
                     } else {
                         alert('Oops! Something went wrong. Please try again later.');
-          
+                    }
+                }).catch(function() {
+                    alert('Network error! Please check your internet connection and try again.');
                 });
             });
         }
