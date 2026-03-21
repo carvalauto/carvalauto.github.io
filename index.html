@@ -1571,7 +1571,7 @@
                     else if (ref.includes('whatsapp')) source = 'WhatsApp';
                     else if (ref.includes('bing')) source = 'Bing搜索';
                     else if (ref) source = '外链引流';
-                    const oemMatch = message.match(/[A-Z0-9]{6,20}[-\/]?[A-Z0-9]*/i);
+                    const oemMatch = message.match(/[A-Z0-9]{6,20}[-]?[A-Z0-9]*/i);
                     const now = new Date();
                     const inquiry = {
                         id: Date.now(),
@@ -1636,4 +1636,14 @@
         const overlay = document.getElementById('navOverlay');
         nav.classList.remove('open');
         btn.classList.remove('open');
-        overlay.classList.remove('show
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    // 窗口resize时关闭移动菜单
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) closeNav();
+    });
+    </script>
+</body>
+</html>

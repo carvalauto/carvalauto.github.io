@@ -596,7 +596,7 @@ async function saveInquiry(name, email, message) {
     const now = new Date();
 
     // 解析OEM编号
-    const oemMatch = message.match(/[A-Z0-9]{6,20}[-\/]?[A-Z0-9]*/i);
+    const oemMatch = message.match(/[A-Z0-9]{6,20}[-]?[A-Z0-9]*/i);
     const oem = oemMatch ? oemMatch[0] : '';
 
     const inquiry = {
