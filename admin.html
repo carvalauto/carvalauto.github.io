@@ -1219,7 +1219,7 @@ function addProduct() {
     const oem = document.getElementById('pOem').value.trim();
     const desc = document.getElementById('pDesc').value.trim();
     const imageInput = document.getElementById('pImage');
-    var imageName = imageInput.value ? imageInput.value.trim() : '';
+    var imageName = imageInput.value ? imageInput.value.trim().replace(/\n/g, ', ') : '';
     products.push({ id: nextId++, name, category, oem, description: desc, image: imageName });
     sessionAdded++;
     saveToStorage(); renderList(); generateCode(); updateStats(); resetForm();
@@ -1307,20 +1307,32 @@ function switchAiMode(mode) {
 function downloadBatchTemplate() {
     if (typeof XLSX === 'undefined') { alert('请等待页面加载完成'); return; }
     var wb = XLSX.utils.book_new();
-    var data = [
-        ['url', 'category', 'image'],
-        ['https://www.alibaba.com/product-detail/...', 'japanese', '04465-06110 (1).jpg'],
-        ['https://www.alibaba.com/product-detail/...', 'korean', '54610-D3050 (1).jpg'],
-        ['https://www.alibaba.com/product-detail/...', 'german', '11427788454 (1).jpg'],
-        ['https://www.1688.com/offer/...', 'chinese', 'S3501100 (1).jpg'],
-        ['https://www.alibaba.com/product-detail/...', 'oil', '5W-30 (1).jpg'],
+
+    // Define sheets per category
+    var sheets = [
+        { name: '🇯🇵 Japanese', cat: 'japanese', example: '04465-06110 (1).jpg' },
+        { name: '🇰🇷 Korean',   cat: 'korean',   example: '54610-D3050 (1).jpg' },
+        { name: '🇩🇪 German',   cat: 'german',   example: '11427788454 (1).jpg' },
+        { name: '🇨🇳 Chinese',  cat: 'chinese',  example: 'S3501100 (1).jpg' },
+        { name: '🛢️ Oil',       cat: 'oil',      example: '5W-30 (1).jpg' },
+        { name: '📦 Other',     cat: 'other',    example: 'product001 (1).jpg' },
     ];
-    var ws = XLSX.utils.aoa_to_sheet(data);
-    ws['!cols'] = [{wch:60}, {wch:12}, {wch:30}];
-    // Add note row
-    XLSX.utils.book_append_sheet(wb, ws, 'AI批量分析模板');
+
+    sheets.forEach(function(s) {
+        var data = [
+            ['url', 'image'],
+            ['https://www.alibaba.com/product-detail/...', s.example],
+            ['https://www.alibaba.com/product-detail/...', ''],
+            ['https://www.1688.com/offer/...', ''],
+        ];
+        var ws = XLSX.utils.aoa_to_sheet(data);
+        ws['!cols'] = [{wch:65}, {wch:35}];
+        // Style header row
+        XLSX.utils.book_append_sheet(wb, ws, s.name);
+    });
+
     XLSX.writeFile(wb, 'carval_ai_batch_template.xlsx');
-    showToast('✓ 模板已下载！');
+    showToast('✓ 模板已下载！6个分类工作表');
 }
 
 async function handleBatchExcel(input) {
@@ -1334,15 +1346,46 @@ async function handleBatchExcel(input) {
         try {
             var data = new Uint8Array(e.target.result);
             var workbook = XLSX.read(data, { type: 'array' });
-            var sheet = workbook.Sheets[workbook.SheetNames[0]];
-            var rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
 
-            // Filter out empty or template rows
-            var validRows = rows.filter(function(row) {
-                var keys = Object.keys(row);
-                var urlKey = keys.find(function(k) { return k.toLowerCase().includes('url') || k.toLowerCase().includes('link'); }) || 'url';
-                var url = String(row[urlKey] || '').trim();
-                return url && url.startsWith('http') && !url.includes('alibaba.com/product-detail/...');
+            // Sheet name to category mapping
+            var sheetCatMap = {
+                'japanese': 'japanese', 'korean': 'korean',
+                'german': 'german', 'chinese': 'chinese',
+                'oil': 'oil', 'other': 'other'
+            };
+
+            // Collect all valid rows from ALL sheets
+            var validRows = [];
+            workbook.SheetNames.forEach(function(sheetName) {
+                // Detect category from sheet name
+                var cat = 'other';
+                var lname = sheetName.toLowerCase();
+                Object.keys(sheetCatMap).forEach(function(k) {
+                    if (lname.includes(k)) cat = sheetCatMap[k];
+                });
+
+                var sheet = workbook.Sheets[sheetName];
+                var rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+
+                rows.forEach(function(row) {
+                    var keys = Object.keys(row);
+                    var urlKey = keys.find(function(k) { return k.toLowerCase().includes('url') || k.toLowerCase().includes('link'); }) || 'url';
+                    var url = String(row[urlKey] || '').trim();
+                    if (!url || !url.startsWith('http') || url.includes('/...')) return;
+
+                    var imgKey = keys.find(function(k) { return k.toLowerCase().includes('image') || k.toLowerCase().includes('img'); }) || 'image';
+                    var img = String(row[imgKey] || '').trim().replace(/\n/g, ', ');
+
+                    // Override category from column if exists
+                    var catKey = keys.find(function(k) { return k.toLowerCase().includes('cat'); });
+                    if (catKey && row[catKey]) {
+                        var colCat = String(row[catKey]).trim().toLowerCase();
+                        var validCats = ['japanese','korean','german','chinese','oil','other'];
+                        if (validCats.includes(colCat)) cat = colCat;
+                    }
+
+                    validRows.push({ url: url, category: cat, image: img });
+                });
             });
 
             if (validRows.length === 0) {
@@ -1373,6 +1416,8 @@ async function handleBatchExcel(input) {
                 var url = String(row[urlKey] || '').trim();
                 var cat = String(row[catKey] || 'other').trim().toLowerCase();
                 var img = String(row[imgKey] || '').trim();
+                // Support both comma and newline separated image names
+                img = img.replace(/\n/g, ', ').replace(/,\s*,/g, ',').trim();
 
                 var validCats = ['japanese','korean','german','chinese','oil','other'];
                 if (!validCats.includes(cat)) cat = 'other';
@@ -1847,6 +1892,8 @@ function handleExcelUpload(input) {
                 var oem = String(row[oemKey] || '').trim();
                 var desc = String(row[descKey] || '').trim();
                 var img = String(row[imgKey] || '').trim();
+                // Support both comma and newline separated image names
+                img = img.replace(/\n/g, ', ').replace(/,\s*,/g, ',').trim();
 
                 if (!name) { errors++; return; }
                 if (!validCategories.includes(cat)) cat = 'other';
