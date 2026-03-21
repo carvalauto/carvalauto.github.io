@@ -498,7 +498,7 @@
                                 <input type="file" id="excelFileInputInline" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleExcelUpload(this)">
                             </label>
                             <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                                <button onclick="downloadTemplate()" style="padding:7px 14px;background:transparent;border:1px solid #ddd;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;cursor:pointer;color:#888;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s;" onmouseover="this.style.borderColor='#0f4c81';this.style.color='#0f4c81'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">
+                                <button onclick="downloadBatchTemplate()" style="padding:7px 14px;background:transparent;border:1px solid #ddd;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;cursor:pointer;color:#888;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s;" onmouseover="this.style.borderColor='#0f4c81';this.style.color='#0f4c81'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">
                                     <i class="fas fa-download"></i> 下载模板
                                 </button>
                                 <span style="font-size:11px;color:#aaa;">填好模板后直接上传，自动解析导入</span>
@@ -905,23 +905,7 @@
             </div>
         </div>
 
-
-
-        <!-- 下载模板 -->
-        <div class="card">
-            <div class="card-header"><i class="fas fa-download"></i> 下载 Excel 模板</div>
-            <div class="card-body" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-                <div style="flex:1;min-width:200px;">
-                    <div style="font-size:14px;color:#555;line-height:1.7;">模板包含正确的列格式和示例数据，下载后按示例填写即可批量导入。</div>
-                    <div style="font-size:12px;color:#aaa;margin-top:6px;">列名：name / category / oem / description / image</div>
-                </div>
-                <button onclick="downloadTemplate()" style="padding:13px 24px;background:var(--primary,#0f4c81);color:white;border:none;font-family:Oswald,sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;">
-                    <i class="fas fa-download"></i> 下载模板
-                </button>
-            </div>
-        </div>
-
-    </div>
+</div>
 </div>
 
 
@@ -2014,33 +1998,7 @@ function clearPreview() {
     document.getElementById('excelFileInput').value = '';
 }
 
-function downloadTemplate() {
-    if (typeof XLSX === 'undefined') {
-        alert('请等待页面完全加载后再试');
-        return;
-    }
-    var wb = XLSX.utils.book_new();
-    var data = [
-        ['name', 'category', 'oem', 'description', 'image'],
-        ['Toyota Camry Brake Pads Front', 'japanese', '04465-06110', 'High-performance front brake pads for Toyota Camry 2018-2023. OEM quality, verified by real-vehicle test.', '04465-06110 (1).jpg, 04465-06110 (2).jpg'],
-        ['Honda Civic Air Filter', 'japanese', '17220-RNA-A00', 'Genuine quality air filter for Honda Civic 2016-2021. Improves engine performance.', '17220-RNA-A00 (1).jpg'],
-        ['BMW 3 Series Oil Filter', 'german', '11427788454', 'Premium oil filter for BMW 3 Series F30/G20. Meets OEM specifications.', '11427788454 (1).jpg, 11427788454 (2).jpg'],
-        ['Hyundai Tucson Shock Absorber', 'korean', '54610-D3050', 'Front shock absorber for Hyundai Tucson 2019-2023. OEM quality.', '54610-D3050 (1).jpg'],
-        ['Wuling Hongguang Brake Disc', 'chinese', 'S3501100', 'Front brake disc for Wuling Hongguang S 2015-2020.', 'S3501100 (1).jpg, S3501100 (2).jpg'],
-        ['Castrol 5W-30 Full Synthetic 4L', 'oil', '', 'Full synthetic engine oil 5W-30, 4L. All climate conditions.', '5W-30 (1).jpg'],
-    ];
-    // 图片命名规则说明行
-    var noteRow = [['📌 图片命名规则：OEM编号+序号，例：04465-06110 (1).jpg / 04465-06110 (2).jpg，多张用英文逗号分隔'], [''], [''], [''], ['']];
-    var ws = XLSX.utils.aoa_to_sheet(data);
-
-    // Set column widths
-    ws['!cols'] = [
-        {wch: 35}, {wch: 12}, {wch: 18}, {wch: 50}, {wch: 25}
-    ];
-
-    XLSX.utils.book_append_sheet(wb, ws, '商品上传模板');
-    XLSX.writeFile(wb, 'carval_product_template.xlsx');
-}
+function downloadTemplate() { downloadBatchTemplate(); }
 
 // ===== Google Analytics =====
 const CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
