@@ -944,10 +944,16 @@ async function ghGetInquiries() {
             }
         });
         if (resp.status === 404) return { data: [], sha: null };
+        if (!resp.ok) return { data: [], sha: null };
         var json = await resp.json();
-        var data = JSON.parse(atob(json.content.replace(/\n/g, '')));
+        if (!json.content) return { data: [], sha: null };
+        var decoded = atob(json.content.replace(/\n/g, ''));
+        var data = JSON.parse(decoded);
+        // Filter out any invalid entries
+        data = data.filter(function(i) { return i && i.name; });
         return { data: data, sha: json.sha };
     } catch(e) {
+        console.log('ghGetInquiries error:', e.message);
         return { data: [], sha: null };
     }
 }
@@ -1191,8 +1197,13 @@ function renderInquiries() {
     if (!container) return;
 
     let filtered = inquiries.filter(function(i) {
+        if (!i || !i.name) return false;
         var matchFilter = inqFilter === 'all' || (inqFilter === 'unread' && !i.read) || (inqFilter === 'read' && i.read);
-        var matchSearch = !inqSearch || i.name.toLowerCase().includes(inqSearch) || i.email.toLowerCase().includes(inqSearch) || i.message.toLowerCase().includes(inqSearch) || i.country.toLowerCase().includes(inqSearch);
+        var name = (i.name || '').toLowerCase();
+        var email = (i.email || '').toLowerCase();
+        var message = (i.message || '').toLowerCase();
+        var country = (i.country || '').toLowerCase();
+        var matchSearch = !inqSearch || name.includes(inqSearch) || email.includes(inqSearch) || message.includes(inqSearch) || country.includes(inqSearch);
         return matchFilter && matchSearch;
     });
 
@@ -1203,9 +1214,19 @@ function renderInquiries() {
 
     var html = '';
     filtered.forEach(function(inq) {
-        var flag = getCountryFlag(inq.countryCode);
+        var flag = getCountryFlag(inq.countryCode || '');
         var deviceIcon = inq.device === '手机' ? 'mobile-alt' : (inq.device === '平板' ? 'tablet-alt' : 'desktop');
         var oemHtml = inq.oem ? '<div class="inq-oem"><i class="fas fa-barcode"></i> OEM: ' + inq.oem + '</div>' : '';
+        inq.name = inq.name || 'Unknown';
+        inq.email = inq.email || '';
+        inq.message = inq.message || '';
+        inq.country = inq.country || 'Unknown';
+        inq.source = inq.source || 'Direct';
+        inq.device = inq.device || 'Desktop';
+        inq.browser = inq.browser || 'Unknown';
+        inq.language = inq.language || '';
+        inq.localTime = inq.localTime || '';
+        inq.timezone = inq.timezone || '';
         var readBtn = !inq.read ? '<button class="inq-btn inq-btn-read" onclick="markRead(' + inq.id + ')"><i class="fas fa-check"></i> 标为已读</button>' : '';
         var unreadBadge = !inq.read ? '<span class="inq-tag unread-badge">NEW</span>' : '';
         var msgSafe = inq.message.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
