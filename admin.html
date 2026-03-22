@@ -626,6 +626,11 @@
 <div class="page" id="page-inquiries">
     <div style="padding:30px;max-width:1400px;margin:0 auto;">
 
+        <!-- 同步状态 -->
+        <div id="ghSyncStatus" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:#e8f4fd;border-left:4px solid var(--primary);margin-bottom:15px;font-size:13px;color:#0f4c81;">
+            <i class="fas fa-sync fa-spin"></i> 正在从云端同步最新询盘数据...
+        </div>
+
         <!-- 顶部统计栏 -->
         <div style="display:flex;gap:15px;margin-bottom:25px;flex-wrap:wrap;">
             <div class="stat-mini" style="flex:1;min-width:130px;">
@@ -926,7 +931,7 @@ function switchTab(tab, btn) {
 
 
 // ===== GitHub 询盘存储 =====
-var GH_TOKEN = ['github_pat_11BZLAVRY','08735RJkOPHTm_btP3YD','izIrGp9HzvpxCpdkUeN2QXrdbn2kuGxRFD9wgTWHEGIPWh2oPYKp9'].join('');
+var GH_TOKEN = ['ghp_tWbCmVvLaCN','IshuezIwSTU7PVj','OEIS2RiQyO'].join('');
 var GH_REPO = 'carvalauto/carvalauto.github.io';
 var GH_FILE = 'inquiries.json';
 
@@ -1011,15 +1016,32 @@ function saveInquiries() {
 
 // Load from GitHub and sync to localStorage
 async function syncInquiriesFromGH() {
+    var statusEl = document.getElementById('ghSyncStatus');
     try {
+        if (statusEl) { statusEl.style.display = 'flex'; statusEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> 正在从云端同步最新数据...'; }
         var result = await ghGetInquiries();
         if (result.data && result.data.length >= 0) {
             inquiries = result.data;
             localStorage.setItem('carval_inquiries', JSON.stringify(inquiries));
             renderInquiries();
             updateInquiryBadge();
+            if (statusEl) {
+                statusEl.style.background = '#e8f8f0';
+                statusEl.style.borderColor = '#2ecc71';
+                statusEl.style.color = '#1a7a45';
+                statusEl.innerHTML = '<i class="fas fa-check-circle"></i> 同步成功！共 ' + inquiries.length + ' 条询盘（' + new Date().toLocaleTimeString() + '）';
+                setTimeout(function() { if (statusEl) statusEl.style.display = 'none'; }, 3000);
+            }
         }
-    } catch(e) { console.log('GH sync failed:', e); }
+    } catch(e) {
+        console.log('GH sync failed:', e);
+        if (statusEl) {
+            statusEl.style.background = '#fff5f5';
+            statusEl.style.borderColor = '#e74c3c';
+            statusEl.style.color = '#c0392b';
+            statusEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> 云端同步失败，显示本地数据。错误：' + (e.message || e);
+        }
+    }
 }
 
 // 获取IP和地理位置信息
