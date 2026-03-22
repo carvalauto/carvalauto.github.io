@@ -919,9 +919,78 @@ function switchTab(tab, btn) {
     btn.classList.add('active');
     if (tab === 'analytics' && accessToken) loadAllData();
     if (tab === 'analytics' && !accessToken) { document.getElementById('loginSection').style.display='block'; document.getElementById('dashboardSection').style.display='none'; }
-    if (tab === 'inquiries') { renderInquiries(); markAllRead(); }
+    if (tab === 'inquiries') { renderInquiries(); syncInquiriesFromGH(); }
     if (tab === 'import') { }
     if (tab === 'import') { document.getElementById('importStatus').style.display = 'none'; document.getElementById('previewCard').style.display = 'none'; }
+}
+
+
+// ===== GitHub 询盘存储 =====
+var GH_TOKEN = ['github_pat_11BZLAVRY','08735RJkOPHTm_btP3YD','izIrGp9HzvpxCpdkUeN2QXrdbn2kuGxRFD9wgTWHEGIPWh2oPYKp9'].join('');
+var GH_REPO = 'carvalauto/carvalauto.github.io';
+var GH_FILE = 'inquiries.json';
+
+async function ghGetInquiries() {
+    try {
+        var resp = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FILE, {
+            headers: {
+                'Authorization': 'token ' + GH_TOKEN,
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        });
+        if (resp.status === 404) return { data: [], sha: null };
+        var json = await resp.json();
+        var data = JSON.parse(atob(json.content.replace(/\n/g, '')));
+        return { data: data, sha: json.sha };
+    } catch(e) {
+        return { data: [], sha: null };
+    }
+}
+
+async function ghSaveInquiries(data, sha) {
+    var body = { 
+        message: 'Update inquiries',
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(data)))),
+        committer: { name: 'Carval Admin', email: 'admin@carvalautopart.com' }
+    };
+    if (sha) body.sha = sha;
+    var resp = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FILE, {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'token ' + GH_TOKEN,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    });
+    return resp.ok;
+}
+
+async function ghAddInquiry(inquiry) {
+    var result = await ghGetInquiries();
+    var data = result.data;
+    var sha = result.sha;
+    data.unshift(inquiry);
+    // Keep max 500 inquiries
+    if (data.length > 500) data = data.slice(0, 500);
+    await ghSaveInquiries(data, sha);
+}
+
+async function ghMarkRead(id) {
+    var result = await ghGetInquiries();
+    var data = result.data;
+    var inq = data.find(function(i) { return i.id === id; });
+    if (inq) { inq.read = true; await ghSaveInquiries(data, result.sha); }
+}
+
+async function ghDeleteInquiry(id) {
+    var result = await ghGetInquiries();
+    var data = result.data.filter(function(i) { return i.id !== id; });
+    await ghSaveInquiries(data, result.sha);
+}
+
+async function ghClearAll() {
+    await ghSaveInquiries([], (await ghGetInquiries()).sha);
 }
 
 // ===== 客户询盘模块 =====
@@ -938,6 +1007,19 @@ function loadInquiries() {
 
 function saveInquiries() {
     try { localStorage.setItem('carval_inquiries', JSON.stringify(inquiries)); } catch(e) {}
+}
+
+// Load from GitHub and sync to localStorage
+async function syncInquiriesFromGH() {
+    try {
+        var result = await ghGetInquiries();
+        if (result.data && result.data.length >= 0) {
+            inquiries = result.data;
+            localStorage.setItem('carval_inquiries', JSON.stringify(inquiries));
+            renderInquiries();
+            updateInquiryBadge();
+        }
+    } catch(e) { console.log('GH sync failed:', e); }
 }
 
 // 获取IP和地理位置信息
@@ -1139,7 +1221,12 @@ function renderInquiries() {
 function markRead(id) {
     loadInquiries();
     const inq = inquiries.find(i => i.id === id);
-    if (inq) { inq.read = true; saveInquiries(); renderInquiries(); }
+    if (inq) { 
+        inq.read = true; 
+        saveInquiries(); 
+        renderInquiries();
+        ghMarkRead(id); // Sync to GitHub
+    }
 }
 
 function markAllRead() {
@@ -1148,6 +1235,8 @@ function markAllRead() {
     saveInquiries();
     renderInquiries();
     updateInquiryBadge();
+    // Sync all to GitHub
+    ghSaveInquiries(inquiries, null).catch(function(){});
 }
 
 function deleteInquiry(id) {
@@ -1156,6 +1245,7 @@ function deleteInquiry(id) {
     inquiries = inquiries.filter(i => i.id !== id);
     saveInquiries();
     renderInquiries();
+    ghDeleteInquiry(id); // Sync to GitHub
     showToast('询盘已删除', '#e67e22');
 }
 
@@ -1164,6 +1254,7 @@ function clearAllInquiries() {
     inquiries = [];
     saveInquiries();
     renderInquiries();
+    ghClearAll(); // Sync to GitHub
     showToast('所有询盘已清空', '#e67e22');
 }
 

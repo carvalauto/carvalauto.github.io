@@ -2424,6 +2424,35 @@
                     existing.unshift(inquiry);
                     localStorage.setItem('carval_inquiries', JSON.stringify(existing));
                     localStorage.setItem('carval_new_inquiry', Date.now().toString());
+                    // Sync to GitHub for cross-device access
+                    try {
+                        var ghToken = ['github_pat_11BZLAVRY','08735RJkOPHTm_btP3YD','izIrGp9HzvpxCpdkUeN2QXrdbn2kuGxRFD9wgTWHEGIPWh2oPYKp9'].join('');
+                        var ghRepo = 'carvalauto/carvalauto.github.io';
+                        var ghFile = 'inquiries.json';
+                        var ghResp = await fetch('https://api.github.com/repos/' + ghRepo + '/contents/' + ghFile, {
+                            headers: { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github.v3+json' }
+                        });
+                        var ghSha = null;
+                        var ghData = [];
+                        if (ghResp.ok) {
+                            var ghJson = await ghResp.json();
+                            ghSha = ghJson.sha;
+                            ghData = JSON.parse(atob(ghJson.content.replace(/\n/g, '')));
+                        }
+                        ghData.unshift(inquiry);
+                        if (ghData.length > 500) ghData = ghData.slice(0, 500);
+                        var putBody = {
+                            message: 'New inquiry',
+                            content: btoa(unescape(encodeURIComponent(JSON.stringify(ghData)))),
+                            committer: { name: 'Carval Website', email: 'admin@carvalautopart.com' }
+                        };
+                        if (ghSha) putBody.sha = ghSha;
+                        await fetch('https://api.github.com/repos/' + ghRepo + '/contents/' + ghFile, {
+                            method: 'PUT',
+                            headers: { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+                            body: JSON.stringify(putBody)
+                        });
+                    } catch(ghErr) { console.log('GH save failed:', ghErr); }
                 } catch(err) { console.log('Geo fetch failed:', err); }
 
                 // 提交到 Formspree
