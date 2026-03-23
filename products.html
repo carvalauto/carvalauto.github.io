@@ -344,12 +344,12 @@
     <!-- 筛选栏 -->
     <div class="filter-bar">
         <span>Filter:</span>
-        <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
-        <button class="filter-btn" onclick="filterProducts('japanese', this)">Japanese</button>
-        <button class="filter-btn" onclick="filterProducts('korean', this)">Korean</button>
-        <button class="filter-btn" onclick="filterProducts('german', this)">German</button>
-        <button class="filter-btn" onclick="filterProducts('chinese', this)">Chinese</button>
-        <button class="filter-btn" onclick="filterProducts('oil', this)">Engine Oil</button>
+        <button class="filter-btn active" onclick="filterProducts('all', this)" data-cat="all">All</button>
+        <button class="filter-btn" onclick="filterProducts('japanese', this)" data-cat="japanese">Japanese</button>
+        <button class="filter-btn" onclick="filterProducts('korean', this)" data-cat="korean">Korean</button>
+        <button class="filter-btn" onclick="filterProducts('german', this)" data-cat="german">German</button>
+        <button class="filter-btn" onclick="filterProducts('chinese', this)" data-cat="chinese">Chinese</button>
+        <button class="filter-btn" onclick="filterProducts('oil', this)" data-cat="oil">Engine Oil</button>
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Search by name or OEM number..." oninput="searchProducts()">
             <button><i class="fas fa-search"></i></button>
@@ -505,7 +505,20 @@
         renderProducts();
     }
 
-    // 初始化
+    // 初始化 - 支持URL参数自动筛选
+    (function() {
+        var params = new URLSearchParams(window.location.search);
+        var cat = params.get('cat');
+        if (cat) {
+            // Auto click the matching filter button
+            var btn = document.querySelector('.filter-btn[data-cat="' + cat + '"]');
+            if (btn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = cat;
+            }
+        }
+    })();
     renderProducts();
     </script>
 
