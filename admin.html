@@ -1550,7 +1550,38 @@ async function handleBatchExcel(input) {
 
                 try {
                     var catNames = {japanese:'Japanese car (Toyota/Honda/Nissan/Mazda/Mitsubishi)',korean:'Korean car (Hyundai/Kia)',german:'German car (BMW/Mercedes/VW/Audi)',chinese:'Chinese car (Baojun/Wuling/Geely)',oil:'Engine Oil',other:'Other auto parts'};
-                    var prompt = 'You are an auto parts specialist. Analyze this product URL: ' + url + '\n\nCategory: ' + (catNames[cat] || cat) + '\n\nReturn ONLY a JSON object: {"name": "product name in English (5-10 words)", "oem": "OEM number or empty", "model": "compatible vehicle models", "description": "2-3 sentence professional description"}';
+                    // Extract product info from URL
+                    var urlSlug = '';
+                    var urlOem = '';
+                    try {
+                        var urlMatch = url.match(/product-detail\/([^_?&#/]+)/);
+                        if (urlMatch) {
+                            urlSlug = decodeURIComponent(urlMatch[1]).replace(/-/g, ' ');
+                        }
+                        // Extract OEM from URL numbers pattern
+                        var oemMatch = url.match(/_([A-Z0-9]{6,})/);
+                        if (oemMatch) urlOem = oemMatch[1];
+                    } catch(e) {}
+
+                    var prompt = 'You are an expert auto parts specialist with deep knowledge of OEM part numbers and vehicle compatibility.' +
+                        '\n\nAnalyze this auto part and provide complete product information:' +
+                        '\nProduct title from URL: "' + (urlSlug || '') + '"' +
+                        '\nOEM number hint: "' + urlOem + '"' +
+                        '\nCategory: ' + (catNames[cat] || cat) +
+                        '\n\nUsing your knowledge of auto parts, provide:' +
+                        '\n1. A professional product name' +
+                        '\n2. The correct OEM part number' +
+                        '\n3. ALL compatible vehicle makes, models and year ranges' +
+                        '\n4. Key product specifications' +
+                        '\n\nReturn ONLY valid JSON (no markdown, no extra text):' +
+                        '\n{' +
+                        '\n  "name": "Professional product name in English (6-10 words)",' +
+                        '\n  "oem": "OEM part number",' +
+                        '\n  "brand": "Vehicle brand e.g. Toyota / Honda / BMW",' +
+                        '\n  "models": "All compatible models e.g. Toyota Camry 2018-2023, Corolla 2019-2022",' +
+                        '\n  "specs": "Key specs e.g. 12V, 4-cylinder, Front Left",' +
+                        '\n  "description": "Professional 2-3 sentence description including: product type, compatible vehicles with year range, OEM quality standard, key features"' +
+                        '\n}';
 
                     var resp = await fetch('https://api.anthropic.com/v1/messages', {
                         method: 'POST',
@@ -1574,16 +1605,24 @@ async function handleBatchExcel(input) {
                     if (!jsonMatch) throw new Error('Invalid response');
                     var result = JSON.parse(jsonMatch[0]);
 
-                    var model = result.model || '';
+                    // Build complete description from all fields
                     var desc = result.description || '';
-                    if (model && !desc.includes(model)) desc = desc + ' Compatible with: ' + model;
+                    var brand = result.brand || '';
+                    var models = result.models || result.model || '';
+                    var specs = result.specs || '';
+                    // Compose rich description
+                    var richDesc = '';
+                    if (brand) richDesc += 'Brand: ' + brand + '. ';
+                    richDesc += desc;
+                    if (models && !richDesc.includes(models.substring(0,20))) richDesc += ' Compatible with: ' + models + '.';
+                    if (specs && !richDesc.includes(specs.substring(0,10))) richDesc += ' Specs: ' + specs + '.';
 
                     batchResults.push({
                         id: Date.now() + Math.random(),
                         name: result.name || url.split('/').pop() || 'Product ' + (i+1),
                         category: cat,
                         oem: result.oem || '',
-                        description: desc,
+                        description: richDesc || desc,
                         image: img,
                         status: 'ok'
                     });
@@ -1677,17 +1716,31 @@ async function aiAnalyzeProduct() {
         var cat = document.getElementById('aiCat').value;
         var catNames = {japanese:'Japanese car (Toyota/Honda/Nissan/Mazda/Mitsubishi/Subaru)',korean:'Korean car (Hyundai/Kia)',german:'German car (BMW/Mercedes/VW/Audi)',chinese:'Chinese car (Baojun/Wuling/Geely)',oil:'Engine Oil',other:'Other auto parts'};
 
-        var prompt = 'You are an auto parts product specialist. A user has shared this product URL: ' + url + '\n\n' +
-            'Based on this URL and your knowledge of auto parts, please generate professional product information in JSON format.\n\n' +
-            'The product category is: ' + (catNames[cat] || cat) + '\n\n' +
-            'Return ONLY a valid JSON object with these exact fields:\n' +
+        // Extract readable slug and OEM from URL
+        var urlSlug = '';
+        var urlOem = '';
+        try {
+            var slugMatch = url.match(/product-detail\/([^_?&#/]+)/);
+            if (slugMatch) urlSlug = decodeURIComponent(slugMatch[1]).replace(/-/g, ' ');
+            var oemM = url.match(/_([A-Z0-9]{6,})/);
+            if (oemM) urlOem = oemM[1];
+        } catch(e) {}
+
+        var prompt = 'You are an expert auto parts specialist with deep knowledge of OEM part numbers and vehicle compatibility.' +
+            '\n\nAnalyze this auto part and provide complete product information:' +
+            '\nProduct title from URL: "' + (urlSlug || url.substring(0, 200)) + '"' +
+            '\nOEM number hint: "' + urlOem + '"' +
+            '\nCategory: ' + (catNames[cat] || cat) +
+            '\n\nUsing your knowledge, provide complete details including ALL compatible vehicles.' +
+            '\n\nReturn ONLY valid JSON (no markdown, no extra text):\n' +
             '{\n' +
-            '  "name": "Professional product name in English (concise, 5-10 words)",\n' +
-            '  "oem": "OEM part number if visible in URL or known (or empty string)",\n' +
-            '  "model": "Compatible vehicle models (e.g. Toyota Camry 2018-2023)",\n' +
-            '  "description": "Professional product description in English, 2-3 sentences covering: what it is, compatible vehicles, quality standard, key features"\n' +
-            '}\n\n' +
-            'Important: Extract any part numbers visible in the URL. Make description professional for B2B customers.';
+            '  "name": "Professional product name in English (6-10 words)",\n' +
+            '  "oem": "OEM part number",\n' +
+            '  "brand": "Vehicle brand e.g. Toyota / Honda / BMW",\n' +
+            '  "models": "ALL compatible models with year ranges e.g. Toyota Camry 2018-2023, Corolla 2019-2022",\n' +
+            '  "specs": "Key specs e.g. 12V, Front Left, 4-cylinder",\n' +
+            '  "description": "Professional 2-3 sentence description: product type + compatible vehicles with years + OEM quality + key features"\n' +
+            '}';
 
         var response = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
@@ -1716,11 +1769,18 @@ async function aiAnalyzeProduct() {
         if (!jsonMatch) throw new Error('AI返回格式异常');
         var result = JSON.parse(jsonMatch[0]);
 
-        // Fill in results
+        // Fill in results with all fields
         document.getElementById('aiResultName').value = result.name || '';
         document.getElementById('aiResultOem').value = result.oem || '';
-        document.getElementById('aiResultModel').value = result.model || '';
-        document.getElementById('aiResultDesc').value = result.description || '';
+        // Combine models + specs into model field
+        var modelInfo = [result.models || result.model || '', result.specs || ''].filter(Boolean).join(' | ');
+        document.getElementById('aiResultModel').value = modelInfo;
+        // Build complete description
+        var fullDesc = result.description || '';
+        if (result.brand && !fullDesc.includes(result.brand)) {
+            fullDesc = 'Brand: ' + result.brand + ' | ' + fullDesc;
+        }
+        document.getElementById('aiResultDesc').value = fullDesc;
         document.getElementById('aiResultWrap').style.display = 'block';
 
     } catch(err) {
@@ -1740,7 +1800,8 @@ function addAiResult() {
 
     var model = document.getElementById('aiResultModel').value.trim();
     var desc = document.getElementById('aiResultDesc').value.trim();
-    if (model && !desc.includes(model)) desc = desc + ' Compatible with: ' + model;
+    // Build rich description
+    if (model && !desc.includes(model)) desc = desc + ' | Compatible with: ' + model;
 
     aiProducts.push({
         id: Date.now() + Math.random(),
