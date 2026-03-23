@@ -1593,30 +1593,29 @@ async function handleBatchExcel(input) {
                         '\n  "description": "Professional 2-3 sentence description including: product type, compatible vehicles with year range, OEM quality standard, key features"' +
                         '\n}';
 
-                    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+                    // 安全模式：通过后端 API 调用，不直接暴露密钥
+                    var resp = await fetch('/api/analyze-product', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': AI_KEY,
-                            'anthropic-version': '2023-06-01',
-                            'anthropic-dangerous-direct-browser-access': 'true'
-                        },
-                        body: JSON.stringify({
-                            model: 'claude-haiku-4-5-20251001',
-                            max_tokens: 600,
-                            messages: [{ role: 'user', content: prompt }]
-                        })
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url: url, prompt: prompt, category: cat })
                     });
 
-                    if (!resp.ok) {
-                        var errBody = await resp.json().catch(function(){return {};});
-                        throw new Error('API error ' + resp.status + ': ' + (errBody.error && errBody.error.message ? errBody.error.message : JSON.stringify(errBody)));
+                    var result;
+                    if (resp.ok) {
+                        var respData = await resp.json();
+                        result = respData.result || respData;
+                    } else {
+                        // 备用方案：使用本地提取的信息
+                        var extracted = extractAlibabaInfo(url);
+                        result = {
+                            name: extracted.title || 'Product from Alibaba',
+                            oem: extracted.oem || '',
+                            brand: '',
+                            models: '',
+                            specs: '',
+                            description: 'Product from Alibaba. Please verify details.'
+                        };
                     }
-                    var respData = await resp.json();
-                    var text = respData.content[0].text.trim();
-                    var jsonMatch = text.match(/\{[\s\S]*\}/);
-                    if (!jsonMatch) throw new Error('Invalid response');
-                    var result = JSON.parse(jsonMatch[0]);
 
                     // Build complete description from all fields
                     var desc = result.description || '';
@@ -1708,8 +1707,33 @@ function importBatchResults() {
 }
 
 // ===== AI 产品分析工具 =====
-var AI_KEY = ['sk-ant-api03-mN2CVlv','HRkTfrAZGza9BzouyWB1','NqpTpCOFqPzCN7a1qgKecNqBlCqgCTr6cb8JVZ6iQlkrPL2cHxws8TOGwWQ-sbjVBAAA'].join('');
+// 安全提醒：所有 API 密钥已移除。请通过后端代理 API (/api/analyze-product) 进行调用。
 var aiProducts = [];
+
+// 从 Alibaba URL 提取产品信息的辅助函数
+function extractAlibabaInfo(url) {
+    var result = { slug: '', oem: '', title: '' };
+    try {
+        // 提取产品标题 slug
+        var slugMatch = url.match(/product-detail\/([^_?&#\/]+)/);
+        if (slugMatch) {
+            result.slug = decodeURIComponent(slugMatch[1]).replace(/-/g, ' ').replace(/_/g, ' ');
+        }
+        // 提取 OEM 编号 - 支持多种格式
+        // 格式1: Replaces-XXXXX
+        var replaceMatch = url.match(/Replaces[-_]([A-Z0-9-]+)/i);
+        if (replaceMatch) {
+            result.oem = replaceMatch[1];
+        } else {
+            // 格式2: XXXX-XXXX (OEM标准格式)
+            var oemMatch = url.match(/([A-Z0-9]{4,}-[A-Z0-9]{3,})/i);
+            if (oemMatch) result.oem = oemMatch[1];
+        }
+        // 提取产品标题作为备用
+        result.title = result.slug || url.split('/').pop();
+    } catch(e) {}
+    return result;
+}
 
 async function aiAnalyzeProduct() {
     var url = document.getElementById('aiUrl').value.trim();
@@ -1729,20 +1753,14 @@ async function aiAnalyzeProduct() {
         var cat = document.getElementById('aiCat').value;
         var catNames = {japanese:'Japanese car (Toyota/Honda/Nissan/Mazda/Mitsubishi/Subaru)',korean:'Korean car (Hyundai/Kia)',german:'German car (BMW/Mercedes/VW/Audi)',chinese:'Chinese car (Baojun/Wuling/Geely)',oil:'Engine Oil',other:'Other auto parts'};
 
-        // Extract readable slug and OEM from URL
-        var urlSlug = '';
-        var urlOem = '';
-        try {
-            var slugMatch = url.match(/product-detail\/([^_?&#/]+)/);
-            if (slugMatch) urlSlug = decodeURIComponent(slugMatch[1]).replace(/-/g, ' ');
-            var oemM = url.match(/_([A-Z0-9]{6,})/);
-            if (oemM) urlOem = oemM[1];
-        } catch(e) {}
-
+        // 首先尝试从 URL 提取基本信息
+        var extracted = extractAlibabaInfo(url);
+        
+        // 构建 AI 提示词
         var prompt = 'You are an expert auto parts specialist with deep knowledge of OEM part numbers and vehicle compatibility.' +
             '\n\nAnalyze this auto part and provide complete product information:' +
-            '\nProduct title from URL: "' + (urlSlug || url.substring(0, 200)) + '"' +
-            '\nOEM number hint: "' + urlOem + '"' +
+            '\nProduct title from URL: "' + (extracted.slug || url.substring(0, 200)) + '"' +
+            '\nOEM number hint: "' + extracted.oem + '"' +
             '\nCategory: ' + (catNames[cat] || cat) +
             '\n\nUsing your knowledge, provide complete details including ALL compatible vehicles.' +
             '\n\nReturn ONLY valid JSON (no markdown, no extra text):\n' +
@@ -1755,32 +1773,33 @@ async function aiAnalyzeProduct() {
             '  "description": "Professional 2-3 sentence description: product type + compatible vehicles with years + OEM quality + key features"\n' +
             '}';
 
-        var response = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': AI_KEY,
-                'anthropic-version': '2023-06-01',
-                'anthropic-dangerous-direct-browser-access': 'true'
-            },
-            body: JSON.stringify({
-                model: 'claude-sonnet-4-20250514',
-                max_tokens: 500,
-                messages: [{ role: 'user', content: prompt }]
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error('API请求失败：' + response.status);
+        // 尝试调用后端 API（推荐方式）
+        var response = null;
+        try {
+            response = await fetch('/api/analyze-product', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url, prompt: prompt, category: cat })
+            });
+        } catch(e) {
+            console.log('后端 API 不可用');
         }
 
-        var data = await response.json();
-        var text = data.content[0].text.trim();
-
-        // Parse JSON from response
-        var jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) throw new Error('AI返回格式异常');
-        var result = JSON.parse(jsonMatch[0]);
+        var result;
+        if (response && response.ok) {
+            var data = await response.json();
+            result = data.result || data;
+        } else {
+            // 使用本地提取的信息作为备用
+            result = {
+                name: extracted.title || 'Product from Alibaba',
+                oem: extracted.oem || '',
+                brand: '',
+                models: '',
+                specs: '',
+                description: 'Product from Alibaba. Please verify and complete the information based on the product details.'
+            };
+        }
 
         // Fill in results with all fields
         document.getElementById('aiResultName').value = result.name || '';

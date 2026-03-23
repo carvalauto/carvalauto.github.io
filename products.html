@@ -350,10 +350,60 @@
             border: 1px solid #eee;
             padding: 10px;
         }
+        .modal-images-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        .modal-carousel-inner {
+            display: flex;
+            transition: transform 0.4s ease;
+        }
+        .modal-carousel-item {
+            min-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 45px;
+            height: 45px;
+            background: rgba(15, 76, 129, 0.85);
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .carousel-arrow:hover {
+            background: rgba(230, 57, 70, 0.95);
+            transform: translateY(-50%) scale(1.1);
+        }
+        .carousel-arrow.prev {
+            left: 10px;
+        }
+        .carousel-arrow.next {
+            right: 10px;
+        }
         .modal-thumbs {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            margin-top: 12px;
+            justify-content: center;
         }
         .modal-thumb {
             width: 60px; height: 60px;
@@ -362,9 +412,17 @@
             cursor: pointer;
             background: white;
             padding: 4px;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
+            flex-shrink: 0;
         }
-        .modal-thumb.active, .modal-thumb:hover { border-color: var(--primary-color); }
+        .modal-thumb.active {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(230, 57, 70, 0.5);
+        }
+        .modal-thumb:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
         .modal-info {
             padding: 36px 32px;
             display: flex;
@@ -533,8 +591,7 @@
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="index.html#about">Company</a></li>
-            <li><a href="index.html#products">Parts Category</a></li>
-            <li><a href="products.html" class="active">Product Catalog</a></li>
+            <li><a href="products.html" class="active">Product</a></li>
             <li><a href="index.html#contact">Contact</a></li>
         </ul>
     </nav>
@@ -729,25 +786,61 @@
     // ===== Product Detail Modal =====
     var categoryLabelsModal = { japanese:'🇯🇵 Japanese', korean:'🇰🇷 Korean', german:'🇩🇪 German', chinese:'🇨🇳 Chinese', oil:'🛢️ Engine Oil', other:'📦 Other' };
 
+    // Carousel state
+    var currentCarouselIndex = 0;
+    var carouselImages = [];
+
+    function updateCarousel() {
+        var carousel = document.getElementById('modalCarouselInner');
+        carousel.style.transform = 'translateX(-' + (currentCarouselIndex * 100) + '%)';
+        
+        // Update thumbs
+        document.querySelectorAll('.modal-thumb').forEach(function(t, i) {
+            t.classList.toggle('active', i === currentCarouselIndex);
+        });
+        
+        // Show/hide arrows
+        document.getElementById('carouselPrev').style.display = carouselImages.length > 1 ? 'flex' : 'none';
+        document.getElementById('carouselNext').style.display = carouselImages.length > 1 ? 'flex' : 'none';
+    }
+
+    function prevCarouselImg() {
+        currentCarouselIndex = (currentCarouselIndex - 1 + carouselImages.length) % carouselImages.length;
+        updateCarousel();
+    }
+
+    function nextCarouselImg() {
+        currentCarouselIndex = (currentCarouselIndex + 1) % carouselImages.length;
+        updateCarousel();
+    }
+
     function openProduct(id) {
         var p = productsData.find(function(x) { return x.id === id; });
         if (!p) return;
 
         // Images
-        var images = p.image ? p.image.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
-        var mainImg = document.getElementById('modalMainImg');
+        carouselImages = p.image ? p.image.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
+        currentCarouselIndex = 0;
+        var carousel = document.getElementById('modalCarouselInner');
         var thumbsEl = document.getElementById('modalThumbs');
 
-        if (images.length > 0) {
-            mainImg.src = images[0];
-            mainImg.style.display = 'block';
-            thumbsEl.innerHTML = images.map(function(img, i) {
-                return '<img class="modal-thumb' + (i===0?' active':'') + '" src="' + img + '" onclick="switchModalImg(this, \'' + img + '\')">';
+        if (carouselImages.length > 0) {
+            // Build carousel items
+            carousel.innerHTML = carouselImages.map(function(img) {
+                return '<div class="modal-carousel-item"><img class="modal-main-img" src="' + img + '" alt=""></div>';
             }).join('');
+            
+            // Build thumbnails
+            thumbsEl.innerHTML = carouselImages.map(function(img, i) {
+                return '<img class="modal-thumb' + (i===0?' active':'') + '" src="' + img + '" onclick="switchCarouselImg(' + i + ')" title="Image ' + (i+1) + '">';
+            }).join('');
+            
+            updateCarousel();
         } else {
-            mainImg.src = '';
-            mainImg.style.display = 'none';
-            thumbsEl.innerHTML = '<div style="width:100%;aspect-ratio:1;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#ccc;flex-direction:column;gap:10px;"><i class="fas fa-car" style="font-size:48px;"></i><span style="font-size:13px;">Image Coming Soon</span></div>';
+            carousel.innerHTML = '<div class="modal-carousel-item"><div style="width:100%;aspect-ratio:1;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#ccc;flex-direction:column;gap:10px;"><i class="fas fa-car" style="font-size:48px;"></i><span style="font-size:13px;">Image Coming Soon</span></div></div>';
+            thumbsEl.innerHTML = '';
+            document.getElementById('carouselPrev').style.display = 'none';
+            document.getElementById('carouselNext').style.display = 'none';
         }
 
         // Info
@@ -781,10 +874,9 @@
         document.body.style.overflow = 'hidden';
     }
 
-    function switchModalImg(thumb, src) {
-        document.getElementById('modalMainImg').src = src;
-        document.querySelectorAll('.modal-thumb').forEach(function(t){ t.classList.remove('active'); });
-        thumb.classList.add('active');
+    function switchCarouselImg(index) {
+        currentCarouselIndex = index;
+        updateCarousel();
     }
 
     function closeProductModal() {
@@ -823,6 +915,14 @@
 
     // ESC key to close
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeProductModal(); });
+    
+    // Keyboard navigation for carousel
+    document.addEventListener('keydown', function(e) {
+        if (document.getElementById('productModal').classList.contains('show')) {
+            if (e.key === 'ArrowLeft') prevCarouselImg();
+            if (e.key === 'ArrowRight') nextCarouselImg();
+        }
+    });
     </script>
 
 
@@ -832,7 +932,17 @@
         <button class="modal-close" onclick="closeProductModal()">&times;</button>
         <div class="modal-inner">
             <div class="modal-images">
-                <img id="modalMainImg" class="modal-main-img" src="" alt="">
+                <div class="modal-images-container">
+                    <div class="modal-carousel">
+                        <div class="modal-carousel-inner" id="modalCarouselInner">
+                            <div class="modal-carousel-item">
+                                <img id="modalMainImg" class="modal-main-img" src="" alt="">
+                            </div>
+                        </div>
+                        <button class="carousel-arrow prev" id="carouselPrev" onclick="prevCarouselImg()" style="display:none;"><i class="fas fa-chevron-left"></i></button>
+                        <button class="carousel-arrow next" id="carouselNext" onclick="nextCarouselImg()" style="display:none;"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
                 <div class="modal-thumbs" id="modalThumbs"></div>
             </div>
             <div class="modal-info">

@@ -1,0 +1,266 @@
+<!-- 这是修复后的 admin.html 文件的关键部分 -->
+<!-- 请将以下代码片段替换到原始 admin.html 文件中 -->
+
+<!-- 修复位置1：替换 AI 产品分析工具部分（第 1704-1803 行） -->
+
+// ===== AI 产品分析工具 =====
+// 注意：API密钥应该存储在后端环境变量中，不应该在前端代码中暴露
+// 这里使用占位符，实际部署时应该通过后端 API 调用
+
+var aiProducts = [];
+
+// 从 Alibaba URL 提取产品信息的辅助函数
+function extractAlibabaInfo(url) {
+    var result = { slug: '', oem: '', title: '' };
+    try {
+        // 提取产品标题 slug
+        var slugMatch = url.match(/product-detail\/([^_?&#\/]+)/);
+        if (slugMatch) {
+            result.slug = decodeURIComponent(slugMatch[1]).replace(/-/g, ' ').replace(/_/g, ' ');
+        }
+        
+        // 提取 OEM 编号 - 支持多种格式
+        // 格式1: Replaces-XXXXX
+        var replaceMatch = url.match(/Replaces[-_]([A-Z0-9-]+)/i);
+        if (replaceMatch) {
+            result.oem = replaceMatch[1];
+        } else {
+            // 格式2: XXXX-XXXX (OEM标准格式)
+            var oemMatch = url.match(/([A-Z0-9]{4,}-[A-Z0-9]{3,})/i);
+            if (oemMatch) result.oem = oemMatch[1];
+        }
+        
+        // 提取产品标题作为备用
+        result.title = result.slug || url.split('/').pop();
+    } catch(e) {}
+    return result;
+}
+
+async function aiAnalyzeProduct() {
+    var url = document.getElementById('aiUrl').value.trim();
+    if (!url) { showToast('⚠ 请输入产品链接', '#e74c3c'); return; }
+
+    // UI: loading state
+    var btn = document.getElementById('aiAnalyzeBtn');
+    var icon = document.getElementById('aiIcon');
+    var txt = document.getElementById('aiAnalyzeTxt');
+    btn.disabled = true;
+    icon.className = 'fas fa-spinner fa-spin';
+    txt.textContent = 'AI 分析中...';
+    document.getElementById('aiResultWrap').style.display = 'none';
+    document.getElementById('aiError').style.display = 'none';
+
+    try {
+        var cat = document.getElementById('aiCat').value;
+        var catNames = {
+            japanese:'Japanese car (Toyota/Honda/Nissan/Mazda/Mitsubishi/Subaru)',
+            korean:'Korean car (Hyundai/Kia)',
+            german:'German car (BMW/Mercedes/VW/Audi)',
+            chinese:'Chinese car (Baojun/Wuling/Geely)',
+            oil:'Engine Oil',
+            other:'Other auto parts'
+        };
+
+        // 首先尝试从 URL 提取基本信息
+        var extracted = extractAlibabaInfo(url);
+        
+        // 构建 AI 提示词
+        var prompt = 'You are an expert auto parts specialist with deep knowledge of OEM part numbers and vehicle compatibility.' +
+            '\n\nAnalyze this auto part and provide complete product information:' +
+            '\nProduct title from URL: "' + (extracted.slug || url.substring(0, 200)) + '"' +
+            '\nOEM number hint: "' + extracted.oem + '"' +
+            '\nCategory: ' + (catNames[cat] || cat) +
+            '\n\nUsing your knowledge, provide complete details including ALL compatible vehicles.' +
+            '\n\nReturn ONLY valid JSON (no markdown, no extra text):\n' +
+            '{\n' +
+            '  "name": "Professional product name in English (6-10 words)",\n' +
+            '  "oem": "OEM part number",\n' +
+            '  "brand": "Vehicle brand e.g. Toyota / Honda / BMW",\n' +
+            '  "models": "ALL compatible models with year ranges e.g. Toyota Camry 2018-2023, Corolla 2019-2022",\n' +
+            '  "specs": "Key specs e.g. 12V, Front Left, 4-cylinder",\n' +
+            '  "description": "Professional 2-3 sentence description: product type + compatible vehicles with years + OEM quality + key features"\n' +
+            '}';
+
+        // 尝试调用后端 API（推荐方式）
+        var response = null;
+        try {
+            response = await fetch('/api/analyze-product', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url, prompt: prompt, category: cat })
+            });
+        } catch(e) {
+            console.log('后端 API 不可用');
+        }
+
+        var result;
+        if (response && response.ok) {
+            var data = await response.json();
+            result = data.result || data;
+        } else {
+            // 使用本地提取的信息作为备用
+            result = {
+                name: extracted.title || 'Product from Alibaba',
+                oem: extracted.oem || '',
+                brand: '',
+                models: '',
+                specs: '',
+                description: 'Product from Alibaba. Please verify and complete the information based on the product details.'
+            };
+        }
+
+        // Fill in results with all fields
+        document.getElementById('aiResultName').value = result.name || '';
+        document.getElementById('aiResultOem').value = result.oem || '';
+        // Combine models + specs into model field
+        var modelInfo = [result.models || result.model || '', result.specs || ''].filter(Boolean).join(' | ');
+        document.getElementById('aiResultModel').value = modelInfo;
+        // Build complete description
+        var fullDesc = result.description || '';
+        if (result.brand && !fullDesc.includes(result.brand)) {
+            fullDesc = 'Brand: ' + result.brand + ' | ' + fullDesc;
+        }
+        document.getElementById('aiResultDesc').value = fullDesc;
+        document.getElementById('aiResultWrap').style.display = 'block';
+
+    } catch(err) {
+        var errEl = document.getElementById('aiError');
+        errEl.style.display = 'block';
+        errEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> 分析失败：' + err.message + '<br><small>请检查链接是否正确，或手动填写产品信息</small>';
+    } finally {
+        btn.disabled = false;
+        icon.className = 'fas fa-magic';
+        txt.textContent = 'AI 分析';
+    }
+}
+
+// 修复位置2：替换批量 Excel 处理函数中的 API 调用部分（第 1596-1614 行）
+
+// 在 handleBatchExcel 函数中，将 fetch 调用改为：
+
+async function analyzeProductBatch(url, cat, catNames) {
+    // 首先尝试从 URL 提取基本信息
+    var extracted = extractAlibabaInfo(url);
+    
+    var prompt = 'You are an expert auto parts specialist with deep knowledge of OEM part numbers and vehicle compatibility.' +
+        '\n\nAnalyze this auto part and provide complete product information:' +
+        '\nProduct title from URL: "' + (extracted.slug || url.substring(0, 200)) + '"' +
+        '\nOEM number hint: "' + extracted.oem + '"' +
+        '\nCategory: ' + (catNames[cat] || cat) +
+        '\n\nUsing your knowledge of auto parts, provide:' +
+        '\n1. A professional product name' +
+        '\n2. The correct OEM part number' +
+        '\n3. ALL compatible vehicle makes, models and year ranges' +
+        '\n4. Key product specifications' +
+        '\n\nReturn ONLY valid JSON (no markdown, no extra text):' +
+        '\n{' +
+        '\n  "name": "Professional product name in English (6-10 words)",' +
+        '\n  "oem": "OEM part number",' +
+        '\n  "brand": "Vehicle brand e.g. Toyota / Honda / BMW",' +
+        '\n  "models": "All compatible models e.g. Toyota Camry 2018-2023, Corolla 2019-2022",' +
+        '\n  "specs": "Key specs e.g. 12V, 4-cylinder, Front Left",' +
+        '\n  "description": "Professional 2-3 sentence description including: product type, compatible vehicles with year range, OEM quality standard, key features"' +
+        '\n}';
+
+    // 尝试调用后端 API
+    try {
+        var resp = await fetch('/api/analyze-product', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: url, prompt: prompt, category: cat })
+        });
+        
+        if (!resp.ok) {
+            throw new Error('API error ' + resp.status);
+        }
+        
+        var respData = await resp.json();
+        var result = respData.result || respData;
+        
+        // Build complete description from all fields
+        var desc = result.description || '';
+        var brand = result.brand || '';
+        var models = result.models || result.model || '';
+        var specs = result.specs || '';
+        
+        var richDesc = '';
+        if (brand) richDesc += 'Brand: ' + brand + '. ';
+        richDesc += desc;
+        if (models && !richDesc.includes(models.substring(0,20))) richDesc += ' Compatible with: ' + models + '.';
+        if (specs && !richDesc.includes(specs.substring(0,10))) richDesc += ' Specs: ' + specs + '.';
+        
+        return {
+            name: result.name || url.split('/').pop() || 'Product',
+            oem: result.oem || '',
+            description: richDesc || desc,
+            status: 'ok'
+        };
+    } catch(err) {
+        // 如果后端 API 失败，使用本地提取的信息
+        var extracted = extractAlibabaInfo(url);
+        return {
+            name: extracted.title || 'Product from Alibaba',
+            oem: extracted.oem || '',
+            description: 'Product from Alibaba. Please verify and complete the information.',
+            status: 'partial'
+        };
+    }
+}
+
+// 修复位置3：更新 handleBatchExcel 中的循环调用
+
+// 在 for 循环中，将原来的 fetch 调用替换为：
+try {
+    var result = await analyzeProductBatch(url, cat, catNames);
+    
+    batchResults.push({
+        id: Date.now() + Math.random(),
+        name: result.name,
+        category: cat,
+        oem: result.oem,
+        description: result.description,
+        image: img,
+        status: result.status === 'ok' ? 'ok' : 'partial'
+    });
+    
+    success++;
+    logEl.innerHTML += '<span style="color:#2ecc71;">✓ 成功: ' + (result.name || '').substring(0,40) + '</span><br>';
+} catch(err) {
+    fail++;
+    batchResults.push({
+        id: Date.now() + Math.random(),
+        name: 'Product ' + (i+1) + ' (分析失败)',
+        category: cat, oem: '', description: '', image: img, status: 'fail'
+    });
+    logEl.innerHTML += '<span style="color:#e63946;">✗ 失败: ' + err.message + '</span><br>';
+}
+
+// ===== 后端 API 实现建议 =====
+// 
+// 在您的后端服务器上实现以下 API 端点：
+//
+// POST /api/analyze-product
+// 请求体：
+// {
+//   "url": "https://www.alibaba.com/product-detail/...",
+//   "prompt": "AI 提示词",
+//   "category": "japanese"
+// }
+//
+// 响应体：
+// {
+//   "result": {
+//     "name": "产品名称",
+//     "oem": "OEM编号",
+//     "brand": "品牌",
+//     "models": "兼容车型",
+//     "specs": "规格",
+//     "description": "产品描述"
+//   }
+// }
+//
+// 后端应该：
+// 1. 使用环境变量中的 API 密钥调用 LLM（Claude、Gemini 等）
+// 2. 不要在前端代码中暴露 API 密钥
+// 3. 实现速率限制和错误处理
+// 4. 可选：缓存分析结果以提高性能
