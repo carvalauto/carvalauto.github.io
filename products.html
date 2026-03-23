@@ -299,6 +299,210 @@
             .social-icons { flex-direction: row; bottom: 20px; right: 50%; transform: translateX(50%); gap: 15px; }
             .social-icon { width: 50px; height: 50px; font-size: 22px; }
         }
+
+        /* ===== Product Detail Modal ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .modal-overlay.show { display: flex; align-items: flex-start; justify-content: center; }
+        .modal-box {
+            background: white;
+            max-width: 900px;
+            width: 100%;
+            margin: auto;
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+        .modal-close {
+            position: absolute;
+            top: 14px; right: 18px;
+            background: none; border: none;
+            font-size: 26px; cursor: pointer;
+            color: #999; z-index: 10;
+            line-height: 1;
+        }
+        .modal-close:hover { color: #333; }
+        .modal-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        .modal-images {
+            background: #f8f9fa;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .modal-main-img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: contain;
+            background: white;
+            border: 1px solid #eee;
+            padding: 10px;
+        }
+        .modal-thumbs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .modal-thumb {
+            width: 60px; height: 60px;
+            object-fit: contain;
+            border: 2px solid transparent;
+            cursor: pointer;
+            background: white;
+            padding: 4px;
+            transition: border-color 0.2s;
+        }
+        .modal-thumb.active, .modal-thumb:hover { border-color: var(--primary-color); }
+        .modal-info {
+            padding: 36px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .modal-category {
+            font-family: 'Oswald', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+        .modal-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .modal-specs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px 0;
+            border-top: 2px solid #f0f0f0;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+        .spec-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 14px;
+        }
+        .spec-icon {
+            width: 32px; height: 32px;
+            background: var(--primary-color);
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .spec-content {}
+        .spec-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            font-family: 'Oswald', sans-serif;
+        }
+        .spec-value {
+            font-size: 14px;
+            color: #1a1a1a;
+            font-weight: 500;
+            margin-top: 1px;
+        }
+        .modal-desc {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.75;
+            margin-bottom: 24px;
+        }
+        .modal-inquire {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.25s;
+            text-decoration: none;
+            width: 100%;
+        }
+        .modal-inquire:hover { background: #c0392b; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(214,43,43,0.35); }
+
+        /* Contact form inside modal */
+        .modal-contact {
+            padding: 24px 32px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+        .modal-contact h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+        }
+        .modal-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .modal-form-group { display: flex; flex-direction: column; gap: 5px; }
+        .modal-form-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-family: 'Oswald', sans-serif; }
+        .modal-form-group input, .modal-form-group textarea {
+            padding: 10px 12px;
+            border: 1.5px solid #ddd;
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .modal-form-group input:focus, .modal-form-group textarea:focus { border-color: var(--primary-color); }
+        .modal-form-group textarea { min-height: 80px; resize: vertical; }
+        .modal-send-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-top: 4px;
+        }
+        .modal-send-btn:hover { background: #0a3a6e; }
+
+        @media (max-width: 700px) {
+            .modal-inner { grid-template-columns: 1fr; }
+            .modal-info { padding: 24px 20px; }
+            .modal-contact { padding: 20px; }
+            .modal-form-row { grid-template-columns: 1fr; }
+            .modal-title { font-size: 20px; }
+        }
     </style>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MR58CNED51"></script>
@@ -469,8 +673,9 @@
                 .replace(/\|/g, '')
                 .trim();
 
+            var pData = encodeURIComponent(JSON.stringify(p));
             return `
-            <div class="product-card" data-category="${p.category}">
+            <div class="product-card" data-category="${p.category}" onclick="openProduct(${p.id})" style="cursor:pointer;">
                 <div class="product-img-wrap">
                     ${firstImg
                         ? `<img src="${firstImg}" alt="${p.name}" loading="lazy">`
@@ -484,10 +689,11 @@
                         ${p.oem ? `<div class="meta-row"><i class="fas fa-barcode"></i><span><strong>OEM:</strong> ${p.oem}</span></div>` : ''}
                         ${brandInfo ? `<div class="meta-row"><i class="fas fa-car"></i><span><strong>Brand:</strong> ${brandInfo}</span></div>` : ''}
                         ${compatInfo ? `<div class="meta-row"><i class="fas fa-check-circle"></i><span><strong>Fits:</strong> ${compatInfo}</span></div>` : ''}
-                        ${specsInfo ? `<div class="meta-row"><i class="fas fa-cog"></i><span><strong>Specs:</strong> ${specsInfo}</span></div>` : ''}
                     </div>
-                    ${cleanDesc ? `<div class="product-desc">${cleanDesc}</div>` : ''}
-                    <a href="index.html#contact" class="inquire-btn">Inquire Now</a>
+                    ${cleanDesc ? `<div class="product-desc">${cleanDesc.substring(0,100)}...</div>` : ''}
+                    <button class="inquire-btn" onclick="event.stopPropagation(); openProduct(${p.id})">
+                        <i class="fas fa-info-circle"></i> View Details
+                    </button>
                 </div>
             </div>`;
         }).join('');
@@ -510,7 +716,6 @@
         var params = new URLSearchParams(window.location.search);
         var cat = params.get('cat');
         if (cat) {
-            // Auto click the matching filter button
             var btn = document.querySelector('.filter-btn[data-cat="' + cat + '"]');
             if (btn) {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -520,7 +725,152 @@
         }
     })();
     renderProducts();
+
+    // ===== Product Detail Modal =====
+    var categoryLabelsModal = { japanese:'🇯🇵 Japanese', korean:'🇰🇷 Korean', german:'🇩🇪 German', chinese:'🇨🇳 Chinese', oil:'🛢️ Engine Oil', other:'📦 Other' };
+
+    function openProduct(id) {
+        var p = productsData.find(function(x) { return x.id === id; });
+        if (!p) return;
+
+        // Images
+        var images = p.image ? p.image.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
+        var mainImg = document.getElementById('modalMainImg');
+        var thumbsEl = document.getElementById('modalThumbs');
+
+        if (images.length > 0) {
+            mainImg.src = images[0];
+            mainImg.style.display = 'block';
+            thumbsEl.innerHTML = images.map(function(img, i) {
+                return '<img class="modal-thumb' + (i===0?' active':'') + '" src="' + img + '" onclick="switchModalImg(this, \'' + img + '\')">';
+            }).join('');
+        } else {
+            mainImg.src = '';
+            mainImg.style.display = 'none';
+            thumbsEl.innerHTML = '<div style="width:100%;aspect-ratio:1;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#ccc;flex-direction:column;gap:10px;"><i class="fas fa-car" style="font-size:48px;"></i><span style="font-size:13px;">Image Coming Soon</span></div>';
+        }
+
+        // Info
+        document.getElementById('modalCategory').textContent = categoryLabelsModal[p.category] || p.category;
+        document.getElementById('modalTitle').textContent = p.name;
+
+        // Parse description for specs
+        var desc = p.description || '';
+        var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
+        var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
+        var specsMatch = desc.match(/Specs:\s*([^.]+)/i);
+        var brandInfo = brandMatch ? brandMatch[1].trim() : '';
+        var compatInfo = compatMatch ? compatMatch[1].trim() : '';
+        var specsInfo = specsMatch ? specsMatch[1].trim() : '';
+        var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi,'').replace(/Compatible with:\s*[^.]+\./gi,'').replace(/Specs:\s*[^.]+\./gi,'').replace(/\|/g,'').trim();
+
+        var specsHtml = '';
+        if (p.oem) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-barcode"></i></div><div class="spec-content"><div class="spec-label">OEM Number</div><div class="spec-value">' + p.oem + '</div></div></div>';
+        if (brandInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-car"></i></div><div class="spec-content"><div class="spec-label">Brand</div><div class="spec-value">' + brandInfo + '</div></div></div>';
+        if (compatInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-check-circle"></i></div><div class="spec-content"><div class="spec-label">Compatible With</div><div class="spec-value">' + compatInfo + '</div></div></div>';
+        if (specsInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-cog"></i></div><div class="spec-content"><div class="spec-label">Specifications</div><div class="spec-value">' + specsInfo + '</div></div></div>';
+        document.getElementById('modalSpecs').innerHTML = specsHtml;
+        document.getElementById('modalDesc').textContent = cleanDesc;
+
+        // Pre-fill message
+        document.getElementById('modalProductRef').value = p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '');
+        document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '') + '. Please provide price and availability.';
+
+        // Show modal
+        document.getElementById('productModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function switchModalImg(thumb, src) {
+        document.getElementById('modalMainImg').src = src;
+        document.querySelectorAll('.modal-thumb').forEach(function(t){ t.classList.remove('active'); });
+        thumb.classList.add('active');
+    }
+
+    function closeProductModal() {
+        document.getElementById('productModal').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    function closeModal(e) {
+        if (e.target === document.getElementById('productModal')) closeProductModal();
+    }
+
+    // Handle modal form submit
+    document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        var btn = this.querySelector('.modal-send-btn');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        btn.disabled = true;
+        try {
+            var resp = await fetch(this.action, { method:'POST', body:formData, headers:{'Accept':'application/json'} });
+            if (resp.ok) {
+                btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+                btn.style.background = '#2ecc71';
+                this.reset();
+                setTimeout(function(){ closeProductModal(); }, 1500);
+            } else {
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+                btn.disabled = false;
+                alert('Something went wrong. Please try again.');
+            }
+        } catch(err) {
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+            btn.disabled = false;
+        }
+    });
+
+    // ESC key to close
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeProductModal(); });
     </script>
+
+
+<!-- Product Detail Modal -->
+<div class="modal-overlay" id="productModal" onclick="closeModal(event)">
+    <div class="modal-box" id="modalBox">
+        <button class="modal-close" onclick="closeProductModal()">&times;</button>
+        <div class="modal-inner">
+            <div class="modal-images">
+                <img id="modalMainImg" class="modal-main-img" src="" alt="">
+                <div class="modal-thumbs" id="modalThumbs"></div>
+            </div>
+            <div class="modal-info">
+                <div class="modal-category" id="modalCategory"></div>
+                <div class="modal-title" id="modalTitle"></div>
+                <div class="modal-specs" id="modalSpecs"></div>
+                <div class="modal-desc" id="modalDesc"></div>
+                <a id="modalInquireBtn" class="modal-inquire">
+                    <i class="fas fa-paper-plane"></i> Send Inquiry
+                </a>
+            </div>
+        </div>
+        <!-- Contact Form -->
+        <div class="modal-contact">
+            <h3><i class="fas fa-envelope"></i> Send Us a Message</h3>
+            <form id="modalContactForm" action="https://formspree.io/f/xyknoyzw" method="POST">
+                <input type="hidden" id="modalProductRef" name="product_ref" value="">
+                <div class="modal-form-row">
+                    <div class="modal-form-group">
+                        <label>Your Name</label>
+                        <input type="text" name="name" required placeholder="John Smith">
+                    </div>
+                    <div class="modal-form-group">
+                        <label>Your Email</label>
+                        <input type="email" name="email" required placeholder="john@example.com">
+                    </div>
+                </div>
+                <div class="modal-form-group" style="margin-bottom:12px;">
+                    <label>Message (OEM number & quantity)</label>
+                    <textarea name="message" id="modalMessage" placeholder="Please include OEM number and required quantity..."></textarea>
+                </div>
+                <button type="submit" class="modal-send-btn">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

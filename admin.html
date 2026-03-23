@@ -1554,13 +1554,23 @@ async function handleBatchExcel(input) {
                     var urlSlug = '';
                     var urlOem = '';
                     try {
-                        var urlMatch = url.match(/product-detail\/([^_?&#/]+)/);
+                        // Get product title slug from URL
+                        var urlMatch = url.match(/product-detail\/([^?#]+)/);
                         if (urlMatch) {
-                            urlSlug = decodeURIComponent(urlMatch[1]).replace(/-/g, ' ');
+                            var rawSlug = urlMatch[1];
+                            // Remove the alibaba product ID (last _XXXXXXXXXX part)
+                            var slugClean = rawSlug.replace(/_\d{10,}.*$/, '');
+                            urlSlug = slugClean.replace(/-/g, ' ').replace(/_/g, ' ').trim();
                         }
-                        // Extract OEM from URL numbers pattern
-                        var oemMatch = url.match(/_([A-Z0-9]{6,})/);
-                        if (oemMatch) urlOem = oemMatch[1];
+                        // Extract OEM - look for "Replaces-XXXXX" pattern
+                        var replaceMatch = url.match(/Replaces[-_]([A-Z0-9-]+)/i);
+                        if (replaceMatch) {
+                            urlOem = replaceMatch[1];
+                        } else {
+                            // Try number patterns like 19070-B1020
+                            var oemMatch = url.match(/([A-Z0-9]{4,}-[A-Z0-9]{3,})/i);
+                            if (oemMatch) urlOem = oemMatch[1];
+                        }
                     } catch(e) {}
 
                     var prompt = 'You are an expert auto parts specialist with deep knowledge of OEM part numbers and vehicle compatibility.' +
@@ -1593,12 +1603,15 @@ async function handleBatchExcel(input) {
                         },
                         body: JSON.stringify({
                             model: 'claude-haiku-4-5-20251001',
-                            max_tokens: 300,
+                            max_tokens: 600,
                             messages: [{ role: 'user', content: prompt }]
                         })
                     });
 
-                    if (!resp.ok) throw new Error('API error ' + resp.status);
+                    if (!resp.ok) {
+                        var errBody = await resp.json().catch(function(){return {};});
+                        throw new Error('API error ' + resp.status + ': ' + (errBody.error && errBody.error.message ? errBody.error.message : JSON.stringify(errBody)));
+                    }
                     var respData = await resp.json();
                     var text = respData.content[0].text.trim();
                     var jsonMatch = text.match(/\{[\s\S]*\}/);
