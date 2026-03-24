@@ -842,6 +842,12 @@
                             <button onclick="importAiToProducts()" style="padding:8px 16px;background:#2ecc71;color:white;border:none;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:6px;">
                                 <i class="fas fa-check"></i> 全部导入商品管理
                             </button>
+                            <button onclick="syncToGithub()" style="padding:8px 16px;background:#0f4c81;color:white;border:none;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                                <i class="fas fa-cloud-upload-alt"></i> 同步到 GitHub
+                            </button>
+                            <button onclick="openGithubSettings()" style="padding:8px 12px;background:transparent;border:1px solid #0f4c81;font-family:Oswald,sans-serif;font-size:11px;cursor:pointer;color:#0f4c81;display:flex;align-items:center;gap:4px;">
+                                <i class="fas fa-cog"></i> GitHub 设置
+                            </button>
                             <button onclick="clearAiList()" style="padding:8px 12px;background:transparent;border:1px solid #ddd;font-family:Oswald,sans-serif;font-size:11px;cursor:pointer;color:#888;">
                                 <i class="fas fa-trash"></i> 清空
                             </button>
@@ -1895,24 +1901,56 @@ function removeAiProduct(index) {
     renderAiList();
 }
 
-function importAiToProducts() {
-    if (aiProducts.length === 0) { showToast('⚠ 请先添加产品', '#e74c3c'); return; }
+async function importAiToProducts() {
+    if (aiProducts.length === 0) { showToast("⚠ 请先添加产品", "#e74c3c"); return; }
+
     var existing = [];
-    try { existing = JSON.parse(localStorage.getItem('carval_products') || '[]'); } catch(e) {}
+    try { existing = JSON.parse(localStorage.getItem("carval_products") || "[]"); } catch(e) {}
     var maxId = existing.length > 0 ? Math.max.apply(null, existing.map(function(p){ return p.id||0; })) : 0;
+
     var newProds = aiProducts.map(function(item, i) {
         return { id: maxId+i+1, name: item.name, category: item.category, oem: item.oem, description: item.description, image: item.image };
     });
+
     var merged = existing.concat(newProds);
-    localStorage.setItem('carval_products', JSON.stringify(merged));
+    
+    // 调用后端 API 保存产品数据
+    try {
+        var response = await fetch("/api/save-products", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ products: merged })
+        });
+
+        if (!response.ok) {
+            throw new Error("后端保存失败：" + response.status);
+        }
+
+        var data = await response.json();
+        showToast("✓ 产品已成功同步到服务器！");
+
+        // 清空本地 AI 助手列表
+        aiProducts = [];
+        renderAiList();
+        // 刷新产品列表和统计数据
+        // 注意：这里不再需要手动 generateCode()，因为后端已经更新了文件
+        // 刷新页面或重新加载数据以反映最新更改
+        // 为了简化，这里直接刷新整个页面，实际应用中可以只重新加载产品数据
+        setTimeout(function() { location.reload(); }, 1500); 
+
+    } catch (error) {
+        showToast("❌ 同步到服务器失败：" + error.message, "#e74c3c");
+        console.error("Error saving products to backend:", error);
+        // 如果保存失败，仍然保留本地列表，以便用户可以手动复制或重试
+    }
+
+    // 无论成功与否，都更新本地 localStorage 和 UI
+    localStorage.setItem("carval_products", JSON.stringify(merged));
     products = merged;
     nextId = Math.max.apply(null, merged.map(function(p){ return p.id; })) + 1;
     sessionAdded += newProds.length;
-    renderList(); generateCode(); updateStats();
-    showToast('✓ 已导入 ' + newProds.length + ' 条产品！');
-    aiProducts = [];
-    renderAiList();
-    setTimeout(function() { switchTab('products', document.querySelector('.tab-btn')); }, 1200);
+    renderList(); updateStats();
+    setTimeout(function() { switchTab("products", document.querySelector(".tab-btn")); }, 1200);
 }
 
 function clearAiList() {
@@ -2426,6 +2464,125 @@ async function loadLanguages() {
         document.getElementById('langBody').innerHTML=rows.map(r=>{const cnt=parseInt(r.metricValues[0].value);return `<tr><td>${r.dimensionValues[0].value}</td><td>${fmt(cnt)}</td><td>${total>0?((cnt/total)*100).toFixed(1):0}%</td></tr>`;}).join('');
         document.getElementById('langLoading').style.display='none'; document.getElementById('langTable').style.display='table';
     } catch(e){ document.getElementById('langLoading').innerHTML='<div class="error-msg">语言数据加载失败</div>'; }
+}
+
+// ===== GitHub 同步功能 =====
+var githubConfig = {
+    token: localStorage.getItem('github_token') || '',
+    owner: localStorage.getItem('github_owner') || '',
+    repo: localStorage.getItem('github_repo') || '',
+    branch: localStorage.getItem('github_branch') || 'main'
+};
+
+function openGithubSettings() {
+    var modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;';
+    modal.innerHTML = `
+        <div style="background:white;padding:30px;border-radius:8px;max-width:500px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.2);">
+            <h2 style="margin-bottom:20px;font-family:Oswald,sans-serif;color:#0f4c81;">GitHub 配置</h2>
+            <div style="margin-bottom:15px;">
+                <label style="display:block;font-size:12px;color:#666;margin-bottom:5px;font-weight:500;">GitHub Token</label>
+                <input type="password" id="ghToken" value="${githubConfig.token}" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:13px;font-family:monospace;">
+                <small style="display:block;color:#999;margin-top:5px;">Token 需要 repo 权限，<a href="https://github.com/settings/tokens" target="_blank" style="color:#0f4c81;text-decoration:none;">Click here to create</a></small>
+            </div>
+            <div style="margin-bottom:15px;">
+                <label style="display:block;font-size:12px;color:#666;margin-bottom:5px;font-weight:500;">GitHub Owner (Username)</label>
+                <input type="text" id="ghOwner" value="${githubConfig.owner}" placeholder="your-username" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:13px;">
+            </div>
+            <div style="margin-bottom:15px;">
+                <label style="display:block;font-size:12px;color:#666;margin-bottom:5px;font-weight:500;">Repository Name</label>
+                <input type="text" id="ghRepo" value="${githubConfig.repo}" placeholder="your-repo-name" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:13px;">
+            </div>
+            <div style="margin-bottom:20px;">
+                <label style="display:block;font-size:12px;color:#666;margin-bottom:5px;font-weight:500;">Branch</label>
+                <input type="text" id="ghBranch" value="${githubConfig.branch}" placeholder="main" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:13px;">
+            </div>
+            <div style="display:flex;gap:10px;">
+                <button onclick="saveGithubConfig()" style="flex:1;padding:10px;background:#0f4c81;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:500;">Save</button>
+                <button onclick="this.closest('div').parentElement.remove()" style="flex:1;padding:10px;background:#f0f0f0;color:#333;border:none;border-radius:4px;cursor:pointer;font-weight:500;">Cancel</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    modal.onclick = function(e) { if(e.target === modal) modal.remove(); };
+}
+
+function saveGithubConfig() {
+    githubConfig.token = document.getElementById('ghToken').value.trim();
+    githubConfig.owner = document.getElementById('ghOwner').value.trim();
+    githubConfig.repo = document.getElementById('ghRepo').value.trim();
+    githubConfig.branch = document.getElementById('ghBranch').value.trim() || 'main';
+    
+    localStorage.setItem('github_token', githubConfig.token);
+    localStorage.setItem('github_owner', githubConfig.owner);
+    localStorage.setItem('github_repo', githubConfig.repo);
+    localStorage.setItem('github_branch', githubConfig.branch);
+    
+    showToast('✓ GitHub 配置已保存');
+    document.querySelector('div[style*="position:fixed"]').remove();
+}
+
+async function syncToGithub() {
+    if (!githubConfig.token || !githubConfig.owner || !githubConfig.repo) {
+        showToast('⚠ 请先配置 GitHub 信息', '#e74c3c');
+        openGithubSettings();
+        return;
+    }
+    
+    var btn = event.target;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 同步中...';
+    
+    try {
+        // 生成 products.js 内容
+        var productsContent = 'var products = ' + JSON.stringify(products, null, 2) + ';\n';
+        
+        // 永久化数据到 localStorage
+        localStorage.setItem('carval_products', JSON.stringify(products));
+        
+        // 调用 GitHub API 上传文件
+        var url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/products.js`;
+        
+        // 需要先获取文件的 SHA 值（用于更新）
+        var getResp = await fetch(url, {
+            headers: { 'Authorization': 'token ' + githubConfig.token, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        
+        var sha = null;
+        if (getResp.ok) {
+            var fileData = await getResp.json();
+            sha = fileData.sha;
+        }
+        
+        // 上传或更新文件
+        var updateResp = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'token ' + githubConfig.token,
+                'Content-Type': 'application/json',
+                'Accept': 'application/vnd.github.v3+json'
+            },
+            body: JSON.stringify({
+                message: '更新产品数据 - ' + new Date().toLocaleString('zh-CN'),
+                content: btoa(unescape(encodeURIComponent(productsContent))),
+                sha: sha,
+                branch: githubConfig.branch
+            })
+        });
+        
+        if (updateResp.ok) {
+            showToast('✓ 已成功同步到 GitHub！网站即将更新');
+        } else {
+            var errData = await updateResp.json();
+            throw new Error(errData.message || 'GitHub API 错误');
+        }
+    } catch(err) {
+        showToast('❌ 同步失败：' + err.message, '#e74c3c');
+        console.error(err);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> 同步到 GitHub';
+    }
 }
 
 function showToast(msg, color='#2ecc71') {

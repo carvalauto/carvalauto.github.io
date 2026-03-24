@@ -639,12 +639,14 @@
         <p>Professional Auto Parts Manufacturer &amp; Global Supplier</p>
     </footer>
 
+    <script src="products.js"></script>
     <script>
     // ============================================================
-    // 商品数据库 — 在这里添加/编辑商品
-    // 每个商品格式如下，复制粘贴即可新增
+    // 使用从 products.js 加载的产品数据
+    // 如果 products.js 中没有数据，使用下面的默认数据
     // ============================================================
-    const productsData = [
+    if (typeof products === 'undefined' || !Array.isArray(products) || products.length === 0) {
+        var products = [
         // 示例商品（可删除）
         {
             id: 1,
@@ -670,24 +672,11 @@
             description: "Premium oil filter for BMW 3 Series (F30/G20). Meets OEM specifications. Ensures clean engine oil circulation and extends engine life.",
             image: ""
         }
-        //         {
-            id: 1,
-            name: "Ignition Coil for Toyota Replaces 19070",
-            category: "japanese",
-            oem: "19070",
-            description: "Product from Alibaba. Please verify details.",
-            image: "19070 - B1020 (1).png, 19070 - B1020 (2).png, 19070 - B1020 (3).png, 19070 - B1020 (4).png, 19070 - B1020 (5).png"
-        },
-        {
-            id: 2,
-            name: "Ignition Coil for Suzuki Replaces 33400",
-            category: "japanese",
-            oem: "33400",
-            description: "Product from Alibaba. Please verify details.",
-            image: "33400 - 51K00 (1).png, 33400 - 51K00 (2).png, 33400 - 51K00 (3).png, 33400 - 51K00 (4).png"
-        }在这里继续添加更多商品...
-    ];
+        // 在这里继续添加更多商品...
+        ];
+    }
     // ============================================================
+    const productsData = products;
 
     let currentFilter = 'all';
     let currentSearch = '';
