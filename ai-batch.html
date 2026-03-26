@@ -38,14 +38,14 @@
 <body>
 
 <div class="card">
-    <div class="card-title">⚙️ GitHub配置（已为你预设）</div>
-    <input type="text" id="github_owner" value="CarvalAuto" placeholder="GitHub用户名">
+    <div class="card-title">⚙️ GitHub配置（已预设）</div>
+    <input type="text" id="github_owner" value="CarvalAuto" placeholder="GitHub用户名" readonly>
     <br><br>
-    <input type="text" id="github_repo" value="carvalauto.github.io" placeholder="仓库名">
+    <input type="text" id="github_repo" value="carvalauto.github.io" placeholder="仓库名" readonly>
     <br><br>
-    <input type="text" id="github_token" placeholder="填写你的Token">
+    <input type="text" id="github_token" value="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" placeholder="GitHub Token">
     <br><br>
-    <input type="text" id="github_path" value="products.json" placeholder="保存文件名">
+    <input type="text" id="github_path" value="products.json" placeholder="保存文件名" readonly>
 </div>
 
 <div class="card">
@@ -53,25 +53,26 @@
     <div class="form-group">
         <label>📄 上传Excel模板（第一列放链接）</label>
         <input type="file" id="excelFile" accept=".xlsx,.xls">
-        <button class="btn btn-primary" onclick="importExcel()" style="margin-top:10px">
-            <i class="fas fa-file-excel"></i> 导入Excel
+        <div class="tip">支持：xlsx / xls，表格只需【第一列放链接】</div>
+        <button class="btn btn-primary" onclick="importExcel()" style="margin-top:10px;">
+            <i class="fas fa-file-excel"></i> 从Excel导入并分析
         </button>
     </div>
-    <div style="margin:16px 0;border-top:1px dashed #eee"></div>
+    <div style="margin:16px 0; border-top:1px dashed #eee;"></div>
     <div class="form-group">
-        <label>✍️ 或手动输入</label>
-        <textarea id="productLinks"></textarea>
+        <label>✍️ 或者手动输入（每行一个产品链接）</label>
+        <textarea id="productLinks" placeholder="https://example.com/product1"></textarea>
     </div>
     <button class="btn btn-success" onclick="analyzeByAI()">
         <i class="fas fa-robot"></i> 开始AI分析
     </button>
     <button class="btn btn-danger" onclick="pushToGitHub()">
-        <i class="fab fa-github"></i> 推送到GitHub
+        <i class="fab fa-github"></i> 分析完直接推送到GitHub
     </button>
 </div>
 
 <div class="card">
-    <div class="card-title">📦 商品列表</div>
+    <div class="card-title">📦 分析结果列表 + 图片上传</div>
     <div class="stats">总数：<span id="totalCount">0</span></div>
     <div id="productList" class="product-list"></div>
 </div>
@@ -82,141 +83,204 @@ let allProducts = [];
 // 导入Excel
 function importExcel() {
     const file = document.getElementById('excelFile').files[0];
-    if(!file){showToast("请选择文件","error");return}
+    if (!file) {
+        showToast("请先选择Excel文件", "error");
+        return;
+    }
     const reader = new FileReader();
-    reader.onload = e => {
-        try{
-            const wb = XLSX.read(new Uint8Array(e.target.result),{type:"array"});
-            const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1});
-            const links = json.map(r=>r[0]).filter(i=>i&&i.toString().startsWith("http"));
-            document.getElementById('productLinks').value = links.join("\n");
-            showToast("导入成功："+links.length+"条");
-        }catch(e){showToast("Excel失败","error")}
+    reader.onload = function(e) {
+        try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+            const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+            const links = json.map(row => row[0]).filter(i => i && typeof i === 'string' && i.startsWith('http'));
+            if (links.length === 0) {
+                showToast("未识别到有效链接", "error");
+                return;
+            }
+            document.getElementById('productLinks').value = links.join('\n');
+            showToast(`Excel导入成功，共 ${links.length} 条链接`);
+        } catch (e) {
+            showToast("Excel解析失败：" + e.message, "error");
+        }
     };
     reader.readAsArrayBuffer(file);
 }
 
-// 分析（兼容你旧网站格式）
+// AI分析（兼容旧网站格式）
 async function analyzeByAI() {
     const links = document.getElementById('productLinks').value.trim();
-    if(!links){showToast("请输入链接","error");return}
+    if (!links) {
+        showToast("请输入产品链接", "error");
+        return;
+    }
     const btn = document.querySelector('.btn-success');
     const txt = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 分析中…';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 分析中...';
     btn.disabled = true;
 
-    try{
-        // 读取你原来的商品，不删除！
-        let old = [];
-        try{
-            const res = await fetch("products.json?t="+Date.now());
-            if(res.ok) old = await res.json();
-        }catch{}
+    try {
+        // 读取现有商品，不删除
+        let existingProducts = [];
+        try {
+            const res = await fetch('products.json?t=' + Date.now());
+            if (res.ok) existingProducts = await res.json();
+        } catch (e) {
+            console.log("无旧数据，新建列表");
+        }
 
-        const newProducts = links.split("\n").filter(i=>i.trim()).map((link,i)=>({
-            name: "Auto Part "+(i+1),
-            category: "japanese",
-            oem: "OEM-"+Math.random().toString(36).substr(2,9),
-            desc: "High quality auto part",
-            image: "",
-            url: link
-        }));
+        const linkArr = links.split('\n').filter(i => i.trim());
+        const newProducts = linkArr.map((link, i) => {
+            let category = "japanese";
+            if (link.includes("german") || link.includes("bmw")) category = "german";
+            if (link.includes("korean") || link.includes("hyundai")) category = "korean";
+            if (link.includes("chinese") || link.includes("byd")) category = "chinese";
+            if (link.includes("oil") || link.includes("engine")) category = "engine_oil";
 
-        allProducts = [...old, ...newProducts];
-        render();
-        localStorage.setItem("aiData",JSON.stringify(allProducts));
-        showToast("完成，共"+allProducts.length+"个商品");
-    }catch(e){showToast("失败："+e.message,"error")}
-    finally{btn.innerHTML=txt;btn.disabled=false}
+            return {
+                name: `Auto Part ${i+1}`,
+                category: category,
+                oem: `OEM-${Date.now()+i}`,
+                desc: "High-quality auto part, OEM replacement.",
+                image: "",
+                url: link
+            };
+        });
+
+        allProducts = [...existingProducts, ...newProducts];
+        renderProductList(allProducts);
+        localStorage.setItem("aiProductData", JSON.stringify(allProducts));
+        showToast(`AI分析完成，新增 ${newProducts.length} 个商品，总共 ${allProducts.length} 个`);
+    } catch (error) {
+        showToast("分析失败：" + error.message, "error");
+    } finally {
+        btn.innerHTML = txt;
+        btn.disabled = false;
+    }
 }
 
 // 上传图片
-function uploadImage(i){
-    const inp = document.createElement("input");
-    inp.type="file";inp.accept="image/*";
-    inp.onchange=e=>{
-        const f = e.target.files[0];
-        if(!f)return;
-        const r = new FileReader();
-        r.onload=ev=>{
-            allProducts[i].image = ev.target.result;
-            localStorage.setItem("aiData",JSON.stringify(allProducts));
-            render();
+function uploadImage(index) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            allProducts[index].image = ev.target.result;
+            localStorage.setItem("aiProductData", JSON.stringify(allProducts));
+            renderProductList(allProducts);
             showToast("图片上传成功");
         };
-        r.readAsDataURL(f);
+        reader.readAsDataURL(file);
     };
-    inp.click();
+    input.click();
 }
 
 // 推送到GitHub
-async function pushToGitHub(){
-    const o = document.getElementById('github_owner').value;
-    const r = document.getElementById('github_repo').value;
-    const t = document.getElementById('github_token').value;
-    const p = document.getElementById('github_path').value;
+async function pushToGitHub() {
+    const owner = document.getElementById('github_owner').value.trim();
+    const repo = document.getElementById('github_repo').value.trim();
+    const token = document.getElementById('github_token').value.trim();
+    const path = document.getElementById('github_path').value.trim();
 
-    if(!o||!r||!t||!p){showToast("请填完整配置","error");return}
-    if(!allProducts.length){showToast("无数据","error");return}
+    if (!owner || !repo || !token || !path) {
+        showToast("请先填写完整GitHub配置", "error");
+        return;
+    }
+    if (allProducts.length === 0) {
+        showToast("暂无数据可推送", "error");
+        return;
+    }
 
     const btn = document.querySelector('.btn-danger');
     const txt = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 推送中…';
-    btn.disabled=true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 推送中...';
+    btn.disabled = true;
 
-    try{
+    try {
         let sha = "";
-        const get = await fetch(`https://api.github.com/repos/${o}/${r}/contents/${p}`,{
-            headers:{Authorization:"token "+t}
+        const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+            headers: { Authorization: `token ${token}` }
         });
-        if(get.ok) sha = (await get.json()).sha;
+        if (getRes.ok) {
+            const data = await getRes.json();
+            sha = data.sha;
+        }
 
-        const content = btoa(unescape(encodeURIComponent(JSON.stringify(allProducts,null,2))));
-        const up = await fetch(`https://api.github.com/repos/${o}/${r}/contents/${p}`,{
-            method:"PUT",
-            headers:{Authorization:"token "+t,"Content-Type":"application/json"},
-            body:JSON.stringify({message:"AI批量更新",content,sha})
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(allProducts, null, 2))));
+        const uploadRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `token ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: "AI批量更新商品数据",
+                content: content,
+                sha: sha
+            })
         });
 
-        if(!up.ok)throw new Error("推送失败");
-        showToast("✅ 推送成功！你的网站已同步");
-    }catch(e){showToast("❌ 失败："+e.message,"error")}
-    finally{btn.innerHTML=txt;btn.disabled=false}
+        if (!uploadRes.ok) throw new Error("GitHub推送失败");
+        showToast("✅ 成功推送到GitHub！你的网站已同步");
+    } catch (e) {
+        showToast("❌ 推送失败：" + e.message, "error");
+    } finally {
+        btn.innerHTML = txt;
+        btn.disabled = false;
+    }
 }
 
-// 渲染
-function render(){
+// 渲染商品列表
+function renderProductList(products) {
     const el = document.getElementById('productList');
-    if(!allProducts.length){el.innerHTML='<div class="empty-list">暂无商品</div>';return}
+    if (!products.length) {
+        el.innerHTML = '<div class="empty-list"><i class="fas fa-box"></i><p>暂无商品</p></div>';
+        return;
+    }
     let html = "";
-    allProducts.forEach((p,i)=>{
-        html+=`
+    products.forEach((p, i) => {
+        html += `
         <div class="product-item">
-            ${p.image?`<img src="${p.image}" class="product-img">`:`<div class="product-thumb-placeholder" onclick="uploadImage(${i})"><i class="fas fa-camera"></i></div>`}
+            ${p.image ? `<img src="${p.image}" class="product-img">` : `<div class="product-thumb-placeholder" onclick="uploadImage(${i})"><i class="fas fa-camera"></i></div>`}
             <div class="product-info">
                 <div class="pname">${p.name}</div>
-                <div class="pmeta"><span>${p.category}</span><span>${p.oem}</span></div>
+                <div class="pmeta">
+                    <span>${p.category}</span>
+                    <span>${p.oem}</span>
+                </div>
             </div>
-            <button class="btn btn-primary" onclick="uploadImage(${i})"><i class="fas fa-image"></i></button>
+            <button class="btn btn-primary" onclick="uploadImage(${i})">
+                <i class="fas fa-image"></i> 传图
+            </button>
         </div>`;
     });
-    el.innerHTML=html;
-    document.getElementById('totalCount').textContent=allProducts.length;
+    el.innerHTML = html;
+    document.getElementById('totalCount').textContent = products.length;
 }
 
-// 提示
-function showToast(m,t="success"){
-    const to=document.createElement("div");
-    to.className="toast";to.style.background=t==="error"?"#ef4444":"#10b981";
-    to.textContent=m;document.body.appendChild(to);
-    setTimeout(()=>to.classList.add("show"),10);
-    setTimeout(()=>{to.classList.remove("show");setTimeout(()=>to.remove(),400)},3000);
+// 提示框
+function showToast(msg, type = "success") {
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.style.background = type === "error" ? "#ef4444" : "#10b981";
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.add("show"), 10);
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 400);
+    }, 3000);
 }
 
-// 初始化
-window.onload=()=>{
-    allProducts=JSON.parse(localStorage.getItem("aiData")||"[]");
-    render();
+// 初始化加载
+window.onload = function() {
+    allProducts = JSON.parse(localStorage.getItem("aiProductData") || "[]");
+    renderProductList(allProducts);
 }
 </script>
 </body>
