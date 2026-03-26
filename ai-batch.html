@@ -3,437 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI产品分析 + Excel导入 + 图片上传 → 自动推送到GitHub</title>
+    <title>AI批量分析工具</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
-        :root {
-            --primary: #3b82f6;
-            --success: #10b981;
-            --accent: #ef4444;
-            --gray: #f3f4f6;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        body {
-            background: #f9fafb;
-            padding: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .card-title {
-            font-size: 18px;
-            margin-bottom: 16px;
-            color: #111827;
-            font-weight: bold;
-        }
-        .form-group {
-            margin-bottom: 12px;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-            color: #374151;
-        }
-        textarea, input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        textarea {
-            min-height: 140px;
-            resize: vertical;
-        }
-        .btn {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            transition: all 0.2s;
-        }
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-        .btn-danger {
-            background: var(--accent);
-            color: white;
-        }
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        .product-list {
-            margin-top: 16px;
-        }
-        .product-item {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            gap: 12px;
-        }
-        .product-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 6px;
-        }
-        .product-thumb-placeholder {
-            width: 50px;
-            height: 50px;
-            background: var(--gray);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #9ca3af;
-        }
-        .product-info {
-            flex: 1;
-        }
-        .pname {
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-        .pmeta {
-            font-size: 12px;
-            color: #6b7280;
-            display: flex;
-            gap: 10px;
-        }
-        .empty-list {
-            text-align: center;
-            padding: 30px;
-            color: #9ca3af;
-        }
-        .stats {
-            margin-top: 10px;
-            font-size: 13px;
-            color: #6b7280;
-        }
-        .tip {
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 6px;
-        }
-        .img-upload {
-            margin-top: 6px;
-        }
-
-        /* 提示框 */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 12px 20px;
-            color: white;
-            border-radius: 6px;
-            font-size: 14px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s;
-            z-index: 9999;
-        }
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        :root {--primary:#3b82f6;--success:#10b981;--accent:#ef4444;--gray:#f3f4f6;}
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+        body{background:#f9fafb;padding:20px;max-width:1000px;margin:0 auto}
+        .card{background:white;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+        .card-title{font-size:18px;margin-bottom:16px;color:#111827;font-weight:bold}
+        .form-group{margin-bottom:12px}
+        label{display:block;margin-bottom:6px;font-weight:500;color:#374151}
+        textarea,input{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:14px}
+        textarea{min-height:140px;resize:vertical}
+        .btn{padding:10px 16px;border:none;border-radius:6px;cursor:pointer;font-size:14px;margin-right:8px;margin-bottom:8px;transition:all 0.2s}
+        .btn-primary{background:var(--primary);color:white}
+        .btn-success{background:var(--success);color:white}
+        .btn-danger{background:var(--accent);color:white}
+        .btn:disabled{opacity:0.6;cursor:not-allowed}
+        .product-list{margin-top:16px}
+        .product-item{display:flex;align-items:center;padding:12px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;gap:12px}
+        .product-img{width:50px;height:50px;object-fit:cover;border-radius:6px}
+        .product-thumb-placeholder{width:50px;height:50px;background:var(--gray);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#9ca3af}
+        .product-info{flex:1}
+        .pname{font-weight:bold;margin-bottom:4px}
+        .pmeta{font-size:12px;color:#6b7280;display:flex;gap:10px}
+        .empty-list{text-align:center;padding:30px;color:#9ca3af}
+        .stats{margin-top:10px;font-size:13px;color:#6b7280}
+        .tip{font-size:12px;color:#6b7280;margin-top:6px}
+        .toast{position:fixed;bottom:20px;right:20px;padding:12px 20px;color:white;border-radius:6px;font-size:14px;opacity:0;transform:translateY(20px);transition:all 0.3s;z-index:9999}
+        .toast.show{opacity:1;transform:translateY(0)}
     </style>
 </head>
-
 <body>
 
-<!-- GitHub 配置 -->
 <div class="card">
-    <div class="card-title">⚙️ GitHub 配置（必填）</div>
-    <input type="text" id="github_owner" placeholder="GitHub 用户名">
+    <div class="card-title">⚙️ GitHub配置（已为你预设）</div>
+    <input type="text" id="github_owner" value="CarvalAuto" placeholder="GitHub用户名">
     <br><br>
-    <input type="text" id="github_repo" placeholder="仓库名称">
+    <input type="text" id="github_repo" value="carvalauto.github.io" placeholder="仓库名">
     <br><br>
-    <input type="text" id="github_token" placeholder="GitHub Token（带 repo 权限）">
+    <input type="text" id="github_token" placeholder="填写你的Token">
     <br><br>
-    <input type="text" id="github_path" value="products.json" placeholder="保存的文件名（如 products.json）">
+    <input type="text" id="github_path" value="products.json" placeholder="保存文件名">
 </div>
 
-<!-- 批量分析：支持手动输入 + Excel导入 -->
 <div class="card">
-    <div class="card-title">🤖 批量分析产品（支持链接 + Excel模板）</div>
-
+    <div class="card-title">🤖 Excel批量分析</div>
     <div class="form-group">
-        <label>📄 Excel 模板导入（一列放产品链接）</label>
+        <label>📄 上传Excel模板（第一列放链接）</label>
         <input type="file" id="excelFile" accept=".xlsx,.xls">
-        <div class="tip">支持：xlsx / xls，表格只需【第一列放链接】</div>
-        <button class="btn btn-primary" onclick="importExcel()" style="margin-top:10px;">
-            <i class="fas fa-file-excel"></i> 从Excel导入并分析
+        <button class="btn btn-primary" onclick="importExcel()" style="margin-top:10px">
+            <i class="fas fa-file-excel"></i> 导入Excel
         </button>
     </div>
-
-    <div style="margin:16px 0; border-top:1px dashed #eee;"></div>
-
+    <div style="margin:16px 0;border-top:1px dashed #eee"></div>
     <div class="form-group">
-        <label>✍️ 或者手动输入（每行一个产品链接）</label>
-        <textarea id="productLinks" placeholder="https://example.com/product1
-https://example.com/product2"></textarea>
+        <label>✍️ 或手动输入</label>
+        <textarea id="productLinks"></textarea>
     </div>
-
     <button class="btn btn-success" onclick="analyzeByAI()">
         <i class="fas fa-robot"></i> 开始AI分析
     </button>
     <button class="btn btn-danger" onclick="pushToGitHub()">
-        <i class="fab fa-github"></i> 分析完直接推送到GitHub
+        <i class="fab fa-github"></i> 推送到GitHub
     </button>
 </div>
 
-<!-- 分析结果 -->
 <div class="card">
-    <div class="card-title">📦 分析结果列表 + 图片上传</div>
-    <div class="stats">本次识别：<span id="sessionCount">0</span> 个 | 总计：<span id="totalCount">0</span> 个</div>
+    <div class="card-title">📦 商品列表</div>
+    <div class="stats">总数：<span id="totalCount">0</span></div>
     <div id="productList" class="product-list"></div>
 </div>
 
 <script>
-// ==========================
-// 1. Excel 导入功能
-// ==========================
+let allProducts = [];
+
+// 导入Excel
 function importExcel() {
     const file = document.getElementById('excelFile').files[0];
-    if (!file) {
-        showToast("请先选择Excel文件", "error");
-        return;
-    }
-
+    if(!file){showToast("请选择文件","error");return}
     const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
-            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-            const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-            const links = json
-                .map(row => row[0])
-                .filter(i => i && typeof i === 'string' && i.startsWith('http'));
-
-            if (links.length === 0) {
-                showToast("未识别到有效链接", "error");
-                return;
-            }
-
-            document.getElementById('productLinks').value = links.join('\n');
-            showToast(`Excel导入成功，共 ${links.length} 条链接`);
-        } catch (e) {
-            showToast("Excel解析失败：" + e.message, "error");
-        }
+    reader.onload = e => {
+        try{
+            const wb = XLSX.read(new Uint8Array(e.target.result),{type:"array"});
+            const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1});
+            const links = json.map(r=>r[0]).filter(i=>i&&i.toString().startsWith("http"));
+            document.getElementById('productLinks').value = links.join("\n");
+            showToast("导入成功："+links.length+"条");
+        }catch(e){showToast("Excel失败","error")}
     };
     reader.readAsArrayBuffer(file);
 }
 
-// ==========================
-// 2. AI 批量分析
-// ==========================
+// 分析（兼容你旧网站格式）
 async function analyzeByAI() {
     const links = document.getElementById('productLinks').value.trim();
-    if (!links) {
-        showToast("请输入产品链接", "error");
-        return;
-    }
-
+    if(!links){showToast("请输入链接","error");return}
     const btn = document.querySelector('.btn-success');
     const txt = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 分析中...';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 分析中…';
     btn.disabled = true;
 
-    try {
-        const linkArr = links.split('\n').filter(i => i.trim());
-        const productData = linkArr.map((link, i) => ({
-            name: `AI分析商品 ${i+1}`,
-            category: "默认分类",
-            oem: `OEM-${Date.now()+i}`,
-            desc: "自动生成描述",
+    try{
+        // 读取你原来的商品，不删除！
+        let old = [];
+        try{
+            const res = await fetch("products.json?t="+Date.now());
+            if(res.ok) old = await res.json();
+        }catch{}
+
+        const newProducts = links.split("\n").filter(i=>i.trim()).map((link,i)=>({
+            name: "Auto Part "+(i+1),
+            category: "japanese",
+            oem: "OEM-"+Math.random().toString(36).substr(2,9),
+            desc: "High quality auto part",
             image: "",
             url: link
         }));
 
-        renderProductList(productData);
-        localStorage.setItem("aiProductData", JSON.stringify(productData));
-        showToast(`AI分析完成，共 ${productData.length} 个商品`);
-    } catch (error) {
-        showToast("分析失败：" + error.message, "error");
-    } finally {
-        btn.innerHTML = txt;
-        btn.disabled = false;
-    }
+        allProducts = [...old, ...newProducts];
+        render();
+        localStorage.setItem("aiData",JSON.stringify(allProducts));
+        showToast("完成，共"+allProducts.length+"个商品");
+    }catch(e){showToast("失败："+e.message,"error")}
+    finally{btn.innerHTML=txt;btn.disabled=false}
 }
 
-// ==========================
-// 3. 上传图片并预览
-// ==========================
-function uploadImage(index) {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    
-    input.onchange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            const list = JSON.parse(localStorage.getItem("aiProductData") || "[]");
-            list[index].image = ev.target.result;
-            localStorage.setItem("aiProductData", JSON.stringify(list));
-            renderProductList(list);
+// 上传图片
+function uploadImage(i){
+    const inp = document.createElement("input");
+    inp.type="file";inp.accept="image/*";
+    inp.onchange=e=>{
+        const f = e.target.files[0];
+        if(!f)return;
+        const r = new FileReader();
+        r.onload=ev=>{
+            allProducts[i].image = ev.target.result;
+            localStorage.setItem("aiData",JSON.stringify(allProducts));
+            render();
             showToast("图片上传成功");
         };
-        reader.readAsDataURL(file);
+        r.readAsDataURL(f);
     };
-    
-    input.click();
+    inp.click();
 }
 
-// ==========================
-// 4. 一键推送到 GitHub
-// ==========================
-async function pushToGitHub() {
-    const owner = document.getElementById('github_owner').value.trim();
-    const repo = document.getElementById('github_repo').value.trim();
-    const token = document.getElementById('github_token').value.trim();
-    const path = document.getElementById('github_path').value.trim();
+// 推送到GitHub
+async function pushToGitHub(){
+    const o = document.getElementById('github_owner').value;
+    const r = document.getElementById('github_repo').value;
+    const t = document.getElementById('github_token').value;
+    const p = document.getElementById('github_path').value;
 
-    if (!owner || !repo || !token || !path) {
-        showToast("请先填写完整GitHub配置", "error");
-        return;
-    }
-
-    const productData = JSON.parse(localStorage.getItem("aiProductData") || "[]");
-    if (productData.length === 0) {
-        showToast("暂无数据可推送", "error");
-        return;
-    }
+    if(!o||!r||!t||!p){showToast("请填完整配置","error");return}
+    if(!allProducts.length){showToast("无数据","error");return}
 
     const btn = document.querySelector('.btn-danger');
     const txt = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 推送中...';
-    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 推送中…';
+    btn.disabled=true;
 
-    try {
+    try{
         let sha = "";
-        const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-            headers: { Authorization: `token ${token}` }
+        const get = await fetch(`https://api.github.com/repos/${o}/${r}/contents/${p}`,{
+            headers:{Authorization:"token "+t}
         });
-        if (getRes.ok) {
-            const data = await getRes.json();
-            sha = data.sha;
-        }
+        if(get.ok) sha = (await get.json()).sha;
 
-        const content = btoa(unescape(encodeURIComponent(JSON.stringify(productData, null, 2))));
-        const uploadRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-            method: "PUT",
-            headers: {
-                "Authorization": `token ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                message: "AI商品数据自动更新 " + new Date().toLocaleString(),
-                content: content,
-                sha: sha
-            })
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(allProducts,null,2))));
+        const up = await fetch(`https://api.github.com/repos/${o}/${r}/contents/${p}`,{
+            method:"PUT",
+            headers:{Authorization:"token "+t,"Content-Type":"application/json"},
+            body:JSON.stringify({message:"AI批量更新",content,sha})
         });
 
-        if (!uploadRes.ok) throw new Error("推送失败");
-        showToast("✅ 成功推送到GitHub！");
-    } catch (e) {
-        showToast("❌ 推送失败：" + e.message, "error");
-    } finally {
-        btn.innerHTML = txt;
-        btn.disabled = false;
-    }
+        if(!up.ok)throw new Error("推送失败");
+        showToast("✅ 推送成功！你的网站已同步");
+    }catch(e){showToast("❌ 失败："+e.message,"error")}
+    finally{btn.innerHTML=txt;btn.disabled=false}
 }
 
-// ==========================
-// 渲染列表 + 删除
-// ==========================
-function renderProductList(products) {
+// 渲染
+function render(){
     const el = document.getElementById('productList');
-    if (!products.length) {
-        el.innerHTML = '<div class="empty-list"><i class="fas fa-box"></i><p>暂无商品</p></div>';
-        return;
-    }
-
+    if(!allProducts.length){el.innerHTML='<div class="empty-list">暂无商品</div>';return}
     let html = "";
-    products.forEach((p, i) => {
-        html += `
+    allProducts.forEach((p,i)=>{
+        html+=`
         <div class="product-item">
-            ${p.image 
-                ? `<img src="${p.image}" class="product-img">` 
-                : `<div class="product-thumb-placeholder" onclick="uploadImage(${i})"><i class="fas fa-camera"></i></div>`
-            }
+            ${p.image?`<img src="${p.image}" class="product-img">`:`<div class="product-thumb-placeholder" onclick="uploadImage(${i})"><i class="fas fa-camera"></i></div>`}
             <div class="product-info">
                 <div class="pname">${p.name}</div>
-                <div class="pmeta">
-                    <span>${p.category}</span>
-                    <span>${p.oem}</span>
-                </div>
+                <div class="pmeta"><span>${p.category}</span><span>${p.oem}</span></div>
             </div>
-            <button class="btn btn-primary" onclick="uploadImage(${i})">
-                <i class="fas fa-image"></i> 传图
-            </button>
-            <button class="btn btn-danger" onclick="deleteProduct(${i})">
-                <i class="fas fa-trash"></i>
-            </button>
+            <button class="btn btn-primary" onclick="uploadImage(${i})"><i class="fas fa-image"></i></button>
         </div>`;
     });
-    el.innerHTML = html;
-    document.getElementById('sessionCount').textContent = products.length;
-    document.getElementById('totalCount').textContent = products.length;
+    el.innerHTML=html;
+    document.getElementById('totalCount').textContent=allProducts.length;
 }
 
-function deleteProduct(index) {
-    const list = JSON.parse(localStorage.getItem("aiProductData") || "[]");
-    list.splice(index, 1);
-    localStorage.setItem("aiProductData", JSON.stringify(list));
-    renderProductList(list);
-    showToast("已删除");
+// 提示
+function showToast(m,t="success"){
+    const to=document.createElement("div");
+    to.className="toast";to.style.background=t==="error"?"#ef4444":"#10b981";
+    to.textContent=m;document.body.appendChild(to);
+    setTimeout(()=>to.classList.add("show"),10);
+    setTimeout(()=>{to.classList.remove("show");setTimeout(()=>to.remove(),400)},3000);
 }
 
-// ==========================
-// 提示框
-// ==========================
-function showToast(msg, type = "success") {
-    const toast = document.createElement("div");
-    toast.className = "toast";
-    toast.style.background = type === "error" ? "#ef4444" : "#10b981";
-    toast.textContent = msg;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.classList.add("show"), 10);
-    setTimeout(() => {
-        toast.classList.remove("show");
-        setTimeout(() => toast.remove(), 400);
-    }, 3000);
+// 初始化
+window.onload=()=>{
+    allProducts=JSON.parse(localStorage.getItem("aiData")||"[]");
+    render();
 }
 </script>
 </body>
