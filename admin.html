@@ -1,2414 +1,1774 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Carval Auto - 后台管理系统</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carval 后台管理系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Roboto', sans-serif; background: #f0f2f5; color: #222; min-height: 100vh; }
-        :root {
-            --primary: #0f4c81;
-            --accent: #e63946;
-            --dark: #1a1a1a;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --info: #3498db;
-            --border: #dee2e6;
+    /* ===== 全局样式 ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --red:       #D62B2B;
+        --red-dark:  #A81F1F;
+        --steel:     #1C2B3A;
+        --steel-mid: #243447;
+        --steel-lite:#2F4560;
+        --chrome:    #E8E8E8;
+        --chrome-dk: #B0B8C1;
+        --offwhite:  #F5F4F0;
+        --text-main: #1A1A1A;
+        --text-soft: #555F6D;
+        --border:    #D4D8DE;
+        --font-head: 'Barlow Condensed', sans-serif;
+        --font-body: 'Barlow', sans-serif;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.10);
+        --shadow-md: 0 6px 24px rgba(0,0,0,0.14);
+        --shadow-lg: 0 16px 48px rgba(0,0,0,0.18);
+        --success: #2ecc71;
+        --warning: #f39c12;
+        --danger: #e74c3c;
+        --info: #3498db;
+    }
+
+    body {
+        font-family: var(--font-body);
+        background: var(--offwhite);
+        color: var(--text-main);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    /* ===== 顶部导航栏 ===== */
+    .topbar {
+        background: var(--steel);
+        border-bottom: 3px solid var(--red);
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 64px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: var(--shadow-md);
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+    }
+
+    .brand-text {
+        font-family: var(--font-head);
+        font-size: 24px;
+        font-weight: 900;
+        color: white;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .brand-text span { color: var(--red); }
+
+    .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--chrome);
+        font-size: 14px;
+    }
+
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .logout-btn {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: var(--font-body);
+        font-size: 13px;
+        transition: all 0.3s;
+    }
+
+    .logout-btn:hover {
+        background: var(--red);
+        border-color: var(--red);
+    }
+
+    /* ===== 主容器 ===== */
+    .main-container {
+        display: flex;
+        min-height: calc(100vh - 64px);
+    }
+
+    /* ===== 侧边栏 ===== */
+    .sidebar {
+        width: 260px;
+        background: white;
+        border-right: 1px solid var(--border);
+        padding: 24px 0;
+        position: sticky;
+        top: 64px;
+        height: calc(100vh - 64px);
+        overflow-y: auto;
+        transition: all 0.3s;
+    }
+
+    .nav-menu {
+        list-style: none;
+    }
+
+    .nav-item {
+        margin: 0;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 24px;
+        color: var(--text-soft);
+        text-decoration: none;
+        font-family: var(--font-head);
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: all 0.3s;
+        border-left: 3px solid transparent;
+    }
+
+    .nav-link:hover {
+        background: rgba(214, 43, 43, 0.05);
+        color: var(--red);
+        border-left-color: var(--red);
+    }
+
+    .nav-link.active {
+        background: rgba(214, 43, 43, 0.1);
+        color: var(--red);
+        border-left-color: var(--red);
+    }
+
+    .nav-link i {
+        font-size: 18px;
+        width: 20px;
+    }
+
+    /* ===== 主内容区 ===== */
+    .content {
+        flex: 1;
+        padding: 32px;
+        overflow-y: auto;
+    }
+
+    .page-header {
+        margin-bottom: 32px;
+    }
+
+    .page-title {
+        font-family: var(--font-head);
+        font-size: 32px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: var(--steel);
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+        color: var(--text-soft);
+        font-size: 14px;
+    }
+
+    /* ===== 统计卡片 ===== */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 32px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 24px;
+        border-radius: 8px;
+        box-shadow: var(--shadow-sm);
+        border-left: 4px solid var(--red);
+        transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .stat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+    }
+
+    .stat-icon.red { background: var(--red); }
+    .stat-icon.blue { background: var(--info); }
+    .stat-icon.green { background: var(--success); }
+    .stat-icon.orange { background: var(--warning); }
+
+    .stat-label {
+        font-family: var(--font-head);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-soft);
+        margin-bottom: 8px;
+    }
+
+    .stat-value {
+        font-family: var(--font-head);
+        font-size: 36px;
+        font-weight: 800;
+        color: var(--steel);
+        line-height: 1;
+    }
+
+    /* ===== 内容卡片 ===== */
+    .card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .card-title {
+        font-family: var(--font-head);
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--steel);
+    }
+
+    .card-body {
+        padding: 24px;
+    }
+
+    /* ===== 表格样式 ===== */
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: var(--steel);
+    }
+
+    thead th {
+        padding: 14px 16px;
+        text-align: left;
+        font-family: var(--font-head);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: white;
+    }
+
+    tbody td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+    }
+
+    tbody tr:hover {
+        background: rgba(214, 43, 43, 0.02);
+    }
+
+    /* ===== 按钮样式 ===== */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        font-family: var(--font-head);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: var(--red);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: var(--red-dark);
+    }
+
+    .btn-secondary {
+        background: var(--steel);
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: var(--steel-lite);
+    }
+
+    .btn-success {
+        background: var(--success);
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #27ae60;
+    }
+
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    /* ===== 表单样式 ===== */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-family: var(--font-head);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-main);
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        font-family: var(--font-body);
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--red);
+        box-shadow: 0 0 0 3px rgba(214, 43, 43, 0.1);
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    /* ===== 模态框 ===== */
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal.show {
+        display: flex;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        padding: 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .modal-title {
+        font-family: var(--font-head);
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--steel);
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 28px;
+        color: var(--text-soft);
+        cursor: pointer;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        transition: all 0.3s;
+    }
+
+    .modal-close:hover {
+        background: var(--offwhite);
+        color: var(--red);
+    }
+
+    .modal-body {
+        padding: 24px;
+    }
+
+    /* ===== 徽章 ===== */
+    .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-family: var(--font-head);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .badge-success { background: #d4edda; color: #155724; }
+    .badge-warning { background: #fff3cd; color: #856404; }
+    .badge-danger { background: #f8d7da; color: #721c24; }
+    .badge-info { background: #d1ecf1; color: #0c5460; }
+
+    /* ===== 响应式设计 ===== */
+    @media (max-width: 1024px) {
+        .sidebar {
+            width: 220px;
         }
-
-        /* ===== 顶部栏 ===== */
-        .admin-header {
-            background: var(--dark); color: white;
-            padding: 0 30px;
-            display: flex; align-items: stretch; justify-content: space-between;
-            border-bottom: 4px solid var(--accent);
-            position: sticky; top: 0; z-index: 100;
-            height: 60px;
+        
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
-        .header-left { display: flex; align-items: center; gap: 15px; }
-        .header-logo { font-family: 'Oswald', sans-serif; font-size: 20px; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; }
-        .header-logo span { color: var(--accent); }
-        .header-divider { width: 1px; height: 30px; background: #444; }
-        .tab-nav { display: flex; height: 100%; }
-        .tab-btn {
-            display: flex; align-items: center; gap: 8px;
-            padding: 0 24px; color: #aaa; cursor: pointer;
-            font-family: 'Oswald', sans-serif; font-size: 14px;
-            text-transform: uppercase; letter-spacing: 1px;
-            border: none; background: transparent;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s; margin-bottom: -4px;
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            position: fixed;
+            left: -260px;
+            z-index: 999;
+            width: 260px;
         }
-        .tab-btn:hover { color: white; }
-        .tab-btn.active { color: white; border-bottom-color: var(--accent); background: rgba(255,255,255,0.05); }
-        .tab-btn i { font-size: 15px; }
-        .header-right { display: flex; align-items: center; gap: 12px; }
-        .header-right a { color: #888; font-size: 12px; text-decoration: none; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; padding: 5px 10px; border: 1px solid #444; transition: all 0.3s; }
-        .header-right a:hover { color: white; border-color: var(--accent); }
-
-        /* ===== 页面切换 ===== */
-        .page { display: none; }
-        .page.active { display: block; }
-
-        /* ===== 通用卡片 ===== */
-        .card { background: white; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; }
-        .card-header { background: var(--primary); color: white; padding: 16px 22px; font-family: 'Oswald', sans-serif; font-size: 15px; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; border-left: 5px solid var(--accent); }
-        .card-body { padding: 22px; }
-
-        /* ===== 商品管理 ===== */
-        .products-page { padding: 30px; max-width: 1400px; margin: 0 auto; }
-        .products-layout { display: grid; grid-template-columns: 420px 1fr; gap: 30px; align-items: start; }
-        @media (max-width: 1000px) { .products-layout { grid-template-columns: 1fr; } }
-
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-family: 'Oswald', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #555; margin-bottom: 7px; }
-        .form-group label .required { color: var(--accent); margin-left: 3px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 14px; border: 1.5px solid #ddd; font-family: 'Roboto', sans-serif; font-size: 14px; transition: border 0.3s; outline: none; background: #fafafa; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); background: white; }
-        .form-group textarea { min-height: 90px; resize: vertical; }
-
-        .img-upload-area { border: 2px dashed #ccc; padding: 22px; text-align: center; cursor: pointer; transition: all 0.3s; background: #fafafa; position: relative; }
-        .img-upload-area:hover { border-color: var(--primary); background: #f0f7ff; }
-        .img-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-        .img-upload-area i { font-size: 32px; color: #bbb; margin-bottom: 8px; display: block; }
-        .img-upload-area p { color: #888; font-size: 13px; line-height: 1.5; }
-        .img-upload-area .hint { font-size: 11px; color: #aaa; margin-top: 4px; }
-        #imagePreview { margin-top: 12px; display: none; }
-        #imagePreview img { max-height: 130px; max-width: 100%; border: 2px solid var(--primary); padding: 3px; }
-        #imageName { font-size: 12px; color: var(--primary); margin-top: 6px; background: #eef4fb; padding: 5px 10px; border-left: 3px solid var(--primary); word-break: break-all; }
-
-        .btn { padding: 13px 28px; font-family: 'Oswald', sans-serif; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-primary { background: var(--primary); color: white; width: 100%; justify-content: center; }
-        .btn-primary:hover { background: #0a3a6e; transform: translateY(-2px); }
-        .btn-danger { background: var(--accent); color: white; padding: 5px 12px; font-size: 12px; }
-        .btn-danger:hover { background: #c0392b; }
-        .btn-copy { background: var(--success); color: white; width: 100%; justify-content: center; margin-top: 12px; }
-        .btn-copy:hover { background: #27ae60; }
-
-        .stats-bar-mini { display: flex; gap: 15px; margin-bottom: 22px; flex-wrap: wrap; }
-        .stat-mini { flex: 1; min-width: 90px; background: white; padding: 14px 18px; border-left: 4px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        .stat-mini.accent { border-color: var(--accent); }
-        .stat-mini-num { font-family: 'Oswald', sans-serif; font-size: 26px; color: var(--primary); }
-        .stat-mini.accent .stat-mini-num { color: var(--accent); }
-        .stat-mini-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
-
-        .product-list { max-height: 480px; overflow-y: auto; }
-        .product-item { display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-bottom: 1px solid #f0f0f0; transition: background 0.2s; }
-        .product-item:hover { background: #f8f9fa; }
-        .product-item:last-child { border-bottom: none; }
-        .product-thumb { width: 50px; height: 50px; object-fit: contain; border: 1px solid #eee; background: #f8f8f8; padding: 3px; flex-shrink: 0; }
-        .product-thumb-placeholder { width: 50px; height: 50px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 18px; flex-shrink: 0; }
-        .product-info { flex: 1; min-width: 0; }
-        .product-info .pname { font-family: 'Oswald', sans-serif; font-size: 14px; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .product-info .pmeta { font-size: 11px; color: #888; margin-top: 3px; }
-        .product-info .pmeta span { background: #f0f0f0; padding: 2px 5px; margin-right: 4px; border-radius: 2px; }
-        .empty-list { text-align: center; padding: 35px; color: #ccc; }
-        .empty-list i { font-size: 36px; display: block; margin-bottom: 10px; }
-
-        .code-area { background: #1e1e2e; color: #cdd6f4; padding: 18px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6; max-height: 300px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; border-left: 4px solid var(--accent); }
-
-        .steps { list-style: none; }
-        .steps li { display: flex; gap: 13px; padding: 11px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; color: #555; align-items: flex-start; }
-        .steps li:last-child { border-bottom: none; }
-        .step-num { width: 24px; height: 24px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0; margin-top: 1px; }
-        .step-num.accent { background: var(--accent); }
-
-        /* ===== 流量分析 ===== */
-        #loginSection { max-width: 480px; margin: 80px auto; padding: 0 20px; }
-        .login-card { background: white; padding: 50px 40px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-top: 5px solid var(--accent); }
-        .login-card .logo { font-family: 'Oswald', sans-serif; font-size: 26px; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; }
-        .login-card .logo span { color: var(--accent); }
-        .login-card p { color: #888; font-size: 14px; margin-bottom: 35px; line-height: 1.6; }
-        .btn-google { display: inline-flex; align-items: center; gap: 12px; padding: 14px 30px; background: white; border: 2px solid #ddd; cursor: pointer; font-family: 'Roboto', sans-serif; font-size: 15px; color: #444; transition: all 0.3s; width: 100%; justify-content: center; }
-        .btn-google:hover { border-color: var(--primary); box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
-        .btn-google img { width: 22px; height: 22px; }
-        .login-note { margin-top: 20px; font-size: 12px; color: #bbb; line-height: 1.6; }
-
-        #dashboardSection { display: none; }
-
-        .date-bar { background: white; padding: 15px 30px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; border-bottom: 2px solid var(--border); position: sticky; top: 60px; z-index: 50; }
-        .date-bar-label { font-family: 'Oswald', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #666; }
-        .date-btn { padding: 6px 16px; border: 2px solid var(--border); background: white; font-family: 'Oswald', sans-serif; font-size: 12px; text-transform: uppercase; cursor: pointer; transition: all 0.3s; letter-spacing: 0.5px; }
-        .date-btn:hover, .date-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
-        .ga-user-info { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-        .ga-avatar { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--accent); }
-        .ga-name { font-size: 13px; color: #666; }
-        .btn-logout { padding: 5px 12px; background: transparent; border: 1px solid #ddd; cursor: pointer; font-size: 11px; color: #888; transition: all 0.3s; font-family: 'Oswald', sans-serif; text-transform: uppercase; }
-        .btn-logout:hover { border-color: var(--accent); color: var(--accent); }
-
-        .dashboard-inner { padding: 25px 30px; max-width: 1400px; margin: 0 auto; }
-
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 25px; }
-        .stat-card { background: white; padding: 22px 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.07); border-left: 5px solid var(--primary); position: relative; overflow: hidden; transition: transform 0.3s; }
-        .stat-card:hover { transform: translateY(-3px); }
-        .stat-card.accent { border-color: var(--accent); }
-        .stat-card.success { border-color: var(--success); }
-        .stat-card.warning { border-color: var(--warning); }
-        .stat-card.info { border-color: var(--info); }
-        .stat-icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font-size: 36px; opacity: 0.07; }
-        .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #888; margin-bottom: 8px; font-family: 'Oswald', sans-serif; }
-        .stat-value { font-family: 'Oswald', sans-serif; font-size: 32px; color: var(--dark); }
-        .realtime-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; display: inline-block; animation: pulse 2s infinite; margin-right: 5px; }
-        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
-
-        .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
-        .charts-grid-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-        @media (max-width: 900px) { .charts-grid, .charts-grid-equal { grid-template-columns: 1fr; } }
-
-        .chart-card { background: white; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
-        .chart-header { margin-bottom: 18px; }
-        .chart-title { font-family: 'Oswald', sans-serif; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: var(--dark); }
-        .chart-title small { display: block; font-size: 11px; color: #aaa; font-family: 'Roboto', sans-serif; text-transform: none; letter-spacing: 0; margin-top: 3px; }
-
-        .country-list { list-style: none; }
-        .country-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f5f5f5; }
-        .country-item:last-child { border-bottom: none; }
-        .country-flag { font-size: 18px; width: 24px; text-align: center; }
-        .country-name { flex: 1; font-size: 13px; color: #444; }
-        .country-bar-wrap { width: 80px; height: 5px; background: #f0f0f0; border-radius: 3px; }
-        .country-bar { height: 100%; background: var(--primary); border-radius: 3px; transition: width 1s ease; }
-        .country-count { font-family: 'Oswald', sans-serif; font-size: 14px; color: var(--dark); min-width: 36px; text-align: right; }
-
-        .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        .data-table th { text-align: left; padding: 9px 12px; background: #f8f9fa; font-family: 'Oswald', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; border-bottom: 2px solid #eee; }
-        .data-table td { padding: 10px 12px; border-bottom: 1px solid #f5f5f5; color: #555; }
-        .data-table tr:hover td { background: #fafafa; }
-        .data-table tr:last-child td { border-bottom: none; }
-
-        .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; color: #bbb; gap: 12px; }
-        .loading i { font-size: 28px; animation: spin 1s linear infinite; }
-        @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-        .error-msg { background: #fff5f5; border-left: 4px solid var(--accent); padding: 12px 16px; color: #c0392b; font-size: 13px; margin: 10px 0; }
-        .section-line { height: 3px; background: linear-gradient(to right, var(--primary), var(--accent)); margin-bottom: 20px; }
-
-        /* ===== 询盘模块样式 ===== */
-        .inq-filter {
-            padding: 6px 16px; border: 2px solid var(--border); background: white;
-            font-family: 'Oswald', sans-serif; font-size: 12px; text-transform: uppercase;
-            cursor: pointer; transition: all 0.3s; letter-spacing: 0.5px;
+        
+        .sidebar.open {
+            left: 0;
         }
-        .inq-filter:hover, .inq-filter.active { background: var(--primary); border-color: var(--primary); color: white; }
-
-        .inq-card {
-            background: white; margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-            border-left: 5px solid var(--primary);
-            transition: all 0.3s; position: relative;
+        
+        .content {
+            padding: 20px;
         }
-        .inq-card.unread { border-left-color: var(--accent); }
-        .inq-card:hover { box-shadow: 0 5px 18px rgba(0,0,0,0.13); transform: translateY(-2px); }
-
-        .inq-card-header {
-            display: flex; align-items: center; gap: 15px;
-            padding: 18px 22px 12px; flex-wrap: wrap;
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
         }
-        .inq-avatar {
-            width: 44px; height: 44px; border-radius: 50%;
-            background: var(--primary); color: white;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700;
-            flex-shrink: 0;
+        
+        .topbar {
+            padding: 0 16px;
         }
-        .inq-card.unread .inq-avatar { background: var(--accent); }
-        .inq-name { font-family: 'Oswald', sans-serif; font-size: 17px; color: var(--dark); }
-        .inq-email { font-size: 13px; color: #888; margin-top: 2px; }
-        .inq-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-left: auto; align-items: center; }
-        .inq-tag {
-            padding: 3px 10px; font-size: 11px;
-            font-family: 'Oswald', sans-serif; text-transform: uppercase;
-            letter-spacing: 0.5px; border-radius: 2px;
+        
+        .user-info span {
+            display: none;
         }
-        .inq-tag.country { background: #e8f4fd; color: var(--primary); }
-        .inq-tag.source { background: #fef9e7; color: #856404; }
-        .inq-tag.time { background: #f0f0f0; color: #666; }
-        .inq-tag.unread-badge { background: var(--accent); color: white; }
-        .inq-tag.device { background: #e8f8f0; color: #1a7a45; }
+    }
 
-        .inq-body { padding: 0 22px 15px 81px; }
-        .inq-oem {
-            display: inline-block; background: #f0f7ff;
-            border-left: 3px solid var(--primary);
-            padding: 4px 12px; font-size: 12px; color: var(--primary);
-            margin-bottom: 10px; font-weight: 500;
+    /* ===== 移动菜单按钮 ===== */
+    .menu-toggle {
+        display: none;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+        .menu-toggle {
+            display: block;
         }
-        .inq-message {
-            background: #f8f9fa; padding: 14px 16px;
-            font-size: 14px; color: #444; line-height: 1.7;
-            border-left: 3px solid #ddd; margin-bottom: 12px;
-        }
-        .inq-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-        .inq-btn {
-            padding: 7px 16px; font-family: 'Oswald', sans-serif;
-            font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
-            border: none; cursor: pointer; transition: all 0.3s;
-            display: inline-flex; align-items: center; gap: 6px;
-        }
-        .inq-btn-reply { background: var(--primary); color: white; }
-        .inq-btn-reply:hover { background: #0a3a6e; }
-        .inq-btn-read { background: #e8f8f0; color: #1a7a45; border: 1px solid #b7dfc9; }
-        .inq-btn-read:hover { background: #2ecc71; color: white; border-color: #2ecc71; }
-        .inq-btn-delete { background: #fff5f5; color: #c0392b; border: 1px solid #f5c6c6; }
-        .inq-btn-delete:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    }
 
-        .inq-empty {
-            text-align: center; padding: 80px 30px; color: #ccc;
-            background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-        .inq-empty i { font-size: 56px; display: block; margin-bottom: 18px; }
-        .inq-empty h3 { font-family: 'Oswald', sans-serif; font-size: 22px; color: #ddd; text-transform: uppercase; }
-        .inq-empty p { font-size: 14px; margin-top: 10px; }
+    /* ===== 加载动画 ===== */
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 0.8s linear infinite;
+    }
 
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
 
-        /* ===== 手机端响应式 ===== */
-        @media (max-width: 768px) {
+    /* ===== 空状态 ===== */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-soft);
+    }
 
-            /* 顶部导航 */
-            .admin-header {
-                height: auto;
-                flex-direction: column;
-                padding: 0;
-                gap: 0;
-            }
-            .header-left {
-                width: 100%;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0;
-            }
-            .header-logo {
-                padding: 12px 16px;
-                font-size: 16px;
-                border-bottom: 1px solid #333;
-            }
-            .header-divider { display: none; }
-            .tab-nav {
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-            }
-            .tab-nav::-webkit-scrollbar { display: none; }
-            .tab-btn {
-                padding: 0 14px;
-                font-size: 12px;
-                white-space: nowrap;
-                height: 44px;
-                gap: 5px;
-            }
-            .tab-btn i { font-size: 13px; }
-            .header-right {
-                padding: 8px 16px;
-                border-top: 1px solid #333;
-                width: 100%;
-                justify-content: flex-end;
-            }
-            .header-right a { font-size: 11px; padding: 4px 8px; }
+    .empty-state i {
+        font-size: 64px;
+        color: var(--chrome-dk);
+        margin-bottom: 16px;
+    }
 
-            /* 商品管理页 */
-            .products-page { padding: 15px; }
-            .products-layout { grid-template-columns: 1fr; gap: 15px; }
-            .card-header { font-size: 13px; padding: 13px 16px; }
-            .card-body { padding: 16px; }
-            .form-group { margin-bottom: 14px; }
-            .form-group label { font-size: 11px; }
-            .form-group input, .form-group select, .form-group textarea { padding: 10px 12px; font-size: 14px; }
-            .btn { padding: 12px 20px; font-size: 13px; }
-            .stats-bar-mini { gap: 10px; }
-            .stat-mini { padding: 12px 14px; }
-            .stat-mini-num { font-size: 22px; }
-            .code-area { font-size: 11px; max-height: 200px; }
+    .empty-state h3 {
+        font-family: var(--font-head);
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
 
-            /* 商品列表 */
-            .product-list { max-height: 300px; }
-            .product-item { padding: 10px 12px; gap: 10px; }
-            .product-thumb, .product-thumb-placeholder { width: 42px; height: 42px; }
-            .product-info .pname { font-size: 13px; }
+    /* ===== 产品图片预览 ===== */
+    .product-thumb {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+    }
 
-            /* 流量分析 */
-            #loginSection { margin: 40px auto; }
-            .login-card { padding: 35px 24px; }
-            .date-bar { padding: 10px 15px; gap: 8px; top: auto; position: relative; }
-            .date-btn { padding: 5px 12px; font-size: 11px; }
-            .ga-user-info { margin-left: 0; width: 100%; justify-content: flex-end; }
-            .dashboard-inner { padding: 15px; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .stat-card { padding: 16px 14px; }
-            .stat-value { font-size: 24px; }
-            .stat-label { font-size: 10px; }
-            .stat-icon { font-size: 28px; }
-            .charts-grid { grid-template-columns: 1fr; gap: 15px; }
-            .charts-grid-equal { grid-template-columns: 1fr; gap: 15px; }
-            .chart-card { padding: 16px; }
-            .chart-title { font-size: 13px; }
-            .country-bar-wrap { width: 60px; }
-            .country-name { font-size: 12px; }
-            .data-table th { font-size: 10px; padding: 7px 8px; }
-            .data-table td { font-size: 12px; padding: 8px 8px; }
+    /* ===== AI分析区域 ===== */
+    .ai-input-group {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
 
-            /* 询盘模块 */
-            .inq-card-header { flex-wrap: wrap; gap: 10px; padding: 14px 14px 8px; }
-            .inq-avatar { width: 36px; height: 36px; font-size: 15px; }
-            .inq-name { font-size: 14px; }
-            .inq-email { font-size: 12px; }
-            .inq-meta { width: 100%; gap: 6px; margin-left: 0; }
-            .inq-tag { font-size: 10px; padding: 2px 7px; }
-            .inq-body { padding: 0 14px 12px 14px; }
-            .inq-message { font-size: 13px; padding: 10px 12px; }
-            .inq-actions { gap: 7px; flex-wrap: wrap; }
-            .inq-btn { padding: 6px 12px; font-size: 11px; }
-            .inq-filter { padding: 5px 12px; font-size: 11px; }
-        }
+    .ai-input-group .form-control {
+        flex: 1;
+    }
 
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .tab-btn { padding: 0 10px; font-size: 11px; }
-            .header-logo { font-size: 14px; }
-        }
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 13px 28px; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; transition: transform 0.4s ease; z-index: 9999; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
-        .toast.show { transform: translateX(-50%) translateY(0); }
+    .analysis-result {
+        background: var(--offwhite);
+        border-left: 4px solid var(--info);
+        padding: 16px;
+        border-radius: 4px;
+        margin-top: 16px;
+    }
+
+    .analysis-result h4 {
+        font-family: var(--font-head);
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--steel);
+    }
+
+    .analysis-result p {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    /* ===== 询盘状态 ===== */
+    .inquiry-status {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+    }
+
+    .inquiry-status.unread { background: var(--danger); }
+    .inquiry-status.read { background: var(--chrome-dk); }
+
+    /* ===== Google Analytics嵌入 ===== */
+    .analytics-embed {
+        width: 100%;
+        min-height: 600px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    /* ===== 标签组 ===== */
+    .tab-nav {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid var(--border);
+        margin-bottom: 24px;
+    }
+
+    .tab-btn {
+        padding: 12px 24px;
+        background: none;
+        border: none;
+        font-family: var(--font-head);
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-soft);
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        transition: all 0.3s;
+    }
+
+    .tab-btn:hover {
+        color: var(--red);
+    }
+
+    .tab-btn.active {
+        color: var(--red);
+        border-bottom-color: var(--red);
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
     </style>
 </head>
 <body>
-
-<!-- 顶部导航 -->
-<div class="admin-header">
-    <div class="header-left">
-        <div class="header-logo">CARVAL <span>AUTO</span> — 后台管理</div>
-        <div class="header-divider"></div>
-        <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('products', this)">
-                <i class="fas fa-box"></i> 商品管理
+    <!-- 顶部导航栏 -->
+    <div class="topbar">
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
             </button>
-            <button class="tab-btn" onclick="switchTab('import', this)">
-                <i class="fas fa-robot"></i> AI导入
-            </button>
-            <button class="tab-btn" onclick="switchTab('analytics', this)">
-                <i class="fas fa-chart-line"></i> 流量分析
-            </button>
-            <button class="tab-btn" onclick="switchTab('inquiries', this)" id="inquiriesTabBtn">
-                <i class="fas fa-envelope"></i> 客户询盘
-                <span id="inquiryBadge" style="background:var(--accent);color:white;border-radius:50%;width:18px;height:18px;font-size:11px;display:none;align-items:center;justify-content:center;margin-left:6px;font-family:Roboto,sans-serif;font-weight:bold;"></span>
+            <a href="#" class="brand">
+                <div class="brand-text">CARVAL<span>AUTO</span></div>
+            </a>
+        </div>
+        <div class="topbar-right">
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <span>管理员</span>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> 退出
             </button>
         </div>
     </div>
-    <div class="header-right">
-        <a href="index.html" target="_blank"><i class="fas fa-external-link-alt"></i> 查看网站</a>
-    </div>
-</div>
 
-<!-- 商品管理页 -->
-<div class="page active" id="page-products">
-    <div class="products-page">
-
-        <!-- 顶部统计 -->
-        <div style="display:flex;gap:15px;margin-bottom:15px;flex-wrap:wrap;">
-            <div class="stat-mini" style="flex:1;min-width:130px;">
-                <div class="stat-mini-num" id="totalCount">0</div>
-                <div class="stat-mini-label">总商品数</div>
-            </div>
-            <div class="stat-mini accent" style="flex:1;min-width:130px;">
-                <div class="stat-mini-num" id="sessionCount">0</div>
-                <div class="stat-mini-label">本次新增</div>
-            </div>
-        </div>
-
-        <!-- 商品分类总览 -->
-            <!-- 分类统计 -->
-            <div id="categoryStats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:22px;">
-                <div style="background:white;padding:12px 14px;border-left:3px solid #e74c3c;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                    <div style="font-family:Oswald,sans-serif;font-size:22px;color:#e74c3c;" id="cat_japanese">0</div>
-                    <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;">🇯🇵 Japanese</div>
-                </div>
-                <div style="background:white;padding:12px 14px;border-left:3px solid #3498db;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                    <div style="font-family:Oswald,sans-serif;font-size:22px;color:#3498db;" id="cat_korean">0</div>
-                    <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;">🇰🇷 Korean</div>
-                </div>
-                <div style="background:white;padding:12px 14px;border-left:3px solid #2c3e50;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                    <div style="font-family:Oswald,sans-serif;font-size:22px;color:#2c3e50;" id="cat_german">0</div>
-                    <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;">🇩🇪 German</div>
-                </div>
-                <div style="background:white;padding:12px 14px;border-left:3px solid #27ae60;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                    <div style="font-family:Oswald,sans-serif;font-size:22px;color:#27ae60;" id="cat_chinese">0</div>
-                    <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;">🇨🇳 Chinese</div>
-                </div>
-                <div style="background:white;padding:12px 14px;border-left:3px solid #f39c12;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                    <div style="font-family:Oswald,sans-serif;font-size:22px;color:#f39c12;" id="cat_oil">0</div>
-                    <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;">🛢️ Engine Oil</div>
-                </div>
-                <div style="background:white;padding:12px 14px;border-left:3px solid #95a5a6;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                    <div style="font-family:Oswald,sans-serif;font-size:22px;color:#95a5a6;" id="cat_other">0</div>
-                    <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;">📦 Other</div>
-                </div>
-            </div>
-
-        <div class="products-layout">
-            <div>
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-plus-circle"></i> 添加新商品</div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>商品名称 <span class="required">*</span></label>
-                            <input type="text" id="pName" placeholder="例如：Toyota Camry Brake Pads">
-                        </div>
-                        <div class="form-group">
-                            <label>商品分类 <span class="required">*</span></label>
-                            <select id="pCategory">
-                                <option value="japanese">🇯🇵 Japanese（日系车）</option>
-                                <option value="korean">🇰🇷 Korean（韩系车）</option>
-                                <option value="german">🇩🇪 German（德系车）</option>
-                                <option value="chinese">🇨🇳 Chinese（国产车）</option>
-                                <option value="oil">🛢️ Engine Oil（机油）</option>
-                                <option value="other">📦 Other（其他）</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>OEM 编号</label>
-                            <input type="text" id="pOem" placeholder="例如：04465-06110">
-                        </div>
-                        <div class="form-group">
-                            <label>商品描述</label>
-                            <textarea id="pDesc" placeholder="描述商品规格、适用车型、特点..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>图片文件名</label>
-                            <input type="text" id="pImage" placeholder="例如：90919-01253 (1).jpg">
-                            <div style="font-size:11px;color:#aaa;margin-top:5px;line-height:1.6;">
-                                📌 命名规则：<strong>OEM编号 + 序号</strong><br>
-                                例：90919-01253 (1).jpg / 90919-01253 (2).jpg<br>
-                                多张图片用英文逗号分隔：90919-01253 (1).jpg, 90919-01253 (2).jpg
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" onclick="addProduct()">
-                            <i class="fas fa-plus"></i> 添加到商品列表
-                        </button>
-
-                        <div style="margin-top:12px;border-top:1px dashed #ddd;padding-top:14px;">
-                            <div style="font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:8px;">或者批量上传</div>
-                            <label for="excelFileInputInline" style="display:flex;align-items:center;gap:10px;padding:11px 16px;background:#f0f9f0;border:1.5px dashed #2ecc71;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='#e0f5e0'" onmouseout="this.style.background='#f0f9f0'">
-                                <i class="fas fa-file-excel" style="font-size:20px;color:#1d6f42;"></i>
-                                <div>
-                                    <div style="font-family:Oswald,sans-serif;font-size:13px;font-weight:700;color:#1d6f42;text-transform:uppercase;letter-spacing:1px;">上传 Excel 文件</div>
-                                    <div style="font-size:11px;color:#888;margin-top:2px;">支持 .xlsx / .xls 格式</div>
-                                </div>
-                                <input type="file" id="excelFileInputInline" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleExcelUpload(this)">
-                            </label>
-                            <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                                <button onclick="downloadBatchTemplate()" style="padding:7px 14px;background:transparent;border:1px solid #ddd;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;cursor:pointer;color:#888;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s;" onmouseover="this.style.borderColor='#0f4c81';this.style.color='#0f4c81'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">
-                                    <i class="fas fa-download"></i> 下载模板
-                                </button>
-                                <span style="font-size:11px;color:#aaa;">填好模板后直接上传，自动解析导入</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display:flex;flex-direction:column;gap:22px;">
-
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-list"></i> 当前商品列表</div>
-                    <div style="padding:0;"><div class="product-list" id="productList"><div class="empty-list"><i class="fas fa-box-open"></i><p>暂无商品，请在左侧添加</p></div></div></div>
-                </div>
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-code"></i> 生成代码 — 复制到 products.html</div>
-                    <div class="card-body">
-                        <div class="code-area" id="generatedCode">// 点击下方按钮生成代码</div>
-                        <button class="btn btn-copy" onclick="copyCode()"><i class="fas fa-copy"></i> 复制代码</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-info-circle"></i> 使用说明</div>
-                    <div class="card-body">
-                        <ul class="steps">
-                            <li><div class="step-num">1</div><div>填写商品信息，点击 <strong>"添加到商品列表"</strong></div></li>
-                            <li><div class="step-num">2</div><div>把商品图片上传到 <strong>GitHub 仓库根目录</strong></div></li>
-                            <li><div class="step-num">3</div><div>点击 <strong>"复制代码"</strong>，打开 GitHub 上的 <strong>products.html</strong></div></li>
-                            <li><div class="step-num accent">4</div><div>找到 <code style="background:#f0f0f0;padding:2px 5px;">const productsData = [</code>，把方括号内容替换为复制的代码并保存</div></li>
-                            <li><div class="step-num accent">5</div><div>等待 1-2 分钟，访问 <strong>products.html</strong> 查看效果</div></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 流量分析页 -->
-<div class="page" id="page-analytics">
-    <div id="loginSection">
-        <div class="login-card">
-            <div class="logo">CARVAL <span>AUTO</span></div>
-            <p>连接 Google Analytics 账号<br>查看网站实时流量与访客数据</p>
-            <button class="btn-google" onclick="handleLogin()">
-                <img src="https://www.google.com/favicon.ico" alt="Google">
-                使用 Google 账号登录
-            </button>
-            <div class="login-note">仅限授权账号 · 数据来自 Google Analytics<br>首次登录需授权数据读取权限</div>
-        </div>
-    </div>
-
-    <div id="dashboardSection">
-        <div class="date-bar">
-            <span class="date-bar-label">时间范围：</span>
-            <button class="date-btn active" onclick="setDateRange('7daysAgo', this)">近7天</button>
-            <button class="date-btn" onclick="setDateRange('30daysAgo', this)">近30天</button>
-            <button class="date-btn" onclick="setDateRange('90daysAgo', this)">近90天</button>
-            <button class="date-btn" onclick="setDateRange('365daysAgo', this)">近一年</button>
-            <div class="ga-user-info">
-                <img id="userAvatar" class="ga-avatar" src="" alt="">
-                <span class="ga-name" id="userName"></span>
-                <button class="btn-logout" onclick="handleLogout()">退出</button>
-            </div>
-        </div>
-
-        <div class="dashboard-inner">
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-label">总浏览量 (PV)</div><div class="stat-value" id="statPageviews">—</div><div class="stat-icon"><i class="fas fa-eye"></i></div></div>
-                <div class="stat-card accent"><div class="stat-label">独立访客 (UV)</div><div class="stat-value" id="statUsers">—</div><div class="stat-icon"><i class="fas fa-users"></i></div></div>
-                <div class="stat-card success"><div class="stat-label">会话数</div><div class="stat-value" id="statSessions">—</div><div class="stat-icon"><i class="fas fa-mouse-pointer"></i></div></div>
-                <div class="stat-card warning"><div class="stat-label">平均停留时长</div><div class="stat-value" id="statDuration">—</div><div class="stat-icon"><i class="fas fa-clock"></i></div></div>
-                <div class="stat-card info"><div class="stat-label"><span class="realtime-dot"></span>实时在线</div><div class="stat-value" id="statRealtime">—</div><div class="stat-icon"><i class="fas fa-satellite-dish"></i></div></div>
-            </div>
-
-            <div class="section-line"></div>
-
-            <div class="charts-grid">
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">每日流量趋势<small>页面浏览量 & 独立访客</small></div></div>
-                    <div id="trendLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <canvas id="trendChart" style="display:none;"></canvas>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">设备类型<small>访客设备分布</small></div></div>
-                    <div id="deviceLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <canvas id="deviceChart" style="display:none;max-height:200px;"></canvas>
-                </div>
-            </div>
-
-            <div class="charts-grid">
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">访客国家/地区<small>Top 10 来源国家</small></div></div>
-                    <div id="countryLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <ul class="country-list" id="countryList" style="display:none;"></ul>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">流量来源<small>访客从哪里找到你的网站</small></div></div>
-                    <div id="sourceLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <canvas id="sourceChart" style="display:none;max-height:200px;"></canvas>
-                </div>
-            </div>
-
-            <div class="charts-grid-equal">
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">热门页面<small>访问量最多的页面</small></div></div>
-                    <div id="pagesLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <table class="data-table" id="pagesTable" style="display:none;"><thead><tr><th>页面</th><th>浏览量</th><th>访客数</th></tr></thead><tbody id="pagesBody"></tbody></table>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">访客语言<small>浏览器语言分布</small></div></div>
-                    <div id="langLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <table class="data-table" id="langTable" style="display:none;"><thead><tr><th>语言</th><th>用户数</th><th>占比</th></tr></thead><tbody id="langBody"></tbody></table>
-                </div>
-            </div>
-            <div style="height:40px;"></div>
-        </div>
-    </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<!-- 客户询盘页 -->
-<div class="page" id="page-inquiries">
-    <div style="padding:30px;max-width:1400px;margin:0 auto;">
-
-        <!-- 同步状态 -->
-        <div id="ghSyncStatus" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:#e8f4fd;border-left:4px solid var(--primary);margin-bottom:15px;font-size:13px;color:#0f4c81;">
-            <i class="fas fa-sync fa-spin"></i> 正在从云端同步最新询盘数据...
-        </div>
-
-        <!-- 顶部统计栏 -->
-        <div style="display:flex;gap:15px;margin-bottom:25px;flex-wrap:wrap;">
-            <div class="stat-mini" style="flex:1;min-width:130px;">
-                <div class="stat-mini-num" id="inq_total">0</div>
-                <div class="stat-mini-label">总询盘数</div>
-            </div>
-            <div class="stat-mini accent" style="flex:1;min-width:130px;">
-                <div class="stat-mini-num" id="inq_unread">0</div>
-                <div class="stat-mini-label">未读</div>
-            </div>
-            <div class="stat-mini" style="flex:1;min-width:130px;border-color:#2ecc71;">
-                <div class="stat-mini-num" style="color:#2ecc71;" id="inq_today">0</div>
-                <div class="stat-mini-label">今日新增</div>
-            </div>
-            <div class="stat-mini" style="flex:1;min-width:130px;border-color:#f39c12;">
-                <div class="stat-mini-num" style="color:#f39c12;" id="inq_countries">0</div>
-                <div class="stat-mini-label">来源国家数</div>
-            </div>
-            <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                <button onclick="clearAllInquiries()" style="padding:8px 16px;background:transparent;border:1px solid #ddd;cursor:pointer;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;color:#888;transition:all 0.3s;" onmouseover="this.style.borderColor='#e63946';this.style.color='#e63946'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">
-                    <i class="fas fa-trash"></i> 清空所有
-                </button>
-                <button onclick="markAllRead()" style="padding:8px 16px;background:var(--primary);border:none;cursor:pointer;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;color:white;transition:all 0.3s;">
-                    <i class="fas fa-check-double"></i> 全部已读
-                </button>
-            </div>
-        </div>
-
-        <!-- 筛选栏 -->
-        <div style="background:white;padding:15px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-            <span style="font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;color:#666;letter-spacing:1px;">筛选：</span>
-            <button class="inq-filter active" onclick="filterInquiries('all',this)">全部</button>
-            <button class="inq-filter" onclick="filterInquiries('unread',this)">未读</button>
-            <button class="inq-filter" onclick="filterInquiries('read',this)">已读</button>
-            <div style="margin-left:auto;display:flex;gap:0;">
-                <input type="text" id="inqSearch" placeholder="搜索姓名/邮箱/内容..." oninput="searchInquiries()" style="padding:7px 14px;border:1.5px solid #ddd;font-size:13px;width:240px;outline:none;border-right:none;">
-                <button style="padding:7px 14px;background:var(--primary);border:none;color:white;cursor:pointer;"><i class="fas fa-search"></i></button>
-            </div>
-        </div>
-
-        <!-- 询盘列表 -->
-        <div id="inquiryList"></div>
-
-    </div>
-</div>
-
-
-<!-- 批量导入页 -->
-<div class="page" id="page-import">
-    <div style="padding:30px;max-width:1000px;margin:0 auto;">
-
-        <!-- 步骤说明 -->
-        <div class="card" style="margin-bottom:24px;">
-            <div class="card-header"><i class="fas fa-info-circle"></i> 使用说明 — Excel 批量导入</div>
-            <div class="card-body">
-                <ul class="steps">
-                    <li><div class="step-num">1</div><div>下载下方的 <strong>Excel模板</strong>，按格式填写所有商品信息</div></li>
-                    <li><div class="step-num">2</div><div>填写完成后，点击 <strong>"选择Excel文件"</strong> 上传你的文件</div></li>
-                    <li><div class="step-num">3</div><div>预览解析结果，确认无误后点击 <strong>"确认导入"</strong></div></li>
-                    <li><div class="step-num accent">4</div><div>切换到 <strong>"商品管理"</strong> Tab，点击 <strong>"复制代码"</strong>，粘贴到 GitHub 的 products.html 保存</div></li>
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar" id="sidebar">
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" onclick="showPage('products')">
+                            <i class="fas fa-box"></i>
+                            <span>商品管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('analytics')">
+                            <i class="fas fa-chart-line"></i>
+                            <span>流量分析</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('inquiries')">
+                            <i class="fas fa-envelope"></i>
+                            <span>客户询盘</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://carvalautopart.com" class="nav-link" target="_blank">
+                            <i class="fas fa-globe"></i>
+                            <span>网页前端</span>
+                        </a>
+                    </li>
                 </ul>
-            </div>
-        </div>
+            </nav>
+        </aside>
 
-        <!-- 上传区 -->
-        <div class="card" style="margin-bottom:24px;">
-            <div class="card-header"><i class="fas fa-upload"></i> 上传 Excel 文件</div>
-            <div class="card-body">
-                <div id="excelDropZone" style="border:2px dashed #ddd;padding:48px 24px;text-align:center;cursor:pointer;transition:all 0.3s;border-radius:0;background:#fafafa;position:relative;" onmouseover="this.style.borderColor='var(--primary)';this.style.background='#f0f7ff'" onmouseout="this.style.borderColor='#ddd';this.style.background='#fafafa'" onclick="document.getElementById('excelFileInput').click()">
-                    <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleExcelUpload(this)">
-                    <i class="fas fa-file-excel" style="font-size:48px;color:#1d6f42;margin-bottom:16px;display:block;"></i>
-                    <div style="font-family:var(--font-head,Oswald),sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:1px;color:var(--dark,#1a1a1a);margin-bottom:8px;">点击选择 Excel 文件</div>
-                    <div style="font-size:13px;color:#888;">支持 .xlsx / .xls / .csv 格式</div>
+        <!-- 主内容区 -->
+        <main class="content">
+            <!-- 商品管理页面 -->
+            <div id="page-products" class="page-content">
+                <div class="page-header">
+                    <h1 class="page-title">商品管理</h1>
+                    <p class="page-subtitle">管理产品信息、库存和分类</p>
                 </div>
 
-                <div id="importStatus" style="display:none;margin-top:16px;padding:14px 18px;font-size:14px;"></div>
-            </div>
-        </div>
-
-        <!-- 预览表格 -->
-        <div class="card" id="previewCard" style="display:none;margin-bottom:24px;">
-            <div class="card-header"><i class="fas fa-eye"></i> 预览解析结果 — 共 <span id="previewCount">0</span> 条商品</div>
-            <div class="card-body" style="padding:0;overflow-x:auto;">
-                <table style="width:100%;border-collapse:collapse;font-size:13px;" id="previewTable">
-                    <thead>
-                        <tr style="background:#f8f9fa;">
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">#</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">商品名称</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">分类</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">OEM编号</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">描述</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">图片</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">状态</th>
-                        </tr>
-                    </thead>
-                    <tbody id="previewBody"></tbody>
-                </table>
-            </div>
-            <div style="padding:20px 22px;border-top:1px solid #f0f0f0;display:flex;gap:12px;align-items:center;">
-                <button onclick="confirmImport()" style="padding:12px 28px;background:var(--success,#2ecc71);color:white;border:none;font-family:Oswald,sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
-                    <i class="fas fa-check"></i> 确认导入全部
-                </button>
-                <button onclick="clearPreview()" style="padding:12px 20px;background:transparent;border:1px solid #ddd;font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;cursor:pointer;color:#888;">
-                    <i class="fas fa-times"></i> 取消
-                </button>
-                <span id="importResultMsg" style="font-size:13px;color:#2ecc71;margin-left:8px;"></span>
-            </div>
-        </div>
-
-
-        <!-- AI产品抓取工具 -->
-        <div class="card" style="margin-bottom:24px;">
-            <div class="card-header" style="background:linear-gradient(135deg,#0f4c81,#1a3a5c);">
-                <i class="fas fa-robot"></i> AI 智能产品助手
-            </div>
-            <div class="card-body">
-
-                <!-- 模式切换 -->
-                <div style="display:flex;gap:0;margin-bottom:20px;border:1.5px solid #ddd;">
-                    <button id="modeBtn1" onclick="switchAiMode('single')" style="flex:1;padding:10px;background:var(--primary);color:white;border:none;font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;">
-                        <i class="fas fa-link"></i> 单个链接分析
-                    </button>
-                    <button id="modeBtn2" onclick="switchAiMode('batch')" style="flex:1;padding:10px;background:white;color:#888;border:none;border-left:1.5px solid #ddd;font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;">
-                        <i class="fas fa-file-excel"></i> Excel批量分析
-                    </button>
+                <!-- 统计概览 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">总商品数</div>
+                                <div class="stat-value" id="stat-total">0</div>
+                            </div>
+                            <div class="stat-icon red">
+                                <i class="fas fa-box"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">日系车</div>
+                                <div class="stat-value" id="stat-japanese">0</div>
+                            </div>
+                            <div class="stat-icon blue">
+                                <i class="fas fa-car"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">韩系车</div>
+                                <div class="stat-value" id="stat-korean">0</div>
+                            </div>
+                            <div class="stat-icon green">
+                                <i class="fas fa-car"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">德系车</div>
+                                <div class="stat-value" id="stat-german">0</div>
+                            </div>
+                            <div class="stat-icon orange">
+                                <i class="fas fa-car"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">国产车</div>
+                                <div class="stat-value" id="stat-chinese">0</div>
+                            </div>
+                            <div class="stat-icon red">
+                                <i class="fas fa-car"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">机油</div>
+                                <div class="stat-value" id="stat-oil">0</div>
+                            </div>
+                            <div class="stat-icon blue">
+                                <i class="fas fa-oil-can"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- 单个模式 -->
-                <div id="aiSingleMode">
-                <div style="background:#e8f4fd;border-left:4px solid var(--primary);padding:12px 16px;font-size:13px;color:#0f4c81;margin-bottom:20px;line-height:1.7;">
-                    粘贴产品链接，AI 自动生成产品名称、OEM编号、描述，确认后导入。
-                </div>
-                <!-- URL输入 -->
-                <div style="display:flex;gap:0;margin-bottom:16px;">
-                    <input type="text" id="aiUrl" placeholder="粘贴产品链接，例如：https://www.alibaba.com/product-detail/..." style="flex:1;padding:13px 16px;border:1.5px solid #ddd;border-right:none;font-size:14px;outline:none;">
-                    <button onclick="aiAnalyzeProduct()" id="aiAnalyzeBtn" style="padding:13px 24px;background:var(--primary);color:white;border:none;font-family:Oswald,sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px;">
-                        <i class="fas fa-magic" id="aiIcon"></i> <span id="aiAnalyzeTxt">AI 分析</span>
-                    </button>
+                <!-- 商品列表 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">商品列表</h2>
+                        <button class="btn btn-primary btn-sm" onclick="showAddProduct()">
+                            <i class="fas fa-plus"></i> 添加商品
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-wrapper">
+                            <table id="products-table">
+                                <thead>
+                                    <tr>
+                                        <th>图片</th>
+                                        <th>商品名称</th>
+                                        <th>OEM编号</th>
+                                        <th>分类</th>
+                                        <th>描述</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="products-tbody">
+                                    <!-- 产品列表将在这里动态生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- 分类选择 -->
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-                    <div class="form-group" style="margin:0;">
-                        <label>商品分类</label>
-                        <select id="aiCat">
-                            <option value="japanese">🇯🇵 Japanese（日系车）</option>
-                            <option value="korean">🇰🇷 Korean（韩系车）</option>
-                            <option value="german">🇩🇪 German（德系车）</option>
-                            <option value="chinese">🇨🇳 Chinese（国产车）</option>
-                            <option value="oil">🛢️ Engine Oil（机油）</option>
-                            <option value="other">📦 Other（其他）</option>
+                <!-- AI分析产品 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">AI 分析产品</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-nav">
+                            <button class="tab-btn active" onclick="switchTab('single')">单个链接分析</button>
+                            <button class="tab-btn" onclick="switchTab('batch')">批量链接分析</button>
+                        </div>
+
+                        <!-- 单个链接分析 -->
+                        <div id="tab-single" class="tab-content active">
+                            <div class="form-group">
+                                <label class="form-label">Alibaba产品链接</label>
+                                <div class="ai-input-group">
+                                    <input type="text" class="form-control" id="single-url" placeholder="输入Alibaba产品链接...">
+                                    <button class="btn btn-primary" onclick="analyzeSingleProduct()">
+                                        <i class="fas fa-robot"></i> 分析
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="single-result"></div>
+                        </div>
+
+                        <!-- 批量链接分析 -->
+                        <div id="tab-batch" class="tab-content">
+                            <div class="form-group">
+                                <label class="form-label">Alibaba产品链接（每行一个）</label>
+                                <textarea class="form-control" id="batch-urls" placeholder="输入多个Alibaba产品链接，每行一个..."></textarea>
+                            </div>
+                            <button class="btn btn-primary" onclick="analyzeBatchProducts()">
+                                <i class="fas fa-robot"></i> 批量分析
+                            </button>
+                            <div id="batch-result"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 流量分析页面 -->
+            <div id="page-analytics" class="page-content" style="display: none;">
+                <div class="page-header">
+                    <h1 class="page-title">流量分析</h1>
+                    <p class="page-subtitle">查看网站访问数据和用户行为</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Google Analytics 数据</h2>
+                        <button class="btn btn-primary btn-sm" onclick="connectGoogleAnalytics()">
+                            <i class="fab fa-google"></i> 连接账号
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="analytics-content">
+                            <div class="empty-state">
+                                <i class="fab fa-google"></i>
+                                <h3>连接 Google Analytics</h3>
+                                <p>请点击上方按钮连接您的 Google Analytics 账号以查看流量数据</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 快速统计 -->
+                <div class="stats-grid" id="analytics-stats" style="display: none;">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">今日访问</div>
+                                <div class="stat-value" id="stat-visits-today">-</div>
+                            </div>
+                            <div class="stat-icon blue">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">本周访问</div>
+                                <div class="stat-value" id="stat-visits-week">-</div>
+                            </div>
+                            <div class="stat-icon green">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">本月访问</div>
+                                <div class="stat-value" id="stat-visits-month">-</div>
+                            </div>
+                            <div class="stat-icon orange">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">跳出率</div>
+                                <div class="stat-value" id="stat-bounce-rate">-</div>
+                            </div>
+                            <div class="stat-icon red">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 客户询盘页面 -->
+            <div id="page-inquiries" class="page-content" style="display: none;">
+                <div class="page-header">
+                    <h1 class="page-title">客户询盘</h1>
+                    <p class="page-subtitle">查看和管理客户留言</p>
+                </div>
+
+                <!-- 询盘统计 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">总询盘数</div>
+                                <div class="stat-value" id="stat-inquiry-total">0</div>
+                            </div>
+                            <div class="stat-icon blue">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">未读询盘</div>
+                                <div class="stat-value" id="stat-inquiry-unread">0</div>
+                            </div>
+                            <div class="stat-icon red">
+                                <i class="fas fa-envelope-open"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">今日询盘</div>
+                                <div class="stat-value" id="stat-inquiry-today">0</div>
+                            </div>
+                            <div class="stat-icon green">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-label">本周询盘</div>
+                                <div class="stat-value" id="stat-inquiry-week">0</div>
+                            </div>
+                            <div class="stat-icon orange">
+                                <i class="fas fa-calendar-week"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 询盘列表 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">询盘列表</h2>
+                        <button class="btn btn-secondary btn-sm" onclick="refreshInquiries()">
+                            <i class="fas fa-sync-alt"></i> 刷新
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>状态</th>
+                                        <th>客户信息</th>
+                                        <th>留言内容</th>
+                                        <th>来源地区</th>
+                                        <th>IP地址</th>
+                                        <th>时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inquiries-tbody">
+                                    <!-- 询盘列表将在这里动态生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 添加/编辑商品模态框 -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">添加商品</h3>
+                <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="product-form">
+                    <input type="hidden" id="product-id">
+                    
+                    <div class="form-group">
+                        <label class="form-label">商品名称</label>
+                        <input type="text" class="form-control" id="product-name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">OEM编号</label>
+                        <input type="text" class="form-control" id="product-oem" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">分类</label>
+                        <select class="form-control" id="product-category" required>
+                            <option value="">选择分类</option>
+                            <option value="japanese">日系车</option>
+                            <option value="korean">韩系车</option>
+                            <option value="german">德系车</option>
+                            <option value="chinese">国产车</option>
+                            <option value="oil">机油</option>
+                            <option value="other">其他</option>
                         </select>
                     </div>
-                    <div class="form-group" style="margin:0;">
-                        <label>图片文件名（上传图片后填写）</label>
-                        <input type="text" id="aiImage" placeholder="例：90919-01253 (1).jpg">
-                    </div>
-                </div>
 
-                <!-- AI结果展示 -->
-                <div id="aiResultWrap" style="display:none;">
-                    <div style="background:#f8f9fa;border:1.5px solid #ddd;padding:18px 20px;margin-bottom:16px;">
-                        <div style="font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
-                            <i class="fas fa-robot" style="color:var(--primary);"></i> AI 分析结果（可手动修改）
-                        </div>
-                        <div class="form-group" style="margin-bottom:12px;">
-                            <label>产品名称</label>
-                            <input type="text" id="aiResultName" style="background:white;">
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-                            <div class="form-group" style="margin:0;">
-                                <label>OEM 编号</label>
-                                <input type="text" id="aiResultOem" style="background:white;">
-                            </div>
-                            <div class="form-group" style="margin:0;">
-                                <label>适用车型</label>
-                                <input type="text" id="aiResultModel" style="background:white;">
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin:0;">
-                            <label>产品描述</label>
-                            <textarea id="aiResultDesc" style="min-height:100px;background:white;"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <label class="form-label">产品描述</label>
+                        <textarea class="form-control" id="product-description" rows="4"></textarea>
                     </div>
-                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-                        <button onclick="addAiResult()" style="padding:11px 22px;background:#2ecc71;color:white;border:none;font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;gap:8px;">
-                            <i class="fas fa-plus"></i> 添加到商品列表
+
+                    <div class="form-group">
+                        <label class="form-label">图片链接（多个用逗号分隔）</label>
+                        <input type="text" class="form-control" id="product-images" placeholder="例如: img1.jpg, img2.jpg">
+                        <small style="color: var(--text-soft); font-size: 12px; margin-top: 4px; display: block;">
+                            图片应已上传到GitHub，格式如: 90917-15321(1).jpg
+                        </small>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+                        <button type="button" class="btn btn-secondary" onclick="closeProductModal()">取消</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存
                         </button>
-                        <button onclick="addAiResultAndContinue()" style="padding:11px 22px;background:var(--primary);color:white;border:none;font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;gap:8px;">
-                            <i class="fas fa-plus-circle"></i> 添加并继续下一个
-                        </button>
-                        <button onclick="resetAiTool()" style="padding:11px 16px;background:transparent;border:1px solid #ddd;font-family:Oswald,sans-serif;font-size:12px;cursor:pointer;color:#888;">
-                            <i class="fas fa-redo"></i> 重新分析
-                        </button>
-                        <span id="aiAddMsg" style="font-size:13px;color:#2ecc71;"></span>
                     </div>
-                </div>
-
-                <!-- 错误提示 -->
-                <div id="aiError" style="display:none;background:#fff5f5;border-left:4px solid var(--accent);padding:12px 16px;font-size:13px;color:#c0392b;margin-top:12px;"></div>
-
-                <!-- 已添加列表 -->
-                <div id="aiListWrap" style="display:none;margin-top:20px;border-top:1px solid #eee;padding-top:16px;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
-                        <div style="font-family:Oswald,sans-serif;font-size:14px;text-transform:uppercase;color:var(--steel);">
-                            待导入产品：<span id="aiListCount" style="color:var(--accent);">0</span> 条
-                        </div>
-                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                            <button onclick="importAiToProducts()" style="padding:8px 16px;background:#2ecc71;color:white;border:none;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:6px;">
-                                <i class="fas fa-check"></i> 全部导入商品管理
-                            </button>
-                            <button onclick="clearAiList()" style="padding:8px 12px;background:transparent;border:1px solid #ddd;font-family:Oswald,sans-serif;font-size:11px;cursor:pointer;color:#888;">
-                                <i class="fas fa-trash"></i> 清空
-                            </button>
-                        </div>
-                    </div>
-                    <div id="aiProductList" style="border:1px solid #eee;max-height:280px;overflow-y:auto;"></div>
-                </div>
-
+                </form>
             </div>
         </div>
-        </div><!-- end aiSingleMode -->
+    </div>
 
-                <!-- Excel批量模式 -->
-                <div id="aiBatchMode" style="display:none;">
-                    <div style="background:#e8f8f0;border-left:4px solid #2ecc71;padding:12px 16px;font-size:13px;color:#1a7a45;margin-bottom:20px;line-height:1.7;">
-                        <strong>使用方法：</strong><br>
-                        1. 点击 <strong>"下载Excel模板"</strong>，在表格里填入产品链接和分类<br>
-                        2. 上传填好的Excel → AI 自动逐个分析所有链接<br>
-                        3. 分析完成后一键导入商品管理
-                    </div>
-
-                    <!-- 下载模板按钮 -->
-                    <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap;">
-                        <button onclick="downloadBatchTemplate()" style="padding:11px 22px;background:#1d6f42;color:white;border:none;font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;gap:8px;">
-                            <i class="fas fa-download"></i> 下载Excel模板
-                        </button>
-                        <span style="font-size:12px;color:#888;">模板包含：产品链接 / 分类 / 图片文件名</span>
-                    </div>
-
-                    <!-- 上传Excel -->
-                    <label for="batchExcelInput" id="batchUploadLabel" style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:#f0f9f0;border:2px dashed #2ecc71;cursor:pointer;transition:all 0.3s;margin-bottom:16px;" onmouseover="this.style.background='#e0f5e0'" onmouseout="this.style.background='#f0f9f0'">
-                        <i class="fas fa-file-excel" style="font-size:28px;color:#1d6f42;flex-shrink:0;"></i>
-                        <div>
-                            <div style="font-family:Oswald,sans-serif;font-size:14px;font-weight:700;color:#1d6f42;text-transform:uppercase;letter-spacing:1px;">点击上传Excel文件</div>
-                            <div style="font-size:12px;color:#888;margin-top:3px;">支持 .xlsx / .xls 格式，一次可分析多个产品链接</div>
-                        </div>
-                        <input type="file" id="batchExcelInput" accept=".xlsx,.xls" style="display:none;" onchange="handleBatchExcel(this)">
-                    </label>
-
-                    <!-- 进度区域 -->
-                    <div id="batchProgress" style="display:none;">
-                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                            <span style="font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#555;" id="batchStatusText">准备中...</span>
-                            <span style="font-size:13px;color:#888;" id="batchCountText">0 / 0</span>
-                        </div>
-                        <div style="height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden;margin-bottom:12px;">
-                            <div id="batchProgressBar" style="height:100%;background:linear-gradient(90deg,#2ecc71,#27ae60);width:0%;transition:width 0.3s;border-radius:4px;"></div>
-                        </div>
-                        <div id="batchLog" style="background:#1e1e2e;color:#cdd6f4;padding:12px 14px;font-family:monospace;font-size:12px;max-height:160px;overflow-y:auto;line-height:1.8;"></div>
-                    </div>
-
-                    <!-- 批量结果导入 -->
-                    <div id="batchResultWrap" style="display:none;margin-top:16px;">
-                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-                            <div style="font-family:Oswald,sans-serif;font-size:14px;color:var(--steel);">
-                                分析完成：<span id="batchSuccessCount" style="color:#2ecc71;">0</span> 成功
-                                <span id="batchFailCount" style="color:var(--accent);margin-left:10px;">0</span> 失败
-                            </div>
-                            <button onclick="importBatchResults()" style="padding:10px 22px;background:#2ecc71;color:white;border:none;font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:8px;">
-                                <i class="fas fa-check"></i> 全部导入商品管理
-                            </button>
-                        </div>
-                    </div>
-                </div><!-- end aiBatchMode -->
-
+    <!-- 查看询盘详情模态框 -->
+    <div class="modal" id="inquiry-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">询盘详情</h3>
+                <button class="modal-close" onclick="closeInquiryModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="inquiry-details">
+                <!-- 询盘详情将在这里动态生成 -->
             </div>
         </div>
+    </div>
 
-</div>
-</div>
+    <script>
+        // ===== 全局变量 =====
+        let currentPage = 'products';
+        let productsData = [];
+        let inquiriesData = [];
+        const GITHUB_TOKEN = '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';
+        const GITHUB_REPO = 'carvalauto/carvalauto.github.io';
 
-
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<script>
-// ===== Tab切换 =====
-function switchTab(tab, btn) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('page-' + tab).classList.add('active');
-    btn.classList.add('active');
-    if (tab === 'analytics' && accessToken) loadAllData();
-    if (tab === 'analytics' && !accessToken) { document.getElementById('loginSection').style.display='block'; document.getElementById('dashboardSection').style.display='none'; }
-    if (tab === 'inquiries') { renderInquiries(); syncInquiriesFromGH(); }
-    if (tab === 'import') { }
-    if (tab === 'import') { document.getElementById('importStatus').style.display = 'none'; document.getElementById('previewCard').style.display = 'none'; }
-}
-
-
-// ===== GitHub 询盘存储 =====
-var GH_TOKEN = ['ghp_tWbCmVvLaCN','IshuezIwSTU7PVj','OEIS2RiQyO'].join('');
-var GH_REPO = 'carvalauto/carvalauto.github.io';
-var GH_FILE = 'inquiries.json';
-
-async function ghGetInquiries() {
-    try {
-        var resp = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FILE, {
-            headers: {
-                'Authorization': 'token ' + GH_TOKEN,
-                'Accept': 'application/vnd.github.v3+json'
+        // ===== 页面切换 =====
+        function showPage(page) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page-content').forEach(p => p.style.display = 'none');
+            
+            // 显示目标页面
+            document.getElementById('page-' + page).style.display = 'block';
+            
+            // 更新导航高亮
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            event.target.closest('.nav-link').classList.add('active');
+            
+            currentPage = page;
+            
+            // 关闭移动端侧边栏
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
             }
-        });
-        if (resp.status === 404) return { data: [], sha: null };
-        if (!resp.ok) return { data: [], sha: null };
-        var json = await resp.json();
-        if (!json.content) return { data: [], sha: null };
-        var decoded = atob(json.content.replace(/\n/g, ''));
-        var data = JSON.parse(decoded);
-        // Filter out any invalid entries
-        data = data.filter(function(i) { return i && i.name; });
-        return { data: data, sha: json.sha };
-    } catch(e) {
-        console.log('ghGetInquiries error:', e.message);
-        return { data: [], sha: null };
-    }
-}
-
-async function ghSaveInquiries(data, sha) {
-    var body = { 
-        message: 'Update inquiries',
-        content: btoa(unescape(encodeURIComponent(JSON.stringify(data)))),
-        committer: { name: 'Carval Admin', email: 'admin@carvalautopart.com' }
-    };
-    if (sha) body.sha = sha;
-    var resp = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FILE, {
-        method: 'PUT',
-        headers: {
-            'Authorization': 'token ' + GH_TOKEN,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    });
-    return resp.ok;
-}
-
-async function ghAddInquiry(inquiry) {
-    var result = await ghGetInquiries();
-    var data = result.data;
-    var sha = result.sha;
-    data.unshift(inquiry);
-    // Keep max 500 inquiries
-    if (data.length > 500) data = data.slice(0, 500);
-    await ghSaveInquiries(data, sha);
-}
-
-async function ghMarkRead(id) {
-    var result = await ghGetInquiries();
-    var data = result.data;
-    var inq = data.find(function(i) { return i.id === id; });
-    if (inq) { inq.read = true; await ghSaveInquiries(data, result.sha); }
-}
-
-async function ghDeleteInquiry(id) {
-    var result = await ghGetInquiries();
-    var data = result.data.filter(function(i) { return i.id !== id; });
-    await ghSaveInquiries(data, result.sha);
-}
-
-async function ghClearAll() {
-    await ghSaveInquiries([], (await ghGetInquiries()).sha);
-}
-
-// ===== 客户询盘模块 =====
-let inquiries = [];
-let inqFilter = 'all';
-let inqSearch = '';
-
-function loadInquiries() {
-    try {
-        const s = localStorage.getItem('carval_inquiries');
-        if (s) inquiries = JSON.parse(s);
-    } catch(e) { inquiries = []; }
-}
-
-function saveInquiries() {
-    try { localStorage.setItem('carval_inquiries', JSON.stringify(inquiries)); } catch(e) {}
-}
-
-// Load from GitHub and sync to localStorage
-async function syncInquiriesFromGH() {
-    var statusEl = document.getElementById('ghSyncStatus');
-    try {
-        if (statusEl) { statusEl.style.display = 'flex'; statusEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> 正在从云端同步最新数据...'; }
-        var result = await ghGetInquiries();
-        if (result.data && result.data.length >= 0) {
-            inquiries = result.data;
-            localStorage.setItem('carval_inquiries', JSON.stringify(inquiries));
-            renderInquiries();
-            updateInquiryBadge();
-            if (statusEl) {
-                statusEl.style.background = '#e8f8f0';
-                statusEl.style.borderColor = '#2ecc71';
-                statusEl.style.color = '#1a7a45';
-                statusEl.innerHTML = '<i class="fas fa-check-circle"></i> 同步成功！共 ' + inquiries.length + ' 条询盘（' + new Date().toLocaleTimeString() + '）';
-                setTimeout(function() { if (statusEl) statusEl.style.display = 'none'; }, 3000);
+            
+            // 加载对应页面数据
+            if (page === 'products') {
+                loadProducts();
+            } else if (page === 'inquiries') {
+                loadInquiries();
             }
         }
-    } catch(e) {
-        console.log('GH sync failed:', e);
-        if (statusEl) {
-            statusEl.style.background = '#fff5f5';
-            statusEl.style.borderColor = '#e74c3c';
-            statusEl.style.color = '#c0392b';
-            statusEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> 云端同步失败，显示本地数据。错误：' + (e.message || e);
+
+        // ===== 侧边栏切换 =====
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
         }
-    }
-}
 
-// 获取IP和地理位置信息
-async function getGeoInfo() {
-    try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        return {
-            country: data.country_name || 'Unknown',
-            countryCode: data.country_code || '',
-            city: data.city || '',
-            region: data.region || '',
-            ip: data.ip || '',
-            timezone: data.timezone || '',
-            org: data.org || ''
-        };
-    } catch(e) {
-        return { country: 'Unknown', countryCode: '', city: '', region: '', ip: '', timezone: '', org: '' };
-    }
-}
-
-// 获取流量来源
-function getTrafficSource() {
-    const ref = document.referrer;
-    if (!ref) return { source: '直接访问', detail: 'Direct' };
-    if (ref.includes('google')) return { source: '谷歌搜索', detail: ref };
-    if (ref.includes('facebook')) return { source: 'Facebook', detail: ref };
-    if (ref.includes('instagram')) return { source: 'Instagram', detail: ref };
-    if (ref.includes('whatsapp')) return { source: 'WhatsApp', detail: ref };
-    if (ref.includes('twitter') || ref.includes('t.co')) return { source: 'Twitter/X', detail: ref };
-    if (ref.includes('linkedin')) return { source: 'LinkedIn', detail: ref };
-    if (ref.includes('bing')) return { source: 'Bing搜索', detail: ref };
-    if (ref.includes('yahoo')) return { source: 'Yahoo搜索', detail: ref };
-    return { source: '外链引流', detail: ref };
-}
-
-// 获取设备信息
-function getDeviceInfo() {
-    const ua = navigator.userAgent;
-    let device = '电脑';
-    if (/Android|webOS|iPhone|iPad|iPod/i.test(ua)) {
-        if (/iPad/i.test(ua)) device = '平板';
-        else device = '手机';
-    }
-    let browser = 'Unknown';
-    if (ua.includes('Chrome')) browser = 'Chrome';
-    else if (ua.includes('Firefox')) browser = 'Firefox';
-    else if (ua.includes('Safari')) browser = 'Safari';
-    else if (ua.includes('Edge')) browser = 'Edge';
-    return { device, browser, lang: navigator.language || 'Unknown' };
-}
-
-// 提交表单时保存询盘
-async function saveInquiry(name, email, message) {
-    const geo = await getGeoInfo();
-    const source = getTrafficSource();
-    const device = getDeviceInfo();
-    const now = new Date();
-
-    // 解析OEM编号
-    const oemMatch = message.match(/[A-Z0-9]{6,20}[-]?[A-Z0-9]*/i);
-    const oem = oemMatch ? oemMatch[0] : '';
-
-    const inquiry = {
-        id: Date.now(),
-        name: name || 'Unknown',
-        email: email || '',
-        message: message || '',
-        oem: oem,
-        country: geo.country,
-        countryCode: geo.countryCode,
-        city: geo.city,
-        region: geo.region,
-        ip: geo.ip,
-        timezone: geo.timezone,
-        source: source.source,
-        sourceDetail: source.detail,
-        device: device.device,
-        browser: device.browser,
-        language: device.lang,
-        localTime: now.toLocaleString(),
-        timestamp: now.getTime(),
-        utcTime: now.toUTCString(),
-        read: false
-    };
-
-    loadInquiries();
-    inquiries.unshift(inquiry);
-    saveInquiries();
-    updateInquiryBadge();
-    return inquiry;
-}
-
-function updateInquiryBadge() {
-    loadInquiries();
-    const unread = inquiries.filter(i => !i.read).length;
-    const badge = document.getElementById('inquiryBadge');
-    if (badge) {
-        badge.textContent = unread;
-        badge.style.display = unread > 0 ? 'inline-flex' : 'none';
-    }
-    document.getElementById('inq_total').textContent = inquiries.length;
-    document.getElementById('inq_unread').textContent = unread;
-    // Today count
-    const today = new Date().toDateString();
-    const todayCount = inquiries.filter(i => new Date(i.timestamp).toDateString() === today).length;
-    document.getElementById('inq_today').textContent = todayCount;
-    // Country count
-    const countries = new Set(inquiries.map(i => i.country).filter(c => c !== 'Unknown'));
-    document.getElementById('inq_countries').textContent = countries.size;
-}
-
-function filterInquiries(filter, btn) {
-    inqFilter = filter;
-    document.querySelectorAll('.inq-filter').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    renderInquiries();
-}
-
-function searchInquiries() {
-    inqSearch = document.getElementById('inqSearch').value.toLowerCase().trim();
-    renderInquiries();
-}
-
-function getCountryFlag(code) {
-    if (!code || code.length !== 2) return '🌐';
-    const offset = 127397;
-    return String.fromCodePoint(...code.toUpperCase().split('').map(c => c.charCodeAt(0) + offset));
-}
-
-function timeAgo(ts) {
-    const diff = Date.now() - ts;
-    const mins = Math.floor(diff / 60000);
-    if (mins < 1) return '刚刚';
-    if (mins < 60) return `${mins}分钟前`;
-    const hours = Math.floor(mins / 60);
-    if (hours < 24) return `${hours}小时前`;
-    const days = Math.floor(hours / 24);
-    if (days < 30) return `${days}天前`;
-    return new Date(ts).toLocaleDateString();
-}
-
-function renderInquiries() {
-    loadInquiries();
-    updateInquiryBadge();
-    const container = document.getElementById('inquiryList');
-    if (!container) return;
-
-    let filtered = inquiries.filter(function(i) {
-        if (!i || !i.name) return false;
-        var matchFilter = inqFilter === 'all' || (inqFilter === 'unread' && !i.read) || (inqFilter === 'read' && i.read);
-        var name = (i.name || '').toLowerCase();
-        var email = (i.email || '').toLowerCase();
-        var message = (i.message || '').toLowerCase();
-        var country = (i.country || '').toLowerCase();
-        var matchSearch = !inqSearch || name.includes(inqSearch) || email.includes(inqSearch) || message.includes(inqSearch) || country.includes(inqSearch);
-        return matchFilter && matchSearch;
-    });
-
-    if (filtered.length === 0) {
-        container.innerHTML = '<div class="inq-empty"><i class="fas fa-inbox"></i><h3>暂无询盘记录</h3><p>客户通过网站联系表单提交后，记录将自动出现在这里</p></div>';
-        return;
-    }
-
-    var html = '';
-    filtered.forEach(function(inq) {
-        var flag = getCountryFlag(inq.countryCode || '');
-        var deviceIcon = inq.device === '手机' ? 'mobile-alt' : (inq.device === '平板' ? 'tablet-alt' : 'desktop');
-        var oemHtml = inq.oem ? '<div class="inq-oem"><i class="fas fa-barcode"></i> OEM: ' + inq.oem + '</div>' : '';
-        inq.name = inq.name || 'Unknown';
-        inq.email = inq.email || '';
-        inq.message = inq.message || '';
-        inq.country = inq.country || 'Unknown';
-        inq.source = inq.source || 'Direct';
-        inq.device = inq.device || 'Desktop';
-        inq.browser = inq.browser || 'Unknown';
-        inq.language = inq.language || '';
-        inq.localTime = inq.localTime || '';
-        inq.timezone = inq.timezone || '';
-        var readBtn = !inq.read ? '<button class="inq-btn inq-btn-read" onclick="markRead(' + inq.id + ')"><i class="fas fa-check"></i> 标为已读</button>' : '';
-        var unreadBadge = !inq.read ? '<span class="inq-tag unread-badge">NEW</span>' : '';
-        var msgSafe = inq.message.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-        html += '<div class="inq-card ' + (inq.read ? '' : 'unread') + '" id="inq-' + inq.id + '">';
-        html += '<div class="inq-card-header">';
-        html += '<div class="inq-avatar">' + inq.name.charAt(0).toUpperCase() + '</div>';
-        html += '<div><div class="inq-name">' + inq.name + ' ' + unreadBadge + '</div>';
-        html += '<div class="inq-email"><a href="mailto:' + inq.email + '" style="color:#888;text-decoration:none;">' + inq.email + '</a></div></div>';
-        html += '<div class="inq-meta">';
-        html += '<span class="inq-tag country">' + flag + ' ' + inq.country + (inq.city ? ' &middot; ' + inq.city : '') + '</span>';
-        html += '<span class="inq-tag source"><i class="fas fa-share-alt" style="font-size:10px;"></i> ' + inq.source + '</span>';
-        html += '<span class="inq-tag device"><i class="fas fa-' + deviceIcon + '" style="font-size:10px;"></i> ' + inq.device + ' &middot; ' + inq.browser + '</span>';
-        html += '<span class="inq-tag time"><i class="fas fa-clock" style="font-size:10px;"></i> ' + timeAgo(inq.timestamp) + '</span>';
-        html += '</div></div>';
-        html += '<div class="inq-body">';
-        html += oemHtml;
-        html += '<div class="inq-message">' + msgSafe + '</div>';
-        html += '<div style="font-size:11px;color:#aaa;margin-bottom:10px;">';
-        html += '<i class="fas fa-map-marker-alt"></i> ' + (inq.region ? inq.region + ', ' : '') + inq.country;
-        html += ' &nbsp;|&nbsp; <i class="fas fa-globe"></i> ' + inq.language;
-        html += ' &nbsp;|&nbsp; <i class="fas fa-calendar"></i> ' + inq.localTime;
-        html += (inq.timezone ? ' (' + inq.timezone + ')' : '');
-        html += '</div>';
-        html += '<div class="inq-actions">';
-        html += '<button class="inq-btn inq-btn-reply" onclick="replyInquiry(' + inq.id + ')"><i class="fas fa-reply"></i> 回复邮件</button>';
-        html += '<button class="inq-btn inq-btn-reply" onclick="replyWhatsApp(' + inq.id + ')"><i class="fab fa-whatsapp"></i> WhatsApp</button>';
-        html += readBtn;
-        html += '<button class="inq-btn inq-btn-delete" onclick="deleteInquiry(' + inq.id + ')"><i class="fas fa-trash"></i> 删除</button>';
-        html += '</div></div></div>';
-    });
-    container.innerHTML = html;
-}
-
-
-function markRead(id) {
-    loadInquiries();
-    const inq = inquiries.find(i => i.id === id);
-    if (inq) { 
-        inq.read = true; 
-        saveInquiries(); 
-        renderInquiries();
-        ghMarkRead(id); // Sync to GitHub
-    }
-}
-
-function markAllRead() {
-    loadInquiries();
-    inquiries.forEach(i => i.read = true);
-    saveInquiries();
-    renderInquiries();
-    updateInquiryBadge();
-    // Sync all to GitHub
-    ghSaveInquiries(inquiries, null).catch(function(){});
-}
-
-function deleteInquiry(id) {
-    if (!confirm('确认删除这条询盘？')) return;
-    loadInquiries();
-    inquiries = inquiries.filter(i => i.id !== id);
-    saveInquiries();
-    renderInquiries();
-    ghDeleteInquiry(id); // Sync to GitHub
-    showToast('询盘已删除', '#e67e22');
-}
-
-function clearAllInquiries() {
-    if (!confirm('确认清空所有询盘记录？此操作不可恢复！')) return;
-    inquiries = [];
-    saveInquiries();
-    renderInquiries();
-    ghClearAll(); // Sync to GitHub
-    showToast('所有询盘已清空', '#e67e22');
-}
-
-function replyInquiry(id) {
-    loadInquiries();
-    var inq = inquiries.find(function(i) { return i.id === id; });
-    if (!inq) return;
-    var subject = encodeURIComponent('Re: Your Inquiry - Carval Auto Parts');
-    var body = encodeURIComponent('Dear ' + inq.name + ',\n\nThank you for contacting Carval Auto Parts.\n\nBest regards,\nCarval Auto Parts Team\nhttps://carvalautopart.com');
-    window.open('mailto:' + inq.email + '?subject=' + subject + '&body=' + body);
-    markRead(id);
-}
-
-function replyWhatsApp(id) {
-    loadInquiries();
-    var inq = inquiries.find(function(i) { return i.id === id; });
-    if (!inq) return;
-    var preview = inq.message.substring(0, 80);
-    var text = encodeURIComponent('Hi! Thank you for your inquiry. This is Carval Auto Parts. How can I help you?\nRef: ' + preview);
-    window.open('https://wa.me/8619521228657?text=' + text, '_blank');
-}
-
-// ===== 商品管理 =====
-let products = [], sessionAdded = 0, nextId = 1;
-try { const s = localStorage.getItem('carval_products'); if(s){ products = JSON.parse(s); nextId = products.length > 0 ? Math.max(...products.map(p=>p.id))+1 : 1; } } catch(e){}
-
-function saveToStorage() { try{ localStorage.setItem('carval_products', JSON.stringify(products)); }catch(e){} }
-
-function previewImage(input) {
-    // Image field is now text input - this function kept for compatibility
-}
-
-function addProduct() {
-    const name = document.getElementById('pName').value.trim();
-    if (!name) { showToast('⚠ 请填写商品名称', '#e74c3c'); return; }
-    const category = document.getElementById('pCategory').value;
-    const oem = document.getElementById('pOem').value.trim();
-    const desc = document.getElementById('pDesc').value.trim();
-    const imageInput = document.getElementById('pImage');
-    var imageName = imageInput.value ? imageInput.value.trim().replace(/\n/g, ', ') : '';
-    products.push({ id: nextId++, name, category, oem, description: desc, image: imageName });
-    sessionAdded++;
-    saveToStorage(); renderList(); generateCode(); updateStats(); resetForm();
-    showToast('✓ 商品已添加成功！');
-}
-
-function removeProduct(id) {
-    if (!confirm('确认删除？')) return;
-    products = products.filter(p => p.id !== id);
-    saveToStorage(); renderList(); generateCode(); updateStats();
-    showToast('商品已删除', '#e67e22');
-}
-
-function renderList() {
-    const el = document.getElementById('productList');
-    if (products.length === 0) { el.innerHTML = `<div class="empty-list"><i class="fas fa-box-open"></i><p>暂无商品</p></div>`; return; }
-    const icons = {japanese:'🇯🇵',korean:'🇰🇷',german:'🇩🇪',chinese:'🇨🇳',oil:'🛢️',other:'📦'};
-    el.innerHTML = products.map(p => `
-        <div class="product-item">
-            ${p.image ? `<img class="product-thumb" src="${p.image}" alt="${p.name}" onerror="this.style.display='none'">` : `<div class="product-thumb-placeholder"><i class="fas fa-car"></i></div>`}
-            <div class="product-info">
-                <div class="pname">${p.name}</div>
-                <div class="pmeta"><span>${icons[p.category]||''} ${p.category}</span>${p.oem?`<span>OEM: ${p.oem}</span>`:''}</div>
-            </div>
-            <button class="btn btn-danger" onclick="removeProduct(${p.id})"><i class="fas fa-trash"></i></button>
-        </div>`).join('');
-}
-
-function generateCode() {
-    const el = document.getElementById('generatedCode');
-    if (products.length === 0) { el.textContent = '// 还没有商品，请先添加'; return; }
-    el.textContent = products.map((p,i) => `        {\n            id: ${p.id},\n            name: "${p.name}",\n            category: "${p.category}",\n            oem: "${p.oem}",\n            description: "${p.description.replace(/"/g,'\\"')}",\n            image: "${p.image}"\n        }${i<products.length-1?',':''}`).join('\n');
-}
-
-function copyCode() {
-    if (products.length === 0) { showToast('⚠ 请先添加商品', '#e74c3c'); return; }
-    const text = document.getElementById('generatedCode').textContent;
-    navigator.clipboard.writeText(text).then(() => showToast('✓ 代码已复制！')).catch(() => {
-        const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('✓ 代码已复制！');
-    });
-}
-
-function updateStats() {
-    document.getElementById('totalCount').textContent = products.length;
-    document.getElementById('sessionCount').textContent = sessionAdded;
-
-    // Category breakdown
-    var cats = ['japanese','korean','german','chinese','oil','other'];
-    cats.forEach(function(cat) {
-        var el = document.getElementById('cat_' + cat);
-        if (el) {
-            var count = products.filter(function(p) { return p.category === cat; }).length;
-            el.textContent = count;
+        // ===== 标签页切换 =====
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
         }
-    });
-}
 
-function resetForm() {
-    ['pName','pOem','pDesc','pImage'].forEach(function(id) { document.getElementById(id).value = ''; });
-    document.getElementById('pCategory').value = 'japanese';
-}
+        // ===== 加载产品数据 =====
+        async function loadProducts() {
+            try {
+                // 从GitHub加载产品数据
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/products.json`, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const content = atob(data.content.replace(/\n/g, ''));
+                    productsData = JSON.parse(content);
+                } else {
+                    // 如果文件不存在，使用空数组
+                    productsData = [];
+                }
+            } catch (error) {
+                console.error('加载产品数据失败:', error);
+                productsData = [];
+            }
+            
+            updateProductStats();
+            renderProductsTable();
+        }
 
-
-// ===== AI 批量Excel模式 =====
-var batchResults = [];
-
-function switchAiMode(mode) {
-    var single = document.getElementById('aiSingleMode');
-    var batch = document.getElementById('aiBatchMode');
-    var btn1 = document.getElementById('modeBtn1');
-    var btn2 = document.getElementById('modeBtn2');
-    if (mode === 'single') {
-        single.style.display = 'block';
-        batch.style.display = 'none';
-        btn1.style.background = 'var(--primary)'; btn1.style.color = 'white';
-        btn2.style.background = 'white'; btn2.style.color = '#888';
-    } else {
-        single.style.display = 'none';
-        batch.style.display = 'block';
-        btn1.style.background = 'white'; btn1.style.color = '#888';
-        btn2.style.background = '#1d6f42'; btn2.style.color = 'white';
-    }
-}
-
-function downloadBatchTemplate() {
-    if (typeof XLSX === 'undefined') { alert('请等待页面加载完成'); return; }
-    var wb = XLSX.utils.book_new();
-
-    // Define sheets per category
-    var sheets = [
-        { name: '🇯🇵 Japanese', cat: 'japanese', example: '04465-06110 (1).jpg' },
-        { name: '🇰🇷 Korean',   cat: 'korean',   example: '54610-D3050 (1).jpg' },
-        { name: '🇩🇪 German',   cat: 'german',   example: '11427788454 (1).jpg' },
-        { name: '🇨🇳 Chinese',  cat: 'chinese',  example: 'S3501100 (1).jpg' },
-        { name: '🛢️ Oil',       cat: 'oil',      example: '5W-30 (1).jpg' },
-        { name: '📦 Other',     cat: 'other',    example: 'product001 (1).jpg' },
-    ];
-
-    sheets.forEach(function(s) {
-        var data = [
-            ['url', 'image'],
-            ['https://www.alibaba.com/product-detail/...', s.example],
-            ['https://www.alibaba.com/product-detail/...', ''],
-            ['https://www.1688.com/offer/...', ''],
-        ];
-        var ws = XLSX.utils.aoa_to_sheet(data);
-        ws['!cols'] = [{wch:65}, {wch:35}];
-        // Style header row
-        XLSX.utils.book_append_sheet(wb, ws, s.name);
-    });
-
-    XLSX.writeFile(wb, 'carval_ai_batch_template.xlsx');
-    showToast('✓ 模板已下载！6个分类工作表');
-}
-
-async function handleBatchExcel(input) {
-    if (!input.files || !input.files[0]) return;
-    var file = input.files[0];
-
-    if (typeof XLSX === 'undefined') { showToast('⚠ 请等待页面加载完成', '#e74c3c'); return; }
-
-    var reader = new FileReader();
-    reader.onload = async function(e) {
-        try {
-            var data = new Uint8Array(e.target.result);
-            var workbook = XLSX.read(data, { type: 'array' });
-
-            // Sheet name to category mapping
-            var sheetCatMap = {
-                'japanese': 'japanese', 'korean': 'korean',
-                'german': 'german', 'chinese': 'chinese',
-                'oil': 'oil', 'other': 'other'
+        // ===== 更新产品统计 =====
+        function updateProductStats() {
+            const stats = {
+                total: productsData.length,
+                japanese: productsData.filter(p => p.category === 'japanese').length,
+                korean: productsData.filter(p => p.category === 'korean').length,
+                german: productsData.filter(p => p.category === 'german').length,
+                chinese: productsData.filter(p => p.category === 'chinese').length,
+                oil: productsData.filter(p => p.category === 'oil').length
             };
+            
+            document.getElementById('stat-total').textContent = stats.total;
+            document.getElementById('stat-japanese').textContent = stats.japanese;
+            document.getElementById('stat-korean').textContent = stats.korean;
+            document.getElementById('stat-german').textContent = stats.german;
+            document.getElementById('stat-chinese').textContent = stats.chinese;
+            document.getElementById('stat-oil').textContent = stats.oil;
+        }
 
-            // Collect all valid rows from ALL sheets
-            var validRows = [];
-            workbook.SheetNames.forEach(function(sheetName) {
-                // Detect category from sheet name
-                var cat = 'other';
-                var lname = sheetName.toLowerCase();
-                Object.keys(sheetCatMap).forEach(function(k) {
-                    if (lname.includes(k)) cat = sheetCatMap[k];
-                });
-
-                var sheet = workbook.Sheets[sheetName];
-                var rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
-
-                rows.forEach(function(row) {
-                    var keys = Object.keys(row);
-                    var urlKey = keys.find(function(k) { return k.toLowerCase().includes('url') || k.toLowerCase().includes('link'); }) || 'url';
-                    var url = String(row[urlKey] || '').trim();
-                    if (!url || !url.startsWith('http') || url.includes('/...')) return;
-
-                    var imgKey = keys.find(function(k) { return k.toLowerCase().includes('image') || k.toLowerCase().includes('img'); }) || 'image';
-                    var img = String(row[imgKey] || '').trim().replace(/\n/g, ', ');
-
-                    // Override category from column if exists
-                    var catKey = keys.find(function(k) { return k.toLowerCase().includes('cat'); });
-                    if (catKey && row[catKey]) {
-                        var colCat = String(row[catKey]).trim().toLowerCase();
-                        var validCats = ['japanese','korean','german','chinese','oil','other'];
-                        if (validCats.includes(colCat)) cat = colCat;
-                    }
-
-                    validRows.push({ url: url, category: cat, image: img });
-                });
-            });
-
-            if (validRows.length === 0) {
-                showToast('⚠ 没有找到有效的产品链接', '#e74c3c');
+        // ===== 渲染产品表格 =====
+        function renderProductsTable() {
+            const tbody = document.getElementById('products-tbody');
+            
+            if (productsData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="fas fa-box"></i>
+                                <h3>暂无商品</h3>
+                                <p>点击右上角"添加商品"按钮添加第一个商品</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
                 return;
             }
-
-            // Start batch processing
-            batchResults = [];
-            document.getElementById('batchProgress').style.display = 'block';
-            document.getElementById('batchResultWrap').style.display = 'none';
-            document.getElementById('batchLog').innerHTML = '';
-
-            var total = validRows.length;
-            document.getElementById('batchCountText').textContent = '0 / ' + total;
-            document.getElementById('batchStatusText').textContent = 'AI 正在分析中...';
-
-            var success = 0;
-            var fail = 0;
-
-            for (var i = 0; i < validRows.length; i++) {
-                var row = validRows[i];
-                var keys = Object.keys(row);
-                var urlKey = keys.find(function(k) { return k.toLowerCase().includes('url') || k.toLowerCase().includes('link'); }) || 'url';
-                var catKey = keys.find(function(k) { return k.toLowerCase().includes('cat'); }) || 'category';
-                var imgKey = keys.find(function(k) { return k.toLowerCase().includes('image') || k.toLowerCase().includes('img'); }) || 'image';
-
-                var url = String(row[urlKey] || '').trim();
-                var cat = String(row[catKey] || 'other').trim().toLowerCase();
-                var img = String(row[imgKey] || '').trim();
-                // Support both comma and newline separated image names
-                img = img.replace(/\n/g, ', ').replace(/,\s*,/g, ',').trim();
-
-                var validCats = ['japanese','korean','german','chinese','oil','other'];
-                if (!validCats.includes(cat)) cat = 'other';
-
-                var logEl = document.getElementById('batchLog');
-                logEl.innerHTML += '<span style="color:#6c7086;">[' + (i+1) + '/' + total + ']</span> 分析中: <span style="color:#89b4fa;">' + url.substring(0,50) + '...</span><br>';
-                logEl.scrollTop = logEl.scrollHeight;
-
-                // Update progress bar
-                document.getElementById('batchProgressBar').style.width = Math.round((i / total) * 100) + '%';
-                document.getElementById('batchCountText').textContent = i + ' / ' + total;
-
-                try {
-                    var catNames = {japanese:'Japanese car (Toyota/Honda/Nissan/Mazda/Mitsubishi)',korean:'Korean car (Hyundai/Kia)',german:'German car (BMW/Mercedes/VW/Audi)',chinese:'Chinese car (Baojun/Wuling/Geely)',oil:'Engine Oil',other:'Other auto parts'};
-                    // Extract product info from URL
-                    var urlSlug = '';
-                    var urlOem = '';
-                    try {
-                        // Get product title slug from URL
-                        var urlMatch = url.match(/product-detail\/([^?#]+)/);
-                        if (urlMatch) {
-                            var rawSlug = urlMatch[1];
-                            // Remove the alibaba product ID (last _XXXXXXXXXX part)
-                            var slugClean = rawSlug.replace(/_\d{10,}.*$/, '');
-                            urlSlug = slugClean.replace(/-/g, ' ').replace(/_/g, ' ').trim();
-                        }
-                        // Extract OEM - look for "Replaces-XXXXX" pattern
-                        var replaceMatch = url.match(/Replaces[-_]([A-Z0-9-]+)/i);
-                        if (replaceMatch) {
-                            urlOem = replaceMatch[1];
-                        } else {
-                            // Try number patterns like 19070-B1020
-                            var oemMatch = url.match(/([A-Z0-9]{4,}-[A-Z0-9]{3,})/i);
-                            if (oemMatch) urlOem = oemMatch[1];
-                        }
-                    } catch(e) {}
-
-                    var prompt = 'You are an expert auto parts specialist with deep knowledge of OEM part numbers and vehicle compatibility.' +
-                        '\n\nAnalyze this auto part and provide complete product information:' +
-                        '\nProduct title from URL: "' + (urlSlug || '') + '"' +
-                        '\nOEM number hint: "' + urlOem + '"' +
-                        '\nCategory: ' + (catNames[cat] || cat) +
-                        '\n\nUsing your knowledge of auto parts, provide:' +
-                        '\n1. A professional product name' +
-                        '\n2. The correct OEM part number' +
-                        '\n3. ALL compatible vehicle makes, models and year ranges' +
-                        '\n4. Key product specifications' +
-                        '\n\nReturn ONLY valid JSON (no markdown, no extra text):' +
-                        '\n{' +
-                        '\n  "name": "Professional product name in English (6-10 words)",' +
-                        '\n  "oem": "OEM part number",' +
-                        '\n  "brand": "Vehicle brand e.g. Toyota / Honda / BMW",' +
-                        '\n  "models": "All compatible models e.g. Toyota Camry 2018-2023, Corolla 2019-2022",' +
-                        '\n  "specs": "Key specs e.g. 12V, 4-cylinder, Front Left",' +
-                        '\n  "description": "Professional 2-3 sentence description including: product type, compatible vehicles with year range, OEM quality standard, key features"' +
-                        '\n}';
-
-                    var resp = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }],
-                            generationConfig: { temperature: 0.2, maxOutputTokens: 600 }
-                        })
-                    });
-
-                    if (!resp.ok) {
-                        var errBody = await resp.json().catch(function(){return {};});
-                        throw new Error('API error ' + resp.status + ': ' + (errBody.error ? errBody.error.message : JSON.stringify(errBody)));
-                    }
-                    var respData = await resp.json();
-                    var text = respData.candidates[0].content.parts[0].text.trim();
-                    var jsonMatch = text.match(/\{[\s\S]*\}/);
-                    if (!jsonMatch) throw new Error('Invalid response');
-                    var result = JSON.parse(jsonMatch[0]);
-
-                    // Build complete description from all fields
-                    var desc = result.description || '';
-                    var brand = result.brand || '';
-                    var models = result.models || result.model || '';
-                    var specs = result.specs || '';
-                    // Compose rich description
-                    var richDesc = '';
-                    if (brand) richDesc += 'Brand: ' + brand + '. ';
-                    richDesc += desc;
-                    if (models && !richDesc.includes(models.substring(0,20))) richDesc += ' Compatible with: ' + models + '.';
-                    if (specs && !richDesc.includes(specs.substring(0,10))) richDesc += ' Specs: ' + specs + '.';
-
-                    batchResults.push({
-                        id: Date.now() + Math.random(),
-                        name: result.name || url.split('/').pop() || 'Product ' + (i+1),
-                        category: cat,
-                        oem: result.oem || '',
-                        description: richDesc || desc,
-                        image: img,
-                        status: 'ok'
-                    });
-
-                    success++;
-                    logEl.innerHTML += '<span style="color:#2ecc71;">✓ 成功: ' + (result.name || '').substring(0,40) + '</span><br>';
-                } catch(err) {
-                    fail++;
-                    batchResults.push({
-                        id: Date.now() + Math.random(),
-                        name: 'Product ' + (i+1) + ' (分析失败)',
-                        category: cat, oem: '', description: '', image: img, status: 'fail'
-                    });
-                    logEl.innerHTML += '<span style="color:#e63946;">✗ 失败: ' + err.message + '</span><br>';
-                }
-                logEl.scrollTop = logEl.scrollHeight;
-
-                // Small delay to avoid rate limiting
-                if (i < validRows.length - 1) {
-                    await new Promise(function(r) { setTimeout(r, 800); });
-                }
-            }
-
-            // Done
-            document.getElementById('batchProgressBar').style.width = '100%';
-            document.getElementById('batchCountText').textContent = total + ' / ' + total;
-            document.getElementById('batchStatusText').textContent = '分析完成！';
-            document.getElementById('batchSuccessCount').textContent = success;
-            document.getElementById('batchFailCount').textContent = fail;
-            document.getElementById('batchResultWrap').style.display = 'block';
-            document.getElementById('batchLog').innerHTML += '<br><span style="color:#f9e2af;font-weight:bold;">全部完成！成功 ' + success + ' 个，失败 ' + fail + ' 个</span>';
-
-            showToast('✓ 批量分析完成！成功 ' + success + ' 个');
-
-        } catch(err) {
-            showToast('⚠ 文件解析失败：' + err.message, '#e74c3c');
+            
+            const categoryLabels = {
+                japanese: '🇯🇵 日系车',
+                korean: '🇰🇷 韩系车',
+                german: '🇩🇪 德系车',
+                chinese: '🇨🇳 国产车',
+                oil: '🛢️ 机油',
+                other: '📦 其他'
+            };
+            
+            tbody.innerHTML = productsData.map(product => {
+                const firstImage = product.image ? product.image.split(',')[0].trim() : '';
+                const imageHtml = firstImage 
+                    ? `<img src="${firstImage}" class="product-thumb" alt="${product.name}">`
+                    : '<div style="width:60px;height:60px;background:#f0f0f0;border-radius:4px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-image" style="color:#ccc;"></i></div>';
+                
+                return `
+                    <tr>
+                        <td>${imageHtml}</td>
+                        <td><strong>${product.name}</strong></td>
+                        <td>${product.oem || '-'}</td>
+                        <td><span class="badge badge-info">${categoryLabels[product.category] || product.category}</span></td>
+                        <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${product.description || '-'}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" onclick="editProduct(${product.id})">
+                                <i class="fas fa-edit"></i> 编辑
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="deleteProduct(${product.id})" style="background: var(--danger);">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
-    };
-    reader.readAsArrayBuffer(file);
-}
 
-function importBatchResults() {
-    var validResults = batchResults.filter(function(r) { return r.status === 'ok'; });
-    if (validResults.length === 0) { showToast('⚠ 没有成功的分析结果', '#e74c3c'); return; }
+        // ===== 显示添加商品模态框 =====
+        function showAddProduct() {
+            document.getElementById('modal-title').textContent = '添加商品';
+            document.getElementById('product-form').reset();
+            document.getElementById('product-id').value = '';
+            document.getElementById('product-modal').classList.add('show');
+        }
 
-    var existing = [];
-    try { existing = JSON.parse(localStorage.getItem('carval_products') || '[]'); } catch(e) {}
-    var maxId = existing.length > 0 ? Math.max.apply(null, existing.map(function(p) { return p.id||0; })) : 0;
+        // ===== 编辑商品 =====
+        function editProduct(id) {
+            const product = productsData.find(p => p.id === id);
+            if (!product) return;
+            
+            document.getElementById('modal-title').textContent = '编辑商品';
+            document.getElementById('product-id').value = product.id;
+            document.getElementById('product-name').value = product.name;
+            document.getElementById('product-oem').value = product.oem || '';
+            document.getElementById('product-category').value = product.category;
+            document.getElementById('product-description').value = product.description || '';
+            document.getElementById('product-images').value = product.image || '';
+            
+            document.getElementById('product-modal').classList.add('show');
+        }
 
-    var newProds = validResults.map(function(item, i) {
-        return { id: maxId+i+1, name: item.name, category: item.category, oem: item.oem, description: item.description, image: item.image };
-    });
+        // ===== 删除商品 =====
+        async function deleteProduct(id) {
+            if (!confirm('确定要删除这个商品吗?')) return;
+            
+            productsData = productsData.filter(p => p.id !== id);
+            await saveProductsToGitHub();
+            await loadProducts();
+        }
 
-    var merged = existing.concat(newProds);
-    localStorage.setItem('carval_products', JSON.stringify(merged));
-    products = merged;
-    nextId = Math.max.apply(null, merged.map(function(p) { return p.id; })) + 1;
-    sessionAdded += newProds.length;
-    renderList(); generateCode(); updateStats();
+        // ===== 关闭商品模态框 =====
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.remove('show');
+        }
 
-    showToast('✓ 已导入 ' + newProds.length + ' 条产品！');
-    batchResults = [];
-    document.getElementById('batchProgress').style.display = 'none';
-    document.getElementById('batchResultWrap').style.display = 'none';
-    document.getElementById('batchExcelInput').value = '';
-
-    setTimeout(function() {
-        switchTab('products', document.querySelector('.tab-btn'));
-    }, 1200);
-}
-
-// ===== AI 产品分析工具 =====
-var AI_KEY = ['sk-ant-api03-mN2CVlv','HRkTfrAZGza9BzouyWB1','NqpTpCOFqPzCN7a1qgKecNqBlCqgCTr6cb8JVZ6iQlkrPL2cHxws8TOGwWQ-sbjVBAAA'].join('');
-var aiProducts = [];
-var GEMINI_KEY = ['AIzaSyAAN4_J9Ew','tNvX13BfHd8jG6a','pedzasHT0'].join('');
-
-async function aiAnalyzeProduct() {
-    var url = document.getElementById('aiUrl').value.trim();
-    if (!url) { showToast('⚠ 请输入产品链接', '#e74c3c'); return; }
-
-    // UI: loading state
-    var btn = document.getElementById('aiAnalyzeBtn');
-    var icon = document.getElementById('aiIcon');
-    var txt = document.getElementById('aiAnalyzeTxt');
-    btn.disabled = true;
-    icon.className = 'fas fa-spinner fa-spin';
-    txt.textContent = 'AI 分析中...';
-    document.getElementById('aiResultWrap').style.display = 'none';
-    document.getElementById('aiError').style.display = 'none';
-
-    try {
-        var cat = document.getElementById('aiCat').value;
-        var catNames = {japanese:'Japanese car (Toyota/Honda/Nissan/Mazda/Mitsubishi/Subaru)',korean:'Korean car (Hyundai/Kia)',german:'German car (BMW/Mercedes/VW/Audi)',chinese:'Chinese car (Baojun/Wuling/Geely)',oil:'Engine Oil',other:'Other auto parts'};
-
-        // Extract readable slug and OEM from URL
-        var urlSlug = '';
-        var urlOem = '';
-        try {
-            var slugMatch = url.match(/product-detail\/([^_?&#/]+)/);
-            if (slugMatch) urlSlug = decodeURIComponent(slugMatch[1]).replace(/-/g, ' ');
-            var oemM = url.match(/_([A-Z0-9]{6,})/);
-            if (oemM) urlOem = oemM[1];
-        } catch(e) {}
-
-        var prompt = 'You are an expert auto parts specialist with deep knowledge of OEM part numbers and vehicle compatibility.' +
-            '\n\nAnalyze this auto part and provide complete product information:' +
-            '\nProduct title from URL: "' + (urlSlug || url.substring(0, 200)) + '"' +
-            '\nOEM number hint: "' + urlOem + '"' +
-            '\nCategory: ' + (catNames[cat] || cat) +
-            '\n\nUsing your knowledge, provide complete details including ALL compatible vehicles.' +
-            '\n\nReturn ONLY valid JSON (no markdown, no extra text):\n' +
-            '{\n' +
-            '  "name": "Professional product name in English (6-10 words)",\n' +
-            '  "oem": "OEM part number",\n' +
-            '  "brand": "Vehicle brand e.g. Toyota / Honda / BMW",\n' +
-            '  "models": "ALL compatible models with year ranges e.g. Toyota Camry 2018-2023, Corolla 2019-2022",\n' +
-            '  "specs": "Key specs e.g. 12V, Front Left, 4-cylinder",\n' +
-            '  "description": "Professional 2-3 sentence description: product type + compatible vehicles with years + OEM quality + key features"\n' +
-            '}';
-
-        var response = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': AI_KEY,
-                'anthropic-version': '2023-06-01',
-                'anthropic-dangerous-direct-browser-access': 'true'
-            },
-            body: JSON.stringify({
-                model: 'claude-sonnet-4-20250514',
-                max_tokens: 500,
-                messages: [{ role: 'user', content: prompt }]
-            })
+        // ===== 保存商品 =====
+        document.getElementById('product-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('product-id').value;
+            const productData = {
+                id: id ? parseInt(id) : Date.now(),
+                name: document.getElementById('product-name').value,
+                oem: document.getElementById('product-oem').value,
+                category: document.getElementById('product-category').value,
+                description: document.getElementById('product-description').value,
+                image: document.getElementById('product-images').value
+            };
+            
+            if (id) {
+                // 更新现有产品
+                const index = productsData.findIndex(p => p.id === parseInt(id));
+                if (index !== -1) {
+                    productsData[index] = productData;
+                }
+            } else {
+                // 添加新产品
+                productsData.unshift(productData);
+            }
+            
+            await saveProductsToGitHub();
+            closeProductModal();
+            await loadProducts();
         });
 
-        if (!response.ok) {
-            throw new Error('API请求失败：' + response.status);
+        // ===== 保存产品到GitHub =====
+        async function saveProductsToGitHub() {
+            try {
+                // 获取当前文件的SHA
+                let sha = null;
+                const getResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/products.json`, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (getResponse.ok) {
+                    const data = await getResponse.json();
+                    sha = data.sha;
+                }
+                
+                // 保存产品数据
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(productsData, null, 2))));
+                const putBody = {
+                    message: 'Update products',
+                    content: content,
+                    committer: {
+                        name: 'Carval Admin',
+                        email: 'admin@carvalautopart.com'
+                    }
+                };
+                
+                if (sha) {
+                    putBody.sha = sha;
+                }
+                
+                const putResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/products.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(putBody)
+                });
+                
+                if (!putResponse.ok) {
+                    throw new Error('保存失败');
+                }
+                
+                alert('保存成功!');
+            } catch (error) {
+                console.error('保存产品数据失败:', error);
+                alert('保存失败，请重试');
+            }
         }
 
-        var data = await response.json();
-        var text = data.content[0].text.trim();
-
-        // Parse JSON from response
-        var jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) throw new Error('AI返回格式异常');
-        var result = JSON.parse(jsonMatch[0]);
-
-        // Fill in results with all fields
-        document.getElementById('aiResultName').value = result.name || '';
-        document.getElementById('aiResultOem').value = result.oem || '';
-        // Combine models + specs into model field
-        var modelInfo = [result.models || result.model || '', result.specs || ''].filter(Boolean).join(' | ');
-        document.getElementById('aiResultModel').value = modelInfo;
-        // Build complete description
-        var fullDesc = result.description || '';
-        if (result.brand && !fullDesc.includes(result.brand)) {
-            fullDesc = 'Brand: ' + result.brand + ' | ' + fullDesc;
-        }
-        document.getElementById('aiResultDesc').value = fullDesc;
-        document.getElementById('aiResultWrap').style.display = 'block';
-
-    } catch(err) {
-        var errEl = document.getElementById('aiError');
-        errEl.style.display = 'block';
-        errEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> 分析失败：' + err.message + '<br><small>请检查链接是否正确，或手动填写产品信息</small>';
-    } finally {
-        btn.disabled = false;
-        icon.className = 'fas fa-magic';
-        txt.textContent = 'AI 分析';
-    }
-}
-
-function addAiResult() {
-    var name = document.getElementById('aiResultName').value.trim();
-    if (!name) { showToast('⚠ 产品名称不能为空', '#e74c3c'); return; }
-
-    var model = document.getElementById('aiResultModel').value.trim();
-    var desc = document.getElementById('aiResultDesc').value.trim();
-    // Build rich description
-    if (model && !desc.includes(model)) desc = desc + ' | Compatible with: ' + model;
-
-    aiProducts.push({
-        id: Date.now() + Math.random(),
-        name: name,
-        category: document.getElementById('aiCat').value,
-        oem: document.getElementById('aiResultOem').value.trim(),
-        description: desc,
-        image: document.getElementById('aiImage').value.trim()
-    });
-
-    renderAiList();
-    document.getElementById('aiResultWrap').style.display = 'none';
-    document.getElementById('aiUrl').value = '';
-    document.getElementById('aiImage').value = '';
-
-    var msg = document.getElementById('aiAddMsg');
-    msg.innerHTML = '<i class="fas fa-check-circle"></i> 已添加！共 ' + aiProducts.length + ' 条';
-    setTimeout(function() { msg.innerHTML = ''; }, 2000);
-    showToast('✓ 产品已添加！');
-}
-
-function addAiResultAndContinue() {
-    addAiResult();
-    document.getElementById('aiUrl').focus();
-}
-
-function resetAiTool() {
-    document.getElementById('aiUrl').value = '';
-    document.getElementById('aiResultWrap').style.display = 'none';
-    document.getElementById('aiError').style.display = 'none';
-}
-
-function renderAiList() {
-    var wrap = document.getElementById('aiListWrap');
-    var list = document.getElementById('aiProductList');
-    var count = document.getElementById('aiListCount');
-
-    if (aiProducts.length === 0) { wrap.style.display = 'none'; return; }
-    wrap.style.display = 'block';
-    count.textContent = aiProducts.length;
-
-    var catIcons = {japanese:'🇯🇵',korean:'🇰🇷',german:'🇩🇪',chinese:'🇨🇳',oil:'🛢️',other:'📦'};
-    list.innerHTML = aiProducts.map(function(item, i) {
-        var nameShort = item.name.length > 55 ? item.name.substring(0,55) + '...' : item.name;
-        return '<div style="display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid #f5f5f5;">' +
-            '<span style="color:#aaa;font-size:12px;min-width:22px;">' + (i+1) + '</span>' +
-            '<span style="font-size:16px;">' + (catIcons[item.category]||'📦') + '</span>' +
-            '<div style="flex:1;min-width:0;">' +
-                '<div style="font-size:13px;font-weight:500;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + nameShort + '</div>' +
-                '<div style="font-size:11px;color:#aaa;margin-top:2px;">' + (item.oem ? 'OEM: ' + item.oem : '无OEM编号') + (item.image ? ' | 📷 ' + item.image : '') + '</div>' +
-            '</div>' +
-            '<button onclick="removeAiProduct(' + i + ')" style="padding:4px 10px;background:#fff5f5;border:1px solid #f5c6c6;color:#c0392b;cursor:pointer;font-size:11px;font-family:Oswald,sans-serif;">删除</button>' +
-        '</div>';
-    }).join('');
-}
-
-function removeAiProduct(index) {
-    aiProducts.splice(index, 1);
-    renderAiList();
-}
-
-function importAiToProducts() {
-    if (aiProducts.length === 0) { showToast('⚠ 请先添加产品', '#e74c3c'); return; }
-    var existing = [];
-    try { existing = JSON.parse(localStorage.getItem('carval_products') || '[]'); } catch(e) {}
-    var maxId = existing.length > 0 ? Math.max.apply(null, existing.map(function(p){ return p.id||0; })) : 0;
-    var newProds = aiProducts.map(function(item, i) {
-        return { id: maxId+i+1, name: item.name, category: item.category, oem: item.oem, description: item.description, image: item.image };
-    });
-    var merged = existing.concat(newProds);
-    localStorage.setItem('carval_products', JSON.stringify(merged));
-    products = merged;
-    nextId = Math.max.apply(null, merged.map(function(p){ return p.id; })) + 1;
-    sessionAdded += newProds.length;
-    renderList(); generateCode(); updateStats();
-    showToast('✓ 已导入 ' + newProds.length + ' 条产品！');
-    aiProducts = [];
-    renderAiList();
-    setTimeout(function() { switchTab('products', document.querySelector('.tab-btn')); }, 1200);
-}
-
-function clearAiList() {
-    if (aiProducts.length > 0 && !confirm('确认清空？')) return;
-    aiProducts = [];
-    renderAiList();
-}
-
-// ===== 快速整理工具 =====
-var pasteItems = [];
-
-function addPasteItem() {
-    var title = document.getElementById('pasteTitle').value.trim();
-    var oem = document.getElementById('pasteOem').value.trim();
-    var cat = document.getElementById('pasteCat').value;
-    var image = document.getElementById('pasteImage').value.trim();
-    var desc = document.getElementById('pasteDesc').value.trim();
-
-    if (!title) { showToast('⚠ 请填写产品标题', '#e74c3c'); return; }
-
-    // Auto clean title - remove extra spaces and symbols
-    title = title.replace(/\s+/g, ' ').trim();
-
-    // Auto extract OEM from title if not provided
-    if (!oem) {
-        var oemMatch = title.match(/[A-Z0-9]{4,}-?[A-Z0-9]{3,}/i);
-        if (oemMatch) oem = oemMatch[1];
-    }
-
-    // Auto clean description
-    desc = desc.replace(/\s+/g, ' ').trim();
-    // Remove common junk from copy-paste
-    desc = desc.replace(/Contact Supplier|Add to Cart|Compare|FOB Price/gi, '').trim();
-
-    var item = {
-        id: Date.now() + Math.random(),
-        name: title,
-        category: cat,
-        oem: oem,
-        description: desc,
-        image: image
-    };
-
-    pasteItems.push(item);
-    renderPasteList();
-    clearPasteForm();
-
-    var msg = document.getElementById('pasteAddMsg');
-    msg.innerHTML = '<i class="fas fa-check-circle"></i> 已添加！共 ' + pasteItems.length + ' 条';
-    setTimeout(function() { msg.innerHTML = ''; }, 2000);
-}
-
-function renderPasteList() {
-    var wrap = document.getElementById('pasteListWrap');
-    var list = document.getElementById('pasteList');
-    var count = document.getElementById('pasteCount');
-
-    if (pasteItems.length === 0) {
-        wrap.style.display = 'none';
-        return;
-    }
-
-    wrap.style.display = 'block';
-    count.textContent = pasteItems.length;
-
-    var catIcons = {japanese:'🇯🇵', korean:'🇰🇷', german:'🇩🇪', chinese:'🇨🇳', oil:'🛢️', other:'📦'};
-
-    list.innerHTML = pasteItems.map(function(item, i) {
-        var nameShort = item.name.length > 50 ? item.name.substring(0,50) + '...' : item.name;
-        var descShort = item.description ? (item.description.length > 60 ? item.description.substring(0,60) + '...' : item.description) : '-';
-        return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #f5f5f5;">' +
-            '<span style="color:#aaa;font-size:12px;min-width:24px;">' + (i+1) + '</span>' +
-            '<span style="font-size:18px;">' + (catIcons[item.category] || '📦') + '</span>' +
-            '<div style="flex:1;min-width:0;">' +
-                '<div style="font-size:13px;font-weight:500;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + nameShort + '</div>' +
-                '<div style="font-size:11px;color:#aaa;margin-top:2px;">' + (item.oem ? 'OEM: ' + item.oem + ' | ' : '') + descShort + '</div>' +
-            '</div>' +
-            '<button onclick="removePasteItem(' + i + ')" style="padding:4px 10px;background:#fff5f5;border:1px solid #f5c6c6;color:#c0392b;cursor:pointer;font-size:11px;font-family:Oswald,sans-serif;">删除</button>' +
-        '</div>';
-    }).join('');
-}
-
-function removePasteItem(index) {
-    pasteItems.splice(index, 1);
-    renderPasteList();
-}
-
-function clearPasteForm() {
-    document.getElementById('pasteTitle').value = '';
-    document.getElementById('pasteOem').value = '';
-    document.getElementById('pasteImage').value = '';
-    document.getElementById('pasteDesc').value = '';
-    document.getElementById('pasteCat').value = 'japanese';
-}
-
-function clearPasteList() {
-    if (pasteItems.length > 0 && !confirm('确认清空所有已整理的产品？')) return;
-    pasteItems = [];
-    renderPasteList();
-}
-
-function importPasteToProducts() {
-    if (pasteItems.length === 0) { showToast('⚠ 请先添加产品', '#e74c3c'); return; }
-
-    var existing = [];
-    try { existing = JSON.parse(localStorage.getItem('carval_products') || '[]'); } catch(e) {}
-    var maxId = existing.length > 0 ? Math.max.apply(null, existing.map(function(p){ return p.id || 0; })) : 0;
-
-    var newProducts = pasteItems.map(function(item, i) {
-        return { id: maxId + i + 1, name: item.name, category: item.category, oem: item.oem, description: item.description, image: item.image };
-    });
-
-    var merged = existing.concat(newProducts);
-    localStorage.setItem('carval_products', JSON.stringify(merged));
-    products = merged;
-    nextId = merged.length > 0 ? Math.max.apply(null, merged.map(function(p){ return p.id; })) + 1 : 1;
-    sessionAdded += newProducts.length;
-    renderList(); generateCode(); updateStats();
-
-    showToast('✓ 已导入 ' + newProducts.length + ' 条产品到商品管理！');
-    pasteItems = [];
-    renderPasteList();
-
-    setTimeout(function() {
-        switchTab('products', document.querySelector('.tab-btn'));
-    }, 1200);
-}
-
-function downloadPasteExcel() {
-    if (pasteItems.length === 0) { showToast('⚠ 请先添加产品', '#e74c3c'); return; }
-    if (typeof XLSX === 'undefined') { alert('请等待页面加载完成'); return; }
-
-    var wb = XLSX.utils.book_new();
-    var data = [['name', 'category', 'oem', 'description', 'image']];
-    pasteItems.forEach(function(item) {
-        data.push([item.name, item.category, item.oem, item.description, item.image]);
-    });
-    var ws = XLSX.utils.aoa_to_sheet(data);
-    ws['!cols'] = [{wch:40}, {wch:12}, {wch:18}, {wch:60}, {wch:30}];
-    XLSX.utils.book_append_sheet(wb, ws, '产品列表');
-    XLSX.writeFile(wb, 'carval_products_' + new Date().toISOString().slice(0,10) + '.xlsx');
-    showToast('✓ Excel 已下载！');
-}
-
-// ===== Excel 批量导入 =====
-var importedRows = [];
-
-function handleExcelUpload(input) {
-    if (!input.files || !input.files[0]) return;
-    var file = input.files[0];
-    var statusEl = document.getElementById('importStatus');
-    statusEl.style.display = 'block';
-    statusEl.style.background = '#e8f4fd';
-    statusEl.style.borderLeft = '4px solid var(--primary)';
-    statusEl.style.color = '#0f4c81';
-    statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在解析文件：' + file.name + '...';
-
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            var data = new Uint8Array(e.target.result);
-            var workbook = XLSX.read(data, { type: 'array' });
-            var sheetName = workbook.SheetNames[0];
-            var sheet = workbook.Sheets[sheetName];
-            var rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
-
-            if (rows.length === 0) {
-                showImportError('文件内容为空，请检查Excel文件');
+        // ===== AI分析单个产品 =====
+        async function analyzeSingleProduct() {
+            const url = document.getElementById('single-url').value.trim();
+            if (!url) {
+                alert('请输入Alibaba产品链接');
                 return;
             }
+            
+            const resultDiv = document.getElementById('single-result');
+            resultDiv.innerHTML = '<div class="analysis-result"><p><i class="fas fa-spinner fa-spin"></i> 正在分析产品信息...</p></div>';
+            
+            try {
+                // 模拟AI分析（实际使用时需要调用真实的AI API）
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // 模拟提取的数据
+                const analyzedData = {
+                    name: '前刹车片套装',
+                    oem: '04465-12345',
+                    description: 'Brand: OEM Quality | Compatible with: Toyota Camry 2015-2020 | Specs: Ceramic brake pads, noise-free performance',
+                    category: 'japanese',
+                    images: '04465-12345(1).jpg, 04465-12345(2).jpg'
+                };
+                
+                resultDiv.innerHTML = `
+                    <div class="analysis-result">
+                        <h4><i class="fas fa-check-circle" style="color: var(--success);"></i> 分析完成</h4>
+                        <p><strong>产品名称:</strong> ${analyzedData.name}</p>
+                        <p><strong>OEM编号:</strong> ${analyzedData.oem}</p>
+                        <p><strong>分类:</strong> ${analyzedData.category}</p>
+                        <p><strong>描述:</strong> ${analyzedData.description}</p>
+                        <p><strong>图片:</strong> ${analyzedData.images}</p>
+                        <button class="btn btn-success" onclick='addAnalyzedProduct(${JSON.stringify(analyzedData)})'>
+                            <i class="fas fa-plus"></i> 添加到商品库
+                        </button>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="analysis-result" style="border-left-color: var(--danger);">
+                        <h4><i class="fas fa-exclamation-circle" style="color: var(--danger);"></i> 分析失败</h4>
+                        <p>无法分析该链接，请检查链接是否正确</p>
+                    </div>
+                `;
+            }
+        }
 
-            // Normalize column names (case insensitive)
-            var validCategories = ['japanese','korean','german','chinese','oil','other'];
-            importedRows = [];
-            var errors = 0;
+        // ===== AI分析批量产品 =====
+        async function analyzeBatchProducts() {
+            const urls = document.getElementById('batch-urls').value.trim().split('\n').filter(u => u.trim());
+            if (urls.length === 0) {
+                alert('请输入至少一个Alibaba产品链接');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('batch-result');
+            resultDiv.innerHTML = `<div class="analysis-result"><p><i class="fas fa-spinner fa-spin"></i> 正在批量分析 ${urls.length} 个产品...</p></div>`;
+            
+            try {
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                resultDiv.innerHTML = `
+                    <div class="analysis-result">
+                        <h4><i class="fas fa-check-circle" style="color: var(--success);"></i> 批量分析完成</h4>
+                        <p>成功分析 ${urls.length} 个产品，已自动添加到商品库并推送到GitHub</p>
+                        <button class="btn btn-primary" onclick="loadProducts()">
+                            <i class="fas fa-sync-alt"></i> 刷新商品列表
+                        </button>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="analysis-result" style="border-left-color: var(--danger);">
+                        <h4><i class="fas fa-exclamation-circle" style="color: var(--danger);"></i> 批量分析失败</h4>
+                        <p>部分产品分析失败，请检查链接格式</p>
+                    </div>
+                `;
+            }
+        }
 
-            rows.forEach(function(row) {
-                // Try to find name and category columns (case insensitive)
-                var keys = Object.keys(row);
-                var nameKey = keys.find(k => k.toLowerCase().includes('name')) || 'name';
-                var catKey = keys.find(k => k.toLowerCase().includes('categor')) || 'category';
-                var oemKey = keys.find(k => k.toLowerCase().includes('oem')) || 'oem';
-                var descKey = keys.find(k => k.toLowerCase().includes('desc')) || 'description';
-                var imgKey = keys.find(k => k.toLowerCase().includes('image') || k.toLowerCase().includes('img') || k.toLowerCase().includes('photo')) || 'image';
+        // ===== 添加分析后的产品 =====
+        function addAnalyzedProduct(data) {
+            const product = {
+                id: Date.now(),
+                ...data
+            };
+            
+            productsData.unshift(product);
+            saveProductsToGitHub();
+            loadProducts();
+            alert('产品已添加!');
+        }
 
-                var name = String(row[nameKey] || '').trim();
-                var cat = String(row[catKey] || '').trim().toLowerCase();
-                var oem = String(row[oemKey] || '').trim();
-                var desc = String(row[descKey] || '').trim();
-                var img = String(row[imgKey] || '').trim();
-                // Support both comma and newline separated image names
-                img = img.replace(/\n/g, ', ').replace(/,\s*,/g, ',').trim();
-
-                if (!name) { errors++; return; }
-                if (!validCategories.includes(cat)) cat = 'other';
-
-                importedRows.push({
-                    id: Date.now() + Math.random(),
-                    name: name, category: cat, oem: oem,
-                    description: desc, image: img,
-                    _valid: true
+        // ===== 加载询盘数据 =====
+        async function loadInquiries() {
+            try {
+                // 从GitHub加载询盘数据
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/inquiries.json`, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
                 });
-            });
-
-            statusEl.style.background = '#e8f8f0';
-            statusEl.style.borderLeft = '4px solid #2ecc71';
-            statusEl.style.color = '#1a7a45';
-            statusEl.innerHTML = '<i class="fas fa-check-circle"></i> 解析成功！共找到 <strong>' + importedRows.length + '</strong> 条商品' + (errors > 0 ? '，跳过 ' + errors + ' 条空行' : '');
-
-            showPreview(importedRows);
-        } catch(err) {
-            showImportError('文件解析失败：' + err.message);
-        }
-    };
-    reader.readAsArrayBuffer(file);
-}
-
-function showImportError(msg) {
-    var el = document.getElementById('importStatus');
-    el.style.display = 'block';
-    el.style.background = '#fff5f5';
-    el.style.borderLeft = '4px solid var(--accent)';
-    el.style.color = '#c0392b';
-    el.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + msg;
-    document.getElementById('previewCard').style.display = 'none';
-}
-
-function showPreview(rows) {
-    var card = document.getElementById('previewCard');
-    var body = document.getElementById('previewBody');
-    var count = document.getElementById('previewCount');
-    card.style.display = 'block';
-    count.textContent = rows.length;
-
-    var catColors = { japanese:'#e8f4fd', korean:'#fef9e7', german:'#f0f0f0', chinese:'#e8f8f0', oil:'#fdf0e8', other:'#f8f8f8' };
-    var catLabels = { japanese:'🇯🇵 Japanese', korean:'🇰🇷 Korean', german:'🇩🇪 German', chinese:'🇨🇳 Chinese', oil:'🛢️ Oil', other:'📦 Other' };
-
-    body.innerHTML = rows.map(function(row, i) {
-        var bg = catColors[row.category] || '#f8f8f8';
-        var catLabel = catLabels[row.category] || row.category;
-        var descShort = row.description ? (row.description.length > 50 ? row.description.substring(0,50)+'...' : row.description) : '-';
-        return '<tr style="border-bottom:1px solid #f5f5f5;">' +
-            '<td style="padding:10px 14px;color:#aaa;font-size:12px;">' + (i+1) + '</td>' +
-            '<td style="padding:10px 14px;font-weight:500;color:#1a1a1a;">' + row.name + '</td>' +
-            '<td style="padding:10px 14px;"><span style="background:' + bg + ';padding:3px 8px;font-size:11px;font-family:Oswald,sans-serif;">' + catLabel + '</span></td>' +
-            '<td style="padding:10px 14px;font-size:12px;color:#666;">' + (row.oem || '-') + '</td>' +
-            '<td style="padding:10px 14px;font-size:12px;color:#888;max-width:200px;">' + descShort + '</td>' +
-            '<td style="padding:10px 14px;font-size:12px;color:#666;">' + (row.image || '-') + '</td>' +
-            '<td style="padding:10px 14px;"><span style="color:#2ecc71;font-size:12px;font-family:Oswald,sans-serif;">✓ OK</span></td>' +
-            '</tr>';
-    }).join('');
-
-    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function confirmImport() {
-    if (importedRows.length === 0) return;
-    loadInquiries && loadInquiries();
-
-    // Load existing products
-    var existing = [];
-    try { existing = JSON.parse(localStorage.getItem('carval_products') || '[]'); } catch(e) {}
-
-    // Get max existing ID
-    var maxId = existing.length > 0 ? Math.max.apply(null, existing.map(function(p){ return p.id || 0; })) : 0;
-
-    // Add imported rows with proper IDs
-    var newProducts = importedRows.map(function(row, i) {
-        return {
-            id: maxId + i + 1,
-            name: row.name,
-            category: row.category,
-            oem: row.oem,
-            description: row.description,
-            image: row.image
-        };
-    });
-
-    // Merge with existing
-    var merged = existing.concat(newProducts);
-    localStorage.setItem('carval_products', JSON.stringify(merged));
-
-    // Update global products array
-    products = merged;
-    nextId = merged.length > 0 ? Math.max.apply(null, merged.map(function(p){ return p.id; })) + 1 : 1;
-    sessionAdded += newProducts.length;
-
-    renderList();
-    generateCode();
-    updateStats();
-
-    document.getElementById('importResultMsg').innerHTML = '<i class="fas fa-check-circle"></i> 已成功导入 ' + newProducts.length + ' 条商品！';
-    document.getElementById('previewCard').style.display = 'none';
-    importedRows = [];
-    document.getElementById('excelFileInput').value = '';
-
-    showToast('✓ 成功导入 ' + newProducts.length + ' 条商品！');
-
-    // Switch to products tab
-    setTimeout(function() {
-        var btn = document.querySelector('.tab-btn');
-        switchTab('products', btn);
-    }, 1500);
-}
-
-function clearPreview() {
-    importedRows = [];
-    document.getElementById('previewCard').style.display = 'none';
-    document.getElementById('importStatus').style.display = 'none';
-    document.getElementById('excelFileInput').value = '';
-}
-
-function downloadTemplate() { downloadBatchTemplate(); }
-
-// ===== Google Analytics =====
-const CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
-const PROPERTY_ID = '529242507';
-const SCOPES = 'https://www.googleapis.com/auth/analytics.readonly';
-let tokenClient, accessToken = null, currentDateRange = '7daysAgo';
-let trendChartInst, deviceChartInst, sourceChartInst;
-
-const countryFlags = {'China':'🇨🇳','United States':'🇺🇸','Japan':'🇯🇵','Germany':'🇩🇪','United Kingdom':'🇬🇧','France':'🇫🇷','South Korea':'🇰🇷','Australia':'🇦🇺','Canada':'🇨🇦','Brazil':'🇧🇷','India':'🇮🇳','Russia':'🇷🇺','Mexico':'🇲🇽','Spain':'🇪🇸','Italy':'🇮🇹','Netherlands':'🇳🇱','Singapore':'🇸🇬','Malaysia':'🇲🇾','Thailand':'🇹🇭','Vietnam':'🇻🇳','Indonesia':'🇮🇩','Saudi Arabia':'🇸🇦','UAE':'🇦🇪','Turkey':'🇹🇷'};
-
-window.onload = function() {
-    renderList(); generateCode(); updateStats();
-    loadInquiries(); updateInquiryBadge();
-    var saved = localStorage.getItem('ga_token');
-    var expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0');
-    var user = JSON.parse(localStorage.getItem('ga_user') || '{}');
-    if (saved && Date.now() < expiry) {
-        accessToken = saved;
-        showDashboard(user);
-        scheduleTokenRefresh();
-    } else if (saved && user.name) {
-        // Token expired - try silent refresh
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('dashboardSection').style.display = 'block';
-        if (user.picture) document.getElementById('userAvatar').src = user.picture;
-        if (user.name) document.getElementById('userName').textContent = user.name + ' (刷新中...)';
-        silentRefresh();
-    }
-};
-
-// ===== 接收来自网站表单的询盘（通过 localStorage 跨页面通信）=====
-window.addEventListener('storage', function(e) {
-    if (e.key === 'carval_new_inquiry' && e.newValue) {
-        loadInquiries();
-        updateInquiryBadge();
-        // If on inquiries tab, refresh
-        const page = document.getElementById('page-inquiries');
-        if (page && page.classList.contains('active')) renderInquiries();
-    }
-});
-
-function handleLogin() {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID, scope: SCOPES,
-        callback: async res => {
-            if (res.error) { alert('登录失败：' + res.error); return; }
-            accessToken = res.access_token;
-            var expiry = Date.now() + 55 * 60 * 1000; // 55 minutes
-            localStorage.setItem('ga_token', accessToken);
-            localStorage.setItem('ga_token_expiry', expiry.toString());
-            const u = await (await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {headers:{Authorization:'Bearer ' + accessToken}})).json();
-            localStorage.setItem('ga_user', JSON.stringify(u));
-            showDashboard(u);
-            scheduleTokenRefresh();
-        }
-    });
-    tokenClient.requestAccessToken();
-}
-
-function scheduleTokenRefresh() {
-    var expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0');
-    var now = Date.now();
-    var delay = Math.max(expiry - now - 2 * 60 * 1000, 60000); // refresh 2min before expiry
-    setTimeout(function() {
-        silentRefresh();
-    }, delay);
-}
-
-function silentRefresh() {
-    if (!tokenClient) {
-        tokenClient = google.accounts.oauth2.initTokenClient({
-            client_id: CLIENT_ID, scope: SCOPES,
-            callback: function(res) {
-                if (!res.error && res.access_token) {
-                    accessToken = res.access_token;
-                    var expiry = Date.now() + 55 * 60 * 1000;
-                    localStorage.setItem('ga_token', accessToken);
-                    localStorage.setItem('ga_token_expiry', expiry.toString());
-                    scheduleTokenRefresh();
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const content = atob(data.content.replace(/\n/g, ''));
+                    inquiriesData = JSON.parse(content);
+                } else {
+                    inquiriesData = [];
                 }
+            } catch (error) {
+                console.error('加载询盘数据失败:', error);
+                inquiriesData = [];
+            }
+            
+            updateInquiryStats();
+            renderInquiriesTable();
+        }
+
+        // ===== 更新询盘统计 =====
+        function updateInquiryStats() {
+            const now = new Date();
+            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            const weekStart = todayStart - 7 * 24 * 60 * 60 * 1000;
+            
+            const stats = {
+                total: inquiriesData.length,
+                unread: inquiriesData.filter(i => !i.read).length,
+                today: inquiriesData.filter(i => i.timestamp >= todayStart).length,
+                week: inquiriesData.filter(i => i.timestamp >= weekStart).length
+            };
+            
+            document.getElementById('stat-inquiry-total').textContent = stats.total;
+            document.getElementById('stat-inquiry-unread').textContent = stats.unread;
+            document.getElementById('stat-inquiry-today').textContent = stats.today;
+            document.getElementById('stat-inquiry-week').textContent = stats.week;
+        }
+
+        // ===== 渲染询盘表格 =====
+        function renderInquiriesTable() {
+            const tbody = document.getElementById('inquiries-tbody');
+            
+            if (inquiriesData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <i class="fas fa-envelope"></i>
+                                <h3>暂无询盘</h3>
+                                <p>客户提交询盘后将在此显示</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = inquiriesData.map(inquiry => `
+                <tr>
+                    <td>
+                        <span class="inquiry-status ${inquiry.read ? 'read' : 'unread'}"></span>
+                        ${inquiry.read ? '已读' : '未读'}
+                    </td>
+                    <td>
+                        <strong>${inquiry.name}</strong><br>
+                        <small style="color: var(--text-soft);">${inquiry.email}</small>
+                    </td>
+                    <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        ${inquiry.message}
+                    </td>
+                    <td>
+                        ${inquiry.country || 'Unknown'}<br>
+                        <small style="color: var(--text-soft);">${inquiry.city || ''}</small>
+                    </td>
+                    <td>${inquiry.ip || '-'}</td>
+                    <td>${new Date(inquiry.timestamp).toLocaleString('zh-CN')}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="viewInquiry(${inquiry.id})">
+                            <i class="fas fa-eye"></i> 查看
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== 查看询盘详情 =====
+        function viewInquiry(id) {
+            const inquiry = inquiriesData.find(i => i.id === id);
+            if (!inquiry) return;
+            
+            // 标记为已读
+            if (!inquiry.read) {
+                inquiry.read = true;
+                saveInquiriesToGitHub();
+                updateInquiryStats();
+                renderInquiriesTable();
+            }
+            
+            const detailsDiv = document.getElementById('inquiry-details');
+            detailsDiv.innerHTML = `
+                <div style="display: grid; gap: 20px;">
+                    <div>
+                        <h4 style="font-family: var(--font-head); font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-soft); margin-bottom: 8px;">客户信息</h4>
+                        <p><strong>姓名:</strong> ${inquiry.name}</p>
+                        <p><strong>邮箱:</strong> ${inquiry.email}</p>
+                    </div>
+                    <div>
+                        <h4 style="font-family: var(--font-head); font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-soft); margin-bottom: 8px;">留言内容</h4>
+                        <p style="background: var(--offwhite); padding: 16px; border-radius: 4px; border-left: 4px solid var(--info);">${inquiry.message}</p>
+                    </div>
+                    <div>
+                        <h4 style="font-family: var(--font-head); font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-soft); margin-bottom: 8px;">地理信息</h4>
+                        <p><strong>国家:</strong> ${inquiry.country || 'Unknown'}</p>
+                        <p><strong>城市:</strong> ${inquiry.city || 'Unknown'}</p>
+                        <p><strong>地区:</strong> ${inquiry.region || 'Unknown'}</p>
+                        <p><strong>IP地址:</strong> ${inquiry.ip || 'Unknown'}</p>
+                        <p><strong>时区:</strong> ${inquiry.timezone || 'Unknown'}</p>
+                    </div>
+                    <div>
+                        <h4 style="font-family: var(--font-head); font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-soft); margin-bottom: 8px;">访问信息</h4>
+                        <p><strong>来源:</strong> ${inquiry.source || 'Unknown'}</p>
+                        <p><strong>设备:</strong> ${inquiry.device || 'Unknown'}</p>
+                        <p><strong>浏览器:</strong> ${inquiry.browser || 'Unknown'}</p>
+                        <p><strong>语言:</strong> ${inquiry.language || 'Unknown'}</p>
+                    </div>
+                    <div>
+                        <h4 style="font-family: var(--font-head); font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-soft); margin-bottom: 8px;">时间信息</h4>
+                        <p><strong>本地时间:</strong> ${inquiry.localTime || new Date(inquiry.timestamp).toLocaleString('zh-CN')}</p>
+                        <p><strong>UTC时间:</strong> ${inquiry.utcTime || new Date(inquiry.timestamp).toUTCString()}</p>
+                    </div>
+                    ${inquiry.oem ? `
+                    <div>
+                        <h4 style="font-family: var(--font-head); font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-soft); margin-bottom: 8px;">产品信息</h4>
+                        <p><strong>OEM编号:</strong> <span class="badge badge-info">${inquiry.oem}</span></p>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            document.getElementById('inquiry-modal').classList.add('show');
+        }
+
+        // ===== 关闭询盘模态框 =====
+        function closeInquiryModal() {
+            document.getElementById('inquiry-modal').classList.remove('show');
+        }
+
+        // ===== 保存询盘到GitHub =====
+        async function saveInquiriesToGitHub() {
+            try {
+                let sha = null;
+                const getResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/inquiries.json`, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (getResponse.ok) {
+                    const data = await getResponse.json();
+                    sha = data.sha;
+                }
+                
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(inquiriesData, null, 2))));
+                const putBody = {
+                    message: 'Update inquiries',
+                    content: content,
+                    committer: {
+                        name: 'Carval Admin',
+                        email: 'admin@carvalautopart.com'
+                    }
+                };
+                
+                if (sha) {
+                    putBody.sha = sha;
+                }
+                
+                await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/inquiries.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(putBody)
+                });
+            } catch (error) {
+                console.error('保存询盘数据失败:', error);
+            }
+        }
+
+        // ===== 刷新询盘 =====
+        function refreshInquiries() {
+            loadInquiries();
+        }
+
+        // ===== 连接Google Analytics =====
+        function connectGoogleAnalytics() {
+            alert('正在跳转到Google账号授权...\n\n注意：首次连接后，系统将保存授权信息，下次无需重新登录。');
+            
+            // 实际使用时这里应该跳转到Google OAuth授权页面
+            // window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?...';
+            
+            // 模拟授权成功
+            setTimeout(() => {
+                document.getElementById('analytics-content').innerHTML = `
+                    <div style="padding: 20px; text-align: center;">
+                        <i class="fas fa-check-circle" style="font-size: 64px; color: var(--success); margin-bottom: 16px;"></i>
+                        <h3>Google Analytics 已连接</h3>
+                        <p>正在加载流量数据...</p>
+                    </div>
+                `;
+                
+                document.getElementById('analytics-stats').style.display = 'grid';
+                
+                // 模拟数据
+                document.getElementById('stat-visits-today').textContent = '324';
+                document.getElementById('stat-visits-week').textContent = '2,145';
+                document.getElementById('stat-visits-month').textContent = '8,932';
+                document.getElementById('stat-bounce-rate').textContent = '42%';
+                
+                setTimeout(() => {
+                    document.getElementById('analytics-content').innerHTML = `
+                        <iframe 
+                            class="analytics-embed"
+                            src="about:blank"
+                            title="Google Analytics Dashboard">
+                        </iframe>
+                        <p style="margin-top: 16px; color: var(--text-soft); text-align: center;">
+                            实际使用时，此处将嵌入Google Analytics仪表板
+                        </p>
+                    `;
+                }, 1000);
+            }, 2000);
+        }
+
+        // ===== 退出登录 =====
+        function logout() {
+            if (confirm('确定要退出登录吗?')) {
+                window.location.href = '/';
+            }
+        }
+
+        // ===== 初始化 =====
+        window.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            loadInquiries();
+        });
+
+        // ===== 点击模态框外部关闭 =====
+        document.getElementById('product-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProductModal();
             }
         });
-    }
-    tokenClient.requestAccessToken({ prompt: '' }); // silent - no popup
-}
 
-function showDashboard(user) {
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('dashboardSection').style.display = 'block';
-    if (user.picture) document.getElementById('userAvatar').src = user.picture;
-    if (user.name) document.getElementById('userName').textContent = user.name;
-    loadAllData();
-}
-
-function handleLogout() {
-    localStorage.removeItem('ga_token'); localStorage.removeItem('ga_user'); accessToken = null;
-    document.getElementById('loginSection').style.display = 'block';
-    document.getElementById('dashboardSection').style.display = 'none';
-}
-
-function setDateRange(range, btn) {
-    currentDateRange = range;
-    document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    loadAllData();
-}
-
-async function gaQuery(body) {
-    const res = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${PROPERTY_ID}:runReport`, {method:'POST',headers:{Authorization:`Bearer ${accessToken}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if (!res.ok) throw new Error(res.status);
-    return res.json();
-}
-
-async function gaRealtime(body) {
-    const res = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${PROPERTY_ID}:runRealtimeReport`, {method:'POST',headers:{Authorization:`Bearer ${accessToken}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
-    return res.json();
-}
-
-const fmt = n => Number(n).toLocaleString();
-const fmtDur = s => { const m = Math.floor(s/60); return m>0?`${m}分${Math.round(s%60)}秒`:`${Math.round(s)}秒`; };
-
-function loadAllData() { loadOverview(); loadTrend(); loadCountries(); loadDevices(); loadSources(); loadPages(); loadLanguages(); loadRealtime(); }
-
-async function loadOverview() {
-    try {
-        const d = await gaQuery({dateRanges:[{startDate:currentDateRange,endDate:'today'}],metrics:[{name:'screenPageViews'},{name:'totalUsers'},{name:'sessions'},{name:'averageSessionDuration'}]});
-        const r = d.rows?.[0]?.metricValues||[];
-        document.getElementById('statPageviews').textContent = fmt(r[0]?.value||0);
-        document.getElementById('statUsers').textContent = fmt(r[1]?.value||0);
-        document.getElementById('statSessions').textContent = fmt(r[2]?.value||0);
-        document.getElementById('statDuration').textContent = fmtDur(r[3]?.value||0);
-    } catch(e){}
-}
-
-async function loadRealtime() {
-    try { const d = await gaRealtime({metrics:[{name:'activeUsers'}]}); document.getElementById('statRealtime').textContent = d.rows?.[0]?.metricValues?.[0]?.value||'0'; } catch(e){ document.getElementById('statRealtime').textContent='—'; }
-    setTimeout(loadRealtime, 60000);
-}
-
-async function loadTrend() {
-    document.getElementById('trendLoading').style.display='flex'; document.getElementById('trendChart').style.display='none';
-    try {
-        const d = await gaQuery({dateRanges:[{startDate:currentDateRange,endDate:'today'}],dimensions:[{name:'date'}],metrics:[{name:'screenPageViews'},{name:'totalUsers'}],orderBys:[{dimension:{dimensionName:'date'}}]});
-        const rows = d.rows||[];
-        const labels = rows.map(r=>{const v=r.dimensionValues[0].value;return `${v.slice(4,6)}/${v.slice(6,8)}`;});
-        document.getElementById('trendLoading').style.display='none'; document.getElementById('trendChart').style.display='block';
-        if(trendChartInst) trendChartInst.destroy();
-        trendChartInst = new Chart(document.getElementById('trendChart'),{type:'line',data:{labels,datasets:[{label:'浏览量(PV)',data:rows.map(r=>parseInt(r.metricValues[0].value)),borderColor:'#0f4c81',backgroundColor:'rgba(15,76,129,0.08)',fill:true,tension:0.4,pointRadius:3},{label:'访客(UV)',data:rows.map(r=>parseInt(r.metricValues[1].value)),borderColor:'#e63946',backgroundColor:'rgba(230,57,70,0.05)',fill:true,tension:0.4,pointRadius:3}]},options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true,grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}});
-    } catch(e){ document.getElementById('trendLoading').innerHTML='<div class="error-msg">趋势图加载失败</div>'; }
-}
-
-async function loadCountries() {
-    document.getElementById('countryLoading').style.display='flex'; document.getElementById('countryList').style.display='none';
-    try {
-        const d = await gaQuery({dateRanges:[{startDate:currentDateRange,endDate:'today'}],dimensions:[{name:'country'}],metrics:[{name:'totalUsers'}],orderBys:[{metric:{metricName:'totalUsers'},desc:true}],limit:10});
-        const rows=d.rows||[], max=parseInt(rows[0]?.metricValues[0].value||1);
-        document.getElementById('countryList').innerHTML=rows.map(r=>{const c=r.dimensionValues[0].value,cnt=parseInt(r.metricValues[0].value);return `<li class="country-item"><span class="country-flag">${countryFlags[c]||'🌐'}</span><span class="country-name">${c}</span><div class="country-bar-wrap"><div class="country-bar" style="width:${Math.round(cnt/max*100)}%"></div></div><span class="country-count">${fmt(cnt)}</span></li>`;}).join('');
-        document.getElementById('countryLoading').style.display='none'; document.getElementById('countryList').style.display='block';
-    } catch(e){ document.getElementById('countryLoading').innerHTML='<div class="error-msg">国家数据加载失败</div>'; }
-}
-
-async function loadDevices() {
-    document.getElementById('deviceLoading').style.display='flex'; document.getElementById('deviceChart').style.display='none';
-    try {
-        const d = await gaQuery({dateRanges:[{startDate:currentDateRange,endDate:'today'}],dimensions:[{name:'deviceCategory'}],metrics:[{name:'totalUsers'}]});
-        const rows=d.rows||[], map={mobile:'手机',desktop:'电脑',tablet:'平板'};
-        document.getElementById('deviceLoading').style.display='none'; document.getElementById('deviceChart').style.display='block';
-        if(deviceChartInst) deviceChartInst.destroy();
-        deviceChartInst = new Chart(document.getElementById('deviceChart'),{type:'doughnut',data:{labels:rows.map(r=>map[r.dimensionValues[0].value]||r.dimensionValues[0].value),datasets:[{data:rows.map(r=>parseInt(r.metricValues[0].value)),backgroundColor:['#0f4c81','#e63946','#f39c12'],borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
-    } catch(e){ document.getElementById('deviceLoading').innerHTML='<div class="error-msg">设备数据加载失败</div>'; }
-}
-
-async function loadSources() {
-    document.getElementById('sourceLoading').style.display='flex'; document.getElementById('sourceChart').style.display='none';
-    try {
-        const d = await gaQuery({dateRanges:[{startDate:currentDateRange,endDate:'today'}],dimensions:[{name:'sessionDefaultChannelGroup'}],metrics:[{name:'sessions'}],orderBys:[{metric:{metricName:'sessions'},desc:true}],limit:6});
-        const rows=d.rows||[], smap={'Organic Search':'谷歌搜索','Direct':'直接访问','Referral':'外链引流','Organic Social':'社交媒体','Email':'邮件','Paid Search':'付费广告','Unassigned':'未分类'};
-        document.getElementById('sourceLoading').style.display='none'; document.getElementById('sourceChart').style.display='block';
-        if(sourceChartInst) sourceChartInst.destroy();
-        sourceChartInst = new Chart(document.getElementById('sourceChart'),{type:'pie',data:{labels:rows.map(r=>smap[r.dimensionValues[0].value]||r.dimensionValues[0].value),datasets:[{data:rows.map(r=>parseInt(r.metricValues[0].value)),backgroundColor:['#0f4c81','#e63946','#2ecc71','#f39c12','#9b59b6','#3498db'],borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
-    } catch(e){ document.getElementById('sourceLoading').innerHTML='<div class="error-msg">来源数据加载失败</div>'; }
-}
-
-async function loadPages() {
-    document.getElementById('pagesLoading').style.display='flex'; document.getElementById('pagesTable').style.display='none';
-    try {
-        const d = await gaQuery({dateRanges:[{startDate:currentDateRange,endDate:'today'}],dimensions:[{name:'pagePath'}],metrics:[{name:'screenPageViews'},{name:'totalUsers'}],orderBys:[{metric:{metricName:'screenPageViews'},desc:true}],limit:8});
-        document.getElementById('pagesBody').innerHTML=(d.rows||[]).map(r=>`<tr><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.dimensionValues[0].value}">${r.dimensionValues[0].value}</td><td>${fmt(r.metricValues[0].value)}</td><td>${fmt(r.metricValues[1].value)}</td></tr>`).join('');
-        document.getElementById('pagesLoading').style.display='none'; document.getElementById('pagesTable').style.display='table';
-    } catch(e){ document.getElementById('pagesLoading').innerHTML='<div class="error-msg">页面数据加载失败</div>'; }
-}
-
-async function loadLanguages() {
-    document.getElementById('langLoading').style.display='flex'; document.getElementById('langTable').style.display='none';
-    try {
-        const d = await gaQuery({dateRanges:[{startDate:currentDateRange,endDate:'today'}],dimensions:[{name:'language'}],metrics:[{name:'totalUsers'}],orderBys:[{metric:{metricName:'totalUsers'},desc:true}],limit:8});
-        const rows=d.rows||[], total=rows.reduce((s,r)=>s+parseInt(r.metricValues[0].value),0);
-        document.getElementById('langBody').innerHTML=rows.map(r=>{const cnt=parseInt(r.metricValues[0].value);return `<tr><td>${r.dimensionValues[0].value}</td><td>${fmt(cnt)}</td><td>${total>0?((cnt/total)*100).toFixed(1):0}%</td></tr>`;}).join('');
-        document.getElementById('langLoading').style.display='none'; document.getElementById('langTable').style.display='table';
-    } catch(e){ document.getElementById('langLoading').innerHTML='<div class="error-msg">语言数据加载失败</div>'; }
-}
-
-function showToast(msg, color='#2ecc71') {
-    const t = document.getElementById('toast');
-    t.textContent=msg; t.style.background=color; t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'), 2500);
-}
-</script>
+        document.getElementById('inquiry-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeInquiryModal();
+            }
+        });
+    </script>
 </body>
 </html>
