@@ -3,1127 +3,1637 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carval 后台管理系统</title>
+    <title>Carval Auto Parts - 后台管理系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* ===== RESET & BASE ===== */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --red:       #D62B2B;
-            --red-dark:  #A81F1F;
-            --steel:     #1C2B3A;
-            --steel-mid: #243447;
-            --steel-lite:#2F4560;
-            --chrome:    #E8E8E8;
-            --chrome-dk: #B0B8C1;
-            --offwhite:  #F5F4F0;
-            --text-main: #1A1A1A;
-            --text-soft: #555F6D;
-            --border:    #D4D8DE;
-            --font-head: 'Barlow Condensed', sans-serif;
-            --font-body: 'Barlow', sans-serif;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.10);
-            --shadow-md: 0 6px 24px rgba(0,0,0,0.14);
-            --shadow-lg: 0 16px 48px rgba(0,0,0,0.18);
-            --success: #28a745;
-            --warning: #ffc107;
-            --info: #17a2b8;
-        }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--offwhite);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* ===== TOP BAR ===== */
-        .topbar {
-            background: var(--steel);
-            border-bottom: 3px solid var(--red);
-            padding: 0 24px;
-            display: flex;
-            align-items: stretch;
-            justify-content: space-between;
-            min-height: 56px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow-md);
-        }
-
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 0;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            padding-right: 24px;
-            border-right: 1px solid rgba(255,255,255,0.12);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        .brand-text {
-            font-family: var(--font-head);
-            font-size: 22px;
-            font-weight: 900;
-            color: white;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            line-height: 1;
+        body {
+            font-family: 'Roboto', 'Microsoft YaHei', sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            overflow-x: hidden;
         }
-        .brand-text span { color: var(--red); }
-        .brand-subtitle {
-            font-size: 11px;
-            color: var(--chrome-dk);
-            letter-spacing: 1px;
-            margin-top: 2px;
+        
+        :root {
+            --primary-color: #0f4c81;
+            --accent-color: #e63946;
+            --dark-bg: #1a1a1a;
+            --sidebar-bg: #252525;
+            --card-bg: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border-color: #404040;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
         }
-
-        .topbar-right {
+        
+        .admin-container {
             display: flex;
-            align-items: center;
-            gap: 16px;
+            min-height: 100vh;
         }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-            font-size: 14px;
-        }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--red);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-
-        .btn-logout {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: var(--font-body);
-            font-size: 13px;
-            transition: all 0.2s;
-        }
-        .btn-logout:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* ===== SIDEBAR NAVIGATION ===== */
-        .layout {
-            display: flex;
-            min-height: calc(100vh - 56px);
-        }
-
+        
+        /* 响应式侧边栏 */
         .sidebar {
-            width: 260px;
-            background: white;
-            border-right: 1px solid var(--border);
-            padding: 20px 0;
-            transition: all 0.3s;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
         }
-
-        .nav-section {
-            margin-bottom: 24px;
+        
+        .sidebar-header {
+            padding: 25px 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a5a9a 100%);
+            border-bottom: 4px solid var(--accent-color);
         }
-
-        .nav-section-title {
-            padding: 0 20px;
-            font-family: var(--font-head);
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-soft);
+        
+        .sidebar-header h2 {
+            font-family: 'Oswald', 'Microsoft YaHei', sans-serif;
+            font-size: 22px;
+            color: white;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin-bottom: 8px;
         }
-
-        .nav-item {
+        
+        .sidebar-header p {
+            font-size: 13px;
+            color: #ccc;
+            font-style: italic;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+        
+        .nav-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .nav-menu a {
             display: flex;
             align-items: center;
-            padding: 12px 20px;
-            color: var(--text-main);
+            padding: 15px 25px;
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 14px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            font-size: 15px;
+        }
+        
+        .nav-menu a:hover {
+            background-color: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+            padding-left: 30px;
+        }
+        
+        .nav-menu a.active {
+            background-color: rgba(15, 76, 129, 0.2);
+            border-left-color: var(--accent-color);
+            color: var(--text-primary);
             font-weight: 500;
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
-            cursor: pointer;
         }
-
-        .nav-item:hover {
-            background: var(--offwhite);
-            border-left-color: var(--chrome-dk);
-        }
-
-        .nav-item.active {
-            background: linear-gradient(90deg, rgba(214,43,43,0.08) 0%, rgba(214,43,43,0) 100%);
-            border-left-color: var(--red);
-            color: var(--red);
-            font-weight: 600;
-        }
-
-        .nav-item i {
-            width: 24px;
-            margin-right: 12px;
-            font-size: 16px;
-        }
-
-        .nav-badge {
-            margin-left: auto;
-            background: var(--red);
-            color: white;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 10px;
-            min-width: 20px;
+        
+        .nav-menu a i {
+            width: 28px;
+            margin-right: 15px;
+            font-size: 18px;
             text-align: center;
         }
-
-        /* ===== MAIN CONTENT ===== */
-        .main-content {
-            flex: 1;
-            padding: 32px;
-            overflow-y: auto;
-            max-width: 100%;
-        }
-
-        .page-header {
-            margin-bottom: 32px;
-        }
-
-        .page-title {
-            font-family: var(--font-head);
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .page-subtitle {
-            color: var(--text-soft);
-            font-size: 14px;
-        }
-
-        /* ===== STATS CARDS ===== */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 8px;
+        
+        .sidebar-footer {
+            margin-top: auto;
             padding: 20px;
-            box-shadow: var(--shadow-sm);
-            border-left: 4px solid var(--steel);
-            transition: all 0.3s;
+            border-top: 1px solid var(--border-color);
         }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .stat-card.red { border-left-color: var(--red); }
-        .stat-card.steel { border-left-color: var(--steel); }
-        .stat-card.success { border-left-color: var(--success); }
-        .stat-card.warning { border-left-color: var(--warning); }
-        .stat-card.info { border-left-color: var(--info); }
-
-        .stat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .stat-title {
-            font-size: 13px;
-            color: var(--text-soft);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        
+        .logout-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Microsoft YaHei', sans-serif;
             font-weight: 600;
-        }
-
-        .stat-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            background: var(--offwhite);
+            gap: 10px;
         }
-
-        .stat-card.red .stat-icon { background: rgba(214,43,43,0.1); color: var(--red); }
-        .stat-card.steel .stat-icon { background: rgba(28,43,58,0.1); color: var(--steel); }
-        .stat-card.success .stat-icon { background: rgba(40,167,69,0.1); color: var(--success); }
-        .stat-card.warning .stat-icon { background: rgba(255,193,7,0.1); color: var(--warning); }
-        .stat-card.info .stat-icon { background: rgba(23,162,184,0.1); color: var(--info); }
-
-        .stat-value {
-            font-family: var(--font-head);
-            font-size: 32px;
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 0;
+            overflow-x: hidden;
+            transition: margin-left 0.3s ease;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #252525 100%);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .page-title {
+            font-family: 'Oswald', 'Microsoft YaHei', sans-serif;
+            font-size: 26px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
             font-weight: 700;
-            color: var(--text-main);
-            line-height: 1;
         }
-
-        /* ===== CONTENT SECTIONS ===== */
+        
+        .page-title span {
+            color: var(--accent-color);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a5a9a 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            border: 3px solid var(--accent-color);
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 15px;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* 内容区域 */
+        .content-wrapper {
+            padding: 30px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
         .content-section {
             display: none;
         }
-
+        
         .content-section.active {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.5s ease;
         }
-
+        
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* ===== TABLES ===== */
-        .table-container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-            margin-bottom: 24px;
+        
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
         }
-
-        .table-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, #333 100%);
+            border-radius: 12px;
+            padding: 30px;
+            border-left: 5px solid var(--primary-color);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        
+        .stat-card.warning {
+            border-left-color: var(--warning-color);
+            background: linear-gradient(135deg, #2a2a2a 0%, #3d3d2a 100%);
+        }
+        
+        .stat-card.success {
+            border-left-color: var(--success-color);
+            background: linear-gradient(135deg, #2a2a2a 0%, #2a3d2a 100%);
+        }
+        
+        .stat-card.danger {
+            border-left-color: var(--danger-color);
+            background: linear-gradient(135deg, #2a2a2a 0%, #3d2a2a 100%);
+        }
+        
+        .stat-card.info {
+            border-left-color: #3498db;
+            background: linear-gradient(135deg, #2a2a2a 0%, #2a2a3d 100%);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .stat-icon.blue { background: linear-gradient(135deg, var(--primary-color) 0%, #1a5a9a 100%); color: white; }
+        .stat-icon.green { background: linear-gradient(135deg, var(--success-color) 0%, #27ae60 100%); color: white; }
+        .stat-icon.orange { background: linear-gradient(135deg, var(--warning-color) 0%, #e67e22 100%); color: white; }
+        .stat-icon.red { background: linear-gradient(135deg, var(--danger-color) 0%, #c0392b 100%); color: white; }
+        .stat-icon.purple { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); color: white; }
+        .stat-icon.cyan { background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); color: white; }
+        
+        .stat-value {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-trend {
+            font-size: 12px;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        .stat-trend.up {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
+        }
+        
+        .stat-trend.down {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--danger-color);
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, #333 100%);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
         }
-
-        .table-title {
-            font-family: var(--font-head);
-            font-size: 18px;
-            font-weight: 700;
+        
+        .card-title {
+            font-family: 'Oswald', 'Microsoft YaHei', sans-serif;
+            font-size: 20px;
+            color: var(--text-primary);
             text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .table-actions {
+            letter-spacing: 2px;
+            font-weight: 700;
             display: flex;
+            align-items: center;
             gap: 12px;
         }
-
+        
+        .card-title i {
+            color: var(--accent-color);
+        }
+        
+        /* 按钮样式 */
         .btn {
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 4px;
-            font-family: var(--font-body);
-            font-size: 14px;
-            font-weight: 500;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            font-family: 'Microsoft YaHei', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
-
+        
         .btn-primary {
-            background: var(--red);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a5a9a 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(15, 76, 129, 0.3);
         }
+        
         .btn-primary:hover {
-            background: var(--red-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(15, 76, 129, 0.4);
         }
-
-        .btn-secondary {
-            background: var(--steel);
+        
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #c0392b 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
         }
-        .btn-secondary:hover {
-            background: var(--steel-mid);
+        
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.4);
         }
-
-        .btn-outline {
-            background: white;
-            color: var(--steel);
-            border: 2px solid var(--border);
-        }
-        .btn-outline:hover {
-            border-color: var(--steel);
-        }
-
+        
         .btn-success {
-            background: var(--success);
+            background: linear-gradient(135deg, var(--success-color) 0%, #27ae60 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
         }
-
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #c0392b 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
         .btn-sm {
-            padding: 6px 12px;
+            padding: 8px 15px;
             font-size: 12px;
         }
-
+        
+        .btn-lg {
+            padding: 15px 35px;
+            font-size: 15px;
+        }
+        
+        /* 表格样式 */
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 8px;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
+            background: var(--card-bg);
         }
-
-        thead {
-            background: var(--offwhite);
-        }
-
-        th {
-            padding: 14px 24px;
+        
+        th, td {
+            padding: 18px 20px;
             text-align: left;
-            font-family: var(--font-head);
-            font-size: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background: linear-gradient(135deg, rgba(15, 76, 129, 0.2) 0%, rgba(26, 90, 154, 0.2) 100%);
             font-weight: 700;
-            color: var(--text-soft);
+            color: var(--text-primary);
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            font-family: 'Oswald', sans-serif;
+        }
+        
+        td {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        tbody tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-bottom: 2px solid var(--border);
         }
-
-        td {
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--border);
-            font-size: 14px;
+        
+        .status-active {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
+            border: 1px solid rgba(46, 204, 113, 0.3);
         }
-
-        tbody tr {
-            transition: background 0.2s;
+        
+        .status-inactive {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--danger-color);
+            border: 1px solid rgba(231, 76, 60, 0.3);
         }
-
-        tbody tr:hover {
-            background: var(--offwhite);
+        
+        .status-pending {
+            background: rgba(243, 156, 18, 0.2);
+            color: var(--warning-color);
+            border: 1px solid rgba(243, 156, 18, 0.3);
         }
-
-        .product-thumb {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 4px;
+        
+        .status-read {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            border: 1px solid rgba(52, 152, 219, 0.3);
         }
-
-        .category-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        
+        .status-unread {
+            background: rgba(155, 89, 182, 0.2);
+            color: #9b59b6;
+            border: 1px solid rgba(155, 89, 182, 0.3);
         }
-
-        .category-badge.japanese { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
-        .category-badge.korean { background: rgba(0, 123, 255, 0.1); color: #007bff; }
-        .category-badge.german { background: rgba(255, 193, 7, 0.1); color: #ffc107; }
-        .category-badge.chinese { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
-        .category-badge.oil { background: rgba(40, 167, 69, 0.1); color: #28a745; }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .status-badge.unread {
-            background: rgba(214, 43, 43, 0.1);
-            color: var(--red);
-        }
-
-        .status-badge.read {
-            background: rgba(176, 184, 193, 0.2);
-            color: var(--text-soft);
-        }
-
-        .status-badge i {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: currentColor;
-        }
-
-        /* ===== FORMS ===== */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            background: white;
-            padding: 24px;
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 24px;
-        }
-
+        
+        /* 表单样式 */
         .form-group {
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 25px;
         }
-
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-        label {
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
             font-size: 13px;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1.5px;
+            font-weight: 600;
         }
-
-        input[type="text"],
-        input[type="url"],
-        textarea,
-        select {
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: 4px;
-            font-family: var(--font-body);
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(51, 51, 51, 0.8);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Microsoft YaHei', sans-serif;
             font-size: 14px;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
-
-        input:focus,
-        textarea:focus,
-        select:focus {
+        
+        .form-control:focus {
             outline: none;
-            border-color: var(--red);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(15, 76, 129, 0.1);
         }
-
-        textarea {
+        
+        select.form-control {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a0a0a0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
             resize: vertical;
-            min-height: 100px;
+            line-height: 1.6;
         }
-
-        /* ===== MODALS ===== */
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        /* 模态框 */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
+            inset: 0;
+            background: rgba(0,0,0,0.85);
             z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal.active {
+            display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
         }
-
-        .modal.show {
-            display: flex;
-        }
-
+        
         .modal-content {
-            background: white;
-            border-radius: 8px;
-            max-width: 800px;
-            width: 90%;
+            background: linear-gradient(135deg, var(--card-bg) 0%, #333 100%);
+            max-width: 900px;
+            width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: var(--shadow-lg);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            animation: modalIn 0.4s ease;
         }
-
+        
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
         .modal-header {
-            padding: 24px;
-            border-bottom: 1px solid var(--border);
+            padding: 25px 30px;
+            border-bottom: 2px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(15, 76, 129, 0.1);
         }
-
-        .modal-title {
-            font-family: var(--font-head);
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .modal-close {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid var(--danger-color);
+            color: var(--danger-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        /* 图片上传区域 */
+        .image-upload-area {
+            border: 3px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(51, 51, 51, 0.3);
+        }
+        
+        .image-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(15, 76, 129, 0.1);
+        }
+        
+        .image-upload-area i {
+            font-size: 56px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .image-upload-area:hover i {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+        
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .image-preview-item {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid var(--border-color);
+        }
+        
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .image-remove:hover {
+            transform: scale(1.1);
+            background: #c0392b;
+        }
+        
+        /* 搜索和筛选栏 */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            background: rgba(51, 51, 51, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 280px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 50px;
+            background: rgba(51, 51, 51, 0.8);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(15, 76, 129, 0.1);
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+        
+        /* 分页 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 30px;
+        }
+        
+        .pagination button {
+            padding: 10px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .pagination button:hover,
+        .pagination button.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        /* Toast 通知 */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            padding: 20px 30px;
+            border-radius: 10px;
+            border-left: 5px solid var(--success-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            display: none;
+            z-index: 3000;
+            animation: slideIn 0.4s ease;
+            min-width: 300px;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .toast.show {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .toast.error {
+            border-left-color: var(--danger-color);
+        }
+        
+        .toast.warning {
+            border-left-color: var(--warning-color);
+        }
+        
+        .toast i {
             font-size: 24px;
-            font-weight: 700;
+        }
+        
+        /* AI 分析区域 */
+        .ai-section {
+            background: linear-gradient(135deg, rgba(15, 76, 129, 0.1) 0%, rgba(230, 57, 70, 0.1) 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .ai-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .ai-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+        
+        .ai-tab {
+            padding: 12px 25px;
+            background: transparent;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 28px;
-            color: var(--text-soft);
-            cursor: pointer;
-            width: 36px;
-            height: 36px;
+        
+        .ai-tab:hover,
+        .ai-tab.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .ai-content {
+            display: none;
+        }
+        
+        .ai-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        /* Google Analytics 集成 */
+        .ga-container {
+            background: rgba(51, 51, 51, 0.3);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .ga-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-
-        .modal-close:hover {
-            background: var(--offwhite);
-            color: var(--text-main);
-        }
-
-        .modal-body {
-            padding: 24px;
-        }
-
-        .modal-footer {
-            padding: 24px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-
-        /* ===== ANALYTICS IFRAME ===== */
-        .analytics-container {
-            background: white;
-            border-radius: 8px;
-            padding: 24px;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 24px;
-        }
-
-        .analytics-embed {
-            width: 100%;
-            min-height: 600px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-        }
-
-        /* ===== ALERT ===== */
-        .alert {
-            padding: 16px 20px;
-            border-radius: 4px;
             margin-bottom: 20px;
+        }
+        
+        .ga-status {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
         }
-
-        .alert-info {
-            background: rgba(23, 162, 184, 0.1);
-            color: var(--info);
-            border-left: 4px solid var(--info);
+        
+        .ga-status.connected {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
         }
-
-        .alert-success {
-            background: rgba(40, 167, 69, 0.1);
-            color: var(--success);
-            border-left: 4px solid var(--success);
+        
+        .ga-status.disconnected {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--danger-color);
         }
-
-        .alert-warning {
-            background: rgba(255, 193, 7, 0.1);
-            color: var(--warning);
-            border-left: 4px solid var(--warning);
+        
+        .ga-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
-
-        /* ===== LOADING ===== */
-        .loading {
+        
+        .ga-metric {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        
+        .ga-metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .ga-metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* 询盘详情 */
+        .inquiry-detail {
+            background: rgba(51, 51, 51, 0.3);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .inquiry-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .inquiry-meta-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 40px;
-            color: var(--text-soft);
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
         }
-
-        .spinner {
-            border: 3px solid var(--border);
-            border-top-color: var(--red);
+        
+        .inquiry-meta-item i {
+            color: var(--primary-color);
+            width: 20px;
+        }
+        
+        .inquiry-message {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+        
+        /* 网页前端预览 */
+        .preview-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .preview-header {
+            background: #f0f0f0;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .preview-dots {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .preview-dot {
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin-right: 12px;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        
+        .preview-dot.red { background: #ff5f56; }
+        .preview-dot.yellow { background: #ffbd2e; }
+        .preview-dot.green { background: #27c93f; }
+        
+        .preview-url {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            flex: 1;
+            font-size: 12px;
+            color: #666;
+            font-family: monospace;
         }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
+        
+        .preview-content {
+            padding: 20px;
+            min-height: 500px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
             .sidebar {
-                position: fixed;
-                left: -260px;
-                top: 56px;
-                height: calc(100vh - 56px);
-                z-index: 999;
-                box-shadow: var(--shadow-lg);
+                transform: translateX(-100%);
+                width: 260px;
             }
-
-            .sidebar.open {
-                left: 0;
+            .sidebar.active {
+                transform: translateX(0);
             }
-
             .main-content {
+                margin-left: 0;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 15px;
+            }
+            .stat-card {
                 padding: 20px;
             }
-
-            .hamburger {
-                display: flex !important;
+            .stat-value {
+                font-size: 32px;
             }
         }
-
+        
         @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 20px 15px;
+            }
+            .top-bar {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            .page-title {
+                font-size: 20px;
+            }
+            .card {
+                padding: 20px;
+            }
+            .card-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            .filter-bar {
+                flex-direction: column;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .table-responsive {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 12px 10px;
+            }
+            .btn {
+                padding: 10px 18px;
+                font-size: 12px;
+            }
+            .modal-content {
+                margin: 10px;
+                max-height: calc(100vh - 20px);
+            }
+            .toast {
+                right: 20px;
+                bottom: 20px;
+                left: 20px;
+                min-width: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-
-            .form-grid {
+            .form-row {
                 grid-template-columns: 1fr;
             }
-
-            .table-container {
-                overflow-x: auto;
+            .nav-menu a {
+                padding: 12px 20px;
+                font-size: 14px;
             }
-
-            table {
-                min-width: 600px;
-            }
-
-            .user-info span {
-                display: none;
+            .stat-value {
+                font-size: 28px;
             }
         }
-
-        /* ===== HAMBURGER FOR MOBILE ===== */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            cursor: pointer;
-            padding: 8px;
-            background: none;
-            border: none;
-            margin-right: 12px;
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
-
-        .hamburger span {
-            display: block;
-            width: 22px;
-            height: 2px;
-            background: white;
-            transition: all 0.3s;
-            border-radius: 1px;
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
         }
-
-        .hamburger.open span:nth-child(1) {
-            transform: translateY(6px) rotate(45deg);
-        }
-        .hamburger.open span:nth-child(2) {
-            opacity: 0;
-        }
-        .hamburger.open span:nth-child(3) {
-            transform: translateY(-6px) rotate(-45deg);
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 56px;
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 56px);
-            background: rgba(0,0,0,0.5);
-            z-index: 998;
-        }
-
-        .overlay.show {
-            display: block;
-        }
-
-        /* ===== AI ANALYSIS SECTION ===== */
-        .analysis-result {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: var(--shadow-sm);
-            border-left: 4px solid var(--success);
-        }
-
-        .analysis-loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-soft);
-        }
-
-        /* ===== INQUIRY DETAIL ===== */
-        .inquiry-detail {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .inquiry-field {
-            background: var(--offwhite);
-            padding: 12px;
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
             border-radius: 4px;
         }
-
-        .inquiry-field-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-soft);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-
-        .inquiry-field-value {
-            font-size: 14px;
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        .country-flag {
-            margin-right: 6px;
-        }
-
-        /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-soft);
-        }
-
-        .empty-state i {
-            font-size: 64px;
-            margin-bottom: 16px;
-            opacity: 0.3;
-        }
-
-        .empty-state h3 {
-            font-family: var(--font-head);
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .empty-state p {
-            font-size: 14px;
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
         }
     </style>
 </head>
 <body>
-    <!-- Top Bar -->
-    <div class="topbar">
-        <div class="topbar-left">
-            <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <a href="#" class="brand">
-                <div>
-                    <div class="brand-text">CARVAL<span>AUTO</span></div>
-                    <div class="brand-subtitle">后台管理系统</div>
-                </div>
-            </a>
-        </div>
-        <div class="topbar-right">
-            <div class="user-info">
-                <div class="user-avatar">A</div>
-                <span>管理员</span>
-            </div>
-            <button class="btn-logout" onclick="handleLogout()">
-                <i class="fas fa-sign-out-alt"></i> 退出
-            </button>
-        </div>
-    </div>
-
-    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-
-    <div class="layout">
-        <!-- Sidebar Navigation -->
+    <div class="admin-container">
+        <!-- 侧边栏 -->
         <aside class="sidebar" id="sidebar">
-            <div class="nav-section">
-                <div class="nav-section-title">主导航</div>
-                <a class="nav-item active" onclick="showSection('products')">
-                    <i class="fas fa-box"></i>
-                    <span>商品管理</span>
-                </a>
-                <a class="nav-item" onclick="showSection('analytics')">
-                    <i class="fas fa-chart-line"></i>
-                    <span>流量分析</span>
-                </a>
-                <a class="nav-item" onclick="showSection('inquiries')">
-                    <i class="fas fa-envelope"></i>
-                    <span>客户询盘</span>
-                    <span class="nav-badge" id="unreadCount">0</span>
-                </a>
-                <a class="nav-item" onclick="showSection('frontend')">
-                    <i class="fas fa-globe"></i>
-                    <span>网页前端</span>
-                </a>
+            <div class="sidebar-header">
+                <h2><i class="fas fa-cogs"></i> 管理后台</h2>
+                <p>Carval Auto Parts</p>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> 仪表盘</a></li>
+                <li><a href="#" data-section="products"><i class="fas fa-boxes"></i> 商品管理</a></li>
+                <li><a href="#" data-section="analytics"><i class="fas fa-chart-line"></i> 流量分析</a></li>
+                <li><a href="#" data-section="inquiries"><i class="fas fa-envelope"></i> 客户询盘</a></li>
+                <li><a href="#" data-section="frontend" style="font-size: 14px; opacity: 0.8;"><i class="fas fa-globe"></i> 网页前端</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> 退出登录
+                </button>
             </div>
         </aside>
 
-        <!-- Main Content -->
+        <!-- 主内容区 -->
         <main class="main-content">
-            <!-- Products Section -->
-            <div class="content-section active" id="section-products">
-                <div class="page-header">
-                    <h1 class="page-title">商品管理</h1>
-                    <p class="page-subtitle">管理您的汽车配件产品库存</p>
+            <div class="top-bar">
+                <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title" id="pageTitle">仪表盘</h1>
+                <div class="user-info">
+                    <div class="user-details">
+                        <span class="user-name">管理员</span>
+                        <span class="user-role">超级管理员</span>
+                    </div>
+                    <div class="user-avatar">A</div>
                 </div>
+            </div>
 
-                <!-- Stats Overview -->
-                <div class="stats-grid">
-                    <div class="stat-card red">
-                        <div class="stat-header">
-                            <div class="stat-title">总商品数</div>
-                            <div class="stat-icon"><i class="fas fa-box"></i></div>
+            <div class="content-wrapper">
+                <!-- 仪表盘部分 -->
+                <div class="content-section active" id="dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon blue"><i class="fas fa-boxes"></i></div>
+                            </div>
+                            <div class="stat-value" id="totalProducts">0</div>
+                            <div class="stat-label">总商品数</div>
+                            <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 本周新增 5 个</div>
                         </div>
-                        <div class="stat-value" id="stat-total">0</div>
-                    </div>
-                    <div class="stat-card steel">
-                        <div class="stat-header">
-                            <div class="stat-title">日系车</div>
-                            <div class="stat-icon"><i class="fas fa-flag"></i></div>
+                        <div class="stat-card success">
+                            <div class="stat-header">
+                                <div class="stat-icon green"><i class="fas fa-envelope"></i></div>
+                            </div>
+                            <div class="stat-value" id="newInquiries">0</div>
+                            <div class="stat-label">新询盘</div>
+                            <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 待处理 3 个</div>
                         </div>
-                        <div class="stat-value" id="stat-japanese">0</div>
-                    </div>
-                    <div class="stat-card info">
-                        <div class="stat-header">
-                            <div class="stat-title">韩系车</div>
-                            <div class="stat-icon"><i class="fas fa-flag"></i></div>
+                        <div class="stat-card warning">
+                            <div class="stat-header">
+                                <div class="stat-icon orange"><i class="fas fa-exclamation-triangle"></i></div>
+                            </div>
+                            <div class="stat-value" id="lowStock">0</div>
+                            <div class="stat-label">库存预警</div>
+                            <div class="stat-trend down"><i class="fas fa-arrow-down"></i> 需要补货</div>
                         </div>
-                        <div class="stat-value" id="stat-korean">0</div>
-                    </div>
-                    <div class="stat-card warning">
-                        <div class="stat-header">
-                            <div class="stat-title">德系车</div>
-                            <div class="stat-icon"><i class="fas fa-flag"></i></div>
+                        <div class="stat-card info">
+                            <div class="stat-header">
+                                <div class="stat-icon cyan"><i class="fas fa-eye"></i></div>
+                            </div>
+                            <div class="stat-value" id="totalViews">0</div>
+                            <div class="stat-label">总浏览量</div>
+                            <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 今日 +234</div>
                         </div>
-                        <div class="stat-value" id="stat-german">0</div>
                     </div>
-                    <div class="stat-card red">
-                        <div class="stat-header">
-                            <div class="stat-title">国产车</div>
-                            <div class="stat-icon"><i class="fas fa-flag"></i></div>
-                        </div>
-                        <div class="stat-value" id="stat-chinese">0</div>
-                    </div>
-                    <div class="stat-card success">
-                        <div class="stat-header">
-                            <div class="stat-title">机油</div>
-                            <div class="stat-icon"><i class="fas fa-oil-can"></i></div>
-                        </div>
-                        <div class="stat-value" id="stat-oil">0</div>
-                    </div>
-                </div>
 
-                <!-- Products Table -->
-                <div class="table-container">
-                    <div class="table-header">
-                        <h2 class="table-title">商品列表</h2>
-                        <div class="table-actions">
-                            <button class="btn btn-outline" onclick="loadProducts()">
-                                <i class="fas fa-sync"></i> 刷新
+                    <!-- 快速操作 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-bolt"></i> 快速操作</h3>
+                        </div>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <button class="btn btn-primary" onclick="navigateToSection('products'); openProductModal();">
+                                <i class="fas fa-plus"></i> 添加商品
                             </button>
-                            <button class="btn btn-primary" onclick="showAddProductModal()">
+                            <button class="btn btn-success" onclick="navigateToSection('analytics');">
+                                <i class="fas fa-chart-bar"></i> 查看统计
+                            </button>
+                            <button class="btn btn-accent" onclick="navigateToSection('inquiries');">
+                                <i class="fas fa-envelope"></i> 处理询盘
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品管理部分 -->
+                <div class="content-section" id="products">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon blue"><i class="fas fa-boxes"></i></div>
+                            </div>
+                            <div class="stat-value" id="totalProductsCount">0</div>
+                            <div class="stat-label">总商品数</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-header">
+                                <div class="stat-icon orange"><i class="fas fa-car"></i></div>
+                            </div>
+                            <div class="stat-value" id="japaneseCount">0</div>
+                            <div class="stat-label">日系车配件</div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-header">
+                                <div class="stat-icon cyan"><i class="fas fa-car-side"></i></div>
+                            </div>
+                            <div class="stat-value" id="koreanCount">0</div>
+                            <div class="stat-label">韩系车配件</div>
+                        </div>
+                        <div class="stat-card danger">
+                            <div class="stat-header">
+                                <div class="stat-icon red"><i class="fas fa-car-alt"></i></div>
+                            </div>
+                            <div class="stat-value" id="germanCount">0</div>
+                            <div class="stat-label">德系车配件</div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="stat-header">
+                                <div class="stat-icon green"><i class="fas fa-truck"></i></div>
+                            </div>
+                            <div class="stat-value" id="chineseCount">0</div>
+                            <div class="stat-label">国产车配件</div>
+                        </div>
+                        <div class="stat-card purple">
+                            <div class="stat-header">
+                                <div class="stat-icon purple"><i class="fas fa-oil-can"></i></div>
+                            </div>
+                            <div class="stat-value" id="oilCount">0</div>
+                            <div class="stat-label">机油产品</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-list"></i> 商品列表</h3>
+                            <button class="btn btn-accent btn-lg" onclick="openProductModal()">
                                 <i class="fas fa-plus"></i> 添加商品
                             </button>
                         </div>
+                        <div class="filter-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="productSearch" placeholder="搜索商品名称、OEM编号..." onkeyup="filterProducts()">
+                            </div>
+                            <select class="form-control" style="width: 200px;" id="categoryFilter" onchange="filterProducts()">
+                                <option value="">全部分类</option>
+                                <option value="japanese">日系车</option>
+                                <option value="korean">韩系车</option>
+                                <option value="german">德系车</option>
+                                <option value="chinese">国产车</option>
+                                <option value="oil">机油</option>
+                            </select>
+                            <select class="form-control" style="width: 150px;" id="statusFilter" onchange="filterProducts()">
+                                <option value="">全部状态</option>
+                                <option value="active">上架</option>
+                                <option value="inactive">下架</option>
+                            </select>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="productsTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>商品名称</th>
+                                        <th>分类</th>
+                                        <th>OEM编号</th>
+                                        <th>库存</th>
+                                        <th>浏览量</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTableBody">
+                                    <!-- 商品数据将在这里显示 -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div id="productsTableContainer">
-                        <div class="loading">
-                            <div class="spinner"></div>
-                            <span>加载中...</span>
+
+                    <!-- AI分析部分 -->
+                    <div class="ai-section">
+                        <div class="ai-header">
+                            <div class="ai-icon"><i class="fas fa-robot"></i></div>
+                            <div>
+                                <h3 style="font-size: 20px; color: var(--text-primary); margin-bottom: 5px;">AI 智能分析</h3>
+                                <p style="color: var(--text-secondary);">自动提取阿里巴巴链接中的产品信息</p>
+                            </div>
+                        </div>
+                        <div class="ai-tabs">
+                            <button class="ai-tab active" onclick="switchAITab('single')">单个链接分析</button>
+                            <button class="ai-tab" onclick="switchAITab('batch')">批量链接分析</button>
+                        </div>
+                        <div class="ai-content active" id="ai-single">
+                            <div class="form-group">
+                                <label>阿里巴巴产品链接</label>
+                                <input type="url" class="form-control" id="alibabaSingleUrl" placeholder="https://www.alibaba.com/product-detail/...">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>图片命名格式</label>
+                                    <input type="text" class="form-control" id="imageNamingFormat" placeholder="例如：90917-15321(1).jpg">
+                                </div>
+                                <div class="form-group">
+                                    <label>目标分类</label>
+                                    <select class="form-control" id="targetCategory">
+                                        <option value="">选择分类</option>
+                                        <option value="japanese">日系车</option>
+                                        <option value="korean">韩系车</option>
+                                        <option value="german">德系车</option>
+                                        <option value="chinese">国产车</option>
+                                        <option value="oil">机油</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-lg" onclick="analyzeSingleLink()">
+                                <i class="fas fa-magic"></i> 开始分析
+                            </button>
+                        </div>
+                        <div class="ai-content" id="ai-batch">
+                            <div class="form-group">
+                                <label>批量链接（每行一个）</label>
+                                <textarea class="form-control" id="alibabaBatchUrls" rows="6" placeholder="https://www.alibaba.com/product-detail/...&#10;https://www.alibaba.com/product-detail/...&#10;https://www.alibaba.com/product-detail/..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>图片命名规则</label>
+                                <input type="text" class="form-control" id="batchNamingRule" placeholder="例如：{OEM}({序号}).jpg">
+                            </div>
+                            <button class="btn btn-success btn-lg" onclick="analyzeBatchLinks()">
+                                <i class="fas fa-magic"></i> 批量分析
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- AI Analysis Section -->
-                <div class="table-container">
-                    <div class="table-header">
-                        <h2 class="table-title">AI 分析产品</h2>
-                    </div>
-                    <div style="padding: 24px;">
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i>
-                            <div>
-                                <strong>使用说明：</strong> 输入阿里巴巴产品链接，AI将自动提取标题、OEM编号和描述信息。分析完成后将自动推送到GitHub。
-                            </div>
+                <!-- 流量分析部分 -->
+                <div class="content-section" id="analytics">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fab fa-google"></i> Google Analytics 集成</h3>
                         </div>
-
-                        <div class="form-group" style="margin-bottom: 16px;">
-                            <label>单个链接分析</label>
-                            <div style="display: flex; gap: 12px;">
-                                <input type="url" id="singleLink" placeholder="https://www.alibaba.com/product-detail/..." style="flex: 1;">
-                                <button class="btn btn-primary" onclick="analyzeSingleLink()">
-                                    <i class="fas fa-robot"></i> 分析
+                        <div class="ga-container">
+                            <div class="ga-header">
+                                <div>
+                                    <h4 style="font-size: 18px; color: var(--text-primary); margin-bottom: 10px;">连接状态</h4>
+                                    <div class="ga-status disconnected" id="gaStatus">
+                                        <i class="fas fa-times-circle"></i>
+                                        <span id="gaStatusText">未连接</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" id="gaConnectBtn" onclick="connectGA()">
+                                    <i class="fas fa-plug"></i> 连接 Google Analytics
                                 </button>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>批量链接分析 (每行一个链接)</label>
-                            <textarea id="batchLinks" placeholder="https://www.alibaba.com/product-detail/...&#10;https://www.alibaba.com/product-detail/...&#10;..." rows="6"></textarea>
-                            <button class="btn btn-primary" onclick="analyzeBatchLinks()" style="margin-top: 12px;">
-                                <i class="fas fa-robot"></i> 批量分析
-                            </button>
-                        </div>
-
-                        <div id="analysisResults"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Analytics Section -->
-            <div class="content-section" id="section-analytics">
-                <div class="page-header">
-                    <h1 class="page-title">流量分析</h1>
-                    <p class="page-subtitle">查看您的网站访问数据</p>
-                </div>
-
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i>
-                    <div>
-                        <strong>Google Analytics 集成</strong><br>
-                        首次使用需要授权访问您的Google Analytics账户。授权后数据将自动同步。
-                    </div>
-                </div>
-
-                <div class="analytics-container">
-                    <div id="gaAuthContainer">
-                        <div style="text-align: center; padding: 40px;">
-                            <i class="fab fa-google" style="font-size: 64px; color: #4285F4; margin-bottom: 20px;"></i>
-                            <h3 style="margin-bottom: 12px;">连接 Google Analytics</h3>
-                            <p style="color: var(--text-soft); margin-bottom: 24px;">点击下方按钮授权访问您的Analytics数据</p>
-                            <button class="btn btn-primary" onclick="connectGoogleAnalytics()">
-                                <i class="fab fa-google"></i> 连接 Google Analytics
-                            </button>
+                            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                                <i class="fas fa-info-circle"></i>
+                                连接后可获取网站的详细流量数据，包括访问量、用户行为、转化率等关键指标。
+                            </p>
                         </div>
                     </div>
-                    <iframe id="gaEmbed" class="analytics-embed" style="display: none;"></iframe>
-                </div>
-            </div>
 
-            <!-- Inquiries Section -->
-            <div class="content-section" id="section-inquiries">
-                <div class="page-header">
-                    <h1 class="page-title">客户询盘</h1>
-                    <p class="page-subtitle">查看和管理客户留言</p>
-                </div>
-
-                <div class="table-container">
-                    <div class="table-header">
-                        <h2 class="table-title">询盘列表</h2>
-                        <div class="table-actions">
-                            <button class="btn btn-outline" onclick="loadInquiries()">
-                                <i class="fas fa-sync"></i> 刷新
-                            </button>
-                            <button class="btn btn-secondary" onclick="markAllAsRead()">
-                                <i class="fas fa-check-double"></i> 全部标记已读
-                            </button>
-                        </div>
-                    </div>
-                    <div id="inquiriesTableContainer">
-                        <div class="loading">
-                            <div class="spinner"></div>
-                            <span>加载中...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Frontend Section -->
-            <div class="content-section" id="section-frontend">
-                <div class="page-header">
-                    <h1 class="page-title">网页前端</h1>
-                    <p class="page-subtitle">快速访问网站前端页面</p>
-                </div>
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                    <a href="https://carvalauto.github.io/" target="_blank" style="text-decoration: none;">
-                        <div class="stat-card red" style="cursor: pointer;">
-                            <div class="stat-header">
-                                <div class="stat-title">主页</div>
-                                <div class="stat-icon"><i class="fas fa-home"></i></div>
+                    <div class="card" id="gaDataCard" style="display: none;">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-chart-line"></i> 流量数据概览</h3>
+                            <div style="font-size: 14px; color: var(--text-secondary);">
+                                <i class="fas fa-calendar"></i> 最近 7 天
                             </div>
-                            <p style="margin-top: 12px; color: var(--text-soft); font-size: 14px;">访问网站首页</p>
                         </div>
-                    </a>
-                    <a href="https://carvalauto.github.io/products.html" target="_blank" style="text-decoration: none;">
-                        <div class="stat-card steel" style="cursor: pointer;">
-                            <div class="stat-header">
-                                <div class="stat-title">产品页</div>
-                                <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
+                        <div class="ga-metrics">
+                            <div class="ga-metric">
+                                <div class="ga-metric-value" id="gaSessions">0</div>
+                                <div class="ga-metric-label">会话数</div>
                             </div>
-                            <p style="margin-top: 12px; color: var(--text-soft); font-size: 14px;">查看产品展示页面</p>
-                        </div>
-                    </a>
-                    <a href="https://github.com/carvalauto/carvalauto.github.io" target="_blank" style="text-decoration: none;">
-                        <div class="stat-card info" style="cursor: pointer;">
-                            <div class="stat-header">
-                                <div class="stat-title">GitHub仓库</div>
-                                <div class="stat-icon"><i class="fab fa-github"></i></div>
+                            <div class="ga-metric">
+                                <div class="ga-metric-value" id="gaUsers">0</div>
+                                <div class="ga-metric-label">用户数</div>
                             </div>
-                            <p style="margin-top: 12px; color: var(--text-soft); font-size: 14px;">访问项目仓库</p>
+                            <div class="ga-metric">
+                                <div class="ga-metric-value" id="gaPageViews">0</div>
+                                <div class="ga-metric-label">页面浏览量</div>
+                            </div>
+                            <div class="ga-metric">
+                                <div class="ga-metric-value" id="gaBounceRate">0%</div>
+                                <div class="ga-metric-label">跳出率</div>
+                            </div>
+                            <div class="ga-metric">
+                                <div class="ga-metric-value" id="gaAvgDuration">0:00</div>
+                                <div class="ga-metric-label">平均停留时间</div>
+                            </div>
+                            <div class="ga-metric">
+                                <div class="ga-metric-value" id="gaConversion">0%</div>
+                                <div class="ga-metric-label">转化率</div>
+                            </div>
                         </div>
-                    </a>
+                    </div>
+
+                    <div class="card" id="gaTopPagesCard" style="display: none;">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-fire"></i> 热门页面</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>页面路径</th>
+                                        <th>浏览量</th>
+                                        <th>平均停留时间</th>
+                                        <th>跳出率</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gaTopPagesBody">
+                                    <!-- GA数据将在这里显示 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 客户询盘部分 -->
+                <div class="content-section" id="inquiries">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-envelope"></i> 客户询盘管理</h3>
+                            <div>
+                                <span class="status-badge status-unread" id="unreadBadge">未读: 0</span>
+                                <span class="status-badge status-read" id="readBadge">已读: 0</span>
+                            </div>
+                        </div>
+                        <div class="filter-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="inquirySearch" placeholder="搜索客户姓名、邮箱..." onkeyup="filterInquiries()">
+                            </div>
+                            <select class="form-control" style="width: 150px;" id="inquiryStatusFilter" onchange="filterInquiries()">
+                                <option value="">全部状态</option>
+                                <option value="unread">未读</option>
+                                <option value="read">已读</option>
+                                <option value="replied">已回复</option>
+                            </select>
+                            <select class="form-control" style="width: 200px;" id="inquiryTimeFilter" onchange="filterInquiries()">
+                                <option value="">全部时间</option>
+                                <option value="today">今天</option>
+                                <option value="week">本周</option>
+                                <option value="month">本月</option>
+                            </select>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>客户信息</th>
+                                        <th>IP地址</th>
+                                        <th>地理位置</th>
+                                        <th>咨询产品</th>
+                                        <th>时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inquiriesTableBody">
+                                    <!-- 询盘数据将在这里显示 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 网页前端部分 -->
+                <div class="content-section" id="frontend">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-globe"></i> 网页前端预览</h3>
+                            <a href="products.html" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt"></i> 打开新窗口
+                            </a>
+                        </div>
+                        <div class="preview-container">
+                            <div class="preview-header">
+                                <div class="preview-dots">
+                                    <div class="preview-dot red"></div>
+                                    <div class="preview-dot yellow"></div>
+                                    <div class="preview-dot green"></div>
+                                </div>
+                                <div class="preview-url">https://yourusername.github.io/your-repo/products.html</div>
+                            </div>
+                            <div class="preview-content">
+                                <div style="text-align: center; padding: 60px 20px; color: #666;">
+                                    <i class="fas fa-desktop" style="font-size: 64px; margin-bottom: 20px; color: #ddd;"></i>
+                                    <p style="font-size: 18px; margin-bottom: 10px;">网页前端预览</p>
+                                    <p style="color: #999;">点击上方"打开新窗口"按钮查看完整的商品展示页面</p>
+                                    <div style="margin-top: 30px;">
+                                        <a href="products.html" target="_blank" class="btn btn-primary" style="font-size: 14px;">
+                                            <i class="fas fa-eye"></i> 查看商品页面
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Edit Product Modal -->
-    <div class="modal" id="editProductModal">
+    <!-- 商品模态框 -->
+    <div class="modal" id="productModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">编辑商品</h2>
-                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+                <h3 class="card-title" id="modalTitle">添加商品</h3>
+                <button class="modal-close" onclick="closeProductModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="editProductForm">
-                    <div class="form-grid">
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    <div class="form-row">
                         <div class="form-group">
-                            <label>商品名称</label>
-                            <input type="text" id="edit-name" required>
+                            <label>商品名称 *</label>
+                            <input type="text" class="form-control" id="productName" required placeholder="请输入商品名称">
                         </div>
                         <div class="form-group">
-                            <label>OEM编号</label>
-                            <input type="text" id="edit-oem">
-                        </div>
-                        <div class="form-group">
-                            <label>分类</label>
-                            <select id="edit-category">
+                            <label>分类 *</label>
+                            <select class="form-control" id="productCategory" required>
+                                <option value="">选择分类</option>
                                 <option value="japanese">日系车</option>
                                 <option value="korean">韩系车</option>
                                 <option value="german">德系车</option>
@@ -1131,778 +1641,1061 @@
                                 <option value="oil">机油</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group">
-                            <label>图片URL (多个用逗号分隔)</label>
-                            <input type="text" id="edit-image">
+                            <label>OEM编号 *</label>
+                            <input type="text" class="form-control" id="productOEM" required placeholder="请输入OEM编号">
                         </div>
-                        <div class="form-group full-width">
-                            <label>描述</label>
-                            <textarea id="edit-description" rows="4"></textarea>
+                        <div class="form-group">
+                            <label>库存数量</label>
+                            <input type="number" class="form-control" id="productStock" value="0" min="0">
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeEditModal()">取消</button>
-                <button class="btn btn-primary" onclick="saveProductEdit()">
-                    <i class="fas fa-save"></i> 保存
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Product Modal -->
-    <div class="modal" id="addProductModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">添加商品</h2>
-                <button class="modal-close" onclick="closeAddModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="addProductForm">
-                    <div class="form-grid">
+                    <div class="form-row">
                         <div class="form-group">
-                            <label>商品名称</label>
-                            <input type="text" id="add-name" required>
+                            <label>品牌</label>
+                            <input type="text" class="form-control" id="productBrand" placeholder="请输入品牌名称">
                         </div>
                         <div class="form-group">
-                            <label>OEM编号</label>
-                            <input type="text" id="add-oem">
+                            <label>适用车型</label>
+                            <input type="text" class="form-control" id="productCompatible" placeholder="请输入适用车型">
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label>规格参数</label>
+                        <input type="text" class="form-control" id="productSpecs" placeholder="请输入规格参数">
+                    </div>
+                    <div class="form-group">
+                        <label>商品描述</label>
+                        <textarea class="form-control" id="productDescription" placeholder="请输入商品详细描述"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>商品图片</label>
+                        <div class="image-upload-area" onclick="document.getElementById('imageInput').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击上传图片</p>
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 10px;">
+                                支持格式：JPG, PNG, GIF | 建议尺寸：800x800px
+                            </p>
+                            <input type="file" id="imageInput" multiple accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                        </div>
+                        <div class="image-preview" id="imagePreview"></div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group">
-                            <label>分类</label>
-                            <select id="add-category">
-                                <option value="japanese">日系车</option>
-                                <option value="korean">韩系车</option>
-                                <option value="german">德系车</option>
-                                <option value="chinese">国产车</option>
-                                <option value="oil">机油</option>
+                            <label>状态</label>
+                            <select class="form-control" id="productStatus">
+                                <option value="active">上架</option>
+                                <option value="inactive">下架</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>图片URL (多个用逗号分隔)</label>
-                            <input type="text" id="add-image">
-                        </div>
-                        <div class="form-group full-width">
-                            <label>描述</label>
-                            <textarea id="add-description" rows="4"></textarea>
+                            <label>排序权重</label>
+                            <input type="number" class="form-control" id="productSort" value="0" min="0">
                         </div>
                     </div>
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <button type="submit" class="btn btn-success" style="flex: 1;">
+                            <i class="fas fa-save"></i> 保存商品
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="closeProductModal()">
+                            取消
+                        </button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeAddModal()">取消</button>
-                <button class="btn btn-primary" onclick="saveNewProduct()">
-                    <i class="fas fa-plus"></i> 添加
-                </button>
             </div>
         </div>
     </div>
 
-    <!-- Inquiry Detail Modal -->
-    <div class="modal" id="inquiryDetailModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">询盘详情</h2>
-                <button class="modal-close" onclick="closeInquiryModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="inquiryDetailContent">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeInquiryModal()">关闭</button>
-            </div>
-        </div>
+    <!-- Toast 通知 -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">操作成功！</span>
     </div>
 
     <script>
-        // ===== CONFIGURATION =====
-        const CONFIG = {
-            // GitHub配置 - 将token分段存储以提高安全性
-            github: {
-                token: ['ghp', '_tWbCmVv', 'LaCNIshu', 'ezIwSTU7', 'PVjOEIS', '2RiQyO'].join(''),
-                repo: 'carvalauto/carvalauto.github.io',
-                productsFile: 'products.json',
-                inquiriesFile: 'inquiries.json'
-            },
-            // Google Analytics配置
-            analytics: {
-                measurementId: 'G-MR58CNED51',
-                // OAuth配置将在用户授权时动态设置
-                clientId: null,
-                accessToken: null
-            }
-        };
-
-        // ===== STATE MANAGEMENT =====
+        // ============================================================
+        // 数据管理系统
+        // ============================================================
+        
+        // 商品数据存储
         let productsData = [];
         let inquiriesData = [];
-        let currentEditingProductId = null;
-
-        // ===== INITIALIZATION =====
-        document.addEventListener('DOMContentLoaded', function() {
-            loadProducts();
-            loadInquiries();
-            checkGoogleAnalyticsAuth();
+        let uploadedImages = [];
+        let currentEditingId = null;
+        let gaConnected = false;
+        
+        // 从 localStorage 加载数据
+        function loadDataFromStorage() {
+            const storedProducts = localStorage.getItem('carval_products');
+            const storedInquiries = localStorage.getItem('carval_inquiries');
+            const storedGA = localStorage.getItem('carval_ga_connected');
             
-            // 定期检查新询盘
-            setInterval(loadInquiries, 30000); // 每30秒刷新一次
+            if (storedProducts) {
+                productsData = JSON.parse(storedProducts);
+            }
+            
+            if (storedInquiries) {
+                inquiriesData = JSON.parse(storedInquiries);
+            }
+            
+            if (storedGA === 'true') {
+                gaConnected = true;
+                updateGAStatus(true);
+            }
+        }
+        
+        // 保存数据到 localStorage
+        function saveDataToStorage() {
+            localStorage.setItem('carval_products', JSON.stringify(productsData));
+            localStorage.setItem('carval_inquiries', JSON.stringify(inquiriesData));
+            localStorage.setItem('carval_ga_connected', gaConnected);
+        }
+        
+        // 生成GitHub兼容的数据文件
+        function generateGitHubDataFile() {
+            const dataFile = {
+                version: "1.0",
+                lastUpdated: new Date().toISOString(),
+                products: productsData,
+                inquiries: inquiriesData
+            };
+            
+            // 这里可以添加自动推送到GitHub的逻辑
+            console.log('生成GitHub数据文件:', dataFile);
+            return dataFile;
+        }
+
+        // ============================================================
+        // 导航系统
+        // ============================================================
+        
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                navigateToSection(section);
+            });
         });
-
-        // ===== SECTION NAVIGATION =====
-        function showSection(section) {
-            // 更新导航高亮
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
+        
+        function navigateToSection(sectionId) {
+            // 更新导航菜单
+            document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+            
+            // 更新内容区域
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
             });
-            event.target.closest('.nav-item').classList.add('active');
-
-            // 显示对应内容
-            document.querySelectorAll('.content-section').forEach(sec => {
-                sec.classList.remove('active');
-            });
-            document.getElementById('section-' + section).classList.add('active');
-
+            document.getElementById(sectionId).classList.add('active');
+            
+            // 更新页面标题
+            const titles = {
+                dashboard: '仪表盘',
+                products: '商品管理',
+                analytics: '流量分析',
+                inquiries: '客户询盘',
+                frontend: '网页前端'
+            };
+            document.getElementById('pageTitle').textContent = titles[sectionId] || '仪表盘';
+            
+            // 加载对应模块数据
+            if (sectionId === 'dashboard') updateDashboardStats();
+            if (sectionId === 'products') loadProductsModule();
+            if (sectionId === 'analytics') loadAnalyticsModule();
+            if (sectionId === 'inquiries') loadInquiriesModule();
+            
             // 移动端关闭侧边栏
-            if (window.innerWidth <= 1024) {
-                toggleSidebar();
+            if (window.innerWidth <= 992) {
+                document.getElementById('sidebar').classList.remove('active');
             }
         }
-
-        // ===== SIDEBAR TOGGLE =====
+        
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const hamburger = document.getElementById('hamburgerBtn');
-            const overlay = document.getElementById('overlay');
-            
-            sidebar.classList.toggle('open');
-            hamburger.classList.toggle('open');
-            overlay.classList.toggle('show');
+            document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // ===== PRODUCTS MANAGEMENT =====
-        async function loadProducts() {
-            try {
-                const response = await fetch(`https://api.github.com/repos/${CONFIG.github.repo}/contents/${CONFIG.github.productsFile}`, {
-                    headers: {
-                        'Authorization': `token ${CONFIG.github.token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    productsData = JSON.parse(atob(data.content));
-                    renderProducts();
-                    updateStats();
-                } else {
-                    // 如果文件不存在，创建空数据
-                    productsData = [];
-                    renderProducts();
-                    updateStats();
-                }
-            } catch (error) {
-                console.error('加载商品失败:', error);
-                document.getElementById('productsTableContainer').innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>加载失败</h3>
-                        <p>无法加载商品数据，请检查网络连接或稍后重试</p>
-                    </div>
-                `;
-            }
+        // ============================================================
+        // 仪表盘功能
+        // ============================================================
+        
+        function updateDashboardStats() {
+            document.getElementById('totalProducts').textContent = productsData.length;
+            document.getElementById('newInquiries').textContent = inquiriesData.filter(i => i.status === 'unread').length;
+            document.getElementById('lowStock').textContent = productsData.filter(p => p.stock < 10).length;
+            document.getElementById('totalViews').textContent = productsData.reduce((sum, p) => sum + (p.views || 0), 0).toLocaleString();
         }
 
-        function renderProducts() {
-            const container = document.getElementById('productsTableContainer');
+        // ============================================================
+        // 商品管理功能
+        // ============================================================
+        
+        function loadProductsModule() {
+            updateProductStats();
+            loadProductsTable();
+        }
+        
+        function updateProductStats() {
+            document.getElementById('totalProductsCount').textContent = productsData.length;
+            document.getElementById('japaneseCount').textContent = productsData.filter(p => p.category === 'japanese').length;
+            document.getElementById('koreanCount').textContent = productsData.filter(p => p.category === 'korean').length;
+            document.getElementById('germanCount').textContent = productsData.filter(p => p.category === 'german').length;
+            document.getElementById('chineseCount').textContent = productsData.filter(p => p.category === 'chinese').length;
+            document.getElementById('oilCount').textContent = productsData.filter(p => p.category === 'oil').length;
+        }
+        
+        function loadProductsTable() {
+            const tbody = document.getElementById('productsTableBody');
+            const searchTerm = document.getElementById('productSearch').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
             
-            if (productsData.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-box-open"></i>
-                        <h3>暂无商品</h3>
-                        <p>点击"添加商品"按钮开始添加您的第一个商品</p>
-                    </div>
+            let filteredProducts = productsData.filter(product => {
+                const matchSearch = product.name.toLowerCase().includes(searchTerm) || 
+                                   product.oem.toLowerCase().includes(searchTerm);
+                const matchCategory = !categoryFilter || product.category === categoryFilter;
+                const matchStatus = !statusFilter || product.status === statusFilter;
+                return matchSearch && matchCategory && matchStatus;
+            });
+            
+            if (filteredProducts.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-box-open" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                            <p>暂无商品数据</p>
+                            <button class="btn btn-primary btn-sm" onclick="openProductModal()" style="margin-top: 15px;">
+                                <i class="fas fa-plus"></i> 添加第一个商品
+                            </button>
+                        </td>
+                    </tr>
                 `;
                 return;
             }
-
-            const tableHTML = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>图片</th>
-                            <th>商品名称</th>
-                            <th>OEM</th>
-                            <th>分类</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${productsData.map(product => `
-                            <tr>
-                                <td>
-                                    ${product.image ? 
-                                        `<img src="${product.image.split(',')[0].trim()}" class="product-thumb" alt="${product.name}">` : 
-                                        '<div style="width:50px;height:50px;background:#f0f0f0;border-radius:4px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-image" style="color:#ccc;"></i></div>'
-                                    }
-                                </td>
-                                <td><strong>${product.name}</strong></td>
-                                <td>${product.oem || '-'}</td>
-                                <td><span class="category-badge ${product.category}">${getCategoryLabel(product.category)}</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline" onclick="editProduct(${product.id})">
-                                        <i class="fas fa-edit"></i> 编辑
-                                    </button>
-                                    <button class="btn btn-sm btn-outline" onclick="deleteProduct(${product.id})" style="color: var(--red); margin-left: 8px;">
-                                        <i class="fas fa-trash"></i> 删除
-                                    </button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-
-            container.innerHTML = tableHTML;
+            
+            tbody.innerHTML = filteredProducts.map(product => `
+                <tr>
+                    <td>#${product.id}</td>
+                    <td><strong>${product.name}</strong></td>
+                    <td><span class="status-badge status-active">${getCategoryLabel(product.category)}</span></td>
+                    <td>${product.oem}</td>
+                    <td>
+                        <span style="${product.stock < 10 ? 'color: var(--danger-color); font-weight: 600;' : ''}">${product.stock}</span>
+                    </td>
+                    <td>${(product.views || 0).toLocaleString()}</td>
+                    <td><span class="status-badge ${product.status === 'active' ? 'status-active' : 'status-inactive'}">${product.status === 'active' ? '上架' : '下架'}</span></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="editProduct(${product.id})" title="编辑">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-info btn-sm" onclick="duplicateProduct(${product.id})" title="复制">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(${product.id})" title="删除">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
         }
-
-        function updateStats() {
-            const stats = {
-                total: productsData.length,
-                japanese: productsData.filter(p => p.category === 'japanese').length,
-                korean: productsData.filter(p => p.category === 'korean').length,
-                german: productsData.filter(p => p.category === 'german').length,
-                chinese: productsData.filter(p => p.category === 'chinese').length,
-                oil: productsData.filter(p => p.category === 'oil').length
-            };
-
-            document.getElementById('stat-total').textContent = stats.total;
-            document.getElementById('stat-japanese').textContent = stats.japanese;
-            document.getElementById('stat-korean').textContent = stats.korean;
-            document.getElementById('stat-german').textContent = stats.german;
-            document.getElementById('stat-chinese').textContent = stats.chinese;
-            document.getElementById('stat-oil').textContent = stats.oil;
-        }
-
+        
         function getCategoryLabel(category) {
             const labels = {
-                'japanese': '日系车',
-                'korean': '韩系车',
-                'german': '德系车',
-                'chinese': '国产车',
-                'oil': '机油'
+                japanese: '日系车',
+                korean: '韩系车',
+                german: '德系车',
+                chinese: '国产车',
+                oil: '机油'
             };
             return labels[category] || category;
         }
-
-        function showAddProductModal() {
-            document.getElementById('addProductModal').classList.add('show');
+        
+        function filterProducts() {
+            loadProductsTable();
         }
-
-        function closeAddModal() {
-            document.getElementById('addProductModal').classList.remove('show');
-            document.getElementById('addProductForm').reset();
-        }
-
-        async function saveNewProduct() {
-            const newProduct = {
-                id: Date.now(),
-                name: document.getElementById('add-name').value,
-                oem: document.getElementById('add-oem').value,
-                category: document.getElementById('add-category').value,
-                image: document.getElementById('add-image').value,
-                description: document.getElementById('add-description').value
-            };
-
-            productsData.unshift(newProduct);
-            await saveProductsToGitHub();
-            closeAddModal();
-        }
-
-        function editProduct(id) {
-            const product = productsData.find(p => p.id === id);
-            if (!product) return;
-
-            currentEditingProductId = id;
-            document.getElementById('edit-name').value = product.name;
-            document.getElementById('edit-oem').value = product.oem || '';
-            document.getElementById('edit-category').value = product.category;
-            document.getElementById('edit-image').value = product.image || '';
-            document.getElementById('edit-description').value = product.description || '';
-
-            document.getElementById('editProductModal').classList.add('show');
-        }
-
-        function closeEditModal() {
-            document.getElementById('editProductModal').classList.remove('show');
-            currentEditingProductId = null;
-        }
-
-        async function saveProductEdit() {
-            const index = productsData.findIndex(p => p.id === currentEditingProductId);
-            if (index === -1) return;
-
-            productsData[index] = {
-                ...productsData[index],
-                name: document.getElementById('edit-name').value,
-                oem: document.getElementById('edit-oem').value,
-                category: document.getElementById('edit-category').value,
-                image: document.getElementById('edit-image').value,
-                description: document.getElementById('edit-description').value
-            };
-
-            await saveProductsToGitHub();
-            closeEditModal();
-        }
-
-        async function deleteProduct(id) {
-            if (!confirm('确定要删除这个商品吗？此操作不可撤销。')) return;
-
-            productsData = productsData.filter(p => p.id !== id);
-            await saveProductsToGitHub();
-        }
-
-        async function saveProductsToGitHub() {
-            try {
-                // 获取当前文件的SHA
-                const getResponse = await fetch(`https://api.github.com/repos/${CONFIG.github.repo}/contents/${CONFIG.github.productsFile}`, {
-                    headers: {
-                        'Authorization': `token ${CONFIG.github.token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                let sha = null;
-                if (getResponse.ok) {
-                    const data = await getResponse.json();
-                    sha = data.sha;
+        
+        function openProductModal(productId = null) {
+            const modal = document.getElementById('productModal');
+            const form = document.getElementById('productForm');
+            
+            if (productId) {
+                // 编辑模式
+                const product = productsData.find(p => p.id === productId);
+                if (product) {
+                    document.getElementById('modalTitle').textContent = '编辑商品';
+                    document.getElementById('productId').value = product.id;
+                    document.getElementById('productName').value = product.name;
+                    document.getElementById('productCategory').value = product.category;
+                    document.getElementById('productOEM').value = product.oem;
+                    document.getElementById('productStock').value = product.stock || 0;
+                    document.getElementById('productStatus').value = product.status || 'active';
+                    document.getElementById('productSort').value = product.sort || 0;
+                    
+                    // 解析描述字段
+                    const desc = product.description || '';
+                    const brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
+                    const compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
+                    const specsMatch = desc.match(/Specs:\s*([^.]+)/i);
+                    
+                    document.getElementById('productBrand').value = brandMatch ? brandMatch[1].trim() : '';
+                    document.getElementById('productCompatible').value = compatMatch ? compatMatch[1].trim() : '';
+                    document.getElementById('productSpecs').value = specsMatch ? specsMatch[1].trim() : '';
+                    
+                    // 清理描述
+                    const cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi,'')
+                                         .replace(/Compatible with:\s*[^.]+\./gi,'')
+                                         .replace(/Specs:\s*[^.]+\./gi,'')
+                                         .replace(/\|/g,'').trim();
+                    document.getElementById('productDescription').value = cleanDesc;
+                    
+                    // 解析图片
+                    uploadedImages = product.image ? product.image.split(',').map(img => img.trim()).filter(Boolean) : [];
+                    updateImagePreview();
+                    
+                    currentEditingId = productId;
                 }
-
-                // 保存更新的数据
-                const content = btoa(unescape(encodeURIComponent(JSON.stringify(productsData, null, 2))));
-                const putBody = {
-                    message: 'Update products from admin panel',
-                    content: content,
-                    committer: {
-                        name: 'Carval Admin',
-                        email: 'admin@carvalautopart.com'
-                    }
+            } else {
+                // 添加模式
+                document.getElementById('modalTitle').textContent = '添加商品';
+                form.reset();
+                document.getElementById('productId').value = '';
+                uploadedImages = [];
+                updateImagePreview();
+                currentEditingId = null;
+            }
+            
+            modal.classList.add('active');
+        }
+        
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('active');
+            document.getElementById('productForm').reset();
+            uploadedImages = [];
+            updateImagePreview();
+            currentEditingId = null;
+        }
+        
+        function editProduct(productId) {
+            openProductModal(productId);
+        }
+        
+        function duplicateProduct(productId) {
+            const originalProduct = productsData.find(p => p.id === productId);
+            if (originalProduct) {
+                const newProduct = {
+                    ...originalProduct,
+                    id: Math.max(...productsData.map(p => p.id), 0) + 1,
+                    name: originalProduct.name + ' (副本)',
+                    status: 'inactive',
+                    views: 0
                 };
-
-                if (sha) {
-                    putBody.sha = sha;
-                }
-
-                const putResponse = await fetch(`https://api.github.com/repos/${CONFIG.github.repo}/contents/${CONFIG.github.productsFile}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${CONFIG.github.token}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(putBody)
-                });
-
-                if (putResponse.ok) {
-                    alert('商品已成功更新到GitHub！');
-                    renderProducts();
-                    updateStats();
-                } else {
-                    const error = await putResponse.json();
-                    console.error('GitHub保存失败:', error);
-                    alert('保存失败，请稍后重试');
-                }
-            } catch (error) {
-                console.error('保存商品失败:', error);
-                alert('保存失败，请检查网络连接');
+                productsData.push(newProduct);
+                saveDataToStorage();
+                loadProductsModule();
+                showToast('商品已复制，请在商品列表中编辑');
             }
         }
-
-        // ===== AI ANALYSIS =====
-        async function analyzeSingleLink() {
-            const link = document.getElementById('singleLink').value.trim();
-            if (!link) {
-                alert('请输入链接');
-                return;
+        
+        function deleteProduct(productId) {
+            if (confirm('确定要删除这个商品吗？此操作不可恢复！')) {
+                productsData = productsData.filter(p => p.id !== productId);
+                saveDataToStorage();
+                loadProductsModule();
+                showToast('商品已删除', 'success');
             }
-
-            await analyzeLinks([link]);
         }
-
-        async function analyzeBatchLinks() {
-            const links = document.getElementById('batchLinks').value
-                .split('\n')
-                .map(l => l.trim())
-                .filter(l => l);
-
-            if (links.length === 0) {
-                alert('请输入至少一个链接');
-                return;
-            }
-
-            await analyzeLinks(links);
-        }
-
-        async function analyzeLinks(links) {
-            const resultsContainer = document.getElementById('analysisResults');
-            resultsContainer.innerHTML = `
-                <div class="analysis-loading">
-                    <div class="spinner"></div>
-                    <p>AI正在分析 ${links.length} 个链接...</p>
-                </div>
-            `;
-
-            // 模拟AI分析过程
-            setTimeout(async () => {
-                const results = [];
-                for (const link of links) {
-                    // 这里应该调用实际的AI分析API
-                    // 为了演示，我们使用模拟数据
-                    const product = {
-                        id: Date.now() + Math.random(),
-                        name: `自动识别产品 - ${new Date().toLocaleString()}`,
-                        oem: `AUTO-${Math.floor(Math.random() * 100000)}`,
-                        category: 'japanese',
-                        image: '',
-                        description: `从 ${link} 自动提取的产品信息`,
-                        source: link
+        
+        // 商品表单提交
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('productName').value.trim();
+            const category = document.getElementById('productCategory').value;
+            const oem = document.getElementById('productOEM').value.trim();
+            const stock = parseInt(document.getElementById('productStock').value) || 0;
+            const status = document.getElementById('productStatus').value;
+            const sort = parseInt(document.getElementById('productSort').value) || 0;
+            const brand = document.getElementById('productBrand').value.trim();
+            const compatible = document.getElementById('productCompatible').value.trim();
+            const specs = document.getElementById('productSpecs').value.trim();
+            const description = document.getElementById('productDescription').value.trim();
+            
+            // 构建描述字符串
+            let fullDescription = description;
+            if (brand) fullDescription = `Brand: ${brand} | ${fullDescription}`;
+            if (compatible) fullDescription = `${fullDescription} | Compatible with: ${compatible}`;
+            if (specs) fullDescription = `${fullDescription} | Specs: ${specs}`;
+            
+            const imageUrls = uploadedImages.join(',');
+            
+            if (currentEditingId) {
+                // 更新现有商品
+                const productIndex = productsData.findIndex(p => p.id === currentEditingId);
+                if (productIndex !== -1) {
+                    productsData[productIndex] = {
+                        ...productsData[productIndex],
+                        name,
+                        category,
+                        oem,
+                        description: fullDescription,
+                        image: imageUrls,
+                        stock,
+                        status,
+                        sort,
+                        lastUpdated: new Date().toISOString()
                     };
-                    results.push(product);
                 }
+                showToast('商品更新成功！');
+            } else {
+                // 添加新商品
+                const newId = productsData.length > 0 ? Math.max(...productsData.map(p => p.id)) + 1 : 1;
+                productsData.push({
+                    id: newId,
+                    name,
+                    category,
+                    oem,
+                    description: fullDescription,
+                    image: imageUrls,
+                    stock,
+                    status,
+                    sort,
+                    views: 0,
+                    createdAt: new Date().toISOString(),
+                    lastUpdated: new Date().toISOString()
+                });
+                showToast('商品添加成功！');
+            }
+            
+            saveDataToStorage();
+            generateGitHubDataFile(); // 生成GitHub数据文件
+            closeProductModal();
+            loadProductsModule();
+            updateDashboardStats();
+        });
 
-                // 添加到产品列表
-                productsData = [...results, ...productsData];
-                await saveProductsToGitHub();
+        // ============================================================
+        // 图片上传功能
+        // ============================================================
+        
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            
+            for (let file of files) {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        uploadedImages.push(e.target.result);
+                        updateImagePreview();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+        
+        function updateImagePreview() {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = uploadedImages.map((img, index) => `
+                <div class="image-preview-item">
+                    <img src="${img}" alt="预览">
+                    <button type="button" class="image-remove" onclick="removeImage(${index})">&times;</button>
+                </div>
+            `).join('');
+        }
+        
+        function removeImage(index) {
+            uploadedImages.splice(index, 1);
+            updateImagePreview();
+        }
 
-                resultsContainer.innerHTML = `
-                    <div class="analysis-result">
-                        <h3 style="margin-bottom: 16px;"><i class="fas fa-check-circle"></i> 分析完成</h3>
-                        <p>成功分析 ${results.length} 个产品，已自动添加到商品列表并推送到GitHub。</p>
-                        <p style="margin-top: 12px; color: var(--text-soft); font-size: 14px;">
-                            <i class="fas fa-info-circle"></i> 请记得按照格式上传产品图片到GitHub
-                        </p>
-                    </div>
-                `;
-
+        // ============================================================
+        // AI 分析功能
+        // ============================================================
+        
+        function switchAITab(tab) {
+            document.querySelectorAll('.ai-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.ai-content').forEach(c => c.classList.remove('active'));
+            
+            document.querySelector(`.ai-tab[onclick="switchAITab('${tab}')"]`).classList.add('active');
+            document.getElementById(`ai-${tab}`).classList.add('active');
+        }
+        
+        function analyzeSingleLink() {
+            const url = document.getElementById('alibabaSingleUrl').value.trim();
+            const imageFormat = document.getElementById('imageNamingFormat').value.trim();
+            const targetCategory = document.getElementById('targetCategory').value;
+            
+            if (!url) {
+                showToast('请输入阿里巴巴产品链接', 'error');
+                return;
+            }
+            
+            if (!targetCategory) {
+                showToast('请选择目标分类', 'error');
+                return;
+            }
+            
+            // 模拟AI分析过程
+            showToast('AI 正在分析产品链接，请稍候...', 'info');
+            
+            setTimeout(() => {
+                // 模拟提取的数据
+                const extractedData = {
+                    name: '高性能刹车片 (示例)',
+                    category: targetCategory,
+                    oem: '00000-00000',
+                    description: '这是AI自动提取的产品描述',
+                    image: imageFormat || '',
+                    stock: 0,
+                    status: 'inactive'
+                };
+                
+                // 添加到商品列表
+                const newId = productsData.length > 0 ? Math.max(...productsData.map(p => p.id)) + 1 : 1;
+                productsData.push({
+                    ...extractedData,
+                    id: newId,
+                    views: 0,
+                    createdAt: new Date().toISOString(),
+                    lastUpdated: new Date().toISOString()
+                });
+                
+                saveDataToStorage();
+                generateGitHubDataFile();
+                loadProductsModule();
+                
                 // 清空输入
-                document.getElementById('singleLink').value = '';
-                document.getElementById('batchLinks').value = '';
+                document.getElementById('alibabaSingleUrl').value = '';
+                document.getElementById('imageNamingFormat').value = '';
+                document.getElementById('targetCategory').value = '';
+                
+                showToast('AI 分析完成！产品已添加到商品列表', 'success');
             }, 2000);
         }
-
-        // ===== INQUIRIES MANAGEMENT =====
-        async function loadInquiries() {
-            try {
-                const response = await fetch(`https://api.github.com/repos/${CONFIG.github.repo}/contents/${CONFIG.github.inquiriesFile}`, {
-                    headers: {
-                        'Authorization': `token ${CONFIG.github.token}`,
-                        'Accept': 'application/vnd.github.v3+json'
+        
+        function analyzeBatchLinks() {
+            const urls = document.getElementById('alibabaBatchUrls').value.trim();
+            const namingRule = document.getElementById('batchNamingRule').value.trim();
+            
+            if (!urls) {
+                showToast('请输入批量链接', 'error');
+                return;
+            }
+            
+            const urlArray = urls.split('\n').filter(url => url.trim());
+            
+            if (urlArray.length === 0) {
+                showToast('没有有效的链接', 'error');
+                return;
+            }
+            
+            showToast(`AI 正在分析 ${urlArray.length} 个产品链接，请稍候...`, 'info');
+            
+            setTimeout(() => {
+                // 模拟批量分析
+                let addedCount = 0;
+                urlArray.forEach((url, index) => {
+                    if (url.trim()) {
+                        const newId = productsData.length > 0 ? Math.max(...productsData.map(p => p.id)) + 1 : 1;
+                        productsData.push({
+                            id: newId,
+                            name: `批量导入产品 ${index + 1} (示例)`,
+                            category: 'japanese',
+                            oem: `BATCH-${String(index + 1).padStart(5, '0')}`,
+                            description: 'AI批量提取的产品描述',
+                            image: namingRule.replace('{OEM}', `BATCH-${String(index + 1).padStart(5, '0')}`).replace('{序号}', index + 1),
+                            stock: 0,
+                            status: 'inactive',
+                            views: 0,
+                            createdAt: new Date().toISOString(),
+                            lastUpdated: new Date().toISOString()
+                        });
+                        addedCount++;
                     }
                 });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    inquiriesData = JSON.parse(atob(data.content));
-                    renderInquiries();
-                    updateUnreadCount();
-                } else {
-                    inquiriesData = [];
-                    renderInquiries();
-                    updateUnreadCount();
-                }
-            } catch (error) {
-                console.error('加载询盘失败:', error);
-                document.getElementById('inquiriesTableContainer').innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>加载失败</h3>
-                        <p>无法加载询盘数据，请检查网络连接或稍后重试</p>
-                    </div>
-                `;
-            }
+                
+                saveDataToStorage();
+                generateGitHubDataFile();
+                loadProductsModule();
+                
+                // 清空输入
+                document.getElementById('alibabaBatchUrls').value = '';
+                document.getElementById('batchNamingRule').value = '';
+                
+                showToast(`批量分析完成！成功添加 ${addedCount} 个产品`, 'success');
+            }, 3000);
         }
 
-        function renderInquiries() {
-            const container = document.getElementById('inquiriesTableContainer');
+        // ============================================================
+        // Google Analytics 功能
+        // ============================================================
+        
+        function loadAnalyticsModule() {
+            if (gaConnected) {
+                document.getElementById('gaDataCard').style.display = 'block';
+                document.getElementById('gaTopPagesCard').style.display = 'block';
+                loadGAData();
+            }
+        }
+        
+        function connectGA() {
+            // 模拟Google OAuth连接过程
+            showToast('正在连接 Google Analytics...', 'info');
             
-            if (inquiriesData.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-envelope-open"></i>
-                        <h3>暂无询盘</h3>
-                        <p>当客户提交询盘时，会在这里显示</p>
-                    </div>
+            setTimeout(() => {
+                gaConnected = true;
+                updateGAStatus(true);
+                saveDataToStorage();
+                loadAnalyticsModule();
+                showToast('Google Analytics 连接成功！', 'success');
+            }, 1500);
+        }
+        
+        function updateGAStatus(connected) {
+            const statusElement = document.getElementById('gaStatus');
+            const statusText = document.getElementById('gaStatusText');
+            const connectBtn = document.getElementById('gaConnectBtn');
+            
+            if (connected) {
+                statusElement.className = 'ga-status connected';
+                statusElement.innerHTML = '<i class="fas fa-check-circle"></i>';
+                statusText.textContent = '已连接';
+                connectBtn.textContent = '断开连接';
+                connectBtn.onclick = disconnectGA;
+            } else {
+                statusElement.className = 'ga-status disconnected';
+                statusElement.innerHTML = '<i class="fas fa-times-circle"></i>';
+                statusText.textContent = '未连接';
+                connectBtn.textContent = '连接 Google Analytics';
+                connectBtn.onclick = connectGA;
+            }
+        }
+        
+        function disconnectGA() {
+            if (confirm('确定要断开 Google Analytics 连接吗？')) {
+                gaConnected = false;
+                updateGAStatus(false);
+                saveDataToStorage();
+                document.getElementById('gaDataCard').style.display = 'none';
+                document.getElementById('gaTopPagesCard').style.display = 'none';
+                showToast('已断开 Google Analytics 连接', 'info');
+            }
+        }
+        
+        function loadGAData() {
+            // 模拟Google Analytics数据
+            // 在实际应用中，这里应该调用Google Analytics API
+            const mockGAData = {
+                sessions: Math.floor(Math.random() * 1000) + 500,
+                users: Math.floor(Math.random() * 800) + 400,
+                pageViews: Math.floor(Math.random() * 5000) + 2000,
+                bounceRate: (Math.random() * 30 + 40).toFixed(1),
+                avgDuration: `${Math.floor(Math.random() * 3)}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`,
+                conversion: (Math.random() * 5 + 1).toFixed(1)
+            };
+            
+            document.getElementById('gaSessions').textContent = mockGAData.sessions.toLocaleString();
+            document.getElementById('gaUsers').textContent = mockGAData.users.toLocaleString();
+            document.getElementById('gaPageViews').textContent = mockGAData.pageViews.toLocaleString();
+            document.getElementById('gaBounceRate').textContent = mockGAData.bounceRate + '%';
+            document.getElementById('gaAvgDuration').textContent = mockGAData.avgDuration;
+            document.getElementById('gaConversion').textContent = mockGAData.conversion + '%';
+            
+            // 模拟热门页面数据
+            const mockTopPages = [
+                { path: '/products.html', views: Math.floor(Math.random() * 1000) + 500, duration: '2:30', bounceRate: '45%' },
+                { path: '/index.html', views: Math.floor(Math.random() * 800) + 400, duration: '1:45', bounceRate: '55%' },
+                { path: '/contact.html', views: Math.floor(Math.random() * 300) + 100, duration: '3:15', bounceRate: '35%' },
+                { path: '/company.html', views: Math.floor(Math.random() * 200) + 50, duration: '1:20', bounceRate: '65%' }
+            ];
+            
+            document.getElementById('gaTopPagesBody').innerHTML = mockTopPages.map(page => `
+                <tr>
+                    <td><strong>${page.path}</strong></td>
+                    <td>${page.views.toLocaleString()}</td>
+                    <td>${page.duration}</td>
+                    <td>${page.bounceRate}</td>
+                </tr>
+            `).join('');
+        }
+
+        // ============================================================
+        // 客户询盘功能
+        // ============================================================
+        
+        function loadInquiriesModule() {
+            updateInquiryStats();
+            loadInquiriesTable();
+        }
+        
+        function updateInquiryStats() {
+            const unreadCount = inquiriesData.filter(i => i.status === 'unread').length;
+            const readCount = inquiriesData.filter(i => i.status !== 'unread').length;
+            
+            document.getElementById('unreadBadge').textContent = `未读: ${unreadCount}`;
+            document.getElementById('readBadge').textContent = `已读: ${readCount}`;
+        }
+        
+        function loadInquiriesTable() {
+            const tbody = document.getElementById('inquiriesTableBody');
+            const searchTerm = document.getElementById('inquirySearch').value.toLowerCase();
+            const statusFilter = document.getElementById('inquiryStatusFilter').value;
+            const timeFilter = document.getElementById('inquiryTimeFilter').value;
+            
+            let filteredInquiries = inquiriesData.filter(inquiry => {
+                const matchSearch = inquiry.name.toLowerCase().includes(searchTerm) || 
+                                   inquiry.email.toLowerCase().includes(searchTerm);
+                const matchStatus = !statusFilter || inquiry.status === statusFilter;
+                
+                let matchTime = true;
+                if (timeFilter) {
+                    const inquiryDate = new Date(inquiry.date);
+                    const now = new Date();
+                    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    
+                    if (timeFilter === 'today') {
+                        matchTime = inquiryDate >= today;
+                    } else if (timeFilter === 'week') {
+                        const weekAgo = new Date(today);
+                        weekAgo.setDate(weekAgo.getDate() - 7);
+                        matchTime = inquiryDate >= weekAgo;
+                    } else if (timeFilter === 'month') {
+                        const monthAgo = new Date(today);
+                        monthAgo.setMonth(monthAgo.getMonth() - 1);
+                        matchTime = inquiryDate >= monthAgo;
+                    }
+                }
+                
+                return matchSearch && matchStatus && matchTime;
+            });
+            
+            if (filteredInquiries.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-envelope-open" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                            <p>暂无询盘数据</p>
+                        </td>
+                    </tr>
                 `;
                 return;
             }
-
-            const tableHTML = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>状态</th>
-                            <th>客户</th>
-                            <th>邮箱</th>
-                            <th>国家</th>
-                            <th>来源</th>
-                            <th>时间</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${inquiriesData.map(inquiry => `
-                            <tr style="${!inquiry.read ? 'background: rgba(214,43,43,0.02);' : ''}">
-                                <td>
-                                    <span class="status-badge ${inquiry.read ? 'read' : 'unread'}">
-                                        <i></i>
-                                        ${inquiry.read ? '已读' : '未读'}
-                                    </span>
-                                </td>
-                                <td><strong>${inquiry.name}</strong></td>
-                                <td>${inquiry.email}</td>
-                                <td>
-                                    ${inquiry.countryCode ? `<span class="country-flag">${getCountryFlag(inquiry.countryCode)}</span>` : ''}
-                                    ${inquiry.country || '-'}
-                                </td>
-                                <td>${inquiry.source || '直接访问'}</td>
-                                <td>${new Date(inquiry.timestamp).toLocaleString('zh-CN')}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline" onclick="viewInquiry(${inquiry.id})">
-                                        <i class="fas fa-eye"></i> 查看
-                                    </button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-
-            container.innerHTML = tableHTML;
+            
+            tbody.innerHTML = filteredInquiries.map(inquiry => `
+                <tr>
+                    <td>#${inquiry.id}</td>
+                    <td>
+                        <strong>${inquiry.name}</strong><br>
+                        <span style="color: var(--text-secondary); font-size: 12px;">${inquiry.email}</span>
+                    </td>
+                    <td><span style="font-family: monospace;">${inquiry.ip || 'N/A'}</span></td>
+                    <td>${inquiry.location || '未知'}</td>
+                    <td><span style="max-width: 200px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${inquiry.product}</span></td>
+                    <td>${formatDate(inquiry.date)}</td>
+                    <td><span class="status-badge ${getStatusClass(inquiry.status)}">${getStatusText(inquiry.status)}</span></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="viewInquiry(${inquiry.id})" title="查看">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-success btn-sm" onclick="replyInquiry(${inquiry.id})" title="回复">
+                            <i class="fas fa-reply"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteInquiry(${inquiry.id})" title="删除">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
         }
-
-        function updateUnreadCount() {
-            const unreadCount = inquiriesData.filter(i => !i.read).length;
-            document.getElementById('unreadCount').textContent = unreadCount;
-        }
-
-        function getCountryFlag(countryCode) {
-            const flags = {
-                'US': '🇺🇸', 'CN': '🇨🇳', 'JP': '🇯🇵', 'KR': '🇰🇷', 'DE': '🇩🇪',
-                'GB': '🇬🇧', 'FR': '🇫🇷', 'IT': '🇮🇹', 'ES': '🇪🇸', 'CA': '🇨🇦',
-                'AU': '🇦🇺', 'IN': '🇮🇳', 'BR': '🇧🇷', 'MX': '🇲🇽', 'RU': '🇷🇺'
+        
+        function getStatusClass(status) {
+            const classes = {
+                unread: 'status-unread',
+                read: 'status-read',
+                replied: 'status-active'
             };
-            return flags[countryCode] || '🌍';
+            return classes[status] || 'status-read';
         }
-
-        function viewInquiry(id) {
-            const inquiry = inquiriesData.find(i => i.id === id);
-            if (!inquiry) return;
-
-            const detailHTML = `
-                <div class="inquiry-detail">
-                    <div class="inquiry-field">
-                        <div class="inquiry-field-label">客户姓名</div>
-                        <div class="inquiry-field-value">${inquiry.name}</div>
-                    </div>
-                    <div class="inquiry-field">
-                        <div class="inquiry-field-label">邮箱</div>
-                        <div class="inquiry-field-value">${inquiry.email}</div>
-                    </div>
-                    <div class="inquiry-field">
-                        <div class="inquiry-field-label">国家/地区</div>
-                        <div class="inquiry-field-value">
-                            ${inquiry.countryCode ? getCountryFlag(inquiry.countryCode) : ''} 
-                            ${inquiry.country || 'Unknown'}
-                            ${inquiry.city ? `, ${inquiry.city}` : ''}
-                        </div>
-                    </div>
-                    <div class="inquiry-field">
-                        <div class="inquiry-field-label">IP地址</div>
-                        <div class="inquiry-field-value">${inquiry.ip || '-'}</div>
-                    </div>
-                    <div class="inquiry-field">
-                        <div class="inquiry-field-label">访问来源</div>
-                        <div class="inquiry-field-value">${inquiry.source || '直接访问'}</div>
-                    </div>
-                    <div class="inquiry-field">
-                        <div class="inquiry-field-label">设备</div>
-                        <div class="inquiry-field-value">${inquiry.device || '-'}</div>
-                    </div>
-                    <div class="inquiry-field">
-                        <div class="inquiry-field-label">浏览器</div>
-                        <div class="inquiry-field-value">${inquiry.browser || '-'}</div>
-                    </div>
-                    <div class="inquiry-field">
-                        <div class="inquiry-field-label">时间</div>
-                        <div class="inquiry-field-value">${inquiry.localTime || new Date(inquiry.timestamp).toLocaleString('zh-CN')}</div>
-                    </div>
-                    ${inquiry.oem ? `
-                    <div class="inquiry-field">
-                        <div class="inquiry-field-label">OEM编号</div>
-                        <div class="inquiry-field-value"><strong>${inquiry.oem}</strong></div>
-                    </div>
-                    ` : ''}
-                </div>
-                <div style="margin-top: 24px;">
-                    <div class="inquiry-field-label" style="margin-bottom: 12px;">留言内容</div>
-                    <div style="background: var(--offwhite); padding: 16px; border-radius: 4px; border-left: 4px solid var(--red);">
-                        ${inquiry.message}
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('inquiryDetailContent').innerHTML = detailHTML;
-            document.getElementById('inquiryDetailModal').classList.add('show');
-
-            // 标记为已读
-            if (!inquiry.read) {
-                markAsRead(id);
+        
+        function getStatusText(status) {
+            const texts = {
+                unread: '未读',
+                read: '已读',
+                replied: '已回复'
+            };
+            return texts[status] || status;
+        }
+        
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                return '今天';
+            } else if (diffDays === 1) {
+                return '昨天';
+            } else if (diffDays < 7) {
+                return `${diffDays} 天前`;
+            } else {
+                return date.toLocaleDateString('zh-CN');
             }
         }
-
-        function closeInquiryModal() {
-            document.getElementById('inquiryDetailModal').classList.remove('show');
+        
+        function filterInquiries() {
+            loadInquiriesTable();
         }
-
-        async function markAsRead(id) {
-            const inquiry = inquiriesData.find(i => i.id === id);
+        
+        function viewInquiry(inquiryId) {
+            const inquiry = inquiriesData.find(i => i.id === inquiryId);
             if (inquiry) {
-                inquiry.read = true;
-                await saveInquiriesToGitHub();
+                // 标记为已读
+                if (inquiry.status === 'unread') {
+                    inquiry.status = 'read';
+                    saveDataToStorage();
+                    updateInquiryStats();
+                    loadInquiriesTable();
+                }
+                
+                // 显示询盘详情
+                alert(`客户姓名：${inquiry.name}\n邮箱：${inquiry.email}\nIP地址：${inquiry.ip || '未知'}\n地理位置：${inquiry.location || '未知'}\n\n咨询产品：${inquiry.product}\n\n留言内容：\n${inquiry.message}`);
             }
         }
-
-        async function markAllAsRead() {
-            inquiriesData.forEach(i => i.read = true);
-            await saveInquiriesToGitHub();
-        }
-
-        async function saveInquiriesToGitHub() {
-            try {
-                const getResponse = await fetch(`https://api.github.com/repos/${CONFIG.github.repo}/contents/${CONFIG.github.inquiriesFile}`, {
-                    headers: {
-                        'Authorization': `token ${CONFIG.github.token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                let sha = null;
-                if (getResponse.ok) {
-                    const data = await getResponse.json();
-                    sha = data.sha;
-                }
-
-                const content = btoa(unescape(encodeURIComponent(JSON.stringify(inquiriesData, null, 2))));
-                const putBody = {
-                    message: 'Update inquiries from admin panel',
-                    content: content,
-                    committer: {
-                        name: 'Carval Admin',
-                        email: 'admin@carvalautopart.com'
-                    }
-                };
-
-                if (sha) {
-                    putBody.sha = sha;
-                }
-
-                const putResponse = await fetch(`https://api.github.com/repos/${CONFIG.github.repo}/contents/${CONFIG.github.inquiriesFile}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${CONFIG.github.token}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(putBody)
-                });
-
-                if (putResponse.ok) {
-                    renderInquiries();
-                    updateUnreadCount();
-                }
-            } catch (error) {
-                console.error('保存询盘失败:', error);
+        
+        function replyInquiry(inquiryId) {
+            const inquiry = inquiriesData.find(i => i.id === inquiryId);
+            if (inquiry) {
+                // 标记为已回复
+                inquiry.status = 'replied';
+                saveDataToStorage();
+                updateInquiryStats();
+                loadInquiriesTable();
+                
+                // 打开邮件客户端
+                const subject = encodeURIComponent(`Re: 您关于 ${inquiry.product} 的咨询`);
+                const body = encodeURIComponent(`尊敬的 ${inquiry.name}，\n\n感谢您对我们产品的关注！\n\n关于您咨询的 ${inquiry.product}，我们将尽快为您回复。\n\n此致\nCarval Auto Parts 团队`);
+                window.location.href = `mailto:${inquiry.email}?subject=${subject}&body=${body}`;
+                
+                showToast('已打开邮件客户端', 'success');
             }
         }
-
-        // ===== GOOGLE ANALYTICS =====
-        function checkGoogleAnalyticsAuth() {
-            const authToken = localStorage.getItem('ga_auth_token');
-            if (authToken) {
-                CONFIG.analytics.accessToken = authToken;
-                showAnalyticsDashboard();
+        
+        function deleteInquiry(inquiryId) {
+            if (confirm('确定要删除这条询盘吗？')) {
+                inquiriesData = inquiriesData.filter(i => i.id !== inquiryId);
+                saveDataToStorage();
+                updateInquiryStats();
+                loadInquiriesTable();
+                showToast('询盘已删除', 'success');
             }
         }
-
-        function connectGoogleAnalytics() {
-            // 这里应该实现Google OAuth2流程
-            // 为了演示，我们使用模拟授权
-            alert('Google Analytics授权功能需要配置OAuth2客户端。\n\n请访问 Google Cloud Console 创建OAuth2凭据，然后在代码中配置客户端ID和密钥。\n\n授权成功后，您的Analytics数据将在此处显示。');
+        
+        // 模拟接收新询盘（实际应用中应该从服务器获取）
+        function simulateNewInquiry() {
+            const newId = inquiriesData.length > 0 ? Math.max(...inquiriesData.map(i => i.id)) + 1 : 1;
+            const locations = ['中国', '美国', '德国', '日本', '韩国', '英国', '法国'];
+            const sampleProducts = productsData.length > 0 ? productsData : [{name: '示例产品', oem: '00000-00000'}];
             
-            // 模拟授权成功
-            const mockToken = 'mock_access_token_' + Date.now();
-            localStorage.setItem('ga_auth_token', mockToken);
-            CONFIG.analytics.accessToken = mockToken;
-            showAnalyticsDashboard();
-        }
-
-        function showAnalyticsDashboard() {
-            document.getElementById('gaAuthContainer').style.display = 'none';
-            document.getElementById('gaEmbed').style.display = 'block';
+            const newInquiry = {
+                id: newId,
+                name: `客户 ${newId}`,
+                email: `customer${newId}@example.com`,
+                ip: `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`,
+                location: locations[Math.floor(Math.random() * locations.length)],
+                product: sampleProducts[Math.floor(Math.random() * sampleProducts.length)].name + (sampleProducts[0].oem ? ` (OEM: ${sampleProducts[0].oem})` : ''),
+                message: `我对这个产品很感兴趣，请提供更多信息和报价。`,
+                date: new Date().toISOString(),
+                status: 'unread'
+            };
             
-            // 在实际应用中，这里应该嵌入Google Analytics的embed API
-            // 由于需要OAuth认证，这里仅显示提示信息
-            document.getElementById('gaEmbed').srcdoc = `
-                <html>
-                <head>
-                    <style>
-                        body {
-                            font-family: 'Barlow', sans-serif;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            height: 100%;
-                            margin: 0;
-                            background: #f5f4f0;
-                        }
-                        .info {
-                            text-align: center;
-                            padding: 40px;
-                        }
-                        h2 { color: #1C2B3A; margin-bottom: 16px; }
-                        p { color: #555F6D; line-height: 1.6; }
-                    </style>
-                </head>
-                <body>
-                    <div class="info">
-                        <h2>Google Analytics 数据面板</h2>
-                        <p>授权成功！您的Analytics数据将在这里显示。</p>
-                        <p style="margin-top: 20px; font-size: 14px;">
-                            要查看实时数据，请访问：<br>
-                            <a href="https://analytics.google.com/analytics/web/#/p${CONFIG.analytics.measurementId}" target="_blank">
-                                Google Analytics Dashboard
-                            </a>
-                        </p>
-                    </div>
-                </body>
-                </html>
-            `;
+            inquiriesData.unshift(newInquiry);
+            saveDataToStorage();
+            updateInquiryStats();
+            loadInquiriesTable();
+            updateDashboardStats();
+            
+            showToast(`收到新询盘：${newInquiry.name}`, 'info');
         }
 
-        // ===== LOGOUT =====
-        function handleLogout() {
+        // ============================================================
+        // 通用功能
+        // ============================================================
+        
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toast.className = 'toast';
+            if (type === 'error') {
+                toast.classList.add('error');
+            } else if (type === 'warning') {
+                toast.classList.add('warning');
+            }
+            
+            const iconMap = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+            
+            toast.querySelector('i').className = `fas ${iconMap[type] || iconMap.success}`;
+            toastMessage.textContent = message;
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        function logout() {
             if (confirm('确定要退出登录吗？')) {
-                localStorage.clear();
-                window.location.reload();
+                // 在实际应用中，这里应该清除登录状态
+                showToast('已退出登录', 'info');
+                // 可以在这里跳转到登录页面
             }
         }
-
-        // ===== RESPONSIVE =====
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDataFromStorage();
+            updateDashboardStats();
+            
+            // 为测试目的，如果没有数据，添加一些示例数据
+            if (productsData.length === 0) {
+                productsData = [
+                    {
+                        id: 1,
+                        name: '丰田凯美瑞刹车片',
+                        category: 'japanese',
+                        oem: '04465-06110',
+                        description: '高性能刹车片，适用于丰田凯美瑞2018-2023款。OEM品质，实车验证。Brand: Toyota | Compatible with: Toyota Camry 2018-2023 | Specs: 陶瓷材质，前轴',
+                        image: '',
+                        stock: 45,
+                        status: 'active',
+                        views: 234,
+                        createdAt: new Date().toISOString(),
+                        lastUpdated: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        name: '本田思域空气滤清器',
+                        category: 'japanese',
+                        oem: '17220-RNA-A00',
+                        description: '正品空气滤清器，适用于本田思域2016-2021款。提升发动机性能和燃油经济性。Brand: Honda | Compatible with: Honda Civic 2016-2021 | Specs: 高效过滤',
+                        image: '',
+                        stock: 32,
+                        status: 'active',
+                        views: 187,
+                        createdAt: new Date().toISOString(),
+                        lastUpdated: new Date().toISOString()
+                    },
+                    {
+                        id: 3,
+                        name: '宝马3系列机油滤清器',
+                        category: 'german',
+                        oem: '11427788454',
+                        description: '优质机油滤清器，适用于宝马3系列(F30/G20)。符合OEM规格。Brand: Mann Filter | Compatible with: BMW 3 Series F30/G20 | Specs: 大容量过滤',
+                        image: '',
+                        stock: 8,
+                        status: 'active',
+                        views: 156,
+                        createdAt: new Date().toISOString(),
+                        lastUpdated: new Date().toISOString()
+                    },
+                    {
+                        id: 4,
+                        name: '现代伊兰特正时皮带',
+                        category: 'korean',
+                        oem: '24312-2B000',
+                        description: '正时皮带，适用于现代伊兰特2017-2022款。耐用可靠。Brand: Gates | Compatible with: Hyundai Elantra 2017-2022 | Specs: 橡胶复合，加强型',
+                        image: '',
+                        stock: 28,
+                        status: 'active',
+                        views: 98,
+                        createdAt: new Date().toISOString(),
+                        lastUpdated: new Date().toISOString()
+                    },
+                    {
+                        id: 5,
+                        name: '全合成机油 5W-30',
+                        category: 'oil',
+                        oem: 'OIL-5W30-4L',
+                        description: '全合成机油，适用于多种车型。卓越的润滑性能和保护效果。Brand: Castrol | Compatible with: 通用 | Specs: 5W-30, 4L装',
+                        image: '',
+                        stock: 56,
+                        status: 'active',
+                        views: 312,
+                        createdAt: new Date().toISOString(),
+                        lastUpdated: new Date().toISOString()
+                    }
+                ];
+                saveDataToStorage();
+            }
+            
+            if (inquiriesData.length === 0) {
+                inquiriesData = [
+                    {
+                        id: 1,
+                        name: '张三',
+                        email: 'zhangsan@example.com',
+                        ip: '123.45.67.89',
+                        location: '中国',
+                        product: '丰田凯美瑞刹车片 (OEM: 04465-06110)',
+                        message: '您好，我对这个产品很感兴趣，请提供50件的报价。',
+                        date: new Date(Date.now() - 86400000).toISOString(),
+                        status: 'unread'
+                    },
+                    {
+                        id: 2,
+                        name: 'John Smith',
+                        email: 'john.smith@email.com',
+                        ip: '98.76.54.32',
+                        location: '美国',
+                        product: '宝马3系列机油滤清器 (OEM: 11427788454)',
+                        message: '需要100件的报价，有批量折扣吗？',
+                        date: new Date(Date.now() - 172800000).toISOString(),
+                        status: 'replied'
+                    },
+                    {
+                        id: 3,
+                        name: '李四',
+                        email: 'lisi@company.cn',
+                        product: '本田思域空气滤清器 (OEM: 17220-RNA-A00)',
+                        message: '请确认库存和到上海的运费。',
+                        date: new Date(Date.now() - 259200000).toISOString(),
+                        status: 'read',
+                        ip: '111.222.333.44',
+                        location: '中国'
+                    }
+                ];
+                saveDataToStorage();
+            }
+            
+            // 更新显示
+            updateDashboardStats();
+        });
+        
+        // 模态框点击外部关闭
+        document.getElementById('productModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProductModal();
+            }
+        });
+        
+        // 键盘快捷键
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeProductModal();
+            }
+        });
+        
+        // 窗口大小变化时处理响应式
         window.addEventListener('resize', function() {
-            if (window.innerWidth > 1024) {
-                document.getElementById('sidebar').classList.remove('open');
-                document.getElementById('hamburgerBtn').classList.remove('open');
-                document.getElementById('overlay').classList.remove('show');
+            if (window.innerWidth > 992) {
+                document.getElementById('sidebar').classList.remove('active');
             }
         });
     </script>
