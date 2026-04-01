@@ -167,6 +167,7 @@
         .product-card:hover::before { width: 6px; }
 
         .product-img-wrap {
+            position: relative;
             width: 100%; height: 260px;
             overflow: hidden; background-color: #f8f8f8;
             display: flex; align-items: center; justify-content: center;
@@ -188,6 +189,29 @@
         .no-image i { font-size: 48px; }
         .no-image span { font-size: 13px; font-family: 'Oswald', sans-serif; letter-spacing: 1px; }
 
+        /* 多图网格布局 */
+        .product-img-grid {
+            width: 100%; height: 100%;
+            display: grid; gap: 3px;
+            padding: 3px; background: #f0f0f0;
+        }
+        .product-img-grid-2 { grid-template-columns: 1fr 1fr; }
+        .product-img-grid-3 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+        .product-img-grid-3 .img-grid-item:first-child { grid-row: span 2; }
+        .product-img-grid-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+        .img-grid-item {
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            background-color: #f8f8f8; cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .img-grid-item:hover { opacity: 0.85; }
+        .img-more-badge {
+            position: absolute; right: 8px; bottom: 8px;
+            background: rgba(0,0,0,0.7); color: white;
+            padding: 4px 10px; border-radius: 4px;
+            font-size: 12px; font-family: 'Oswald', sans-serif;
+        }
+ 
         .product-body { padding: 25px 25px 25px 30px; }
         .product-category {
             font-family: 'Oswald', sans-serif;
@@ -639,29 +663,35 @@
         <p>Professional Auto Parts Manufacturer &amp; Global Supplier</p>
     </footer>
 
-    <script src="products.js"></script>
     <script>
     // ============================================================
-    // 使用从 products.js 加载的产品数据
-    // 如果 products.js 中没有数据，使用下面的默认数据
+    // 从 GitHub 加载产品数据 (products.json)
+    // 如果加载失败，使用下面的默认数据
     // ============================================================
-    if (typeof products === 'undefined' || !Array.isArray(products) || products.length === 0) {
-        var products = [
-        // 示例商品（可删除）
+    var products = [];
+    var productsData = [];
+    var dataLoaded = false;
+    
+    // GitHub 仓库配置
+    var GH_REPO = 'carvalauto/carvalauto.github.io';
+    var GH_FILE = 'products.json';
+    
+    // 默认示例数据（仅在 GitHub 加载失败时使用）
+    var defaultProducts = [
         {
             id: 1,
             name: "Toyota Camry Brake Pads",
             category: "japanese",
             oem: "04465-06110",
-            description: "High-performance brake pads for Toyota Camry 2018-2023. OEM quality, verified by real-vehicle test. Suitable for front axle. Long-lasting and stable braking performance.",
-            image: ""  // 填入图片文件名，例如 "product1.jpg"
+            description: "High-performance brake pads for Toyota Camry 2018-2023. OEM quality, verified by real-vehicle test.",
+            image: ""
         },
         {
             id: 2,
             name: "Honda Civic Air Filter",
             category: "japanese",
             oem: "17220-RNA-A00",
-            description: "Genuine quality air filter for Honda Civic 2016-2021. Improves engine performance and fuel efficiency. Easy installation, direct OEM replacement.",
+            description: "Genuine quality air filter for Honda Civic 2016-2021. Improves engine performance and fuel efficiency.",
             image: ""
         },
         {
@@ -669,14 +699,58 @@
             name: "BMW 3 Series Oil Filter",
             category: "german",
             oem: "11427788454",
-            description: "Premium oil filter for BMW 3 Series (F30/G20). Meets OEM specifications. Ensures clean engine oil circulation and extends engine life.",
+            description: "Premium oil filter for BMW 3 Series (F30/G20). Meets OEM specifications.",
             image: ""
         }
-        // 在这里继续添加更多商品...
-        ];
+    ];
+    
+    // 从 GitHub 加载产品数据
+    async function loadProductsFromGitHub() {
+        try {
+            var response = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FILE, {
+                headers: { 'Accept': 'application/vnd.github.v3+json' }
+            });
+            
+            if (response.ok) {
+                var json = await response.json();
+                if (json.content) {
+                    var decoded = atob(json.content.replace(/\n/g, ''));
+                    var data = JSON.parse(decoded);
+                    if (Array.isArray(data) && data.length > 0) {
+                        products = data;
+                        console.log('✓ 从 GitHub 加载了 ' + products.length + ' 个产品');
+                        return true;
+                    }
+                }
+            }
+        } catch(e) {
+            console.log('GitHub 加载失败，使用默认数据:', e.message);
+        }
+        return false;
     }
-    // ============================================================
-    const productsData = products;
+    
+    // 初始化函数
+    async function initProducts() {
+        // 显示加载状态
+        var grid = document.getElementById('productsGrid');
+        grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;"><i class="fas fa-spinner fa-spin" style="font-size:32px;"></i><p style="margin-top:15px;">Loading products...</p></div>';
+        
+        // 尝试从 GitHub 加载
+        var loaded = await loadProductsFromGitHub();
+        
+        // 如果失败，使用默认数据
+        if (!loaded || products.length === 0) {
+            products = defaultProducts;
+            console.log('使用默认示例数据');
+        }
+        
+        productsData = products;
+        dataLoaded = true;
+        renderProducts();
+    }
+    
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', initProducts);
 
     let currentFilter = 'all';
     let currentSearch = '';
@@ -716,8 +790,11 @@
         }
 
         grid.innerHTML = filtered.map(p => {
-            // Parse first image only for display
-            var firstImg = p.image ? p.image.split(',')[0].split('\n')[0].trim() : '';
+            // Parse all images for display (up to 4 on card, all in detail view)
+            var allImgs = p.image ? p.image.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
+            var displayImgs = allImgs.slice(0, 4); // Show max 4 images on card
+            var hasMultiple = allImgs.length > 1;
+            var imgCount = allImgs.length;
             // Parse brand and compatible models from description
             var desc = p.description || '';
             var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
@@ -735,13 +812,30 @@
                 .trim();
 
             var pData = encodeURIComponent(JSON.stringify(p));
+            
+            // Build image grid HTML
+            var imgGridHtml = '';
+            if (displayImgs.length === 0) {
+                imgGridHtml = `<div class="no-image"><i class="fas fa-car"></i><span>Image Coming Soon</span></div>`;
+            } else if (displayImgs.length === 1) {
+                imgGridHtml = `<img src="${displayImgs[0]}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:contain;">`;
+            } else {
+                // Multi-image grid layout
+                imgGridHtml = `<div class="product-img-grid product-img-grid-${Math.min(displayImgs.length, 4)}">`;
+                displayImgs.forEach(function(img, i) {
+                    imgGridHtml += `<div class="img-grid-item" style="background-image:url('${img}');" onclick="event.stopPropagation();"></div>`;
+                });
+                // Show "+N more" badge if there are more images
+                if (imgCount > 4) {
+                    imgGridHtml += `<div class="img-more-badge">+${imgCount - 4}</div>`;
+                }
+                imgGridHtml += `</div>`;
+            }
+            
             return `
             <div class="product-card" data-category="${p.category}" onclick="openProduct(${p.id})" style="cursor:pointer;">
                 <div class="product-img-wrap">
-                    ${firstImg
-                        ? `<img src="${firstImg}" alt="${p.name}" loading="lazy">`
-                        : `<div class="no-image"><i class="fas fa-car"></i><span>Image Coming Soon</span></div>`
-                    }
+                    ${imgGridHtml}
                 </div>
                 <div class="product-body">
                     <div class="product-category">${categoryLabels[p.category] || p.category}</div>

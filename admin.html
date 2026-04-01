@@ -371,6 +371,22 @@
         }
         .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 13px 28px; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; transition: transform 0.4s ease; z-index: 9999; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
         .toast.show { transform: translateX(-50%) translateY(0); }
+        
+        /* ===== 编辑弹窗样式 ===== */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { background: white; width: 90%; max-width: 560px; max-height: 90vh; overflow-y: auto; border-radius: 0; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .modal-header { background: var(--primary); color: white; padding: 18px 22px; font-family: 'Oswald', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; justify-content: space-between; border-left: 5px solid var(--accent); }
+        .modal-header .close-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; padding: 0; line-height: 1; }
+        .modal-header .close-btn:hover { opacity: 0.8; }
+        .modal-body { padding: 24px; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid #eee; display: flex; gap: 12px; justify-content: flex-end; }
+        .modal-footer .btn-save { background: var(--success); color: white; padding: 10px 24px; font-family: 'Oswald', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer; }
+        .modal-footer .btn-save:hover { background: #27ae60; }
+        .modal-footer .btn-cancel { background: transparent; color: #888; padding: 10px 20px; font-family: 'Oswald', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; border: 1px solid #ddd; cursor: pointer; }
+        .modal-footer .btn-cancel:hover { border-color: #999; color: #555; }
+        .btn-edit { background: var(--primary); color: white; padding: 5px 10px; font-size: 11px; border: none; cursor: pointer; margin-right: 6px; }
+        .btn-edit:hover { background: #0a3a6e; }
     </style>
 </head>
 <body>
@@ -383,9 +399,6 @@
         <div class="tab-nav">
             <button class="tab-btn active" onclick="switchTab('products', this)">
                 <i class="fas fa-box"></i> 商品管理
-            </button>
-            <button class="tab-btn" onclick="switchTab('import', this)">
-                <i class="fas fa-robot"></i> AI导入
             </button>
             <button class="tab-btn" onclick="switchTab('analytics', this)">
                 <i class="fas fa-chart-line"></i> 流量分析
@@ -513,236 +526,43 @@
                 <div class="card">
                     <div class="card-header"><i class="fas fa-list"></i> 当前商品列表</div>
                     <div style="padding:0;"><div class="product-list" id="productList"><div class="empty-list"><i class="fas fa-box-open"></i><p>暂无商品，请在左侧添加</p></div></div></div>
+                    <div style="padding:12px 16px;border-top:1px solid #f0f0f0;display:flex;gap:8px;flex-wrap:wrap;">
+                        <button onclick="syncProductsToGH()" id="syncGhBtn" style="padding:8px 16px;background:#1a3a5c;color:white;border:none;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                            <i class="fas fa-cloud-upload-alt"></i> 同步到GitHub
+                        </button>
+                        <button onclick="loadProductsFromGH()" style="padding:8px 16px;background:white;color:#888;border:1px solid #ddd;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                            <i class="fas fa-cloud-download-alt"></i> 从GitHub下载
+                        </button>
+                    </div>
                 </div>
                 <div class="card">
                     <div class="card-header"><i class="fas fa-code"></i> 生成代码 — 复制到 products.html</div>
                     <div class="card-body">
                         <div class="code-area" id="generatedCode">// 点击下方按钮生成代码</div>
-                        <button class="btn btn-copy" onclick="copyCode()"><i class="fas fa-copy"></i> 复制代码</button>
+                        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+                            <button class="btn btn-copy" onclick="copyCode()"><i class="fas fa-copy"></i> 复制代码</button>
+                            <button onclick="syncProductsToGH()" style="padding:11px 22px;background:#1a3a5c;color:white;border:none;font-family:Oswald,sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;gap:8px;">
+                                <i class="fas fa-cloud-upload-alt"></i> 同步到GitHub
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-header"><i class="fas fa-info-circle"></i> 使用说明</div>
                     <div class="card-body">
                         <ul class="steps">
-                            <li><div class="step-num">1</div><div>填写商品信息，点击 <strong>"添加到商品列表"</strong></div></li>
-                            <li><div class="step-num">2</div><div>把商品图片上传到 <strong>GitHub 仓库根目录</strong></div></li>
-                            <li><div class="step-num">3</div><div>点击 <strong>"复制代码"</strong>，打开 GitHub 上的 <strong>products.html</strong></div></li>
-                            <li><div class="step-num accent">4</div><div>找到 <code style="background:#f0f0f0;padding:2px 5px;">const productsData = [</code>，把方括号内容替换为复制的代码并保存</div></li>
-                            <li><div class="step-num accent">5</div><div>等待 1-2 分钟，访问 <strong>products.html</strong> 查看效果</div></li>
+                            <li><div class="step-num">1</div><div>使用 <strong>AI分析</strong> 或 <strong>Excel导入</strong> 添加商品</div></li>
+                            <li><div class="step-num">2</div><div>点击 <strong>"同步到GitHub"</strong> 自动上传产品数据</div></li>
+                            <li><div class="step-num">3</div><div>上传商品图片到 <strong>GitHub 仓库根目录</strong></div></li>
+                            <li><div class="step-num accent">4</div><div>等待 1-2 分钟，访问 <strong>products.html</strong> 查看效果</div></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- 流量分析页 -->
-<div class="page" id="page-analytics">
-    <div id="loginSection">
-        <div class="login-card">
-            <div class="logo">CARVAL <span>AUTO</span></div>
-            <p>连接 Google Analytics 账号<br>查看网站实时流量与访客数据</p>
-            <button class="btn-google" onclick="handleLogin()">
-                <img src="https://www.google.com/favicon.ico" alt="Google">
-                使用 Google 账号登录
-            </button>
-            <div class="login-note">仅限授权账号 · 数据来自 Google Analytics<br>首次登录需授权数据读取权限</div>
-        </div>
-    </div>
-
-    <div id="dashboardSection">
-        <div class="date-bar">
-            <span class="date-bar-label">时间范围：</span>
-            <button class="date-btn active" onclick="setDateRange('7daysAgo', this)">近7天</button>
-            <button class="date-btn" onclick="setDateRange('30daysAgo', this)">近30天</button>
-            <button class="date-btn" onclick="setDateRange('90daysAgo', this)">近90天</button>
-            <button class="date-btn" onclick="setDateRange('365daysAgo', this)">近一年</button>
-            <div class="ga-user-info">
-                <img id="userAvatar" class="ga-avatar" src="" alt="">
-                <span class="ga-name" id="userName"></span>
-                <button class="btn-logout" onclick="handleLogout()">退出</button>
-            </div>
-        </div>
-
-        <div class="dashboard-inner">
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-label">总浏览量 (PV)</div><div class="stat-value" id="statPageviews">—</div><div class="stat-icon"><i class="fas fa-eye"></i></div></div>
-                <div class="stat-card accent"><div class="stat-label">独立访客 (UV)</div><div class="stat-value" id="statUsers">—</div><div class="stat-icon"><i class="fas fa-users"></i></div></div>
-                <div class="stat-card success"><div class="stat-label">会话数</div><div class="stat-value" id="statSessions">—</div><div class="stat-icon"><i class="fas fa-mouse-pointer"></i></div></div>
-                <div class="stat-card warning"><div class="stat-label">平均停留时长</div><div class="stat-value" id="statDuration">—</div><div class="stat-icon"><i class="fas fa-clock"></i></div></div>
-                <div class="stat-card info"><div class="stat-label"><span class="realtime-dot"></span>实时在线</div><div class="stat-value" id="statRealtime">—</div><div class="stat-icon"><i class="fas fa-satellite-dish"></i></div></div>
-            </div>
-
-            <div class="section-line"></div>
-
-            <div class="charts-grid">
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">每日流量趋势<small>页面浏览量 & 独立访客</small></div></div>
-                    <div id="trendLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <canvas id="trendChart" style="display:none;"></canvas>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">设备类型<small>访客设备分布</small></div></div>
-                    <div id="deviceLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <canvas id="deviceChart" style="display:none;max-height:200px;"></canvas>
-                </div>
-            </div>
-
-            <div class="charts-grid">
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">访客国家/地区<small>Top 10 来源国家</small></div></div>
-                    <div id="countryLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <ul class="country-list" id="countryList" style="display:none;"></ul>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">流量来源<small>访客从哪里找到你的网站</small></div></div>
-                    <div id="sourceLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <canvas id="sourceChart" style="display:none;max-height:200px;"></canvas>
-                </div>
-            </div>
-
-            <div class="charts-grid-equal">
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">热门页面<small>访问量最多的页面</small></div></div>
-                    <div id="pagesLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <table class="data-table" id="pagesTable" style="display:none;"><thead><tr><th>页面</th><th>浏览量</th><th>访客数</th></tr></thead><tbody id="pagesBody"></tbody></table>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">访客语言<small>浏览器语言分布</small></div></div>
-                    <div id="langLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
-                    <table class="data-table" id="langTable" style="display:none;"><thead><tr><th>语言</th><th>用户数</th><th>占比</th></tr></thead><tbody id="langBody"></tbody></table>
-                </div>
-            </div>
-            <div style="height:40px;"></div>
-        </div>
-    </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<!-- 客户询盘页 -->
-<div class="page" id="page-inquiries">
-    <div style="padding:30px;max-width:1400px;margin:0 auto;">
-
-        <!-- 同步状态 -->
-        <div id="ghSyncStatus" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:#e8f4fd;border-left:4px solid var(--primary);margin-bottom:15px;font-size:13px;color:#0f4c81;">
-            <i class="fas fa-sync fa-spin"></i> 正在从云端同步最新询盘数据...
-        </div>
-
-        <!-- 顶部统计栏 -->
-        <div style="display:flex;gap:15px;margin-bottom:25px;flex-wrap:wrap;">
-            <div class="stat-mini" style="flex:1;min-width:130px;">
-                <div class="stat-mini-num" id="inq_total">0</div>
-                <div class="stat-mini-label">总询盘数</div>
-            </div>
-            <div class="stat-mini accent" style="flex:1;min-width:130px;">
-                <div class="stat-mini-num" id="inq_unread">0</div>
-                <div class="stat-mini-label">未读</div>
-            </div>
-            <div class="stat-mini" style="flex:1;min-width:130px;border-color:#2ecc71;">
-                <div class="stat-mini-num" style="color:#2ecc71;" id="inq_today">0</div>
-                <div class="stat-mini-label">今日新增</div>
-            </div>
-            <div class="stat-mini" style="flex:1;min-width:130px;border-color:#f39c12;">
-                <div class="stat-mini-num" style="color:#f39c12;" id="inq_countries">0</div>
-                <div class="stat-mini-label">来源国家数</div>
-            </div>
-            <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                <button onclick="clearAllInquiries()" style="padding:8px 16px;background:transparent;border:1px solid #ddd;cursor:pointer;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;color:#888;transition:all 0.3s;" onmouseover="this.style.borderColor='#e63946';this.style.color='#e63946'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">
-                    <i class="fas fa-trash"></i> 清空所有
-                </button>
-                <button onclick="markAllRead()" style="padding:8px 16px;background:var(--primary);border:none;cursor:pointer;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;color:white;transition:all 0.3s;">
-                    <i class="fas fa-check-double"></i> 全部已读
-                </button>
-            </div>
-        </div>
-
-        <!-- 筛选栏 -->
-        <div style="background:white;padding:15px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-            <span style="font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;color:#666;letter-spacing:1px;">筛选：</span>
-            <button class="inq-filter active" onclick="filterInquiries('all',this)">全部</button>
-            <button class="inq-filter" onclick="filterInquiries('unread',this)">未读</button>
-            <button class="inq-filter" onclick="filterInquiries('read',this)">已读</button>
-            <div style="margin-left:auto;display:flex;gap:0;">
-                <input type="text" id="inqSearch" placeholder="搜索姓名/邮箱/内容..." oninput="searchInquiries()" style="padding:7px 14px;border:1.5px solid #ddd;font-size:13px;width:240px;outline:none;border-right:none;">
-                <button style="padding:7px 14px;background:var(--primary);border:none;color:white;cursor:pointer;"><i class="fas fa-search"></i></button>
-            </div>
-        </div>
-
-        <!-- 询盘列表 -->
-        <div id="inquiryList"></div>
-
-    </div>
-</div>
-
-
-<!-- 批量导入页 -->
-<div class="page" id="page-import">
-    <div style="padding:30px;max-width:1000px;margin:0 auto;">
-
-        <!-- 步骤说明 -->
-        <div class="card" style="margin-bottom:24px;">
-            <div class="card-header"><i class="fas fa-info-circle"></i> 使用说明 — Excel 批量导入</div>
-            <div class="card-body">
-                <ul class="steps">
-                    <li><div class="step-num">1</div><div>下载下方的 <strong>Excel模板</strong>，按格式填写所有商品信息</div></li>
-                    <li><div class="step-num">2</div><div>填写完成后，点击 <strong>"选择Excel文件"</strong> 上传你的文件</div></li>
-                    <li><div class="step-num">3</div><div>预览解析结果，确认无误后点击 <strong>"确认导入"</strong></div></li>
-                    <li><div class="step-num accent">4</div><div>切换到 <strong>"商品管理"</strong> Tab，点击 <strong>"复制代码"</strong>，粘贴到 GitHub 的 products.html 保存</div></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- 上传区 -->
-        <div class="card" style="margin-bottom:24px;">
-            <div class="card-header"><i class="fas fa-upload"></i> 上传 Excel 文件</div>
-            <div class="card-body">
-                <div id="excelDropZone" style="border:2px dashed #ddd;padding:48px 24px;text-align:center;cursor:pointer;transition:all 0.3s;border-radius:0;background:#fafafa;position:relative;" onmouseover="this.style.borderColor='var(--primary)';this.style.background='#f0f7ff'" onmouseout="this.style.borderColor='#ddd';this.style.background='#fafafa'" onclick="document.getElementById('excelFileInput').click()">
-                    <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleExcelUpload(this)">
-                    <i class="fas fa-file-excel" style="font-size:48px;color:#1d6f42;margin-bottom:16px;display:block;"></i>
-                    <div style="font-family:var(--font-head,Oswald),sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:1px;color:var(--dark,#1a1a1a);margin-bottom:8px;">点击选择 Excel 文件</div>
-                    <div style="font-size:13px;color:#888;">支持 .xlsx / .xls / .csv 格式</div>
-                </div>
-
-                <div id="importStatus" style="display:none;margin-top:16px;padding:14px 18px;font-size:14px;"></div>
-            </div>
-        </div>
-
-        <!-- 预览表格 -->
-        <div class="card" id="previewCard" style="display:none;margin-bottom:24px;">
-            <div class="card-header"><i class="fas fa-eye"></i> 预览解析结果 — 共 <span id="previewCount">0</span> 条商品</div>
-            <div class="card-body" style="padding:0;overflow-x:auto;">
-                <table style="width:100%;border-collapse:collapse;font-size:13px;" id="previewTable">
-                    <thead>
-                        <tr style="background:#f8f9fa;">
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">#</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">商品名称</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">分类</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">OEM编号</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">描述</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">图片</th>
-                            <th style="padding:10px 14px;text-align:left;font-family:Oswald,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:2px solid #eee;">状态</th>
-                        </tr>
-                    </thead>
-                    <tbody id="previewBody"></tbody>
-                </table>
-            </div>
-            <div style="padding:20px 22px;border-top:1px solid #f0f0f0;display:flex;gap:12px;align-items:center;">
-                <button onclick="confirmImport()" style="padding:12px 28px;background:var(--success,#2ecc71);color:white;border:none;font-family:Oswald,sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
-                    <i class="fas fa-check"></i> 确认导入全部
-                </button>
-                <button onclick="clearPreview()" style="padding:12px 20px;background:transparent;border:1px solid #ddd;font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;cursor:pointer;color:#888;">
-                    <i class="fas fa-times"></i> 取消
-                </button>
-                <span id="importResultMsg" style="font-size:13px;color:#2ecc71;margin-left:8px;"></span>
-            </div>
-        </div>
-
-
-        <!-- AI产品抓取工具 -->
-        <div class="card" style="margin-bottom:24px;">
+        <!-- AI智能产品助手 - 整合到商品管理页面 -->
+        <div class="card" style="margin-top:22px;">
             <div class="card-header" style="background:linear-gradient(135deg,#0f4c81,#1a3a5c);">
                 <i class="fas fa-robot"></i> AI 智能产品助手
             </div>
@@ -907,10 +727,190 @@
                     </div>
                 </div><!-- end aiBatchMode -->
 
+    </div>
+</div>
+
+<!-- 编辑商品弹窗 -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span><i class="fas fa-edit"></i> 编辑商品</span>
+            <button class="close-btn" onclick="closeEditModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="editProductId">
+            <div class="form-group">
+                <label>商品名称 <span class="required">*</span></label>
+                <input type="text" id="editName" placeholder="例如：Toyota Camry Brake Pads">
+            </div>
+            <div class="form-group">
+                <label>商品分类 <span class="required">*</span></label>
+                <select id="editCategory">
+                    <option value="japanese">🇯🇵 Japanese（日系车）</option>
+                    <option value="korean">🇰🇷 Korean（韩系车）</option>
+                    <option value="german">🇩🇪 German（德系车）</option>
+                    <option value="chinese">🇨🇳 Chinese（国产车）</option>
+                    <option value="oil">🛢️ Engine Oil（机油）</option>
+                    <option value="other">📦 Other（其他）</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>OEM 编号</label>
+                <input type="text" id="editOem" placeholder="例如：04465-06110">
+            </div>
+            <div class="form-group">
+                <label>商品描述</label>
+                <textarea id="editDesc" placeholder="描述商品规格、适用车型、特点..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>图片文件名</label>
+                <input type="text" id="editImage" placeholder="例如：90919-01253 (1).jpg">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="closeEditModal()">取消</button>
+            <button class="btn-save" onclick="saveProductEdit()"><i class="fas fa-save"></i> 保存修改</button>
+        </div>
+    </div>
+</div>
+
+<!-- 流量分析页 -->
+<div class="page" id="page-analytics">
+    <div id="loginSection">
+        <div class="login-card">
+            <div class="logo">CARVAL <span>AUTO</span></div>
+            <p>连接 Google Analytics 账号<br>查看网站实时流量与访客数据</p>
+            <button class="btn-google" onclick="handleLogin()">
+                <img src="https://www.google.com/favicon.ico" alt="Google">
+                使用 Google 账号登录
+            </button>
+            <div class="login-note">仅限授权账号 · 数据来自 Google Analytics<br>首次登录需授权数据读取权限</div>
+        </div>
+    </div>
+
+    <div id="dashboardSection">
+        <div class="date-bar">
+            <span class="date-bar-label">时间范围：</span>
+            <button class="date-btn active" onclick="setDateRange('7daysAgo', this)">近7天</button>
+            <button class="date-btn" onclick="setDateRange('30daysAgo', this)">近30天</button>
+            <button class="date-btn" onclick="setDateRange('90daysAgo', this)">近90天</button>
+            <button class="date-btn" onclick="setDateRange('365daysAgo', this)">近一年</button>
+            <div class="ga-user-info">
+                <img id="userAvatar" class="ga-avatar" src="" alt="">
+                <span class="ga-name" id="userName"></span>
+                <button class="btn-logout" onclick="handleLogout()">退出</button>
             </div>
         </div>
 
+        <div class="dashboard-inner">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-label">总浏览量 (PV)</div><div class="stat-value" id="statPageviews">—</div><div class="stat-icon"><i class="fas fa-eye"></i></div></div>
+                <div class="stat-card accent"><div class="stat-label">独立访客 (UV)</div><div class="stat-value" id="statUsers">—</div><div class="stat-icon"><i class="fas fa-users"></i></div></div>
+                <div class="stat-card success"><div class="stat-label">会话数</div><div class="stat-value" id="statSessions">—</div><div class="stat-icon"><i class="fas fa-mouse-pointer"></i></div></div>
+                <div class="stat-card warning"><div class="stat-label">平均停留时长</div><div class="stat-value" id="statDuration">—</div><div class="stat-icon"><i class="fas fa-clock"></i></div></div>
+                <div class="stat-card info"><div class="stat-label"><span class="realtime-dot"></span>实时在线</div><div class="stat-value" id="statRealtime">—</div><div class="stat-icon"><i class="fas fa-satellite-dish"></i></div></div>
+            </div>
+
+            <div class="section-line"></div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header"><div class="chart-title">每日流量趋势<small>页面浏览量 & 独立访客</small></div></div>
+                    <div id="trendLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
+                    <canvas id="trendChart" style="display:none;"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><div class="chart-title">设备类型<small>访客设备分布</small></div></div>
+                    <div id="deviceLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
+                    <canvas id="deviceChart" style="display:none;max-height:200px;"></canvas>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header"><div class="chart-title">访客国家/地区<small>Top 10 来源国家</small></div></div>
+                    <div id="countryLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
+                    <ul class="country-list" id="countryList" style="display:none;"></ul>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><div class="chart-title">流量来源<small>访客从哪里找到你的网站</small></div></div>
+                    <div id="sourceLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
+                    <canvas id="sourceChart" style="display:none;max-height:200px;"></canvas>
+                </div>
+            </div>
+
+            <div class="charts-grid-equal">
+                <div class="chart-card">
+                    <div class="chart-header"><div class="chart-title">热门页面<small>访问量最多的页面</small></div></div>
+                    <div id="pagesLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
+                    <table class="data-table" id="pagesTable" style="display:none;"><thead><tr><th>页面</th><th>浏览量</th><th>访客数</th></tr></thead><tbody id="pagesBody"></tbody></table>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><div class="chart-title">访客语言<small>浏览器语言分布</small></div></div>
+                    <div id="langLoading" class="loading"><i class="fas fa-spinner"></i><span>加载中...</span></div>
+                    <table class="data-table" id="langTable" style="display:none;"><thead><tr><th>语言</th><th>用户数</th><th>占比</th></tr></thead><tbody id="langBody"></tbody></table>
+                </div>
+            </div>
+            <div style="height:40px;"></div>
+        </div>
+    </div>
 </div>
+
+<div class="toast" id="toast"></div>
+
+<!-- 客户询盘页 -->
+<div class="page" id="page-inquiries">
+    <div style="padding:30px;max-width:1400px;margin:0 auto;">
+
+        <!-- 同步状态 -->
+        <div id="ghSyncStatus" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:#e8f4fd;border-left:4px solid var(--primary);margin-bottom:15px;font-size:13px;color:#0f4c81;">
+            <i class="fas fa-sync fa-spin"></i> 正在从云端同步最新询盘数据...
+        </div>
+
+        <!-- 顶部统计栏 -->
+        <div style="display:flex;gap:15px;margin-bottom:25px;flex-wrap:wrap;">
+            <div class="stat-mini" style="flex:1;min-width:130px;">
+                <div class="stat-mini-num" id="inq_total">0</div>
+                <div class="stat-mini-label">总询盘数</div>
+            </div>
+            <div class="stat-mini accent" style="flex:1;min-width:130px;">
+                <div class="stat-mini-num" id="inq_unread">0</div>
+                <div class="stat-mini-label">未读</div>
+            </div>
+            <div class="stat-mini" style="flex:1;min-width:130px;border-color:#2ecc71;">
+                <div class="stat-mini-num" style="color:#2ecc71;" id="inq_today">0</div>
+                <div class="stat-mini-label">今日新增</div>
+            </div>
+            <div class="stat-mini" style="flex:1;min-width:130px;border-color:#f39c12;">
+                <div class="stat-mini-num" style="color:#f39c12;" id="inq_countries">0</div>
+                <div class="stat-mini-label">来源国家数</div>
+            </div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <button onclick="clearAllInquiries()" style="padding:8px 16px;background:transparent;border:1px solid #ddd;cursor:pointer;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;color:#888;transition:all 0.3s;" onmouseover="this.style.borderColor='#e63946';this.style.color='#e63946'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">
+                    <i class="fas fa-trash"></i> 清空所有
+                </button>
+                <button onclick="markAllRead()" style="padding:8px 16px;background:var(--primary);border:none;cursor:pointer;font-family:Oswald,sans-serif;font-size:12px;text-transform:uppercase;color:white;transition:all 0.3s;">
+                    <i class="fas fa-check-double"></i> 全部已读
+                </button>
+            </div>
+        </div>
+
+        <!-- 筛选栏 -->
+        <div style="background:white;padding:15px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <span style="font-family:Oswald,sans-serif;font-size:13px;text-transform:uppercase;color:#666;letter-spacing:1px;">筛选：</span>
+            <button class="inq-filter active" onclick="filterInquiries('all',this)">全部</button>
+            <button class="inq-filter" onclick="filterInquiries('unread',this)">未读</button>
+            <button class="inq-filter" onclick="filterInquiries('read',this)">已读</button>
+            <div style="margin-left:auto;display:flex;gap:0;">
+                <input type="text" id="inqSearch" placeholder="搜索姓名/邮箱/内容..." oninput="searchInquiries()" style="padding:7px 14px;border:1.5px solid #ddd;font-size:13px;width:240px;outline:none;border-right:none;">
+                <button style="padding:7px 14px;background:var(--primary);border:none;color:white;cursor:pointer;"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <!-- 询盘列表 -->
+        <div id="inquiryList"></div>
+
+    </div>
 </div>
 
 
@@ -925,8 +925,6 @@ function switchTab(tab, btn) {
     if (tab === 'analytics' && accessToken) loadAllData();
     if (tab === 'analytics' && !accessToken) { document.getElementById('loginSection').style.display='block'; document.getElementById('dashboardSection').style.display='none'; }
     if (tab === 'inquiries') { renderInquiries(); syncInquiriesFromGH(); }
-    if (tab === 'import') { }
-    if (tab === 'import') { document.getElementById('importStatus').style.display = 'none'; document.getElementById('previewCard').style.display = 'none'; }
 }
 
 
@@ -1320,6 +1318,84 @@ function replyWhatsApp(id) {
     window.open('https://wa.me/8619521228657?text=' + text, '_blank');
 }
 
+// ===== GitHub 产品存储 =====
+var GH_PRODUCTS_FILE = 'products.json';
+
+async function ghGetProducts() {
+    try {
+        var resp = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_PRODUCTS_FILE, {
+            headers: {
+                'Authorization': 'token ' + GH_TOKEN,
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        });
+        if (resp.status === 404) return { data: [], sha: null };
+        if (!resp.ok) return { data: [], sha: null };
+        var json = await resp.json();
+        if (!json.content) return { data: [], sha: null };
+        var decoded = atob(json.content.replace(/\n/g, ''));
+        var data = JSON.parse(decoded);
+        return { data: Array.isArray(data) ? data : [], sha: json.sha };
+    } catch(e) {
+        console.log('ghGetProducts error:', e.message);
+        return { data: [], sha: null };
+    }
+}
+
+async function ghSaveProducts(data, sha) {
+    var body = { 
+        message: 'Update products - ' + new Date().toLocaleString(),
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(data)))),
+        committer: { name: 'Carval Admin', email: 'admin@carvalautopart.com' }
+    };
+    if (sha) body.sha = sha;
+    try {
+        var resp = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_PRODUCTS_FILE, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'token ' + GH_TOKEN,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+        return resp.ok;
+    } catch(e) {
+        console.log('ghSaveProducts error:', e.message);
+        return false;
+    }
+}
+
+// 从 GitHub 加载产品到本地
+async function loadProductsFromGH() {
+    var result = await ghGetProducts();
+    if (result.data && result.data.length > 0) {
+        products = result.data;
+        localStorage.setItem('carval_products', JSON.stringify(products));
+        nextId = products.length > 0 ? Math.max.apply(null, products.map(function(p){ return p.id||0; })) + 1 : 1;
+        renderList(); generateCode(); updateStats();
+        showToast('✓ 已从 GitHub 同步 ' + products.length + ' 条产品！');
+    }
+}
+
+// 同步产品到 GitHub
+async function syncProductsToGH() {
+    if (products.length === 0) {
+        showToast('⚠ 没有产品可同步', '#e74c3c');
+        return;
+    }
+    var btn = document.getElementById('syncGhBtn');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 同步中...'; }
+    var result = await ghGetProducts();
+    var success = await ghSaveProducts(products, result.sha);
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> 同步到GitHub'; }
+    if (success) {
+        showToast('✓ 已同步 ' + products.length + ' 条产品到 GitHub！');
+    } else {
+        showToast('⚠ GitHub 同步失败，请重试', '#e74c3c');
+    }
+}
+
 // ===== 商品管理 =====
 let products = [], sessionAdded = 0, nextId = 1;
 try { const s = localStorage.getItem('carval_products'); if(s){ products = JSON.parse(s); nextId = products.length > 0 ? Math.max(...products.map(p=>p.id))+1 : 1; } } catch(e){}
@@ -1342,6 +1418,8 @@ function addProduct() {
     sessionAdded++;
     saveToStorage(); renderList(); generateCode(); updateStats(); resetForm();
     showToast('✓ 商品已添加成功！');
+    // 自动同步到 GitHub
+    syncProductsToGH();
 }
 
 function removeProduct(id) {
@@ -1350,6 +1428,56 @@ function removeProduct(id) {
     saveToStorage(); renderList(); generateCode(); updateStats();
     showToast('商品已删除', '#e67e22');
 }
+
+// ===== 商品编辑功能 =====
+function editProduct(id) {
+    var product = products.find(p => p.id === id);
+    if (!product) { showToast('⚠ 商品不存在', '#e74c3c'); return; }
+    
+    document.getElementById('editProductId').value = id;
+    document.getElementById('editName').value = product.name || '';
+    document.getElementById('editCategory').value = product.category || 'other';
+    document.getElementById('editOem').value = product.oem || '';
+    document.getElementById('editDesc').value = product.description || '';
+    document.getElementById('editImage').value = product.image || '';
+    
+    document.getElementById('editModal').classList.add('show');
+}
+
+function saveProductEdit() {
+    var id = parseInt(document.getElementById('editProductId').value);
+    var name = document.getElementById('editName').value.trim();
+    
+    if (!name) { showToast('⚠ 请填写商品名称', '#e74c3c'); return; }
+    
+    var index = products.findIndex(p => p.id === id);
+    if (index === -1) { showToast('⚠ 商品不存在', '#e74c3c'); return; }
+    
+    products[index].name = name;
+    products[index].category = document.getElementById('editCategory').value;
+    products[index].oem = document.getElementById('editOem').value.trim();
+    products[index].description = document.getElementById('editDesc').value.trim();
+    products[index].image = document.getElementById('editImage').value.trim();
+    
+    saveToStorage();
+    renderList();
+    generateCode();
+    updateStats();
+    closeEditModal();
+    showToast('✓ 商品已修改成功！');
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').classList.remove('show');
+}
+
+// 点击弹窗背景关闭
+document.addEventListener('click', function(e) {
+    var modal = document.getElementById('editModal');
+    if (e.target === modal) {
+        closeEditModal();
+    }
+});
 
 function renderList() {
     const el = document.getElementById('productList');
@@ -1362,6 +1490,7 @@ function renderList() {
                 <div class="pname">${p.name}</div>
                 <div class="pmeta"><span>${icons[p.category]||''} ${p.category}</span>${p.oem?`<span>OEM: ${p.oem}</span>`:''}</div>
             </div>
+            <button class="btn-edit" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
             <button class="btn btn-danger" onclick="removeProduct(${p.id})"><i class="fas fa-trash"></i></button>
         </div>`).join('');
 }
@@ -1696,6 +1825,9 @@ function importBatchResults() {
     document.getElementById('batchResultWrap').style.display = 'none';
     document.getElementById('batchExcelInput').value = '';
 
+    // 自动同步到 GitHub
+    syncProductsToGH();
+
     setTimeout(function() {
         switchTab('products', document.querySelector('.tab-btn'));
     }, 1200);
@@ -1888,6 +2020,10 @@ function importAiToProducts() {
     showToast('✓ 已导入 ' + newProds.length + ' 条产品！');
     aiProducts = [];
     renderAiList();
+    
+    // 自动同步到 GitHub
+    syncProductsToGH();
+    
     setTimeout(function() { switchTab('products', document.querySelector('.tab-btn')); }, 1200);
 }
 
@@ -2011,6 +2147,9 @@ function importPasteToProducts() {
     showToast('✓ 已导入 ' + newProducts.length + ' 条产品到商品管理！');
     pasteItems = [];
     renderPasteList();
+
+    // 自动同步到 GitHub
+    syncProductsToGH();
 
     setTimeout(function() {
         switchTab('products', document.querySelector('.tab-btn'));
@@ -2186,6 +2325,9 @@ function confirmImport() {
     document.getElementById('excelFileInput').value = '';
 
     showToast('✓ 成功导入 ' + newProducts.length + ' 条商品！');
+
+    // 自动同步到 GitHub
+    syncProductsToGH();
 
     // Switch to products tab
     setTimeout(function() {
