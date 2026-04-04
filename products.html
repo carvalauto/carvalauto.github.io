@@ -911,7 +911,7 @@
         <button class="modal-close" onclick="closeProductModal()">&times;</button>
         <div class="modal-inner">
             <div class="modal-images">
-                <img id="modalMainImg" class="modal-main-img" src="" alt="" onclick="openLightbox(0)">
+                <img loading="lazy" decoding="async" id="modalMainImg" class="modal-main-img" src="" alt="" onclick="openLightbox(0)">
                 <div class="modal-thumbs" id="modalThumbs"></div>
             </div>
             <div class="modal-info">
@@ -954,7 +954,7 @@
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <span class="lightbox-close">&times;</span>
     <span class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); prevLightboxImg()"><i class="fas fa-chevron-left"></i></span>
-    <img id="lightboxImg" src="" alt="">
+    <img loading="lazy" decoding="async" id="lightboxImg" src="" alt="">
     <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); nextLightboxImg()"><i class="fas fa-chevron-right"></i></span>
 </div>
 
@@ -1117,7 +1117,7 @@ function openProduct(id) {
         mainImg.src = carouselImages[0];
         mainImg.style.display = 'block';
         thumbsEl.innerHTML = carouselImages.map(function(img, i) {
-            return '<img class="modal-thumb' + (i === 0 ? ' active' : '') + '" src="' + img + '" onclick="switchImg(' + i + ')">';
+            return '<img loading="lazy" decoding="async" class="modal-thumb' + (i === 0 ? ' active' : '') + '" src="' + img + '" onclick="switchImg(' + i + ')">';
         }).join('');
     } else {
         mainImg.style.display = 'none';
