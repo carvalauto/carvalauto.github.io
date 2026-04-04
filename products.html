@@ -930,12 +930,16 @@
                     <div class="modal-form-row">
                         <div class="modal-form-group">
                             <label>Your Name</label>
-                            <input type="text" name="name" required placeholder="John Smith">
+                            <input type="text" id="modalName" name="name" required placeholder="John Smith">
                         </div>
                         <div class="modal-form-group">
                             <label>Your Email</label>
-                            <input type="email" name="email" required placeholder="john@example.com">
+                            <input type="email" id="modalEmail" name="email" required placeholder="john@example.com">
                         </div>
+                    </div>
+                    <div class="modal-form-group" style="margin-bottom:12px;">
+                        <label>Phone (Optional)</label>
+                        <input type="tel" id="modalPhone" name="phone" placeholder="+1 234 567 8900">
                     </div>
                     <div class="modal-form-group" style="margin-bottom:12px;">
                         <label>Message</label>
@@ -1202,7 +1206,6 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-
 // Modal form submit - 双通道提交：Formspree + GitHub
 document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -1214,12 +1217,14 @@ document.getElementById('modalContactForm').addEventListener('submit', async fun
         // 获取表单数据
         var formData = {
             id: Date.now(),
-            name: this.querySelector('[name="name"]').value,
-            email: this.querySelector('[name="email"]').value,
+            name: document.getElementById('modalName').value,
+            email: document.getElementById('modalEmail').value,
+            phone: document.getElementById('modalPhone').value || '',
             message: document.getElementById('modalMessage').value,
             product: document.getElementById('modalProductRef').value,
             oem: '',
             timestamp: Date.now(),
+            date: new Date().toISOString(),
             read: false,
             source: '产品询盘',
             device: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? '手机' : '电脑',
@@ -1230,8 +1235,7 @@ document.getElementById('modalContactForm').addEventListener('submit', async fun
                 if (ua.includes('Firefox')) return 'Firefox';
                 if (ua.includes('Edge')) return 'Edge';
                 return 'Other';
-            })(),
-            language: navigator.language || 'en'
+            })()
         };
         
         // 获取地理位置
@@ -1244,72 +1248,75 @@ document.getElementById('modalContactForm').addEventListener('submit', async fun
             formData.region = geoData.region || '';
             formData.ip = geoData.ip || '';
             formData.timezone = geoData.timezone || '';
-            formData.localTime = new Date().toLocaleString();
-            formData.utcTime = new Date().toUTCString();
         } catch(e) {
             formData.country = 'Unknown';
         }
         
-        // 并行执行：1) Formspree发邮件 2) 保存到GitHub
-        var formspreePromise = fetch('https://formspree.io/f/xyknoyzw', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({
-                name: formData.name,
-                email: formData.email,
-                message: formData.message,
-                product: formData.product,
-                _replyto: formData.email
-            })
-        });
+        // 双通道提交
+        var formspreeOk = false;
+        var githubOk = false;
         
-        // GitHub保存 - 从localStorage获取token
-        var ghToken = localStorage.getItem('gh_token') || '';
-        var githubPromise = Promise.resolve();
-        
-        if (ghToken) {
-            githubPromise = (async function() {
-                try {
-                    var getResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json', {
-                        headers: {
-                            'Authorization': 'token ' + ghToken,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    });
-                    if (!getResp.ok) throw new Error('Failed to get inquiries');
-                    var fileData = await getResp.json();
-                    var sha = fileData.sha;
-                    var existingData = JSON.parse(decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, '')))));
-                    existingData.push(formData);
-                    var updateResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json', {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': 'token ' + ghToken,
-                            'Accept': 'application/vnd.github.v3+json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            message: 'New inquiry from ' + formData.name,
-                            content: btoa(unescape(encodeURIComponent(JSON.stringify(existingData, null, 2)))),
-                            sha: sha
-                        })
-                    });
-                    if (!updateResp.ok) console.warn('GitHub save failed');
-                } catch(err) {
-                    console.warn('GitHub save error:', err);
-                }
-            })();
+        // 通道1: Formspree 发送邮件
+        try {
+            var resp1 = await fetch('https://formspree.io/f/xyknoyzw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            formspreeOk = resp1.ok;
+        } catch(e) {
+            console.error('Formspree error:', e);
         }
         
-        var [formspreeResp] = await Promise.all([formspreePromise, githubPromise]);
+        // 通道2: 保存到 GitHub
+        var ghToken = localStorage.getItem('gh_token');
+        if (ghToken) {
+            try {
+                // 获取现有数据
+                var getResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json', {
+                    headers: { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github.v3+json' }
+                });
+                var existingData = [];
+                var sha = null;
+                if (getResp.ok) {
+                    var getData = await getResp.json();
+                    sha = getData.sha;
+                    var content = decodeURIComponent(escape(atob(getData.content.replace(/\n/g, ''))));
+                    existingData = JSON.parse(content);
+                    if (!Array.isArray(existingData)) existingData = [];
+                }
+                
+                // 添加新询盘
+                existingData.push(formData);
+                
+                // 保存回 GitHub
+                var saveResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'token ' + ghToken,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'New inquiry from ' + formData.name,
+                        content: btoa(unescape(encodeURIComponent(JSON.stringify(existingData, null, 2)))),
+                        sha: sha
+                    })
+                });
+                githubOk = saveResp.ok;
+            } catch(e) {
+                console.error('GitHub save error:', e);
+            }
+        }
         
-        if (formspreeResp.ok) {
+        // 结果反馈
+        if (formspreeOk || githubOk) {
             btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
             btn.style.background = '#2ecc71';
             this.reset();
             setTimeout(closeProductModal, 1500);
         } else {
-            throw new Error('Send failed');
+            throw new Error('Both channels failed');
         }
     } catch(err) {
         console.error(err);
