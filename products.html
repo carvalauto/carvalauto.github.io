@@ -1202,27 +1202,71 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Modal form submit
+// Modal form submit - 保存到GitHub
 document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     var btn = this.querySelector('.modal-send-btn');
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
     btn.disabled = true;
+    
     try {
-        var resp = await fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
+        // 获取表单数据
+        var formData = {
+            id: Date.now(),
+            name: document.getElementById('modalName').value,
+            email: document.getElementById('modalEmail').value,
+            phone: document.getElementById('modalPhone').value || '',
+            message: document.getElementById('modalMessage').value,
+            product: document.getElementById('modalProductRef').value,
+            oem: '',
+            timestamp: Date.now(),
+            read: false,
+            source: '产品询盘',
+            device: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? '手机' : '电脑',
+            browser: (function() {
+                var ua = navigator.userAgent;
+                if (ua.includes('Chrome')) return 'Chrome';
+                if (ua.includes('Safari')) return 'Safari';
+                if (ua.includes('Firefox')) return 'Firefox';
+                if (ua.includes('Edge')) return 'Edge';
+                return 'Other';
+            })()
+        };
+        
+        // 获取地理位置
+        try {
+            var geoResp = await fetch('https://ipapi.co/json/');
+            var geoData = await geoResp.json();
+            formData.country = geoData.country_name || 'Unknown';
+            formData.countryCode = geoData.country_code || '';
+            formData.city = geoData.city || '';
+            formData.region = geoData.region || '';
+            formData.ip = geoData.ip || '';
+            formData.timezone = geoData.timezone || '';
+        } catch(e) {
+            formData.country = 'Unknown';
+        }
+        
+        // 使用 Formspree 发送
+        var resp = await fetch('https://formspree.io/f/xyknoyzw', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+        
         if (resp.ok) {
             btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
             btn.style.background = '#2ecc71';
             this.reset();
             setTimeout(closeProductModal, 1500);
         } else {
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-            btn.disabled = false;
-            alert('Error sending message. Please try again.');
+            throw new Error('Send failed');
         }
     } catch(err) {
+        console.error(err);
         btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
         btn.disabled = false;
+        alert('Error sending message. Please try again.');
     }
 });
 
