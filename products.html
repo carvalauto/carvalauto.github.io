@@ -24,7 +24,7 @@
         }
 
         /* 顶部头部 */
-        .top-header {
+        .top-header { padding: 8px 20px;
             display: flex; justify-content: space-between; align-items: center;
             padding: 10px 30px; background-color: var(--dark-color); color: white;
             border-bottom: 4px solid var(--accent-color); position: relative;
@@ -33,7 +33,7 @@
             display: flex; flex-direction: row; align-items: center; gap: 10px;
             position: absolute; left: 50%; transform: translateX(-50%);
         }
-        .header-logo-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; font-size: 26px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+        .header-logo-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
         .header-slogan { font-size: 14px; color: #ccc; font-style: italic; }
         .language-switch select {
             padding: 8px 18px; border: 2px solid var(--accent-color);
@@ -43,8 +43,8 @@
         }
 
         /* 导航栏 */
-        nav { background-color: var(--primary-color); padding: 12px 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .nav-links { display: flex; list-style: none; gap: 45px; }
+        nav { background-color: var(--primary-color); padding: 8px 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
         .nav-links a {
             color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             font-size: 15px; text-transform: uppercase; letter-spacing: 1px;
@@ -296,7 +296,7 @@
         .whatsapp { background-color: #25d366; }
 
         @media (max-width: 768px) {
-            .top-header { flex-direction: column; gap: 12px; padding: 10px; }
+            .top-header { padding: 8px 20px; flex-direction: column; gap: 12px; padding: 10px; }
             .header-brand { position: static; transform: none; }
             .nav-links { flex-direction: column; gap: 15px; }
             .filter-bar { flex-direction: column; align-items: flex-start; }
