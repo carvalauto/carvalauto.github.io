@@ -17,12 +17,27 @@
 
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoPartsStore","name":"Guangzhou Carval Auto Parts Co., Ltd.","url":"https://carvalautopart.com","description":"OEM quality auto parts supplier in Guangzhou, China.","foundingDate":"2008","address":{"@type":"PostalAddress","streetAddress":"No. 450, Huangshi East Road, Baiyun District","addressLocality":"Guangzhou","addressRegion":"Guangdong","addressCountry":"CN"},"contactPoint":{"@type":"ContactPoint","telephone":"+86-195-2122-8657","contactType":"customer service"}}</script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- 使用jsDelivr CDN加速 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <!-- 使用系统字体替代Google Fonts，加快加载 -->
+    <style>
+        /* 系统字体替代Google Fonts */
+        body, .hero-title, .section-title, .nav-link { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+    </style>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MR58CNED51"></script>
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MR58CNED51');</script>
+    <!-- Google Analytics - 延迟加载 -->
+    <script>
+    window.addEventListener('load', function() {
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-MR58CNED51';
+        document.head.appendChild(gtagScript);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MR58CNED51');
+    });
+    </script>
 
     <style>
     /* ===== RESET & BASE ===== */
@@ -40,8 +55,8 @@
         --text-main: #1A1A1A;
         --text-soft: #555F6D;
         --border:    #D4D8DE;
-        --font-head: 'Barlow Condensed', sans-serif;
-        --font-body: 'Barlow', sans-serif;
+        --font-head: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+        --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
         --shadow-sm: 0 2px 8px rgba(0,0,0,0.10);
         --shadow-md: 0 6px 24px rgba(0,0,0,0.14);
         --shadow-lg: 0 16px 48px rgba(0,0,0,0.18);
@@ -1187,15 +1202,15 @@
                 <div>
                     <div class="facility-heading" data-lang="facility_office">OUR OFFICE</div>
                     <div class="gallery-grid">
-                        <div class="gallery-cell"><img src="office1.jpg" alt="Office" data-lang="office1_alt"></div>
-                        <div class="gallery-cell"><img src="office2.jpg" alt="Office" data-lang="office2_alt"></div>
-                        <div class="gallery-cell"><img src="office3.jpg" alt="Office" data-lang="office3_alt"></div>
-                        <div class="gallery-cell"><img src="office4.jpg" alt="Office" data-lang="office4_alt"></div>
-                        <div class="gallery-cell"><img src="office5.jpg" alt="Office" data-lang="office5_alt"></div>
-                        <div class="gallery-cell"><img src="office6.jpg" alt="Office" data-lang="office6_alt"></div>
-                        <div class="gallery-cell"><img src="office7.jpg" alt="Office" data-lang="office7_alt"></div>
-                        <div class="gallery-cell"><img src="office8.jpg" alt="Office" data-lang="office8_alt"></div>
-                        <div class="gallery-cell"><img src="office9.jpg" alt="Office" data-lang="office9_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="office1.jpg" alt="Office" data-lang="office1_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="office2.jpg" alt="Office" data-lang="office2_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="office3.jpg" alt="Office" data-lang="office3_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="office4.jpg" alt="Office" data-lang="office4_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="office5.jpg" alt="Office" data-lang="office5_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="office6.jpg" alt="Office" data-lang="office6_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="office7.jpg" alt="Office" data-lang="office7_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="office8.jpg" alt="Office" data-lang="office8_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="office9.jpg" alt="Office" data-lang="office9_alt"></div>
                     </div>
                 </div>
             </div>
@@ -1215,15 +1230,15 @@
         <div class="facility-block">
             <div class="facility-heading" data-lang="facility_repair">OUR REPAIR SHOP</div>
             <div class="gallery-grid">
-                <div class="gallery-cell"><img src="repair1.jpg" alt="Repair Shop" data-lang="repair1_alt"></div>
-                <div class="gallery-cell"><img src="repair2.jpg" alt="Repair Shop" data-lang="repair2_alt"></div>
-                <div class="gallery-cell"><img src="repair3.jpg" alt="Repair Shop" data-lang="repair3_alt"></div>
-                <div class="gallery-cell"><img src="repair4.jpg" alt="Repair Shop" data-lang="repair4_alt"></div>
-                <div class="gallery-cell"><img src="repair5.jpg" alt="Repair Shop" data-lang="repair5_alt"></div>
-                <div class="gallery-cell"><img src="repair6.jpg" alt="Repair Shop" data-lang="repair6_alt"></div>
-                <div class="gallery-cell"><img src="repair7.jpg" alt="Repair Shop" data-lang="repair7_alt"></div>
-                <div class="gallery-cell"><img src="repair8.jpg" alt="Repair Shop" data-lang="repair8_alt"></div>
-                <div class="gallery-cell"><img src="repair9.jpg" alt="Repair Shop" data-lang="repair9_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="repair1.jpg" alt="Repair Shop" data-lang="repair1_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="repair2.jpg" alt="Repair Shop" data-lang="repair2_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="repair3.jpg" alt="Repair Shop" data-lang="repair3_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="repair4.jpg" alt="Repair Shop" data-lang="repair4_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="repair5.jpg" alt="Repair Shop" data-lang="repair5_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="repair6.jpg" alt="Repair Shop" data-lang="repair6_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="repair7.jpg" alt="Repair Shop" data-lang="repair7_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="repair8.jpg" alt="Repair Shop" data-lang="repair8_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="repair9.jpg" alt="Repair Shop" data-lang="repair9_alt"></div>
             </div>
         </div>
 
@@ -1231,15 +1246,15 @@
         <div class="facility-block">
             <div class="facility-heading" data-lang="facility_factory">OUR FACTORY</div>
             <div class="gallery-grid">
-                <div class="gallery-cell"><img src="factory1.jpg" alt="Factory" data-lang="factory1_alt"></div>
-                <div class="gallery-cell"><img src="factory2.jpg" alt="Factory" data-lang="factory2_alt"></div>
-                <div class="gallery-cell"><img src="factory3.jpg" alt="Factory" data-lang="factory3_alt"></div>
-                <div class="gallery-cell"><img src="factory4.jpg" alt="Factory" data-lang="factory4_alt"></div>
-                <div class="gallery-cell"><img src="factory5.jpg" alt="Factory" data-lang="factory5_alt"></div>
-                <div class="gallery-cell"><img src="factory6.jpg" alt="Factory" data-lang="factory6_alt"></div>
-                <div class="gallery-cell"><img src="factory7.jpg" alt="Factory" data-lang="factory7_alt"></div>
-                <div class="gallery-cell"><img src="factory8.jpg" alt="Factory" data-lang="factory8_alt"></div>
-                <div class="gallery-cell"><img src="factory9.jpg" alt="Factory" data-lang="factory9_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="factory1.jpg" alt="Factory" data-lang="factory1_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="factory2.jpg" alt="Factory" data-lang="factory2_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="factory3.jpg" alt="Factory" data-lang="factory3_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="factory4.jpg" alt="Factory" data-lang="factory4_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="factory5.jpg" alt="Factory" data-lang="factory5_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="factory6.jpg" alt="Factory" data-lang="factory6_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="factory7.jpg" alt="Factory" data-lang="factory7_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="factory8.jpg" alt="Factory" data-lang="factory8_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="factory9.jpg" alt="Factory" data-lang="factory9_alt"></div>
             </div>
         </div>
     </div>
