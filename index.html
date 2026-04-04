@@ -20,9 +20,8 @@
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
-    <!-- 关键CSS内联 - 加速首屏渲染 -->
+    <!-- 关键CSS内联 -->
     <style>
-        /* ===== 关键首屏CSS ===== */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
@@ -51,7 +50,7 @@
             overflow-x: hidden;
         }
 
-        /* ===== 极简导航栏 ===== */
+        /* ===== 导航栏 ===== */
         .topbar {
             background: var(--steel);
             border-bottom: 2px solid var(--red);
@@ -495,7 +494,7 @@
             margin-top: 6px;
         }
 
-        /* ===== 图片骨架屏 & 懒加载优化 ===== */
+        /* ===== 图片骨架屏 ===== */
         .img-skeleton {
             background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
             background-size: 200% 100%;
@@ -505,6 +504,8 @@
             justify-content: center;
             color: #ccc;
             font-size: 32px;
+            position: absolute;
+            inset: 0;
         }
         @keyframes shimmer {
             0% { background-position: -200% 0; }
@@ -612,6 +613,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
         .product-img-wrap img {
             width: 100%; height: 100%;
@@ -1010,7 +1012,7 @@
 <header class="topbar" id="home">
     <div class="topbar-left">
         <a href="#home" class="brand">
-            <img src="carval-auto-logo.png" alt="Carval Logo" class="brand-logo" onload="this.classList.add('loaded')" onerror="this.style.display='none'">
+            <img data-img="carval-auto-logo.png" alt="Carval Logo" class="brand-logo">
             <div class="brand-text" data-lang="header_logo">CARVAL <span>AUTO</span></div>
         </a>
         <nav class="desktop-nav">
@@ -1131,15 +1133,15 @@
                 <div>
                     <div class="facility-heading" data-lang="facility_office">OUR OFFICE</div>
                     <div class="gallery-grid">
-                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="office1.jpg" alt="Office" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="office2.jpg" alt="Office" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="office3.jpg" alt="Office" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="office4.jpg" alt="Office" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="office5.jpg" alt="Office" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="office6.jpg" alt="Office" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="office7.jpg" alt="Office" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="office8.jpg" alt="Office" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="office9.jpg" alt="Office" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
+                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="office1.jpg" alt="Office" loading="lazy"></div>
+                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="office2.jpg" alt="Office" loading="lazy"></div>
+                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="office3.jpg" alt="Office" loading="lazy"></div>
+                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="office4.jpg" alt="Office" loading="lazy"></div>
+                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="office5.jpg" alt="Office" loading="lazy"></div>
+                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="office6.jpg" alt="Office" loading="lazy"></div>
+                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="office7.jpg" alt="Office" loading="lazy"></div>
+                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="office8.jpg" alt="Office" loading="lazy"></div>
+                        <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="office9.jpg" alt="Office" loading="lazy"></div>
                     </div>
                 </div>
             </div>
@@ -1153,37 +1155,38 @@
         <div class="sec-head">
             <div class="sec-label">Our Facilities</div>
             <h2 class="sec-title">Workshop & <span>Factory</span></h2>
+            <p class="sec-sub">Take a look at our repair shops and parts storage facilities.</p>
         </div>
 
-        <!-- Repair Shop -->
+        <!-- REPAIR SHOP -->
         <div class="facility-block">
             <div class="facility-heading" data-lang="facility_repair">OUR REPAIR SHOP</div>
             <div class="gallery-grid">
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="repair1.jpg" alt="Repair Shop" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="repair2.jpg" alt="Repair Shop" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="repair3.jpg" alt="Repair Shop" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="repair4.jpg" alt="Repair Shop" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="repair5.jpg" alt="Repair Shop" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="repair6.jpg" alt="Repair Shop" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="repair7.jpg" alt="Repair Shop" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="repair8.jpg" alt="Repair Shop" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="repair9.jpg" alt="Repair Shop" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="repair1.jpg" alt="Repair Shop" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="repair2.jpg" alt="Repair Shop" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="repair3.jpg" alt="Repair Shop" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="repair4.jpg" alt="Repair Shop" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="repair5.jpg" alt="Repair Shop" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="repair6.jpg" alt="Repair Shop" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="repair7.jpg" alt="Repair Shop" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="repair8.jpg" alt="Repair Shop" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="repair9.jpg" alt="Repair Shop" loading="lazy"></div>
             </div>
         </div>
 
-        <!-- Factory -->
+        <!-- FACTORY -->
         <div class="facility-block">
             <div class="facility-heading" data-lang="facility_factory">OUR FACTORY</div>
             <div class="gallery-grid">
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="factory1.jpg" alt="Factory" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="factory2.jpg" alt="Factory" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="factory3.jpg" alt="Factory" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="factory4.jpg" alt="Factory" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="factory5.jpg" alt="Factory" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="factory6.jpg" alt="Factory" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="factory7.jpg" alt="Factory" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="factory8.jpg" alt="Factory" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img loading="lazy" src="factory9.jpg" alt="Factory" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="factory1.jpg" alt="Factory" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="factory2.jpg" alt="Factory" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="factory3.jpg" alt="Factory" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="factory4.jpg" alt="Factory" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="factory5.jpg" alt="Factory" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="factory6.jpg" alt="Factory" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="factory7.jpg" alt="Factory" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="factory8.jpg" alt="Factory" loading="lazy"></div>
+                <div class="gallery-cell"><div class="img-skeleton"><i class="fas fa-image"></i></div><img data-img="factory9.jpg" alt="Factory" loading="lazy"></div>
             </div>
         </div>
     </div>
@@ -1193,68 +1196,73 @@
 <section id="products" class="products-section">
     <div class="section-wrap">
         <div class="sec-head">
-            <div class="sec-label" style="color:#FF7070;">Our Products</div>
-            <h2 class="sec-title light" data-lang="product_title">Our Product <span>Range</span></h2>
+            <div class="sec-label light">Our Products</div>
+            <h2 class="sec-title light">Our Product <span>Range</span></h2>
             <p class="sec-sub light">OEM quality parts for all major vehicle brands worldwide</p>
         </div>
         <div class="products-grid">
+            <!-- Japanese -->
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <div class="img-skeleton" style="position:absolute;inset:0;"><i class="fas fa-car"></i></div>
-                    <img loading="lazy" src="japanese-cars.jpg" alt="Japanese Car Parts" class="product-img" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+                    <div class="img-skeleton"><i class="fas fa-car"></i></div>
+                    <img data-img="japanese-cars.jpg" alt="Japanese Car Parts" class="product-img">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Japanese</div>
-                    <div class="product-name" data-lang="product_japanese">Japanese Car Parts</div>
-                    <div class="product-desc" data-lang="product_japanese_desc">Complete range of OEM quality parts for Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu and Daihatsu.</div>
+                    <div class="product-name">Japanese Car Parts</div>
+                    <div class="product-desc">Complete range of OEM quality parts for Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu and Daihatsu.</div>
                     <a href="products.html?cat=japanese" class="product-btn"><i class="fas fa-arrow-right"></i> Inquire Now</a>
                 </div>
             </div>
+            <!-- German -->
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <div class="img-skeleton" style="position:absolute;inset:0;"><i class="fas fa-car"></i></div>
-                    <img loading="lazy" src="german-cars.jpg" alt="German Car Parts" class="product-img" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+                    <div class="img-skeleton"><i class="fas fa-car"></i></div>
+                    <img data-img="german-cars.jpg" alt="German Car Parts" class="product-img">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">German</div>
-                    <div class="product-name" data-lang="product_german">German Car Parts</div>
-                    <div class="product-desc" data-lang="product_german_desc">Premium parts for BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda and Seat.</div>
+                    <div class="product-name">German Car Parts</div>
+                    <div class="product-desc">Premium parts for BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda and Seat.</div>
                     <a href="products.html?cat=german" class="product-btn"><i class="fas fa-arrow-right"></i> Inquire Now</a>
                 </div>
             </div>
+            <!-- Korean -->
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <div class="img-skeleton" style="position:absolute;inset:0;"><i class="fas fa-car"></i></div>
-                    <img loading="lazy" src="korean-cars.jpg" alt="Korean Car Parts" class="product-img" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+                    <div class="img-skeleton"><i class="fas fa-car"></i></div>
+                    <img data-img="korean-cars.jpg" alt="Korean Car Parts" class="product-img">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Korean</div>
-                    <div class="product-name" data-lang="product_korean">Korean Car Parts</div>
-                    <div class="product-desc" data-lang="product_korean_desc">Comprehensive parts for Hyundai, Kia, SsangYong and Genesis vehicles.</div>
+                    <div class="product-name">Korean Car Parts</div>
+                    <div class="product-desc">Comprehensive parts for Hyundai, Kia, SsangYong and Genesis vehicles.</div>
                     <a href="products.html?cat=korean" class="product-btn"><i class="fas fa-arrow-right"></i> Inquire Now</a>
                 </div>
             </div>
+            <!-- Chinese -->
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <div class="img-skeleton" style="position:absolute;inset:0;"><i class="fas fa-car"></i></div>
-                    <img loading="lazy" src="chinese-cars.jpg" alt="Chinese Car Parts" class="product-img" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+                    <div class="img-skeleton"><i class="fas fa-car"></i></div>
+                    <img data-img="chinese-cars.jpg" alt="Chinese Car Parts" class="product-img">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Chinese</div>
-                    <div class="product-name" data-lang="product_chinese">Chinese Car Parts</div>
-                    <div class="product-desc" data-lang="product_chinese_desc">High-quality parts for Baojun, Wuling, Geely and other Chinese brands.</div>
+                    <div class="product-name">Chinese Car Parts</div>
+                    <div class="product-desc">High-quality parts for Baojun, Wuling, Geely and other Chinese brands.</div>
                     <a href="products.html?cat=chinese" class="product-btn"><i class="fas fa-arrow-right"></i> Inquire Now</a>
                 </div>
             </div>
+            <!-- Engine Oil -->
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <div class="img-skeleton" style="position:absolute;inset:0;"><i class="fas fa-oil-can"></i></div>
-                    <img loading="lazy" src="engine-oil.jpg" alt="Engine Oil" class="product-img" onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+                    <div class="img-skeleton"><i class="fas fa-oil-can"></i></div>
+                    <img data-img="engine-oil.jpg" alt="Engine Oil" class="product-img">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Engine Oil</div>
-                    <div class="product-name" data-lang="product_oil">Engine Oil</div>
-                    <div class="product-desc" data-lang="product_oil_desc">Full range of mineral, semi-synthetic and fully synthetic engine oils in all viscosity grades.</div>
+                    <div class="product-name">Engine Oil</div>
+                    <div class="product-desc">Full range of mineral, semi-synthetic and fully synthetic engine oils in all viscosity grades.</div>
                     <a href="products.html?cat=oil" class="product-btn"><i class="fas fa-arrow-right"></i> Inquire Now</a>
                 </div>
             </div>
@@ -1271,7 +1279,7 @@
             <div class="info-item-sub">All parts verified by real-vehicle tests</div>
         </div>
         <div class="info-item">
-            <i class="fas fa-shipping-fast"></i>
+            <i class="fas fa-globe"></i>
             <div class="info-item-title">Global Shipping</div>
             <div class="info-item-sub">Worldwide delivery available</div>
         </div>
@@ -1281,7 +1289,7 @@
             <div class="info-item-sub">Full service in Guangzhou & Foshan</div>
         </div>
         <div class="info-item">
-            <i class="fas fa-headset"></i>
+            <i class="fas fa-users"></i>
             <div class="info-item-title">Expert Support</div>
             <div class="info-item-sub">80+ professional team members</div>
         </div>
@@ -1292,66 +1300,69 @@
 <section id="contact" class="contact-section">
     <div class="section-wrap">
         <div class="sec-head">
-            <div class="sec-label">Get In Touch</div>
-            <h2 class="sec-title" data-lang="contact_title">Send Us a <span>Message</span></h2>
+            <div class="sec-label">Get in Touch</div>
+            <h2 class="sec-title">Contact <span>Us</span></h2>
+            <p class="sec-sub">Feel free to reach out for inquiries, quotes, or partnership opportunities.</p>
         </div>
         <div class="contact-grid">
             <div class="contact-form-wrap">
+                <div class="form-title">Send Us a Message</div>
                 <form id="contactForm" action="https://formspree.io/f/xyknoyzw" method="POST">
                     <div class="field-group">
-                        <label data-lang="form_name">Your Name</label>
-                        <input type="text" id="name" name="name" required>
+                        <label>Your Name</label>
+                        <input type="text" name="name" required placeholder="John Smith">
                     </div>
                     <div class="field-group">
-                        <label data-lang="form_email">Your Email</label>
-                        <input type="email" id="email" name="email" required>
+                        <label>Your Email</label>
+                        <input type="email" name="email" required placeholder="john@example.com">
                     </div>
                     <div class="field-group">
-                        <label data-lang="form_message">Message (include OEM number if available)</label>
-                        <textarea id="message" name="message" required></textarea>
+                        <label>Phone / WhatsApp</label>
+                        <input type="tel" name="phone" placeholder="+1 234 567 8900">
                     </div>
-                    <button type="submit" class="submit-btn" data-lang="form_submit">
-                        <i class="fas fa-paper-plane"></i> Send Message
-                    </button>
+                    <div class="field-group">
+                        <label>Message</label>
+                        <textarea name="message" required placeholder="Please describe your inquiry..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Send Message</button>
                 </form>
             </div>
             <div class="contact-info-wrap">
-                <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3689.220426912191!2d113.2704!3d23.1645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3402f85d0d5d5d5d%3A0x0!2sNo.%20450%2C%20Huangshi%20East%20Road%2C%20Baiyun%20District%2C%20Guangzhou%2C%20Guangdong!5e0!3m2!1sen!2sus!4v1710898765432!5m2!1sen!2sus" loading="lazy" allowfullscreen></iframe>
+                <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3688.123456789!2d113.26!3d23.18!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDEwJzQ4LjAiTiAxMTPCsDE1JzM2LjAiRQ!5e0!3m2!1sen!2s!4v1234567890" allowfullscreen="" loading="lazy"></iframe>
                 <div class="contact-items">
                     <div class="contact-item">
                         <div class="contact-item-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="contact-item-body">
-                            <div class="contact-item-label" data-lang="contact_address">Address</div>
-                            <div class="contact-item-val" data-lang="contact_address_value">No. 450, Huangshi East Road, Baiyun District, Guangzhou City, Guangdong Province</div>
+                        <div>
+                            <div class="contact-item-label">Address</div>
+                            <div class="contact-item-val">No. 450, Huangshi East Road, Baiyun District, Guangzhou City, Guangdong Province</div>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <div class="contact-item-icon"><i class="fas fa-phone"></i></div>
-                        <div class="contact-item-body">
-                            <div class="contact-item-label" data-lang="contact_phone">Phone</div>
-                            <div class="contact-item-val" data-lang="contact_phone_value">+86 195 2122 8657</div>
+                        <div class="contact-item-icon"><i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <div class="contact-item-label">Phone</div>
+                            <div class="contact-item-val">+86 195 2122 8657</div>
                         </div>
                     </div>
                     <div class="contact-item">
                         <div class="contact-item-icon"><i class="fab fa-whatsapp"></i></div>
-                        <div class="contact-item-body">
-                            <div class="contact-item-label" data-lang="contact_whatsapp">WhatsApp</div>
-                            <div class="contact-item-val" data-lang="contact_whatsapp_value">+86 195 2122 8657</div>
+                        <div>
+                            <div class="contact-item-label">WhatsApp</div>
+                            <div class="contact-item-val">+86 195 2122 8657</div>
                         </div>
                     </div>
                     <div class="contact-item">
                         <div class="contact-item-icon"><i class="fas fa-clock"></i></div>
-                        <div class="contact-item-body">
-                            <div class="contact-item-label" data-lang="contact_hours">Working Hours</div>
-                            <div class="contact-item-val" data-lang="contact_hours_1">Monday - Saturday: 10:00 AM - 6:00 PM (GMT+8)</div>
-                            <div class="contact-item-val" data-lang="contact_hours_2">Sunday & Public Holidays: Closed</div>
+                        <div>
+                            <div class="contact-item-label">Working Hours</div>
+                            <div class="contact-item-val">Monday - Saturday: 10:00 AM - 6:00 PM (GMT+8)<br>Sunday & Public Holidays: Closed</div>
                         </div>
                     </div>
                     <div class="contact-item">
                         <div class="contact-item-icon"><i class="fas fa-envelope"></i></div>
-                        <div class="contact-item-body">
-                            <div class="contact-item-label" data-lang="contact_email">Email</div>
-                            <div class="contact-item-val" data-lang="contact_email_value">carvalxie@foxmail.com</div>
+                        <div>
+                            <div class="contact-item-label">Email</div>
+                            <div class="contact-item-val">carvalxie@foxmail.com</div>
                         </div>
                     </div>
                 </div>
@@ -1362,176 +1373,195 @@
 
 <!-- ===== FOOTER ===== -->
 <footer>
-    <div class="footer-brand" data-lang="header_logo">CARVAL <span>AUTO</span></div>
-    <div class="footer-tagline" data-lang="footer_slogan">Given your car a second life</div>
+    <div class="footer-brand">CARVAL <span>AUTO</span></div>
+    <div class="footer-tagline">Given your car a second life</div>
     <div class="footer-divider"></div>
-    <div class="footer-copy" data-lang="footer_copyright">&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.</div>
-    <div class="footer-prof" data-lang="footer_prof">Professional Auto Parts Manufacturer &amp; Global Supplier</div>
+    <div class="footer-copy">&copy; 2026 Guangzhou Carval Auto Parts Co., Ltd. All Rights Reserved.</div>
+    <div class="footer-prof">Professional Auto Parts Supplier in Guangzhou, China</div>
 </footer>
 
-<!-- Social float -->
+<!-- Social Float -->
 <div class="social-float">
-    <a href="https://www.facebook.com/share/18W9wuCPT4/?mibextid=wwXIfr" class="social-btn fb" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://www.instagram.com/carval_auto?igsh=MXd0Nm1wenJyZm96ag%3D%3D&utm_source=qr" class="social-btn ig" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-    <a href="https://wa.me/8619521228657" class="social-btn wa" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://www.facebook.com/share/18W9wuCPT4/" class="social-btn fb" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/carval_auto" class="social-btn ig" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/8619521228657" class="social-btn wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
 </div>
 
+<!-- ===== JavaScript ===== -->
 <script>
-// ===== Navigation Functions =====
+// ===== 图片多源加载策略 (国内友好) =====
+(function() {
+    // 图片源列表 - 按优先级排序 (国内优化)
+    var IMG_SOURCES = [
+        'https://testingcf.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/',  // Cloudflare (国内友好)
+        'https://fastly.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/',     // Fastly CDN
+        'https://jsdelivr.pai233.top/gh/carvalauto/carvalauto.github.io@main/',     // 国内镜像
+        'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/',        // jsDelivr 主站
+        ''  // 相对路径（最后备选，通过当前域名加载）
+    ];
+    
+    var currentSourceIndex = 0;
+    var maxSourceIndex = IMG_SOURCES.length - 1;
+    var sourceTested = {};
+    
+    // 加载单个图片
+    function loadImage(img) {
+        var filename = img.getAttribute('data-img');
+        if (!filename) return;
+        
+        var skeleton = img.previousElementSibling;
+        var triedCount = 0;
+        
+        function tryLoad(sourceIndex) {
+            if (sourceIndex > maxSourceIndex) {
+                // 所有源都失败了，隐藏骨架屏
+                if (skeleton) {
+                    skeleton.innerHTML = '<i class="fas fa-image" style="color:#ccc;"></i>';
+                }
+                return;
+            }
+            
+            var baseUrl = IMG_SOURCES[sourceIndex];
+            var url = baseUrl + filename;
+            
+            // 跳过已测试失败的源
+            if (sourceTested[baseUrl] === false) {
+                tryLoad(sourceIndex + 1);
+                return;
+            }
+            
+            var testImg = new Image();
+            
+            testImg.onload = function() {
+                img.src = url;
+                img.classList.add('loaded');
+                if (skeleton) skeleton.style.display = 'none';
+                // 记录成功的源
+                currentSourceIndex = sourceIndex;
+            };
+            
+            testImg.onerror = function() {
+                sourceTested[baseUrl] = false;
+                tryLoad(sourceIndex + 1);
+            };
+            
+            testImg.src = url;
+        }
+        
+        // 优先尝试当前成功的源
+        if (currentSourceIndex > 0 && sourceTested[IMG_SOURCES[currentSourceIndex]] !== false) {
+            tryLoad(currentSourceIndex);
+        } else {
+            tryLoad(0);
+        }
+    }
+    
+    // 批量加载所有图片
+    function loadAllImages() {
+        var images = document.querySelectorAll('img[data-img]');
+        images.forEach(function(img) {
+            loadImage(img);
+        });
+    }
+    
+    // 初始化
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadAllImages);
+    } else {
+        loadAllImages();
+    }
+})();
+
+// ===== Navigation =====
 function toggleNav() {
-    document.getElementById('mainNav').classList.toggle('open');
+    document.getElementById('mobileNav').classList.toggle('open');
     document.getElementById('navOverlay').classList.toggle('show');
     document.getElementById('hamburgerBtn').classList.toggle('open');
 }
-
 function closeNav() {
-    document.getElementById('mainNav').classList.remove('open');
+    document.getElementById('mobileNav').classList.remove('open');
     document.getElementById('navOverlay').classList.remove('show');
     document.getElementById('hamburgerBtn').classList.remove('open');
 }
 
-// ===== Language Switcher =====
-const translations = {
+// ===== Language =====
+var translations = {
     en: {
-        header_logo: "CARVAL AUTO",
-        header_slogan: "Given your car a second life",
-        nav_home: "Home",
-        nav_company: "Company",
-        nav_products: "Products",
-        nav_contact: "Contact",
-        company_name: "Guangzhou <span>Carval</span> Auto Parts Co., Ltd.",
-        company_intro: `<p>Guangzhou Carval Auto Parts Co., Ltd. was founded in 2008. After years of development, we have become a trusted one-stop automotive service provider in Guangzhou and Foshan.</p><p>We own 6 repair shops, 2 offices and 5 spare parts stores, supported by a professional team of over 80 members. We provide 100% original quality auto parts and full-range services including vehicle repair, maintenance and fault diagnosis.</p><p>All our parts strictly follow OEM standards and are verified by real-vehicle tests. Starting with Japanese, Korean, German models, we now also serve Baojun, Wuling, Geely and other mainstream Chinese brands.</p><p>With the philosophy of "Ingenious Service, Quality First", we are committed to becoming a leading benchmark in the regional automotive service industry.</p>`,
-        facility_office: "OUR OFFICE",
-        facility_repair: "OUR REPAIR SHOP",
-        facility_factory: "OUR FACTORY",
-        product_title: "Our Product Range",
-        product_japanese: "Japanese Car Parts",
-        product_japanese_desc: "Complete range of OEM quality parts for Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu and Daihatsu.",
-        product_german: "German Car Parts",
-        product_german_desc: "Premium parts for BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda and Seat.",
-        product_korean: "Korean Car Parts",
-        product_korean_desc: "Comprehensive parts for Hyundai, Kia, SsangYong and Genesis vehicles.",
-        product_chinese: "Chinese Car Parts",
-        product_chinese_desc: "High-quality parts for Baojun, Wuling, Geely and other Chinese brands.",
-        product_oil: "Engine Oil",
-        product_oil_desc: "Full range of mineral, semi-synthetic and fully synthetic engine oils in all viscosity grades.",
-        contact_title: "Send Us a Message",
-        form_name: "Your Name",
-        form_email: "Your Email",
-        form_message: "Message (include OEM number if available)",
-        form_submit: "Send Message",
-        contact_address: "Address",
-        contact_address_value: "No. 450, Huangshi East Road, Baiyun District, Guangzhou City, Guangdong Province",
-        contact_phone: "Phone",
-        contact_phone_value: "+86 195 2122 8657",
-        contact_whatsapp: "WhatsApp",
-        contact_whatsapp_value: "+86 195 2122 8657",
-        contact_hours: "Working Hours",
-        contact_hours_1: "Monday - Saturday: 10:00 AM - 6:00 PM (GMT+8)",
-        contact_hours_2: "Sunday & Public Holidays: Closed",
-        contact_email: "Email",
-        contact_email_value: "carvalxie@foxmail.com",
-        footer_slogan: "Given your car a second life",
-        footer_copyright: "&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.",
-        footer_prof: "Professional Auto Parts Manufacturer &amp; Global Supplier"
+        nav_home: 'Home', nav_company: 'Company', nav_products: 'Products', nav_contact: 'Contact',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: 'Given your car a second life',
+        company_name: 'Guangzhou <span>Carval</span> Auto Parts Co., Ltd.',
+        company_intro: '<p>Guangzhou Carval Auto Parts Co., Ltd. was founded in 2008. After years of development, we have become a trusted one-stop automotive service provider in Guangzhou and Foshan.</p><p>We own 6 repair shops, 2 offices and 5 spare parts stores, supported by a professional team of over 80 members. We provide 100% original quality auto parts and full-range services including vehicle repair, maintenance and fault diagnosis.</p><p>All our parts strictly follow OEM standards and are verified by real-vehicle tests. Starting with Japanese, Korean, German models, we now also serve Baojun, Wuling, Geely and other mainstream Chinese brands.</p><p>With the philosophy of "Ingenious Service, Quality First", we are committed to becoming a leading benchmark in the regional automotive service industry.</p>',
+        facility_office: 'OUR OFFICE', facility_repair: 'OUR REPAIR SHOP', facility_factory: 'OUR FACTORY'
     },
     zh: {
-        header_logo: "卡沃尔汽配",
-        header_slogan: "给您的爱车第二次生命",
-        nav_home: "首页",
-        nav_company: "关于我们",
-        nav_products: "产品中心",
-        nav_contact: "联系我们",
-        company_name: "广州 <span>卡沃尔</span> 汽车配件有限公司",
-        company_intro: `<p>广州卡沃尔汽车配件有限公司成立于2008年，经过多年发展，已成为广州及佛山地区值得信赖的一站式汽车服务提供商。</p><p>公司拥有6家维修店、2间办公室及5家汽配门店，并由超过80名专业团队成员提供支持。我们提供100%原厂品质汽配零件，以及包括车辆维修、保养和故障诊断在内的全方位服务。</p><p>所有配件严格遵循OEM标准，并经过实车测试验证。从日系、韩系、德系车型起步，现已扩展服务至宝骏、五菱、吉利等主流国产品牌。</p><p>秉承"匠心服务、品质至上"的理念，我们致力于成为区域汽车服务行业的领先标杆企业。</p>`,
-        facility_office: "我们的办公区",
-        facility_repair: "我们的维修车间",
-        facility_factory: "我们的工厂",
-        product_title: "我们的产品系列",
-        product_japanese: "日系车配件",
-        product_japanese_desc: "全系列原厂及配套汽车配件，适用于丰田、本田、日产、三菱、铃木、马自达、斯巴鲁、五十铃、大发等主流日系车型。",
-        product_german: "德系车配件",
-        product_german_desc: "高品质德系豪华及商用车配件，适用于宝马、奔驰、大众、奥迪、保时捷、欧宝、斯柯达、西雅特等车型。",
-        product_korean: "韩系车配件",
-        product_korean_desc: "全面的韩系车配件解决方案，适用于现代、起亚、双龙、捷尼赛思等品牌车型。",
-        product_chinese: "国产车配件",
-        product_chinese_desc: "专业提供宝骏、五菱等中国主流商用及乘用车品牌的高品质汽车配件。",
-        product_oil: "发动机机油",
-        product_oil_desc: "全系列优质发动机机油，满足各类车辆需求，包括矿物油、半合成油及全合成油。",
-        contact_title: "给我们留言",
-        form_name: "您的姓名",
-        form_email: "您的邮箱",
-        form_message: "请在留言中注明OEM编号（如有）",
-        form_submit: "发送留言",
-        contact_address: "地址",
-        contact_address_value: "广东省广州市白云区黄石东路450号",
-        contact_phone: "电话",
-        contact_phone_value: "+86 195 2122 8657",
-        contact_whatsapp: "微信/WhatsApp",
-        contact_whatsapp_value: "+86 195 2122 8657",
-        contact_hours: "工作时间",
-        contact_hours_1: "周一至周六：上午10:00 - 下午6:00（GMT+8）",
-        contact_hours_2: "周日及公共假日：休息",
-        contact_email: "电子邮件",
-        contact_email_value: "carvalxie@foxmail.com",
-        footer_slogan: "给您的爱车第二次生命",
-        footer_copyright: "&copy; 2026 广州卡沃尔汽车配件有限公司 版权所有",
-        footer_prof: "专业汽车配件制造商及全球供应商"
+        nav_home: '首页', nav_company: '公司介绍', nav_products: '产品目录', nav_contact: '联系我们',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: '让您的爱车重获新生',
+        company_name: '广州<span>卡瓦尔</span>汽车配件有限公司',
+        company_intro: '<p>广州卡瓦尔汽车配件有限公司成立于2008年。经过多年的发展，我们已成为广州和佛山地区值得信赖的一站式汽车服务提供商。</p><p>我们拥有6家维修店、2个办事处和5家配件店，由80多名专业人员组成的团队提供支持。我们提供100%原装质量的汽车配件，以及包括车辆维修、保养和故障诊断在内的全方位服务。</p><p>我们所有配件严格遵循OEM标准，并通过实车测试验证。从日系、韩系、德系车型开始，我们现在也服务于宝骏、五菱、吉利等主流中国品牌。</p><p>秉承"精工服务，品质第一"的理念，我们致力于成为区域汽车服务行业的领先标杆。</p>',
+        facility_office: '办公环境', facility_repair: '维修车间', facility_factory: '仓储中心'
     },
     es: {
-        header_logo: "CARVAL AUTO",
-        header_slogan: "Darle a tu coche una segunda vida",
-        nav_home: "Inicio",
-        nav_company: "Empresa",
-        nav_products: "Productos",
-        nav_contact: "Contacto",
-        company_name: "Guangzhou <span>Carval</span> Auto Parts Co., Ltd.",
-        contact_title: "Envíanos un Mensaje",
-        form_name: "Tu Nombre",
-        form_email: "Tu Correo",
-        form_message: "Mensaje (incluye número OEM si disponible)",
-        form_submit: "Enviar Mensaje",
-        footer_slogan: "Darle a tu coche una segunda vida"
-    },
-    fr: {
-        header_logo: "CARVAL AUTO",
-        header_slogan: "Donnez à votre voiture une seconde vie",
-        nav_home: "Accueil",
-        nav_company: "Entreprise",
-        nav_products: "Produits",
-        nav_contact: "Contact",
-        contact_title: "Envoyez-nous un Message",
-        form_name: "Votre Nom",
-        form_email: "Votre Email",
-        form_message: "Message (incluez le numéro OEM si disponible)",
-        form_submit: "Envoyer",
-        footer_slogan: "Donnez à votre voiture une seconde vie"
+        nav_home: 'Inicio', nav_company: 'Empresa', nav_products: 'Productos', nav_contact: 'Contacto',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: 'Dale a tu coche una segunda vida',
+        company_name: '<span>Carval</span> Auto Parts Co., Ltd. de Guangzhou',
+        company_intro: '<p>Guangzhou Carval Auto Parts Co., Ltd. fue fundada en 2008. Después de años de desarrollo, nos hemos convertido en un proveedor de servicios automotrices de confianza en Guangzhou y Foshan.</p><p>Poseemos 6 talleres de reparación, 2 oficinas y 5 tiendas de repuestos, respaldados por un equipo profesional de más de 80 miembros.</p><p>Todas nuestras piezas siguen estrictamente los estándares OEM y están verificadas por pruebas en vehículos reales.</p><p>Con la filosofía de "Servicio Ingenioso, Calidad Primero", estamos comprometidos a convertirnos en un referente líder en la industria de servicios automotrices regionales.</p>',
+        facility_office: 'NUESTRA OFICINA', facility_repair: 'NUESTRO TALLER', facility_factory: 'NUESTRA FÁBRICA'
     }
 };
 
-function applyLanguage(lang) {
-    const t = translations[lang] || translations['en'];
-    document.querySelectorAll('[data-lang]').forEach(el => {
-        const key = el.getAttribute('data-lang');
-        if (t[key]) {
-            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                el.placeholder = t[key];
-            } else {
-                el.innerHTML = t[key];
-            }
-        }
+document.getElementById('language-select').addEventListener('change', function() {
+    var lang = this.value;
+    var t = translations[lang] || translations.en;
+    document.querySelectorAll('[data-lang]').forEach(function(el) {
+        var key = el.getAttribute('data-lang');
+        if (t[key]) el.innerHTML = t[key];
     });
     localStorage.setItem('carval-lang', lang);
-}
-
-document.getElementById('language-select').addEventListener('change', function() {
-    applyLanguage(this.value);
 });
 
-// Load saved language
-const savedLang = localStorage.getItem('carval-lang') || 'en';
-document.getElementById('language-select').value = savedLang;
-applyLanguage(savedLang);
+// 恢复语言设置
+var savedLang = localStorage.getItem('carval-lang');
+if (savedLang) {
+    document.getElementById('language-select').value = savedLang;
+    document.getElementById('language-select').dispatchEvent(new Event('change'));
+}
+
+// ===== Form Submit =====
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var btn = this.querySelector('.submit-btn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    btn.disabled = true;
+    try {
+        var resp = await fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
+        if (resp.ok) {
+            btn.innerHTML = '<i class="fas fa-check"></i> Sent Successfully!';
+            btn.style.background = '#2ecc71';
+            this.reset();
+            setTimeout(function() { btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message'; btn.style.background = ''; btn.disabled = false; }, 3000);
+        } else {
+            btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error. Please try again.';
+            btn.style.background = '#e74c3c';
+            setTimeout(function() { btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message'; btn.style.background = ''; btn.disabled = false; }, 3000);
+        }
+    } catch(err) {
+        btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Network Error.';
+        btn.style.background = '#e74c3c';
+        setTimeout(function() { btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message'; btn.style.background = ''; btn.disabled = false; }, 3000);
+    }
+});
+
+// ===== Smooth Scroll =====
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+        var href = this.getAttribute('href');
+        if (href.length > 1 && document.querySelector(href)) {
+            e.preventDefault();
+            document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+            closeNav();
+        }
+    });
+});
 </script>
 
 </body>
