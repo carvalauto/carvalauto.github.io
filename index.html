@@ -1389,20 +1389,74 @@
 
 <!-- ===== JavaScript ===== -->
 <script>
-// ===== 图片多源加载策略 (国内友好) =====
+// ===== 图片智能加载系统 (内网/外网全兼容) =====
 (function() {
-    // 图片源列表 - 按优先级排序 (国内优化)
+    // 图片源列表 - 多重备份策略
     var IMG_SOURCES = [
-        'https://testingcf.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/',  // Cloudflare (国内友好)
-        'https://fastly.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/',     // Fastly CDN
-        'https://jsdelivr.pai233.top/gh/carvalauto/carvalauto.github.io@main/',     // 国内镜像
+        'https://carvalauto.github.io/',                    // GitHub Pages 原始域名 (主源)
+        'https://testingcf.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/',  // Cloudflare CDN
+        'https://fastly.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/',     // Fastly CDN  
         'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/',        // jsDelivr 主站
-        ''  // 相对路径（最后备选，通过当前域名加载）
+        'https://jsdelivr.pai233.top/gh/carvalauto/carvalauto.github.io@main/',     // 国内镜像
+        'https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/',   // GitHub Raw
+        ''  // 相对路径（当前域名）
     ];
     
-    var currentSourceIndex = 0;
-    var maxSourceIndex = IMG_SOURCES.length - 1;
-    var sourceTested = {};
+    var currentSourceIndex = -1;  // 初始为-1，表示未测试
+    var sourceStatus = {};        // 记录每个源的状态
+    var testQueue = [];           // 测试队列
+    var isTesting = false;        // 是否正在测试
+    
+    // 预测试最快的源
+    function preTestSources(callback) {
+        var testImg = 'carval-auto-logo.png';  // 使用小图测试
+        var completed = 0;
+        var found = false;
+        
+        IMG_SOURCES.forEach(function(baseUrl, index) {
+            if (found) return;
+            
+            var img = new Image();
+            var startTime = Date.now();
+            
+            img.onload = function() {
+                if (!found) {
+                    sourceStatus[baseUrl] = {
+                        available: true,
+                        loadTime: Date.now() - startTime
+                    };
+                    completed++;
+                    
+                    // 第一个成功的源立即使用
+                    if (currentSourceIndex === -1) {
+                        currentSourceIndex = index;
+                        found = true;
+                        if (callback) callback();
+                    }
+                }
+            };
+            
+            img.onerror = function() {
+                sourceStatus[baseUrl] = { available: false };
+                completed++;
+                
+                // 如果所有源都测试完了还没找到可用的
+                if (completed === IMG_SOURCES.length && currentSourceIndex === -1) {
+                    currentSourceIndex = 0;  // 默认使用第一个
+                    if (callback) callback();
+                }
+            };
+            
+            // 设置超时（3秒）
+            setTimeout(function() {
+                if (!sourceStatus[baseUrl]) {
+                    img.onerror();
+                }
+            }, 3000);
+            
+            img.src = baseUrl + testImg + '?t=' + Date.now();
+        });
+    }
     
     // 加载单个图片
     function loadImage(img) {
@@ -1410,46 +1464,62 @@
         if (!filename) return;
         
         var skeleton = img.previousElementSibling;
-        var triedCount = 0;
         
         function tryLoad(sourceIndex) {
-            if (sourceIndex > maxSourceIndex) {
-                // 所有源都失败了，隐藏骨架屏
+            if (sourceIndex >= IMG_SOURCES.length) {
+                // 所有源都失败
                 if (skeleton) {
-                    skeleton.innerHTML = '<i class="fas fa-image" style="color:#ccc;"></i>';
+                    skeleton.innerHTML = '<i class="fas fa-image" style="color:#999;font-size:32px;"></i>';
+                    skeleton.style.display = 'flex';
+                    skeleton.style.alignItems = 'center';
+                    skeleton.style.justifyContent = 'center';
                 }
+                img.style.display = 'none';
                 return;
             }
             
             var baseUrl = IMG_SOURCES[sourceIndex];
-            var url = baseUrl + filename;
+            var status = sourceStatus[baseUrl];
             
-            // 跳过已测试失败的源
-            if (sourceTested[baseUrl] === false) {
+            // 跳过已知不可用的源
+            if (status && !status.available) {
                 tryLoad(sourceIndex + 1);
                 return;
             }
             
+            var url = baseUrl + filename;
             var testImg = new Image();
             
             testImg.onload = function() {
                 img.src = url;
                 img.classList.add('loaded');
+                img.style.display = 'block';
                 if (skeleton) skeleton.style.display = 'none';
-                // 记录成功的源
-                currentSourceIndex = sourceIndex;
+                
+                // 更新源状态
+                if (!sourceStatus[baseUrl]) {
+                    sourceStatus[baseUrl] = { available: true };
+                }
             };
             
             testImg.onerror = function() {
-                sourceTested[baseUrl] = false;
+                sourceStatus[baseUrl] = { available: false };
                 tryLoad(sourceIndex + 1);
             };
+            
+            // 设置超时
+            setTimeout(function() {
+                if (!img.classList.contains('loaded')) {
+                    testImg.onerror();
+                }
+            }, 5000);
             
             testImg.src = url;
         }
         
-        // 优先尝试当前成功的源
-        if (currentSourceIndex > 0 && sourceTested[IMG_SOURCES[currentSourceIndex]] !== false) {
+        // 从已确认的可用源开始，否则从头尝试
+        if (currentSourceIndex >= 0 && sourceStatus[IMG_SOURCES[currentSourceIndex]] && 
+            sourceStatus[IMG_SOURCES[currentSourceIndex]].available) {
             tryLoad(currentSourceIndex);
         } else {
             tryLoad(0);
@@ -1464,11 +1534,14 @@
         });
     }
     
-    // 初始化
+    // 初始化流程
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', loadAllImages);
+        document.addEventListener('DOMContentLoaded', function() {
+            // 先预测试，找到最快源后再加载所有图片
+            preTestSources(loadAllImages);
+        });
     } else {
-        loadAllImages();
+        preTestSources(loadAllImages);
     }
 })();
 
@@ -1506,6 +1579,62 @@ var translations = {
         company_name: '<span>Carval</span> Auto Parts Co., Ltd. de Guangzhou',
         company_intro: '<p>Guangzhou Carval Auto Parts Co., Ltd. fue fundada en 2008. Después de años de desarrollo, nos hemos convertido en un proveedor de servicios automotrices de confianza en Guangzhou y Foshan.</p><p>Poseemos 6 talleres de reparación, 2 oficinas y 5 tiendas de repuestos, respaldados por un equipo profesional de más de 80 miembros.</p><p>Todas nuestras piezas siguen estrictamente los estándares OEM y están verificadas por pruebas en vehículos reales.</p><p>Con la filosofía de "Servicio Ingenioso, Calidad Primero", estamos comprometidos a convertirnos en un referente líder en la industria de servicios automotrices regionales.</p>',
         facility_office: 'NUESTRA OFICINA', facility_repair: 'NUESTRO TALLER', facility_factory: 'NUESTRA FÁBRICA'
+    },
+    fr: {
+        nav_home: 'Accueil', nav_company: 'Entreprise', nav_products: 'Produits', nav_contact: 'Contact',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: 'Donnez une seconde vie à votre voiture',
+        company_name: '<span>Carval</span> Auto Parts Co., Ltd. de Guangzhou',
+        company_intro: '<p>Guangzhou Carval Auto Parts Co., Ltd. a été fondée en 2008. Après des années de développement, nous sommes devenus un fournisseur de services automobiles de confiance à Guangzhou et Foshan.</p><p>Nous possédons 6 ateliers de réparation, 2 bureaux et 5 magasins de pièces de rechange, soutenus par une équipe professionnelle de plus de 80 membres.</p><p>Toutes nos pièces suivent strictement les normes OEM et sont vérifiées par des tests sur véhicules réels.</p><p>Avec la philosophie de "Service Ingénieux, Qualité d\'Abord", nous nous engageons à devenir une référence leader dans l\'industrie des services automobiles régionaux.</p>',
+        facility_office: 'NOTRE BUREAU', facility_repair: 'NOTRE ATELIER', facility_factory: 'NOTRE USINE'
+    },
+    ar: {
+        nav_home: 'الرئيسية', nav_company: 'الشركة', nav_products: 'المنتجات', nav_contact: 'اتصل بنا',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: 'أعطِ سيارتك حياة ثانية',
+        company_name: '<span>كارفال</span> لقطع غيار السيارات - غوانزو',
+        company_intro: '<p>تأسست شركة غوانزو كارفال لقطع غيار السيارات في عام 2008. بعد سنوات من التطوير، أصبحنا مقدم خدمة سيارات موثوقًا في غوانزو وفوشان.</p><p>نمتلك 6 ورش إصلاح و2 مكتب و5 متاجر قطع غيار، مدعومين بفريق محترف يضم أكثر من 80 عضوًا.</p><p>جميع قطعنا تتبع بدقة معايير OEM ويتم التحقق منها من خلال اختبارات على المركبات الحقيقية.</p><p>مع فلسفة "خدمة بارعة، الجودة أولاً"، نلتزم بأن نصبح معيارًا رائدًا في صناعة خدمات السيارات الإقليمية.</p>',
+        facility_office: 'مكتبنا', facility_repair: 'ورشة الإصلاح', facility_factory: 'مصنعنا'
+    },
+    vi: {
+        nav_home: 'Trang chủ', nav_company: 'Công ty', nav_products: 'Sản phẩm', nav_contact: 'Liên hệ',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: 'Tặng chiếc xe của bạn cuộc sống thứ hai',
+        company_name: 'Công ty <span>Carval</span> Phụ tùng Ô tô Quảng Châu',
+        company_intro: '<p>Công ty TNHH Phụ tùng Ô tô Carval Quảng Châu được thành lập năm 2008. Sau nhiều năm phát triển, chúng tôi đã trở thành nhà cung cấp dịch vụ ô tô đáng tin cậy tại Quảng Châu và Phật Sơn.</p><p>Chúng tôi sở hữu 6 xưởng sửa chữa, 2 văn phòng và 5 cửa hàng phụ tùng, được hỗ trợ bởi đội ngũ chuyên nghiệp hơn 80 thành viên.</p><p>Tất cả phụ tùng của chúng tôi tuân thủ nghiêm ngặt tiêu chuẩn OEM và được xác minh qua thử nghiệm trên xe thực.</p><p>Với triết lý "Dịch vụ Tinh tế, Chất lượng Trước tiên", chúng tôi cam kết trở thành tiêu chuẩn dẫn đầu trong ngành dịch vụ ô tô khu vực.</p>',
+        facility_office: 'VĂN PHÒNG', facility_repair: 'XƯỞNG SỬA CHỮA', facility_factory: 'NHÀ MÁY'
+    },
+    ru: {
+        nav_home: 'Главная', nav_company: 'Компания', nav_products: 'Продукция', nav_contact: 'Контакты',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: 'Дайте вашему автомобилю вторую жизнь',
+        company_name: '<span>Carval</span> Auto Parts Co., Ltd. в Гуанчжоу',
+        company_intro: '<p>Компания Guangzhou Carval Auto Parts Co., Ltd. была основана в 2008 году. После многих лет развития мы стали надежным поставщиком автосервисов в Гуанчжоу и Фошане.</p><p>Мы владеем 6 ремонтными мастерскими, 2 офисами и 5 магазинами запчастей, поддерживаемые профессиональной командой из более чем 80 сотрудников.</p><p>Все наши запчасти строго соответствуют стандартам OEM и проверены тестами на реальных автомобилях.</p><p>С философией "Искусный сервис, Качество прежде всего", мы стремимся стать ведущим эталоном в региональной индустрии автосервиса.</p>',
+        facility_office: 'НАШ ОФИС', facility_repair: 'НАША МАСТЕРСКАЯ', facility_factory: 'НАШ ЗАВОД'
+    },
+    pt: {
+        nav_home: 'Início', nav_company: 'Empresa', nav_products: 'Produtos', nav_contact: 'Contato',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: 'Dê ao seu carro uma segunda vida',
+        company_name: '<span>Carval</span> Auto Parts Co., Ltd. de Guangzhou',
+        company_intro: '<p>A Guangzhou Carval Auto Parts Co., Ltd. foi fundada em 2008. Após anos de desenvolvimento, nos tornamos um fornecedor de serviços automotivos confiável em Guangzhou e Foshan.</p><p>Possuímos 6 oficinas de reparação, 2 escritórios e 5 lojas de peças sobressalentes, apoiados por uma equipe profissional de mais de 80 membros.</p><p>Todas as nossas peças seguem estritamente os padrões OEM e são verificadas por testes em veículos reais.</p><p>Com a filosofia de "Serviço Engenhoso, Qualidade Primeiro", estamos comprometidos em nos tornar um referencial líder na indústria de serviços automotivos regionais.</p>',
+        facility_office: 'NOSSO ESCRITÓRIO', facility_repair: 'NOSSA OFICINA', facility_factory: 'NOSSA FÁBRICA'
+    },
+    de: {
+        nav_home: 'Startseite', nav_company: 'Unternehmen', nav_products: 'Produkte', nav_contact: 'Kontakt',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: 'Geben Sie Ihrem Auto ein zweites Leben',
+        company_name: '<span>Carval</span> Auto Parts Co., Ltd. in Guangzhou',
+        company_intro: '<p>Guangzhou Carval Auto Parts Co., Ltd. wurde 2008 gegründet. Nach Jahren der Entwicklung sind wir zu einem vertrauenswürdigen Anbieter von Autoserviceleistungen in Guangzhou und Foshan geworden.</p><p>Wir besitzen 6 Reparaturwerkstätten, 2 Büros und 5 Ersatzteilgeschäfte, unterstützt von einem professionellen Team von über 80 Mitgliedern.</p><p>Alle unsere Teile folgen streng den OEM-Standards und werden durch Tests an echten Fahrzeugen verifiziert.</p><p>Mit der Philosophie "Ingenieur-Service, Qualität zuerst" verpflichten wir uns, ein führender Maßstab in der regionalen Autodienstleistungsbranche zu werden.</p>',
+        facility_office: 'UNSER BÜRO', facility_repair: 'UNSERE WERKSTATT', facility_factory: 'UNSER WERK'
+    },
+    it: {
+        nav_home: 'Home', nav_company: 'Azienda', nav_products: 'Prodotti', nav_contact: 'Contatti',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: 'Dai alla tua auto una seconda vita',
+        company_name: '<span>Carval</span> Auto Parts Co., Ltd. di Guangzhou',
+        company_intro: '<p>Guangzhou Carval Auto Parts Co., Ltd. è stata fondata nel 2008. Dopo anni di sviluppo, siamo diventati un fornitore di servizi automobilistici affidabile a Guangzhou e Foshan.</p><p>Possediamo 6 officine di riparazione, 2 uffici e 5 negozi di ricambi, supportati da un team professionale di oltre 80 membri.</p><p>Tutti i nostri pezzi seguono rigorosamente gli standard OEM e sono verificati tramite test su veicoli reali.</p><p>Con la filosofia di "Servizio Ingegnoso, Qualità Prima", ci impegniamo a diventare un punto di riferimento leader nel settore dei servizi automobilistici regionali.</p>',
+        facility_office: 'IL NOSTRO UFFICIO', facility_repair: 'LA NOSTRA OFFICINA', facility_factory: 'LA NOSTRA FABBRICA'
+    },
+    tr: {
+        nav_home: 'Ana Sayfa', nav_company: 'Şirket', nav_products: 'Ürünler', nav_contact: 'İletişim',
+        header_logo: 'CARVAL <span>AUTO</span>', header_slogan: 'Aracınıza ikinci bir hayat verin',
+        company_name: 'Guangzhou <span>Carval</span> Oto Parça Ltd. Şti.',
+        company_intro: '<p>Guangzhou Carval Oto Parça Ltd. Şti. 2008 yılında kurulmuştur. Yıllar süren gelişim sonucunda Guangzhou ve Foshan bölgelerinde güvenilir bir otomotiv hizmet sağlayıcısı haline geldik.</p><p>80\'den fazla profesyonel üyeden oluşan bir ekip tarafından desteklenen 6 tamir atölyesi, 2 ofis ve 5 yedek parça mağazasına sahibiz.</p><p>Tüm parçalarımız OEM standartlarını sıkı bir şekilde takip eder ve gerçek araç testleriyle doğrulanır.</p><p>"Yetenekli Hizmet, Kalite Her Şeyden Önce" felsefesiyle, bölgesel otomotiv servis endüstrisinde öncü bir referans olmaya kararlıyız.</p>',
+        facility_office: 'OFİSİMİZ', facility_repair: 'TAMİR ATÖLYEMİZ', facility_factory: 'FABRİKAMIZ'
     }
 };
 
