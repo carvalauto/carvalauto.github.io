@@ -1202,7 +1202,8 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Modal form submit - 保存到GitHub
+
+// Modal form submit - 双通道提交：Formspree + GitHub
 document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     var btn = this.querySelector('.modal-send-btn');
@@ -1213,9 +1214,8 @@ document.getElementById('modalContactForm').addEventListener('submit', async fun
         // 获取表单数据
         var formData = {
             id: Date.now(),
-            name: document.getElementById('modalName').value,
-            email: document.getElementById('modalEmail').value,
-            phone: document.getElementById('modalPhone').value || '',
+            name: this.querySelector('[name="name"]').value,
+            email: this.querySelector('[name="email"]').value,
             message: document.getElementById('modalMessage').value,
             product: document.getElementById('modalProductRef').value,
             oem: '',
@@ -1230,7 +1230,8 @@ document.getElementById('modalContactForm').addEventListener('submit', async fun
                 if (ua.includes('Firefox')) return 'Firefox';
                 if (ua.includes('Edge')) return 'Edge';
                 return 'Other';
-            })()
+            })(),
+            language: navigator.language || 'en'
         };
         
         // 获取地理位置
@@ -1243,18 +1244,66 @@ document.getElementById('modalContactForm').addEventListener('submit', async fun
             formData.region = geoData.region || '';
             formData.ip = geoData.ip || '';
             formData.timezone = geoData.timezone || '';
+            formData.localTime = new Date().toLocaleString();
+            formData.utcTime = new Date().toUTCString();
         } catch(e) {
             formData.country = 'Unknown';
         }
         
-        // 使用 Formspree 发送
-        var resp = await fetch('https://formspree.io/f/xyknoyzw', {
+        // 并行执行：1) Formspree发邮件 2) 保存到GitHub
+        var formspreePromise = fetch('https://formspree.io/f/xyknoyzw', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(formData)
+            body: JSON.stringify({
+                name: formData.name,
+                email: formData.email,
+                message: formData.message,
+                product: formData.product,
+                _replyto: formData.email
+            })
         });
         
-        if (resp.ok) {
+        // GitHub保存 - 从localStorage获取token
+        var ghToken = localStorage.getItem('gh_token') || '';
+        var githubPromise = Promise.resolve();
+        
+        if (ghToken) {
+            githubPromise = (async function() {
+                try {
+                    var getResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json', {
+                        headers: {
+                            'Authorization': 'token ' + ghToken,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+                    if (!getResp.ok) throw new Error('Failed to get inquiries');
+                    var fileData = await getResp.json();
+                    var sha = fileData.sha;
+                    var existingData = JSON.parse(decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, '')))));
+                    existingData.push(formData);
+                    var updateResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json', {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': 'token ' + ghToken,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: 'New inquiry from ' + formData.name,
+                            content: btoa(unescape(encodeURIComponent(JSON.stringify(existingData, null, 2)))),
+                            sha: sha
+                        })
+                    });
+                    if (!updateResp.ok) console.warn('GitHub save failed');
+                } catch(err) {
+                    console.warn('GitHub save error:', err);
+                }
+            })();
+        }
+        
+        var [formspreeResp] = await Promise.all([formspreePromise, githubPromise]);
+        
+        if (formspreeResp.ok) {
             btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
             btn.style.background = '#2ecc71';
             this.reset();
