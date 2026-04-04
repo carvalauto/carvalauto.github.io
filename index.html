@@ -19,10 +19,15 @@
 
     <!-- Font Awesome - 使用 unpkg CDN (更稳定) -->
     <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <!-- 预加载首屏 logo -->
+    <link rel="preload" as="image" href="carval-auto-logo.png">
     <!-- 使用系统字体替代Google Fonts，加快加载 -->
     <style>
         /* 系统字体替代Google Fonts */
         body, .hero-title, .section-title, .nav-link { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+        
+        /* 图片加载占位符 */
+        img[loading="lazy"] { background: #f0f0f0; min-height: 100px; }
     </style>
 
     <!-- Google Analytics - 延迟加载 -->
@@ -1076,7 +1081,7 @@
 <header class="topbar" id="home">
     <div class="topbar-left">
         <a href="#home" class="brand">
-            <img src="carval-auto-logo.png" alt="Carval Logo" class="brand-logo">
+            <img loading="lazy" src="carval-auto-logo.png" alt="Carval Logo" class="brand-logo">
             <div class="brand-text" data-lang="header_logo">CARVAL <span>AUTO</span></div>
         </a>
         <nav class="desktop-nav">
@@ -1155,7 +1160,7 @@
 
 <!-- Company Name + Logo bar -->
 <div class="company-id-bar">
-    <img src="carval-auto-logo.png" alt="Carval Logo" class="company-id-logo" data-lang="logo_alt">
+    <img loading="lazy" src="carval-auto-logo.png" alt="Carval Logo" class="company-id-logo" data-lang="logo_alt">
     <div class="company-id-name" data-lang="company_name">Guang zhou <span>Carval</span> Auto Part Co.,Ltd</div>
 </div>
 
@@ -1271,7 +1276,7 @@
         <div class="products-grid">
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="japanese-cars.jpg" alt="Japanese Car Parts" class="product-img" data-lang="japanese_cars_alt">
+                    <img loading="lazy" src="japanese-cars.jpg" alt="Japanese Car Parts" class="product-img" data-lang="japanese_cars_alt">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Japanese</div>
@@ -1282,7 +1287,7 @@
             </div>
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="german-cars.jpg" alt="German Car Parts" class="product-img" data-lang="german_cars_alt">
+                    <img loading="lazy" src="german-cars.jpg" alt="German Car Parts" class="product-img" data-lang="german_cars_alt">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">German</div>
@@ -1293,7 +1298,7 @@
             </div>
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="korean-cars.jpg" alt="Korean Car Parts" class="product-img" data-lang="korean_cars_alt">
+                    <img loading="lazy" src="korean-cars.jpg" alt="Korean Car Parts" class="product-img" data-lang="korean_cars_alt">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Korean</div>
@@ -1304,7 +1309,7 @@
             </div>
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="chinese-cars.jpg" alt="Chinese Car Parts" class="product-img" data-lang="chinese_cars_alt">
+                    <img loading="lazy" src="chinese-cars.jpg" alt="Chinese Car Parts" class="product-img" data-lang="chinese_cars_alt">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Chinese</div>
@@ -1315,7 +1320,7 @@
             </div>
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="engine-oil.jpg" alt="Engine Oil" class="product-img" data-lang="engine_oil_alt">
+                    <img loading="lazy" src="engine-oil.jpg" alt="Engine Oil" class="product-img" data-lang="engine_oil_alt">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Engine Oil</div>
