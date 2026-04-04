@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carval Auto - 后台管理</title>
-    <script src="https://unpkg.com/npm/chart.js"></script>
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,834 +19,402 @@
         }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; }
         
-        /* Header */
-        .header { background: linear-gradient(135deg, var(--primary) 0%, #1a3a5c 100%); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
-        .header-logo { font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+        .header { background: linear-gradient(135deg, var(--primary) 0%, #1a3a5c 100%); padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; position: sticky; top: 0; z-index: 100; }
+        .header-logo { font-size: 16px; font-weight: 700; }
         .header-logo span { color: var(--accent); }
-        .tab-nav { display: flex; gap: 5px; flex-wrap: wrap; }
-        .tab-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 10px 16px; cursor: pointer; font-size: 13px; font-weight: 500; border-radius: 6px; transition: all 0.3s; display: flex; align-items: center; gap: 6px; }
-        .tab-btn:hover { background: rgba(255,255,255,0.2); }
+        .tab-nav { display: flex; gap: 4px; }
+        .tab-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 7px 10px; cursor: pointer; font-size: 11px; font-weight: 500; border-radius: 5px; display: flex; align-items: center; gap: 4px; }
         .tab-btn.active { background: var(--accent); }
-        .tab-btn i { font-size: 12px; }
-        .header-right a { color: white; text-decoration: none; font-size: 13px; padding: 8px 14px; background: rgba(255,255,255,0.1); border-radius: 6px; transition: all 0.3s; display: flex; align-items: center; gap: 6px; }
-        .header-right a:hover { background: var(--accent); }
+        .header-right a { color: white; text-decoration: none; font-size: 11px; padding: 6px 10px; background: rgba(255,255,255,0.1); border-radius: 5px; }
         
-        /* Pages */
-        .page { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
+        .page { display: none; padding: 12px; max-width: 1400px; margin: 0 auto; }
         .page.active { display: block; }
         
-        /* Stats Grid */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .stat-card { background: var(--bg-card); padding: 16px; border-radius: 10px; border-left: 3px solid var(--primary); }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
+        .stat-card { background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid var(--primary); }
         .stat-card.accent { border-left-color: var(--accent); }
         .stat-card.success { border-left-color: #2ecc71; }
         .stat-card.warning { border-left-color: #f39c12; }
-        .stat-num { font-size: 28px; font-weight: 700; color: var(--text); }
-        .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+        .stat-num { font-size: 20px; font-weight: 700; }
+        .stat-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
         
-        /* Product Grid */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-        .product-card { background: var(--bg-card); border-radius: 10px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
-        .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
-        .product-img { width: 100%; height: 160px; object-fit: contain; background: #2a2a2a; padding: 15px; }
-        .product-info { padding: 15px; }
-        .product-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.4; height: 40px; overflow: hidden; }
-        .product-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-        .product-tag { font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(15,76,129,0.3); color: #6db3f2; }
+        .product-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .product-card { background: var(--bg-card); border-radius: 8px; overflow: hidden; }
+        .product-img { width: 100%; height: 120px; object-fit: contain; background: #2a2a2a; padding: 10px; }
+        .product-info { padding: 10px; }
+        .product-title { font-size: 12px; font-weight: 600; margin-bottom: 5px; line-height: 1.3; }
+        .product-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+        .product-tag { font-size: 8px; padding: 2px 5px; border-radius: 3px; background: rgba(15,76,129,0.3); color: #6db3f2; }
         .product-tag.oem { background: rgba(230,57,70,0.2); color: #ff6b7a; }
-        .product-tag.cat { background: rgba(46,204,113,0.2); color: #7dcea0; }
-        .product-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; height: 36px; overflow: hidden; margin-bottom: 10px; }
-        .product-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--border); }
-        .btn { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; transition: all 0.3s; display: flex; align-items: center; gap: 5px; }
+        .product-actions { display: flex; gap: 6px; padding-top: 8px; border-top: 1px solid var(--border); }
+        .btn { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; display: flex; align-items: center; gap: 4px; }
         .btn-danger { background: rgba(230,57,70,0.2); color: #ff6b7a; }
-        .btn-danger:hover { background: var(--accent); color: white; }
-        
-        /* Inquiry Cards */
-        .inquiry-list { display: flex; flex-direction: column; gap: 12px; }
-        .inquiry-card { background: var(--bg-card); border-radius: 10px; padding: 16px; border-left: 3px solid var(--primary); transition: all 0.3s; }
-        .inquiry-card.unread { border-left-color: var(--accent); background: linear-gradient(90deg, rgba(230,57,70,0.1) 0%, var(--bg-card) 100%); }
-        .inquiry-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
-        .inquiry-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
-        .inquiry-name { font-weight: 600; font-size: 15px; }
-        .inquiry-email { font-size: 12px; color: var(--text-muted); }
-        .inquiry-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: var(--accent); color: white; margin-left: 8px; }
-        .inquiry-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
-        .inquiry-meta span { display: flex; align-items: center; gap: 4px; }
-        .inquiry-message { font-size: 13px; color: var(--text); line-height: 1.6; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 6px; margin-bottom: 12px; }
-        .inquiry-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-        .btn-sm { padding: 6px 10px; font-size: 11px; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: #1a6bb5; }
         .btn-success { background: rgba(46,204,113,0.2); color: #7dcea0; }
-        .btn-success:hover { background: #2ecc71; color: white; }
+        .btn-sm { padding: 5px 8px; font-size: 9px; }
         
-        /* Analytics */
-        .login-card { background: var(--bg-card); padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; margin: 60px auto; }
-        .login-card .logo { font-size: 28px; font-weight: 700; margin-bottom: 15px; }
+        .inquiry-list { display: flex; flex-direction: column; gap: 8px; }
+        .inquiry-card { background: var(--bg-card); border-radius: 8px; padding: 10px; border-left: 3px solid var(--primary); }
+        .inquiry-card.unread { border-left-color: var(--accent); }
+        .inquiry-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .inquiry-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
+        .inquiry-info { flex: 1; min-width: 0; }
+        .inquiry-name { font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+        .inquiry-email { font-size: 10px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .inquiry-badge { font-size: 8px; padding: 1px 4px; border-radius: 2px; background: var(--accent); color: white; }
+        .inquiry-meta { display: flex; flex-wrap: wrap; gap: 5px; font-size: 9px; color: var(--text-muted); margin-bottom: 6px; }
+        .inquiry-message { font-size: 11px; color: var(--text); line-height: 1.4; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 8px; word-break: break-word; }
+        .inquiry-actions { display: flex; flex-wrap: wrap; gap: 5px; }
+        
+        .login-card { background: var(--bg-card); padding: 25px 15px; border-radius: 10px; text-align: center; max-width: 300px; margin: 30px auto; }
+        .login-card .logo { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
         .login-card .logo span { color: var(--accent); }
-        .login-card p { color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
-        .btn-google { background: white; color: #333; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 10px; transition: all 0.3s; }
-        .btn-google:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .btn-google img { width: 18px; height: 18px; }
-        .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 20px; }
-        .chart-card { background: var(--bg-card); border-radius: 10px; padding: 16px; }
-        .chart-title { font-size: 14px; font-weight: 600; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .login-card p { color: var(--text-muted); margin-bottom: 15px; font-size: 12px; }
+        .btn-google { background: white; color: #333; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-google img { width: 14px; height: 14px; }
+        
+        .charts-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+        .chart-card { background: var(--bg-card); border-radius: 8px; padding: 10px; }
+        .chart-title { font-size: 11px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
         .chart-title i { color: var(--primary); }
-        .date-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; background: var(--bg-card); padding: 12px 16px; border-radius: 8px; }
-        .date-btn { background: rgba(255,255,255,0.1); border: none; color: var(--text); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.3s; }
-        .date-btn:hover { background: rgba(255,255,255,0.2); }
+        .date-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; background: var(--bg-card); padding: 8px 10px; border-radius: 6px; }
+        .date-btn { background: rgba(255,255,255,0.1); border: none; color: var(--text); padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; }
         .date-btn.active { background: var(--primary); }
-        .ga-user-info { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-        .ga-avatar { width: 32px; height: 32px; border-radius: 50%; }
-        .ga-name { font-size: 13px; }
-        .btn-logout { background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+        .ga-user-info { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+        .ga-avatar { width: 24px; height: 24px; border-radius: 50%; }
+        .ga-name { font-size: 10px; max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .btn-logout { background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 9px; }
         
-        /* Search */
-        .search-bar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .search-input { flex: 1; min-width: 200px; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 13px; }
-        .search-input:focus { outline: none; border-color: var(--primary); }
+        .search-bar { margin-bottom: 12px; }
+        .search-input { width: 100%; padding: 8px 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 5px; color: var(--text); font-size: 11px; }
         
-        /* Loading */
-        .loading { text-align: center; padding: 40px; color: var(--text-muted); }
-        .loading i { font-size: 32px; margin-bottom: 10px; animation: spin 1s linear infinite; }
+        .loading { text-align: center; padding: 25px; color: var(--text-muted); }
+        .loading i { font-size: 24px; margin-bottom: 6px; animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        /* Toast */
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #2ecc71; color: white; padding: 12px 20px; border-radius: 6px; font-size: 13px; z-index: 1000; opacity: 0; transform: translateY(20px); transition: all 0.3s; }
+        .toast { position: fixed; bottom: 12px; left: 12px; right: 12px; background: #2ecc71; color: white; padding: 10px 12px; border-radius: 5px; font-size: 11px; z-index: 1000; opacity: 0; transform: translateY(20px); transition: all 0.3s; text-align: center; }
         .toast.show { opacity: 1; transform: translateY(0); }
         .toast.error { background: #e74c3c; }
         
-        /* Modal */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; padding: 12px; }
         .modal.show { display: flex; }
-        .modal-content { background: var(--bg-card); padding: 24px; border-radius: 12px; max-width: 400px; width: 100%; text-align: center; }
-        .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
-        .modal-text { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
-        .modal-actions { display: flex; gap: 10px; justify-content: center; }
+        .modal-content { background: var(--bg-card); padding: 16px; border-radius: 8px; max-width: 280px; width: 100%; text-align: center; }
+        .modal-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+        .modal-text { color: var(--text-muted); font-size: 12px; margin-bottom: 12px; }
+        .modal-actions { display: flex; gap: 6px; justify-content: center; }
         
-        /* Responsive */
-        @media (max-width: 600px) {
-            .header { padding: 10px 15px; }
-            .header-logo { font-size: 16px; }
-            .tab-btn { padding: 8px 12px; font-size: 12px; }
-            .tab-btn span { display: none; }
-            .page { padding: 15px; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .product-grid { grid-template-columns: 1fr; }
-            .stat-num { font-size: 22px; }
+        @media (min-width: 600px) {
+            .header { padding: 12px 18px; }
+            .header-logo { font-size: 18px; }
+            .tab-btn { padding: 9px 14px; font-size: 12px; }
+            .page { padding: 18px; }
+            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+            .stat-num { font-size: 24px; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .product-img { height: 140px; }
+            .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (min-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(7, 1fr); }
+            .product-grid { grid-template-columns: repeat(3, 1fr); }
+            .charts-grid { grid-template-columns: repeat(3, 1fr); }
+            .login-card { padding: 35px; max-width: 380px; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
-        <div class="header-logo">CARVAL <span>AUTO</span> — 后台管理</div>
+        <div class="header-logo">CARVAL <span>AUTO</span></div>
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('products', this)">
-                <i class="fas fa-box"></i> <span>商品管理</span>
-            </button>
-            <button class="tab-btn" onclick="switchTab('inquiries', this)" id="inquiriesTabBtn">
-                <i class="fas fa-envelope"></i> <span>询盘管理</span>
-                <span id="inquiryBadge" style="display:none;background:var(--accent);color:white;border-radius:50%;width:18px;height:18px;font-size:10px;align-items:center;justify-content:center;"></span>
-            </button>
-            <button class="tab-btn" onclick="switchTab('analytics', this)">
-                <i class="fas fa-chart-line"></i> <span>流量分析</span>
-            </button>
+            <button class="tab-btn active" onclick="switchTab('products', this)"><i class="fas fa-box"></i> 商品</button>
+            <button class="tab-btn" onclick="switchTab('inquiries', this)" id="inquiriesTabBtn"><i class="fas fa-envelope"></i> 询盘<span id="inquiryBadge" style="display:none;"></span></button>
+            <button class="tab-btn" onclick="switchTab('analytics', this)"><i class="fas fa-chart-line"></i> 流量</button>
         </div>
         <div class="header-right">
-            <a href="https://carvalautopart.com" target="_blank"><i class="fas fa-external-link-alt"></i> 查看网站</a>
+            <a href="https://carvalautopart.com" target="_blank"><i class="fas fa-external-link-alt"></i> 网站</a>
         </div>
     </div>
 
-    <!-- 商品管理页 -->
     <div class="page active" id="page-products">
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-num" id="totalCount">0</div>
-                <div class="stat-label">总商品数</div>
-            </div>
-            <div class="stat-card accent">
-                <div class="stat-num" id="cat_japanese">0</div>
-                <div class="stat-label">日系车</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-num" id="cat_korean">0</div>
-                <div class="stat-label">韩系车</div>
-            </div>
-            <div class="stat-card success">
-                <div class="stat-num" id="cat_german">0</div>
-                <div class="stat-label">德系车</div>
-            </div>
-            <div class="stat-card warning">
-                <div class="stat-num" id="cat_chinese">0</div>
-                <div class="stat-label">国产车</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-num" id="cat_oil">0</div>
-                <div class="stat-label">机油</div>
-            </div>
-            <div class="stat-card accent">
-                <div class="stat-num" id="cat_other">0</div>
-                <div class="stat-label">其他</div>
-            </div>
+            <div class="stat-card"><div class="stat-num" id="totalCount">-</div><div class="stat-label">总商品</div></div>
+            <div class="stat-card accent"><div class="stat-num" id="cat_japanese">-</div><div class="stat-label">日系</div></div>
+            <div class="stat-card"><div class="stat-num" id="cat_korean">-</div><div class="stat-label">韩系</div></div>
+            <div class="stat-card success"><div class="stat-num" id="cat_german">-</div><div class="stat-label">德系</div></div>
+            <div class="stat-card warning"><div class="stat-num" id="cat_chinese">-</div><div class="stat-label">国产</div></div>
+            <div class="stat-card"><div class="stat-num" id="cat_oil">-</div><div class="stat-label">机油</div></div>
+            <div class="stat-card accent"><div class="stat-num" id="cat_other">-</div><div class="stat-label">其他</div></div>
         </div>
-        
-        <div class="search-bar">
-            <input type="text" class="search-input" id="productSearch" placeholder="搜索商品名称、OEM编码..." oninput="searchProducts()">
-        </div>
-        
-        <div class="product-grid" id="productList">
-            <div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>
-        </div>
+        <div class="search-bar"><input type="text" class="search-input" id="productSearch" placeholder="搜索商品名称、OEM..." oninput="searchProducts()"></div>
+        <div class="product-grid" id="productList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
     </div>
 
-    <!-- 询盘管理页 -->
     <div class="page" id="page-inquiries">
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-num" id="inq_total">0</div>
-                <div class="stat-label">总询盘</div>
-            </div>
-            <div class="stat-card accent">
-                <div class="stat-num" id="inq_unread">0</div>
-                <div class="stat-label">未读</div>
-            </div>
-            <div class="stat-card success">
-                <div class="stat-num" id="inq_today">0</div>
-                <div class="stat-label">今日新增</div>
-            </div>
-            <div class="stat-card warning">
-                <div class="stat-num" id="inq_countries">0</div>
-                <div class="stat-label">来源国家</div>
-            </div>
+            <div class="stat-card"><div class="stat-num" id="inq_total">-</div><div class="stat-label">总询盘</div></div>
+            <div class="stat-card accent"><div class="stat-num" id="inq_unread">-</div><div class="stat-label">未读</div></div>
+            <div class="stat-card success"><div class="stat-num" id="inq_today">-</div><div class="stat-label">今日</div></div>
+            <div class="stat-card warning"><div class="stat-num" id="inq_countries">-</div><div class="stat-label">国家</div></div>
         </div>
-        
-        <div class="inquiry-list" id="inquiryList">
-            <div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>
-        </div>
+        <div class="inquiry-list" id="inquiryList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
     </div>
 
-    <!-- 流量分析页 -->
     <div class="page" id="page-analytics">
         <div id="loginSection">
             <div class="login-card">
                 <div class="logo">CARVAL <span>AUTO</span></div>
-                <p>连接 Google Analytics 账号<br>查看网站实时流量与访客数据</p>
-                <button class="btn-google" onclick="handleLogin()">
-                    <img src="https://www.google.com/favicon.ico" alt="Google">
-                    使用 Google 账号登录
-                </button>
+                <p>连接 Google Analytics<br>查看网站流量数据</p>
+                <button class="btn-google" onclick="handleLogin()"><img src="https://www.google.com/favicon.ico" alt=""> Google 登录</button>
             </div>
         </div>
-        
         <div id="dashboardSection" style="display:none;">
             <div class="date-bar">
-                <span style="font-size:13px;color:var(--text-muted);">时间范围：</span>
-                <button class="date-btn active" onclick="setDateRange('7daysAgo', this)">近7天</button>
-                <button class="date-btn" onclick="setDateRange('30daysAgo', this)">近30天</button>
-                <button class="date-btn" onclick="setDateRange('90daysAgo', this)">近90天</button>
+                <span style="font-size:11px;color:var(--text-muted);">时间：</span>
+                <button class="date-btn active" onclick="setDateRange('7daysAgo', this)">7天</button>
+                <button class="date-btn" onclick="setDateRange('30daysAgo', this)">30天</button>
+                <button class="date-btn" onclick="setDateRange('90daysAgo', this)">90天</button>
                 <div class="ga-user-info">
                     <img id="userAvatar" class="ga-avatar" src="" alt="">
                     <span class="ga-name" id="userName"></span>
                     <button class="btn-logout" onclick="handleLogout()">退出</button>
                 </div>
             </div>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-num" id="statPageviews">—</div>
-                    <div class="stat-label">总浏览量</div>
-                </div>
-                <div class="stat-card accent">
-                    <div class="stat-num" id="statUsers">—</div>
-                    <div class="stat-label">独立访客</div>
-                </div>
-                <div class="stat-card success">
-                    <div class="stat-num" id="statSessions">—</div>
-                    <div class="stat-label">会话数</div>
-                </div>
-                <div class="stat-card warning">
-                    <div class="stat-num" id="statDuration">—</div>
-                    <div class="stat-label">平均停留</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-num" id="statRealtime">—</div>
-                    <div class="stat-label">实时在线</div>
-                </div>
+            <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);">
+                <div class="stat-card"><div class="stat-num" id="statPageviews">-</div><div class="stat-label">浏览量</div></div>
+                <div class="stat-card accent"><div class="stat-num" id="statUsers">-</div><div class="stat-label">访客</div></div>
+                <div class="stat-card success"><div class="stat-num" id="statSessions">-</div><div class="stat-label">会话</div></div>
+                <div class="stat-card warning"><div class="stat-num" id="statDuration">-</div><div class="stat-label">停留</div></div>
+                <div class="stat-card"><div class="stat-num" id="statRealtime">-</div><div class="stat-label">在线</div></div>
             </div>
-            
             <div class="charts-grid">
-                <div class="chart-card">
-                    <div class="chart-title"><i class="fas fa-chart-line"></i> 流量趋势</div>
-                    <canvas id="trendChart" height="200"></canvas>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title"><i class="fas fa-globe"></i> 国家/地区分布</div>
-                    <canvas id="countryChart" height="200"></canvas>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title"><i class="fas fa-mobile-alt"></i> 设备分布</div>
-                    <canvas id="deviceChart" height="200"></canvas>
-                </div>
+                <div class="chart-card"><div class="chart-title"><i class="fas fa-chart-line"></i> 流量趋势</div><canvas id="trendChart"></canvas></div>
+                <div class="chart-card"><div class="chart-title"><i class="fas fa-globe"></i> 国家分布</div><canvas id="countryChart"></canvas></div>
+                <div class="chart-card"><div class="chart-title"><i class="fas fa-mobile-alt"></i> 设备分布</div><canvas id="deviceChart"></canvas></div>
             </div>
         </div>
     </div>
 
-    <!-- Delete Modal -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
             <div class="modal-title">确认删除</div>
-            <div class="modal-text" id="deleteModalText">确定要删除这个商品吗？此操作不可恢复。</div>
+            <div class="modal-text" id="deleteModalText">确定要删除吗？</div>
             <div class="modal-actions">
-                <button class="btn" style="background:var(--border);color:var(--text);" onclick="closeModal()">取消</button>
-                <button class="btn btn-danger" id="confirmDeleteBtn">确认删除</button>
+                <button class="btn" style="background:var(--border);" onclick="closeModal()">取消</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">删除</button>
             </div>
         </div>
     </div>
-
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-    // ===== 配置 =====
     let GH_TOKEN = localStorage.getItem('gh_token') || '';
     const GH_REPO = 'carvalauto/carvalauto.github.io';
-    const GH_PRODUCTS_FILE = 'products.json';
-    const GH_INQUIRIES_FILE = 'inquiries.json';
     const GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
     const GA_PROPERTY_ID = '529242507';
     
-    // Token输入
+    let allProducts = [], allInquiries = [], accessToken = null, tokenClient = null, deleteTarget = null;
+    
     function checkToken() {
         if (!GH_TOKEN) {
-            const token = prompt('请输入GitHub Token以访问数据：');
-            if (token) {
-                GH_TOKEN = token;
-                localStorage.setItem('gh_token', token);
-                return true;
-            }
+            const t = prompt('请输入GitHub Token：');
+            if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); return true; }
             return false;
         }
         return true;
     }
     
-    let allProducts = [];
-    let allInquiries = [];
-    let accessToken = null;
-    let tokenClient = null;
-    let deleteTarget = null;
-    
-    // ===== Tab切换 =====
     function switchTab(tab, btn) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('page-' + tab).classList.add('active');
         btn.classList.add('active');
-        
         if (tab === 'products') loadProducts();
         if (tab === 'inquiries') loadInquiries();
         if (tab === 'analytics') {
-            if (accessToken) {
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('dashboardSection').style.display = 'block';
-            } else {
-                document.getElementById('loginSection').style.display = 'block';
-                document.getElementById('dashboardSection').style.display = 'none';
-            }
+            if (accessToken) { document.getElementById('loginSection').style.display = 'none'; document.getElementById('dashboardSection').style.display = 'block'; loadAllData(); }
+            else { document.getElementById('loginSection').style.display = 'block'; document.getElementById('dashboardSection').style.display = 'none'; }
         }
     }
     
-    // ===== 商品管理 =====
     async function loadProducts() {
         if (!checkToken()) return;
-        const container = document.getElementById('productList');
-        container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-        
+        const c = document.getElementById('productList');
+        c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         try {
-            const resp = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_PRODUCTS_FILE}`, {
-                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-            });
-            if (!resp.ok) throw new Error('加载失败');
-            const json = await resp.json();
-            const decoded = decodeURIComponent(escape(atob(json.content.replace(/\n/g, ''))));
-            allProducts = JSON.parse(decoded);
-            window.productsSha = json.sha;
+            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
+            const j = await r.json();
+            const d = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+            allProducts = JSON.parse(d);
+            window.pSha = j.sha;
             renderProducts(allProducts);
-        } catch(e) {
-            container.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败，请刷新重试</p></div>';
-        }
+        } catch(e) { c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败</p></div>'; }
     }
     
-    function renderProducts(products) {
-        const container = document.getElementById('productList');
-        
-        // 更新统计
-        document.getElementById('totalCount').textContent = products.length;
+    function renderProducts(p) {
+        const c = document.getElementById('productList');
+        document.getElementById('totalCount').textContent = p.length;
         const cats = { japanese: 0, korean: 0, german: 0, chinese: 0, oil: 0, other: 0 };
-        products.forEach(p => {
-            const cat = (p.category || 'other').toLowerCase();
-            if (cats.hasOwnProperty(cat)) cats[cat]++;
-            else cats.other++;
-        });
-        Object.keys(cats).forEach(k => {
-            const el = document.getElementById('cat_' + k);
-            if (el) el.textContent = cats[k];
-        });
+        p.forEach(x => { const cat = (x.category || 'other').toLowerCase(); if (cats[cat] !== undefined) cats[cat]++; else cats.other++; });
+        Object.keys(cats).forEach(k => { const el = document.getElementById('cat_' + k); if (el) el.textContent = cats[k]; });
         
-        if (products.length === 0) {
-            container.innerHTML = '<div class="loading"><i class="fas fa-box-open"></i><p>暂无商品</p></div>';
-            return;
-        }
-        
-        let html = '';
-        products.forEach(p => {
-            const img = (p.image || '').split(',')[0] || '';
-            const cat = (p.category || 'other').toUpperCase();
-            const name = p.name || '未命名商品';
-            const oem = p.oem || '';
-            const desc = (p.description || '').substring(0, 60);
-            
-            html += `<div class="product-card">
-                ${img ? `<img src="${img}" class="product-img" alt="${name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>📷</text></svg>'">` : '<div class="product-img" style="display:flex;align-items:center;justify-content:center;color:#555;font-size:40px;"><i class="fas fa-image"></i></div>'}
+        if (!p.length) { c.innerHTML = '<div class="loading"><i class="fas fa-box-open"></i><p>暂无商品</p></div>'; return; }
+        c.innerHTML = p.map(x => {
+            const img = (x.image || '').split(',')[0] || '';
+            const cat = (x.category || 'other').toUpperCase();
+            const name = x.name || '未命名';
+            const oem = x.oem || '';
+            return `<div class="product-card">
+                ${img ? `<img src="${img}" class="product-img" alt="" onerror="this.style.display='none'">` : '<div class="product-img" style="display:flex;align-items:center;justify-content:center;color:#555;"><i class="fas fa-image"></i></div>'}
                 <div class="product-info">
                     <div class="product-title">${name}</div>
-                    <div class="product-meta">
-                        <span class="product-tag cat">${cat}</span>
-                        ${oem ? `<span class="product-tag oem">OEM: ${oem}</span>` : ''}
-                    </div>
-                    ${desc ? `<div class="product-desc">${desc}...</div>` : ''}
-                    <div class="product-actions">
-                        <button class="btn btn-danger" onclick="confirmDeleteProduct(${p.id}, '${name.replace(/'/g, "\\'")}')">
-                            <i class="fas fa-trash"></i> 删除
-                        </button>
-                    </div>
-                </div>
-            </div>`;
-        });
-        container.innerHTML = html;
+                    <div class="product-meta"><span class="product-tag">${cat}</span>${oem ? `<span class="product-tag oem">OEM: ${oem}</span>` : ''}</div>
+                    <div class="product-actions"><button class="btn btn-danger" onclick="confirmDel('product',${x.id},'${name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i> 删除</button></div>
+                </div></div>`;
+        }).join('');
     }
     
     function searchProducts() {
-        const keyword = document.getElementById('productSearch').value.toLowerCase();
-        const filtered = allProducts.filter(p => 
-            (p.name || '').toLowerCase().includes(keyword) || 
-            (p.oem || '').toLowerCase().includes(keyword) ||
-            (p.description || '').toLowerCase().includes(keyword)
-        );
-        renderProducts(filtered);
+        const k = document.getElementById('productSearch').value.toLowerCase();
+        renderProducts(allProducts.filter(p => (p.name || '').toLowerCase().includes(k) || (p.oem || '').toLowerCase().includes(k)));
     }
     
-    function confirmDeleteProduct(id, name) {
-        deleteTarget = { type: 'product', id };
-        document.getElementById('deleteModalText').textContent = `确定要删除商品"${name}"吗？此操作将同步删除网站上的商品，不可恢复。`;
-        document.getElementById('deleteModal').classList.add('show');
-    }
-    
-    async function deleteProduct() {
-        if (!deleteTarget || deleteTarget.type !== 'product') return;
-        
-        try {
-            const resp = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_PRODUCTS_FILE}`, {
-                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-            });
-            const json = await resp.json();
-            const decoded = decodeURIComponent(escape(atob(json.content.replace(/\n/g, ''))));
-            let products = JSON.parse(decoded);
-            
-            products = products.filter(p => p.id !== deleteTarget.id);
-            
-            const body = {
-                message: 'Delete product ' + deleteTarget.id,
-                content: btoa(unescape(encodeURIComponent(JSON.stringify(products)))),
-                sha: json.sha
-            };
-            
-            const saveResp = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_PRODUCTS_FILE}`, {
-                method: 'PUT',
-                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            
-            if (saveResp.ok) {
-                showToast('商品已删除！网站已同步更新');
-                loadProducts();
-            } else {
-                showToast('删除失败', true);
-            }
-        } catch(e) {
-            showToast('删除失败: ' + e.message, true);
-        }
-        closeModal();
-    }
-    
-    // ===== 询盘管理 =====
     async function loadInquiries() {
         if (!checkToken()) return;
-        const container = document.getElementById('inquiryList');
-        container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-        
+        const c = document.getElementById('inquiryList');
+        c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         try {
-            const resp = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_INQUIRIES_FILE}`, {
-                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-            });
-            if (!resp.ok) throw new Error('加载失败');
-            const json = await resp.json();
-            const decoded = decodeURIComponent(escape(atob(json.content.replace(/\n/g, ''))));
-            allInquiries = JSON.parse(decoded);
-            window.inquiriesSha = json.sha;
+            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/inquiries.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
+            const j = await r.json();
+            const d = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+            allInquiries = JSON.parse(d);
+            window.iSha = j.sha;
             renderInquiries(allInquiries);
-        } catch(e) {
-            container.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败，请刷新重试</p></div>';
-        }
+        } catch(e) { c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; }
     }
     
-    function renderInquiries(inquiries) {
-        const container = document.getElementById('inquiryList');
+    function renderInquiries(list) {
+        const c = document.getElementById('inquiryList');
+        list = list.filter(i => i && (i.name || i.email || i.message));
         
-        // 更新统计
-        const unread = inquiries.filter(i => !i.read).length;
+        const unread = list.filter(i => !i.read).length;
         const today = new Date().toDateString();
-        const todayCount = inquiries.filter(i => new Date(i.timestamp).toDateString() === today).length;
-        const countries = new Set(inquiries.map(i => i.country)).size;
+        const todayCount = list.filter(i => { try { return new Date(i.timestamp).toDateString() === today; } catch(e) { return false; } }).length;
+        const countries = new Set(list.map(i => i.country).filter(x => x)).size;
         
-        document.getElementById('inq_total').textContent = inquiries.length;
+        document.getElementById('inq_total').textContent = list.length;
         document.getElementById('inq_unread').textContent = unread;
         document.getElementById('inq_today').textContent = todayCount;
         document.getElementById('inq_countries').textContent = countries;
         
-        // 更新徽章
         const badge = document.getElementById('inquiryBadge');
-        if (unread > 0) {
-            badge.style.display = 'flex';
-            badge.textContent = unread;
-        } else {
-            badge.style.display = 'none';
-        }
+        if (unread > 0) { badge.style.cssText = 'background:var(--accent);color:white;border-radius:50%;width:14px;height:14px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;margin-left:3px;'; badge.textContent = unread; }
+        else badge.style.display = 'none';
         
-        if (inquiries.length === 0) {
-            container.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>';
-            return;
-        }
+        if (!list.length) { c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>'; return; }
         
         const flags = { 'China': '🇨🇳', 'United States': '🇺🇸', 'Japan': '🇯🇵', 'Germany': '🇩🇪', 'United Kingdom': '🇬🇧', 'France': '🇫🇷', 'South Korea': '🇰🇷', 'Australia': '🇦🇺', 'Canada': '🇨🇦', 'Hong Kong': '🇭🇰', 'Chile': '🇨🇱' };
         
-        let html = '';
-        inquiries.forEach(inq => {
-            const flag = flags[inq.country] || '🌍';
-            const timeAgo = getTimeAgo(inq.timestamp);
-            const unreadClass = inq.read ? '' : 'unread';
-            const deviceIcon = inq.device === '手机' ? 'mobile-alt' : (inq.device === '平板' ? 'tablet-alt' : 'desktop');
-            
-            html += `<div class="inquiry-card ${unreadClass}" id="inq-${inq.id}">
-                <div class="inquiry-header">
-                    <div class="inquiry-avatar">${(inq.name || 'U').charAt(0).toUpperCase()}</div>
-                    <div>
-                        <div class="inquiry-name">${inq.name || 'Unknown'} ${!inq.read ? '<span class="inquiry-badge">NEW</span>' : ''}</div>
-                        <div class="inquiry-email">${inq.email || ''}</div>
-                    </div>
-                </div>
-                <div class="inquiry-meta">
-                    <span><i class="fas fa-map-marker-alt"></i> ${flag} ${inq.country || 'Unknown'}${inq.city ? ', ' + inq.city : ''}</span>
-                    <span><i class="fas fa-${deviceIcon}"></i> ${inq.device || '电脑'} · ${inq.browser || ''}</span>
-                    <span><i class="fas fa-clock"></i> ${timeAgo}</span>
-                </div>
-                <div class="inquiry-message">${(inq.message || '').replace(/\n/g, '<br>')}</div>
+        c.innerHTML = list.map(i => {
+            const flag = flags[i.country] || '🌍';
+            const timeAgo = ((ts) => { if (!ts) return '-'; const diff = Date.now() - ts; const m = Math.floor(diff/60000); if (m < 1) return '刚刚'; if (m < 60) return m + '分前'; const h = Math.floor(m/60); if (h < 24) return h + '时前'; return Math.floor(h/24) + '天前'; })(i.timestamp);
+            const msg = (i.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+            const devIcon = i.device === '手机' ? 'mobile-alt' : (i.device === '平板' ? 'tablet-alt' : 'desktop');
+            return `<div class="inquiry-card ${i.read ? '' : 'unread'}">
+                <div class="inquiry-header"><div class="inquiry-avatar">${(i.name || 'U').charAt(0).toUpperCase()}</div><div class="inquiry-info"><div class="inquiry-name">${i.name || 'Unknown'} ${!i.read ? '<span class="inquiry-badge">NEW</span>' : ''}</div><div class="inquiry-email">${i.email || ''}</div></div></div>
+                <div class="inquiry-meta"><span><i class="fas fa-map-marker-alt"></i> ${flag} ${i.country || '-'}</span><span><i class="fas fa-${devIcon}"></i> ${i.device || '电脑'}</span><span><i class="fas fa-clock"></i> ${timeAgo}</span></div>
+                <div class="inquiry-message">${msg}</div>
                 <div class="inquiry-actions">
-                    <button class="btn btn-primary btn-sm" onclick="replyEmail('${inq.email}')"><i class="fas fa-reply"></i> 邮件回复</button>
-                    ${inq.phone ? `<button class="btn btn-success btn-sm" onclick="replyWhatsApp('${inq.phone}')"><i class="fab fa-whatsapp"></i> WhatsApp</button>` : ''}
-                    ${!inq.read ? `<button class="btn btn-sm" style="background:rgba(46,204,113,0.2);color:#7dcea0;" onclick="markRead(${inq.id})"><i class="fas fa-check"></i> 标为已读</button>` : ''}
-                    <button class="btn btn-danger btn-sm" onclick="confirmDeleteInquiry(${inq.id})"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>`;
-        });
-        container.innerHTML = html;
-    }
-    
-    function getTimeAgo(timestamp) {
-        const now = Date.now();
-        const diff = now - timestamp;
-        const mins = Math.floor(diff / 60000);
-        const hours = Math.floor(diff / 3600000);
-        const days = Math.floor(diff / 86400000);
-        
-        if (mins < 1) return '刚刚';
-        if (mins < 60) return mins + '分钟前';
-        if (hours < 24) return hours + '小时前';
-        if (days < 30) return days + '天前';
-        return new Date(timestamp).toLocaleDateString();
+                    <button class="btn btn-primary btn-sm" onclick="window.open('mailto:${i.email || ''}')"><i class="fas fa-reply"></i> 邮件</button>
+                    ${!i.read ? `<button class="btn btn-success btn-sm" onclick="markRead(${i.id})"><i class="fas fa-check"></i> 已读</button>` : ''}
+                    <button class="btn btn-danger btn-sm" onclick="confirmDel('inquiry',${i.id})"><i class="fas fa-trash"></i></button>
+                </div></div>`;
+        }).join('');
     }
     
     async function markRead(id) {
-        const inq = allInquiries.find(i => i.id === id);
-        if (inq) {
-            inq.read = true;
-            await saveInquiries();
-            renderInquiries(allInquiries);
-        }
-    }
-    
-    function confirmDeleteInquiry(id) {
-        deleteTarget = { type: 'inquiry', id };
-        document.getElementById('deleteModalText').textContent = '确定要删除这条询盘吗？';
-        document.getElementById('deleteModal').classList.add('show');
-    }
-    
-    async function deleteInquiry() {
-        if (!deleteTarget || deleteTarget.type !== 'inquiry') return;
-        
-        allInquiries = allInquiries.filter(i => i.id !== deleteTarget.id);
-        await saveInquiries();
-        renderInquiries(allInquiries);
-        showToast('询盘已删除');
-        closeModal();
+        const i = allInquiries.find(x => x.id === id);
+        if (i) { i.read = true; await saveInquiries(); renderInquiries(allInquiries); }
     }
     
     async function saveInquiries() {
         try {
-            const body = {
-                message: 'Update inquiries',
-                content: btoa(unescape(encodeURIComponent(JSON.stringify(allInquiries)))),
-                sha: window.inquiriesSha
-            };
-            await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_INQUIRIES_FILE}`, {
-                method: 'PUT',
-                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-        } catch(e) {
-            console.error('Save inquiries error:', e);
-        }
+            const body = { message: 'Update inquiries', content: btoa(unescape(encodeURIComponent(JSON.stringify(allInquiries)))), sha: window.iSha };
+            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/inquiries.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            const j = await r.json(); window.iSha = j.content.sha;
+        } catch(e) {}
     }
     
-    function replyEmail(email) {
-        window.open(`mailto:${email}`);
+    function confirmDel(type, id, name) {
+        deleteTarget = { type, id };
+        document.getElementById('deleteModalText').textContent = type === 'product' ? `删除"${name}"？网站将同步删除。` : '删除这条询盘？';
+        document.getElementById('deleteModal').classList.add('show');
     }
     
-    function replyWhatsApp(phone) {
-        window.open(`https://wa.me/${phone.replace(/\D/g, '')}`);
-    }
-    
-    // ===== Modal =====
-    function closeModal() {
-        document.getElementById('deleteModal').classList.remove('show');
-        deleteTarget = null;
-    }
-    
-    document.getElementById('confirmDeleteBtn').onclick = function() {
-        if (deleteTarget && deleteTarget.type === 'product') {
-            deleteProduct();
-        } else if (deleteTarget && deleteTarget.type === 'inquiry') {
-            deleteInquiry();
+    document.getElementById('confirmDeleteBtn').onclick = async function() {
+        if (!deleteTarget) return;
+        closeModal();
+        if (deleteTarget.type === 'product') {
+            try {
+                const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
+                const j = await r.json();
+                let p = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
+                p = p.filter(x => x.id !== deleteTarget.id);
+                const body = { message: 'Delete product', content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
+                await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                showToast('已删除'); loadProducts();
+            } catch(e) { showToast('删除失败', true); }
+        } else {
+            allInquiries = allInquiries.filter(x => x.id !== deleteTarget.id);
+            await saveInquiries();
+            renderInquiries(allInquiries);
+            showToast('已删除');
         }
     };
     
-    // ===== Toast =====
-    function showToast(msg, isError = false) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.className = 'toast show' + (isError ? ' error' : '');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-    }
+    function closeModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
+    function showToast(m, err) { const t = document.getElementById('toast'); t.textContent = m; t.className = 'toast show' + (err ? ' error' : ''); setTimeout(() => t.classList.remove('show'), 2500); }
     
-    // ===== Google Analytics =====
+    // Google Analytics
     function handleLogin() {
         tokenClient = google.accounts.oauth2.initTokenClient({
             client_id: GA_CLIENT_ID,
             scope: 'https://www.googleapis.com/auth/analytics.readonly',
-            callback: (response) => {
-                if (response.access_token) {
-                    accessToken = response.access_token;
-                    localStorage.setItem('ga_token', accessToken);
-                    localStorage.setItem('ga_token_expiry', Date.now() + 3600000);
-                    showDashboard();
-                    loadAllData();
-                }
-            }
+            callback: (r) => { if (r.access_token) { accessToken = r.access_token; localStorage.setItem('ga_token', accessToken); localStorage.setItem('ga_token_expiry', Date.now() + 3600000); document.getElementById('loginSection').style.display = 'none'; document.getElementById('dashboardSection').style.display = 'block'; loadAllData(); } }
         });
         tokenClient.requestAccessToken();
     }
     
-    function handleLogout() {
-        accessToken = null;
-        localStorage.removeItem('ga_token');
-        localStorage.removeItem('ga_token_expiry');
-        document.getElementById('loginSection').style.display = 'block';
-        document.getElementById('dashboardSection').style.display = 'none';
-    }
+    function handleLogout() { accessToken = null; localStorage.removeItem('ga_token'); localStorage.removeItem('ga_token_expiry'); document.getElementById('loginSection').style.display = 'block'; document.getElementById('dashboardSection').style.display = 'none'; }
     
-    function showDashboard() {
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('dashboardSection').style.display = 'block';
-    }
-    
-    let startDate = '7daysAgo';
-    let endDate = 'yesterday';
-    
-    function setDateRange(start, btn) {
-        startDate = start;
-        document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        loadAllData();
-    }
-    
-    async function loadAllData() {
-        loadRealtime();
-        loadMetrics();
-        loadTrend();
-        loadCountries();
-        loadDevices();
-    }
+    let startDate = '7daysAgo', endDate = 'yesterday';
+    function setDateRange(s, btn) { startDate = s; document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); loadAllData(); }
+    function loadAllData() { if (!accessToken) return; loadRealtime(); loadMetrics(); loadTrend(); loadCountries(); loadDevices(); }
     
     async function loadRealtime() {
-        try {
-            const resp = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runRealtimeReport`, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ metrics: [{ name: 'activeUsers' }] })
-            });
-            const data = await resp.json();
-            document.getElementById('statRealtime').textContent = data.rows?.[0]?.metricValues?.[0]?.value || '0';
-        } catch(e) {
-            document.getElementById('statRealtime').textContent = '—';
-        }
+        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runRealtimeReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ metrics: [{ name: 'activeUsers' }] }) }); const d = await r.json(); document.getElementById('statRealtime').textContent = d.rows?.[0]?.metricValues?.[0]?.value || '0'; } catch(e) { document.getElementById('statRealtime').textContent = '-'; }
     }
     
     async function loadMetrics() {
-        try {
-            const resp = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    dateRanges: [{ startDate, endDate }],
-                    metrics: [
-                        { name: 'screenPageViews' },
-                        { name: 'totalUsers' },
-                        { name: 'sessions' },
-                        { name: 'averageSessionDuration' }
-                    ]
-                })
-            });
-            const data = await resp.json();
-            const rows = data.rows?.[0]?.metricValues || [];
-            document.getElementById('statPageviews').textContent = parseInt(rows[0]?.value || 0).toLocaleString();
-            document.getElementById('statUsers').textContent = parseInt(rows[1]?.value || 0).toLocaleString();
-            document.getElementById('statSessions').textContent = parseInt(rows[2]?.value || 0).toLocaleString();
-            const duration = parseFloat(rows[3]?.value || 0);
-            document.getElementById('statDuration').textContent = duration > 60 ? Math.floor(duration / 60) + '分' + Math.round(duration % 60) + '秒' : Math.round(duration) + '秒';
-        } catch(e) {
-            console.error('Load metrics error:', e);
-        }
+        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }, { name: 'sessions' }, { name: 'averageSessionDuration' }] }) }); const d = await r.json(); const v = d.rows?.[0]?.metricValues || []; document.getElementById('statPageviews').textContent = parseInt(v[0]?.value || 0).toLocaleString(); document.getElementById('statUsers').textContent = parseInt(v[1]?.value || 0).toLocaleString(); document.getElementById('statSessions').textContent = parseInt(v[2]?.value || 0).toLocaleString(); const dur = parseFloat(v[3]?.value || 0); document.getElementById('statDuration').textContent = dur > 60 ? Math.floor(dur/60) + '分' : Math.round(dur) + '秒'; } catch(e) {}
     }
     
     let trendChart, countryChart, deviceChart;
     
     async function loadTrend() {
-        try {
-            const resp = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    dateRanges: [{ startDate, endDate }],
-                    dimensions: [{ name: 'date' }],
-                    metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }],
-                    orderBys: [{ dimension: { dimensionName: 'date' } }]
-                })
-            });
-            const data = await resp.json();
-            const labels = data.rows?.map(r => r.dimensionValues[0].value.slice(-4)) || [];
-            const views = data.rows?.map(r => parseInt(r.metricValues[0].value)) || [];
-            const users = data.rows?.map(r => parseInt(r.metricValues[1].value)) || [];
-            
-            if (trendChart) trendChart.destroy();
-            trendChart = new Chart(document.getElementById('trendChart'), {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [
-                        { label: '浏览量', data: views, borderColor: '#0f4c81', backgroundColor: 'rgba(15,76,129,0.1)', fill: true, tension: 0.4 },
-                        { label: '访客', data: users, borderColor: '#e63946', backgroundColor: 'rgba(230,57,70,0.1)', fill: true, tension: 0.4 }
-                    ]
-                },
-                options: { responsive: true, plugins: { legend: { labels: { color: '#888' } } }, scales: { x: { ticks: { color: '#666' } }, y: { ticks: { color: '#666' } } } }
-            });
-        } catch(e) {
-            console.error('Load trend error:', e);
-        }
+        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'date' }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }], orderBys: [{ dimension: { dimensionName: 'date' } }] }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value.slice(-4)) || []; const views = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; const users = d.rows?.map(x => parseInt(x.metricValues[1].value)) || []; if (trendChart) trendChart.destroy(); trendChart = new Chart(document.getElementById('trendChart'), { type: 'line', data: { labels, datasets: [{ label: '浏览', data: views, borderColor: '#0f4c81', backgroundColor: 'rgba(15,76,129,0.1)', fill: true, tension: 0.4, pointRadius: 0 }, { label: '访客', data: users, borderColor: '#e63946', backgroundColor: 'rgba(230,57,70,0.1)', fill: true, tension: 0.4, pointRadius: 0 }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#888' } } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); } catch(e) {}
     }
     
     async function loadCountries() {
-        try {
-            const resp = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    dateRanges: [{ startDate, endDate }],
-                    dimensions: [{ name: 'country' }],
-                    metrics: [{ name: 'totalUsers' }],
-                    orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }],
-                    limit: 10
-                })
-            });
-            const data = await resp.json();
-            const labels = data.rows?.map(r => r.dimensionValues[0].value) || [];
-            const values = data.rows?.map(r => parseInt(r.metricValues[0].value)) || [];
-            
-            if (countryChart) countryChart.destroy();
-            countryChart = new Chart(document.getElementById('countryChart'), {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [{ label: '访客数', data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#3498db', '#95a5a6', '#d35400'] }]
-                },
-                options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#666' } }, y: { ticks: { color: '#666' } } } }
-            });
-        } catch(e) {
-            console.error('Load countries error:', e);
-        }
+        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'country' }], metrics: [{ name: 'totalUsers' }], orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }], limit: 10 }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value) || []; const values = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; if (countryChart) countryChart.destroy(); countryChart = new Chart(document.getElementById('countryChart'), { type: 'bar', data: { labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#3498db', '#95a5a6', '#d35400'] }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); } catch(e) {}
     }
     
     async function loadDevices() {
-        try {
-            const resp = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    dateRanges: [{ startDate, endDate }],
-                    dimensions: [{ name: 'deviceCategory' }],
-                    metrics: [{ name: 'totalUsers' }]
-                })
-            });
-            const data = await resp.json();
-            const labels = data.rows?.map(r => r.dimensionValues[0].value) || [];
-            const values = data.rows?.map(r => parseInt(r.metricValues[0].value)) || [];
-            
-            if (deviceChart) deviceChart.destroy();
-            deviceChart = new Chart(document.getElementById('deviceChart'), {
-                type: 'doughnut',
-                data: {
-                    labels,
-                    datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71'] }]
-                },
-                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#888' } } } }
-            });
-        } catch(e) {
-            console.error('Load devices error:', e);
-        }
+        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'totalUsers' }] }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value) || []; const values = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; if (deviceChart) deviceChart.destroy(); deviceChart = new Chart(document.getElementById('deviceChart'), { type: 'doughnut', data: { labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#888' } } } } }); } catch(e) {}
     }
     
-    // ===== 初始化 =====
-    window.onload = function() {
-        loadProducts();
-        loadInquiries();
-        
-        // 检查GA Token
-        const saved = localStorage.getItem('ga_token');
-        const expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0');
-        if (saved && Date.now() < expiry) {
-            accessToken = saved;
-        }
-    };
+    window.onload = function() { loadProducts(); const saved = localStorage.getItem('ga_token'); const expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0'); if (saved && Date.now() < expiry) accessToken = saved; };
     </script>
 </body>
 </html>
