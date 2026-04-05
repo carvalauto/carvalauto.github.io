@@ -277,16 +277,26 @@
         c.innerHTML = p.map(x => {
             const img = (x.image || '').split(',')[0] || '';
             const cat = (x.category || 'other').toUpperCase();
-            const name = x.name || '未命名';
-            const oem = x.oem || '';
-            return `<div class="product-card">
+            const name = (x.name || '未命名').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const oem = (x.oem || '').replace(/"/g, '&quot;');
+            return `<div class="product-card" data-id="${x.id}">
                 ${img ? `<img src="${img}" class="product-img" alt="" onerror="this.style.display='none'">` : '<div class="product-img" style="display:flex;align-items:center;justify-content:center;color:#555;"><i class="fas fa-image"></i></div>'}
                 <div class="product-info">
                     <div class="product-title">${name}</div>
                     <div class="product-meta"><span class="product-tag">${cat}</span>${oem ? `<span class="product-tag oem">OEM: ${oem}</span>` : ''}</div>
-                    <div class="product-actions"><button class="btn btn-danger" onclick="confirmDel('product',${x.id},'${name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i> 删除</button></div>
+                    <div class="product-actions"><button class="btn btn-danger delete-btn" data-id="${x.id}"><i class="fas fa-trash"></i> 删除</button></div>
                 </div></div>`;
         }).join('');
+        
+        // 使用事件委托绑定删除按钮
+        c.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                const product = allProducts.find(x => x.id === id);
+                const name = product ? (product.name || '未命名') : '商品';
+                confirmDelete('product', id, name);
+            });
+        });
     }
     
     function searchProducts() {
@@ -335,16 +345,32 @@
             const timeAgo = ((ts) => { if (!ts) return '-'; const diff = Date.now() - ts; const m = Math.floor(diff/60000); if (m < 1) return '刚刚'; if (m < 60) return m + '分前'; const h = Math.floor(m/60); if (h < 24) return h + '时前'; return Math.floor(h/24) + '天前'; })(i.timestamp);
             const msg = (i.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
             const devIcon = i.device === '手机' ? 'mobile-alt' : (i.device === '平板' ? 'tablet-alt' : 'desktop');
-            return `<div class="inquiry-card ${i.read ? '' : 'unread'}">
+            return `<div class="inquiry-card ${i.read ? '' : 'unread'}" data-id="${i.id}">
                 <div class="inquiry-header"><div class="inquiry-avatar">${(i.name || 'U').charAt(0).toUpperCase()}</div><div class="inquiry-info"><div class="inquiry-name">${i.name || 'Unknown'} ${!i.read ? '<span class="inquiry-badge">NEW</span>' : ''}</div><div class="inquiry-email">${i.email || ''}</div></div></div>
                 <div class="inquiry-meta"><span><i class="fas fa-map-marker-alt"></i> ${flag} ${i.country || '-'}</span><span><i class="fas fa-${devIcon}"></i> ${i.device || '电脑'}</span><span><i class="fas fa-clock"></i> ${timeAgo}</span></div>
                 <div class="inquiry-message">${msg}</div>
                 <div class="inquiry-actions">
                     <button class="btn btn-primary btn-sm" onclick="window.open('mailto:${i.email || ''}')"><i class="fas fa-reply"></i> 邮件</button>
-                    ${!i.read ? `<button class="btn btn-success btn-sm" onclick="markRead(${i.id})"><i class="fas fa-check"></i> 已读</button>` : ''}
-                    <button class="btn btn-danger btn-sm" onclick="confirmDel('inquiry',${i.id})"><i class="fas fa-trash"></i></button>
+                    ${!i.read ? `<button class="btn btn-success btn-sm mark-read-btn" data-id="${i.id}"><i class="fas fa-check"></i> 已读</button>` : ''}
+                    <button class="btn btn-danger btn-sm inquiry-delete-btn" data-id="${i.id}"><i class="fas fa-trash"></i></button>
                 </div></div>`;
         }).join('');
+        
+        // 绑定询盘删除按钮
+        c.querySelectorAll('.inquiry-delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                confirmDelete('inquiry', id, '');
+            });
+        });
+        
+        // 绑定已读按钮
+        c.querySelectorAll('.mark-read-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                markRead(id);
+            });
+        });
     }
     
     async function markRead(id) {
@@ -360,80 +386,87 @@
         } catch(e) {}
     }
     
-    function confirmDel(type, id, name) {
+    function confirmDelete(type, id, name) {
         deleteTarget = { type, id };
-        document.getElementById('deleteModalText').textContent = type === 'product' ? `删除"${name}"？网站将同步删除。` : '删除这条询盘？';
+        const text = type === 'product' ? `删除"${name || '该商品'}"？网站将同步删除。` : '删除这条询盘？';
+        document.getElementById('deleteModalText').textContent = text;
         document.getElementById('deleteModal').classList.add('show');
     }
     
     // 删除确认按钮事件绑定（在 DOM 加载后执行）
     function initDeleteButton() {
         const btn = document.getElementById('confirmDeleteBtn');
-        if (btn) {
-            btn.onclick = async function(e) {
-                e.preventDefault();
-                console.log('删除按钮被点击, deleteTarget:', deleteTarget);
-                
-                if (!deleteTarget || !deleteTarget.type) {
-                    showToast('请先选择要删除的项目', true);
-                    closeModal();
-                    return;
-                }
-                
-                const targetType = deleteTarget.type;
-                const targetId = deleteTarget.id;
+        if (!btn) return;
+        
+        btn.onclick = async function(e) {
+            e.preventDefault();
+            
+            if (!deleteTarget) {
+                showToast('请先选择要删除的项目', true);
                 closeModal();
-                
-                if (targetType === 'product') {
-                    if (!GH_TOKEN) {
-                        const t = prompt('请输入GitHub Token：');
-                        if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); }
-                        else { showToast('需要Token才能删除', true); return; }
-                    }
-                    showToast('正在删除...', false);
-                    try {
-                        // 先获取最新的 SHA
-                        const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
-                        const j = await r.json();
-                        let p = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
-                        
-                        // 过滤删除的商品
-                        const beforeCount = p.length;
-                        p = p.filter(x => x.id !== targetId);
-                        const afterCount = p.length;
-                        
-                        if (beforeCount === afterCount) {
-                            showToast('未找到该商品', true);
-                            return;
-                        }
-                        
-                        // 更新到 GitHub
-                        const body = { message: 'Delete product: ' + targetId, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
-                        const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-                        
-                        if (updateR.ok) {
-                            const updateJ = await updateR.json();
-                            window.pSha = updateJ.content.sha;
-                            // 更新缓存
-                            localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
-                            allProducts = p;
-                            renderProducts(allProducts);
-                            showToast('删除成功！网站已同步更新', false);
-                        } else {
-                            const errData = await updateR.json();
-                            showToast('删除失败: ' + (errData.message || 'GitHub错误'), true);
-                        }
-                    } catch(e) { 
-                        showToast('删除失败: ' + e.message, true); 
-                    }
-                } else {
-                    allInquiries = allInquiries.filter(x => x.id !== targetId);
-                    await saveInquiries();
-                    renderInquiries(allInquiries);
-                    showToast('已删除');
+                return;
+            }
+            
+            const targetType = deleteTarget.type;
+            const targetId = deleteTarget.id;
+            
+            if (!targetType || targetId === undefined) {
+                showToast('删除目标无效', true);
+                closeModal();
+                return;
+            }
+            
+            closeModal();
+            
+            if (targetType === 'product') {
+                if (!GH_TOKEN) {
+                    const t = prompt('请输入GitHub Token：');
+                    if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); }
+                    else { showToast('需要Token才能删除', true); return; }
                 }
-            };
-        }
+                showToast('正在删除...', false);
+                try {
+                    // 先获取最新的 SHA
+                    const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
+                    const j = await r.json();
+                    let p = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
+                    
+                    // 过滤删除的商品
+                    const beforeCount = p.length;
+                    p = p.filter(x => x.id !== targetId);
+                    const afterCount = p.length;
+                    
+                    if (beforeCount === afterCount) {
+                        showToast('未找到该商品', true);
+                        return;
+                    }
+                    
+                    // 更新到 GitHub
+                    const body = { message: 'Delete product: ' + targetId, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
+                    const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                    
+                    if (updateR.ok) {
+                        const updateJ = await updateR.json();
+                        window.pSha = updateJ.content.sha;
+                        // 更新缓存
+                        localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
+                        allProducts = p;
+                        renderProducts(allProducts);
+                        showToast('删除成功！网站已同步更新', false);
+                    } else {
+                        const errData = await updateR.json();
+                        showToast('删除失败: ' + (errData.message || 'GitHub错误'), true);
+                    }
+                } catch(e) { 
+                    showToast('删除失败: ' + e.message, true); 
+                }
+            } else if (targetType === 'inquiry') {
+                allInquiries = allInquiries.filter(x => x.id !== targetId);
+                await saveInquiries();
+                renderInquiries(allInquiries);
+                showToast('已删除');
+            }
+        };
     }
     
     function closeModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
