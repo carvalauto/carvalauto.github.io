@@ -248,8 +248,22 @@
             const d = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
             allProducts = JSON.parse(d);
             window.pSha = j.sha;
+            // 缓存到 localStorage
+            localStorage.setItem('cached_products', JSON.stringify({ data: allProducts, sha: j.sha, time: Date.now() }));
             renderProducts(allProducts);
-        } catch(e) { c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败</p></div>'; }
+        } catch(e) { 
+            // 尝试从缓存加载
+            const cached = localStorage.getItem('cached_products');
+            if (cached) {
+                const cachedData = JSON.parse(cached);
+                allProducts = cachedData.data;
+                window.pSha = cachedData.sha;
+                renderProducts(allProducts);
+                showToast('使用缓存数据', false);
+            } else {
+                c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败</p></div>'; 
+            }
+        }
     }
     
     function renderProducts(p) {
@@ -355,16 +369,44 @@
     document.getElementById('confirmDeleteBtn').onclick = async function() {
         if (!deleteTarget) return;
         closeModal();
+        
         if (deleteTarget.type === 'product') {
+            showToast('正在删除...', false);
             try {
+                // 先获取最新的 SHA
                 const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
                 const j = await r.json();
                 let p = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
+                
+                // 过滤删除的商品
+                const beforeCount = p.length;
                 p = p.filter(x => x.id !== deleteTarget.id);
-                const body = { message: 'Delete product', content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
-                await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-                showToast('已删除'); loadProducts();
-            } catch(e) { showToast('删除失败', true); }
+                const afterCount = p.length;
+                
+                if (beforeCount === afterCount) {
+                    showToast('未找到该商品', true);
+                    return;
+                }
+                
+                // 更新到 GitHub
+                const body = { message: 'Delete product: ' + deleteTarget.id, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
+                const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                
+                if (updateR.ok) {
+                    const updateJ = await updateR.json();
+                    window.pSha = updateJ.content.sha;
+                    // 更新缓存
+                    localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
+                    allProducts = p;
+                    renderProducts(allProducts);
+                    showToast('删除成功！网站已同步更新', false);
+                } else {
+                    const errData = await updateR.json();
+                    showToast('删除失败: ' + (errData.message || 'GitHub错误'), true);
+                }
+            } catch(e) { 
+                showToast('删除失败: ' + e.message, true); 
+            }
         } else {
             allInquiries = allInquiries.filter(x => x.id !== deleteTarget.id);
             await saveInquiries();
@@ -414,7 +456,23 @@
         try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'totalUsers' }] }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value) || []; const values = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; if (deviceChart) deviceChart.destroy(); deviceChart = new Chart(document.getElementById('deviceChart'), { type: 'doughnut', data: { labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#888' } } } } }); } catch(e) {}
     }
     
-    window.onload = function() { loadProducts(); const saved = localStorage.getItem('ga_token'); const expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0'); if (saved && Date.now() < expiry) accessToken = saved; };
+    window.onload = function() { 
+        // 先尝试从缓存快速显示
+        const cached = localStorage.getItem('cached_products');
+        if (cached) {
+            try {
+                const cachedData = JSON.parse(cached);
+                allProducts = cachedData.data;
+                window.pSha = cachedData.sha;
+                renderProducts(allProducts);
+            } catch(e) {}
+        }
+        // 然后从 GitHub 刷新数据
+        loadProducts(); 
+        const saved = localStorage.getItem('ga_token'); 
+        const expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0'); 
+        if (saved && Date.now() < expiry) accessToken = saved; 
+    };
     </script>
 </body>
 </html>
