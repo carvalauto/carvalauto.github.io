@@ -370,14 +370,21 @@
     function initDeleteButton() {
         const btn = document.getElementById('confirmDeleteBtn');
         if (btn) {
-            btn.onclick = async function() {
-                if (!deleteTarget) {
-                    showToast('删除目标无效', true);
+            btn.onclick = async function(e) {
+                e.preventDefault();
+                console.log('删除按钮被点击, deleteTarget:', deleteTarget);
+                
+                if (!deleteTarget || !deleteTarget.type) {
+                    showToast('请先选择要删除的项目', true);
+                    closeModal();
                     return;
                 }
+                
+                const targetType = deleteTarget.type;
+                const targetId = deleteTarget.id;
                 closeModal();
                 
-                if (deleteTarget.type === 'product') {
+                if (targetType === 'product') {
                     if (!GH_TOKEN) {
                         const t = prompt('请输入GitHub Token：');
                         if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); }
@@ -392,7 +399,7 @@
                         
                         // 过滤删除的商品
                         const beforeCount = p.length;
-                        p = p.filter(x => x.id !== deleteTarget.id);
+                        p = p.filter(x => x.id !== targetId);
                         const afterCount = p.length;
                         
                         if (beforeCount === afterCount) {
@@ -401,7 +408,7 @@
                         }
                         
                         // 更新到 GitHub
-                        const body = { message: 'Delete product: ' + deleteTarget.id, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
+                        const body = { message: 'Delete product: ' + targetId, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
                         const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
                         
                         if (updateR.ok) {
@@ -420,7 +427,7 @@
                         showToast('删除失败: ' + e.message, true); 
                     }
                 } else {
-                    allInquiries = allInquiries.filter(x => x.id !== deleteTarget.id);
+                    allInquiries = allInquiries.filter(x => x.id !== targetId);
                     await saveInquiries();
                     renderInquiries(allInquiries);
                     showToast('已删除');
