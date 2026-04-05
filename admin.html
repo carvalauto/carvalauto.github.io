@@ -366,54 +366,68 @@
         document.getElementById('deleteModal').classList.add('show');
     }
     
-    document.getElementById('confirmDeleteBtn').onclick = async function() {
-        if (!deleteTarget) return;
-        closeModal();
-        
-        if (deleteTarget.type === 'product') {
-            showToast('正在删除...', false);
-            try {
-                // 先获取最新的 SHA
-                const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
-                const j = await r.json();
-                let p = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
-                
-                // 过滤删除的商品
-                const beforeCount = p.length;
-                p = p.filter(x => x.id !== deleteTarget.id);
-                const afterCount = p.length;
-                
-                if (beforeCount === afterCount) {
-                    showToast('未找到该商品', true);
+    // 删除确认按钮事件绑定（在 DOM 加载后执行）
+    function initDeleteButton() {
+        const btn = document.getElementById('confirmDeleteBtn');
+        if (btn) {
+            btn.onclick = async function() {
+                if (!deleteTarget) {
+                    showToast('删除目标无效', true);
                     return;
                 }
+                closeModal();
                 
-                // 更新到 GitHub
-                const body = { message: 'Delete product: ' + deleteTarget.id, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
-                const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-                
-                if (updateR.ok) {
-                    const updateJ = await updateR.json();
-                    window.pSha = updateJ.content.sha;
-                    // 更新缓存
-                    localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
-                    allProducts = p;
-                    renderProducts(allProducts);
-                    showToast('删除成功！网站已同步更新', false);
+                if (deleteTarget.type === 'product') {
+                    if (!GH_TOKEN) {
+                        const t = prompt('请输入GitHub Token：');
+                        if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); }
+                        else { showToast('需要Token才能删除', true); return; }
+                    }
+                    showToast('正在删除...', false);
+                    try {
+                        // 先获取最新的 SHA
+                        const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
+                        const j = await r.json();
+                        let p = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
+                        
+                        // 过滤删除的商品
+                        const beforeCount = p.length;
+                        p = p.filter(x => x.id !== deleteTarget.id);
+                        const afterCount = p.length;
+                        
+                        if (beforeCount === afterCount) {
+                            showToast('未找到该商品', true);
+                            return;
+                        }
+                        
+                        // 更新到 GitHub
+                        const body = { message: 'Delete product: ' + deleteTarget.id, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
+                        const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                        
+                        if (updateR.ok) {
+                            const updateJ = await updateR.json();
+                            window.pSha = updateJ.content.sha;
+                            // 更新缓存
+                            localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
+                            allProducts = p;
+                            renderProducts(allProducts);
+                            showToast('删除成功！网站已同步更新', false);
+                        } else {
+                            const errData = await updateR.json();
+                            showToast('删除失败: ' + (errData.message || 'GitHub错误'), true);
+                        }
+                    } catch(e) { 
+                        showToast('删除失败: ' + e.message, true); 
+                    }
                 } else {
-                    const errData = await updateR.json();
-                    showToast('删除失败: ' + (errData.message || 'GitHub错误'), true);
+                    allInquiries = allInquiries.filter(x => x.id !== deleteTarget.id);
+                    await saveInquiries();
+                    renderInquiries(allInquiries);
+                    showToast('已删除');
                 }
-            } catch(e) { 
-                showToast('删除失败: ' + e.message, true); 
-            }
-        } else {
-            allInquiries = allInquiries.filter(x => x.id !== deleteTarget.id);
-            await saveInquiries();
-            renderInquiries(allInquiries);
-            showToast('已删除');
+            };
         }
-    };
+    }
     
     function closeModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
     function showToast(m, err) { const t = document.getElementById('toast'); t.textContent = m; t.className = 'toast show' + (err ? ' error' : ''); setTimeout(() => t.classList.remove('show'), 2500); }
@@ -457,6 +471,9 @@
     }
     
     window.onload = function() { 
+        // 初始化删除按钮事件
+        initDeleteButton();
+        
         // 先尝试从缓存快速显示
         const cached = localStorage.getItem('cached_products');
         if (cached) {
