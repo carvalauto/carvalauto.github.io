@@ -145,11 +145,12 @@
     "id": 9,
     "name": "Mobil 1 5W-20 6 Pack 1 Liter Automotive Lubricant",
     "category": "oil",
-    "oem": "AUTOMOTIVE",
+    "oem": "5W-20",
     "description": "",
     "image": "https://s.alicdn.com/@sc04/kf/A1270d31564804eeead3f1b39f223bf82e.png,https://s.alicdn.com/@img/imgextra/i3/O1CN01cbEaKF1YIzoMkO0fS,https://s.alicdn.com/@img/imgextra/i4/O1CN017fKWgn1TOQQQtZBdg,https://s.alicdn.com/@img/imgextra/i3/O1CN01TbQNWM1edxdI2lOFH,https://s.alicdn.com/@img/imgextra/i2/O1CN01GbklvK23NLezYrFLb,https://s.alicdn.com/@img/imgextra/i4/O1CN01ozt9DY1W111pw7f2C",
     "fitmentTable": [],
-    "url": "https://www.alibaba.com/product-detail/detail_1600757708218.html"
+    "url": "https://www.alibaba.com/product-detail/detail_1600757708218.html",
+    "oemCode": "5W-20"
   },
   {
     "id": 10,
