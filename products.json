@@ -7754,5 +7754,95 @@
       }
     ],
     "collectedAt": "2026-04-06T17:13:13.628Z"
+  },
+  {
+    "id": 41,
+    "name": "Factory Wholesale New Japan Brand Iridium Spark Plug 90919-01230 Sk20br11 Model Caldina for TOYOTA",
+    "oem": "90919-01230",
+    "description": "适配车型: 13款",
+    "image": "https://s.alicdn.com/@sc04/kf/Hb288952d562941fcae0ba99c94af9899O.jpg,https://s.alicdn.com/@sc04/kf/Hdf6882e8c098433b8efd4cf5e248033cy.jpg,https://s.alicdn.com/@sc04/kf/H687980e6b7384443bf455775f81d60efp.jpg,https://s.alicdn.com/@sc04/kf/H0e07577a213d49298c7417267688a3adA.jpg,https://s.alicdn.com/@sc04/kf/H1a26522bbd4b4ac0a26e964096d4b246F.jpg",
+    "category": "Japanese",
+    "url": "https://www.alibaba.com/product-detail/Factory-Wholesale-New-Japan-Brand-Iridium_1601560812482.html",
+    "fitmentTable": [
+      {
+        "make": "TOYOTA(JP)",
+        "model": "AVENSIS",
+        "year": "2003-2018",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA(JP)",
+        "model": "CALDINA",
+        "year": "2000-2007",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA(JP)",
+        "model": "GR 86",
+        "year": "2021-",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA(JP)",
+        "model": "PREMIO/ALLION",
+        "year": "2001-2021",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA(GR)",
+        "model": "GR 86",
+        "year": "2022-",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA(GR)",
+        "model": "AVENSIS",
+        "year": "2003-2011",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA(EU)",
+        "model": "AVENSIS",
+        "year": "2000-2018",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA(EU)",
+        "model": "GR 86",
+        "year": "2022-",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA(US)",
+        "model": "GR 86",
+        "year": "2021-",
+        "engine": ""
+      },
+      {
+        "make": "GAC TOYOTA(EU)",
+        "model": "86",
+        "year": "2016-",
+        "engine": ""
+      },
+      {
+        "make": "Toyota",
+        "model": "RAV 4 I (_A1_)",
+        "year": "1994-2000",
+        "engine": "2.0 4WD (SXA10)"
+      },
+      {
+        "make": "Toyota",
+        "model": "SIENNA (_L1_)",
+        "year": "1997-2002",
+        "engine": "3.0 (MCL10_)"
+      },
+      {
+        "make": "Toyota",
+        "model": "AVALON Saloon (_X1_)",
+        "year": "1994-2005",
+        "engine": "3.0 (MCX10_)"
+      }
+    ],
+    "collectedAt": "2026-04-06T17:13:34.336Z"
   }
 ]
