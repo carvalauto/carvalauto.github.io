@@ -1146,7 +1146,7 @@
     "category": "chinese",
     "oem": "COMPATIBLE",
     "description": "Place of Origin | China\nCar Model | For car\nOE NO | original\nThread size | OEM Standard size",
-    "image": "https://s.alicdn.com/@sc04/kf/H23f9810ce42f457ba2f84c69c0a94026B.png,https://s.alicdn.com/@sc04/kf/H20f7440ce00943f087da1b534cdf4ad00.png,https://s.alicdn.com/@sc04/kf/He4ee96590ca248849b325b17f0c06cbbi.png,https://s.alicdn.com/@sc04/kf/Hcf042e40ef1e4650b1601239f04a6edbY.png,https://s.alicdn.com/@sc04/kf/H1c43a6571db147b997cd843f3490abadf.png,https://s.alicdn.com/@sc04/kf/Hb4ddfda9e49f4576a88db6f7da4b92a4p.png",
+    "image": "https://s.alicdn.com/@sc04/kf/H23f9810ce42f457ba2f84c69c0a94026B.png,https://s.alicdn.com/@sc04/kf/H20f7440ce00943f087da1b534cdf4ad00.png,https://s.alicdn.com/@sc04/kf/He4ee96590ca248849b325b17f0c06cbbi.png,https://s.alicdn.com/@sc04/kf/Hcf042e40ef1e4650b1601239f04a6edbY.png,https://s.alicdn.com/@sc04/kf/Hb4ddfda9e49f4576a88db6f7da4b92a4p.png",
     "fitmentTable": [
       {
         "make": "Place of Origin",
@@ -1173,7 +1173,8 @@
         "engine": ""
       }
     ],
-    "url": "https://www.alibaba.com/product-detail/OEM-Compatible-BYD-Seal-EV-Spare_1601666058394.html"
+    "url": "https://www.alibaba.com/product-detail/OEM-Compatible-BYD-Seal-EV-Spare_1601666058394.html",
+    "oemCode": "COMPATIBLE"
   },
   {
     "id": 30,
