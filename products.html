@@ -998,14 +998,15 @@ var defaultProducts = [
     { id: 6, name: "Shell Helix 5W-30 Engine Oil", category: "oil", oem: "SHELL-5W30", description: "Fully synthetic engine oil 5W-30, 4L bottle. Suitable for most gasoline engines.", image: "" }
 ];
 
-// Load products from GitHub (使用 raw.githubusercontent.com 避免大文件 API 限制)
+// Load products from GitHub (添加时间戳绕过CDN缓存)
 async function loadProducts() {
     var grid = document.getElementById('productsGrid');
     grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;grid-column:1/-1;"><i class="fas fa-spinner fa-spin" style="font-size:28px;"></i><p style="margin-top:12px;">Loading products...</p></div>';
     
     try {
-        // 直接从 raw.githubusercontent.com 获取文件（无 1MB 限制）
-        var resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json');
+        // 添加时间戳参数绕过CDN缓存，确保获取最新数据
+        var timestamp = Date.now();
+        var resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?v=' + timestamp);
         if (resp.ok) {
             var data = await resp.json();
             if (Array.isArray(data) && data.length > 0) {
