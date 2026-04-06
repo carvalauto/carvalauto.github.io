@@ -6788,8 +6788,8 @@
     "name": "Hot Sale Auto Iridium Bujia Dense Spark Plug IK16 IK20 Good Price for Toyota VW for BMW Car Spark Plugs",
     "oem": "",
     "description": "适配车型: 28款",
-    "image": "https://s.alicdn.com/@sc04/kf/Habc9a4ea8124430c8ffdbcdd2484c8a1F.jpg,https://s.alicdn.com/@sc04/kf/Hafd712d961d145ab93e94a010cefc8af9.jpg,https://s.alicdn.com/@sc04/kf/H22cc2c33bdf84c0daaed547f26547562Y.jpg,https://s.alicdn.com/@sc04/kf/H278da7eccfec452a829bbbc70ba4ef385.jpg,https://s.alicdn.com/@sc04/kf/Hbb9fbe0e4a7e4194989e8d25b9996446S.jpg",
-    "category": "Japanese",
+    "image": "https://s.alicdn.com/@sc04/kf/Hafd712d961d145ab93e94a010cefc8af9.jpg,https://s.alicdn.com/@sc04/kf/H22cc2c33bdf84c0daaed547f26547562Y.jpg,https://s.alicdn.com/@sc04/kf/H278da7eccfec452a829bbbc70ba4ef385.jpg",
+    "category": "japanese",
     "url": "https://www.alibaba.com/product-detail/Hot-Sale-Auto-Iridium-Bujia-Dense_1601447608402.html",
     "fitmentTable": [
       {
@@ -6961,7 +6961,8 @@
         "engine": "2.4 4WD"
       }
     ],
-    "collectedAt": "2026-04-06T17:11:08.680Z"
+    "collectedAt": "2026-04-06T17:11:08.680Z",
+    "oemCode": ""
   },
   {
     "id": 39,
