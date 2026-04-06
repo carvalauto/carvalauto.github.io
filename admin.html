@@ -51,6 +51,7 @@
         .btn-danger { background: rgba(230,57,70,0.2); color: #ff6b7a; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: rgba(46,204,113,0.2); color: #7dcea0; }
+        .btn-edit { background: rgba(52,152,219,0.2); color: #5dade2; }
         .btn-sm { padding: 5px 8px; font-size: 9px; }
         
         .inquiry-list { display: flex; flex-direction: column; gap: 8px; }
@@ -96,12 +97,43 @@
         .toast.show { opacity: 1; transform: translateY(0); }
         .toast.error { background: #e74c3c; }
         
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; padding: 12px; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; padding: 12px; overflow-y: auto; }
         .modal.show { display: flex; }
         .modal-content { background: var(--bg-card); padding: 16px; border-radius: 8px; max-width: 280px; width: 100%; text-align: center; }
         .modal-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
         .modal-text { color: var(--text-muted); font-size: 12px; margin-bottom: 12px; }
         .modal-actions { display: flex; gap: 6px; justify-content: center; }
+        
+        /* 编辑弹窗样式 */
+        .edit-modal { max-width: 500px; text-align: left; }
+        .edit-modal .modal-title { text-align: center; margin-bottom: 16px; }
+        .edit-form { display: flex; flex-direction: column; gap: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group select, .form-group input, .form-group textarea {
+            padding: 10px 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            color: var(--text);
+            font-size: 13px;
+        }
+        .form-group select:focus, .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* 图片编辑区域 */
+        .images-editor { display: flex; flex-direction: column; gap: 8px; }
+        .image-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 5px; }
+        .image-item img { width: 60px; height: 60px; object-fit: contain; background: #2a2a2a; border-radius: 4px; }
+        .image-item input { flex: 1; padding: 6px 8px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-size: 10px; }
+        .image-item .btn-remove { padding: 4px 8px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
+        .btn-add-image { padding: 8px; background: rgba(46,204,113,0.1); color: #7dcea0; border: 1px dashed #7dcea0; border-radius: 5px; cursor: pointer; font-size: 11px; text-align: center; }
+        .btn-add-image:hover { background: rgba(46,204,113,0.2); }
+        
+        .edit-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .edit-actions .btn { flex: 1; justify-content: center; padding: 10px; }
         
         @media (min-width: 600px) {
             .header { padding: 12px 18px; }
@@ -113,6 +145,7 @@
             .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .product-img { height: 140px; }
             .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+            .edit-modal { max-width: 550px; }
         }
         
         @media (min-width: 1024px) {
@@ -195,16 +228,53 @@
         </div>
     </div>
 
+    <!-- 删除确认弹窗 -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
             <div class="modal-title">确认删除</div>
             <div class="modal-text" id="deleteModalText">确定要删除吗？</div>
             <div class="modal-actions">
-                <button class="btn" style="background:var(--border);" onclick="closeModal()">取消</button>
+                <button class="btn" style="background:var(--border);" onclick="closeDeleteModal()">取消</button>
                 <button class="btn btn-danger" id="confirmDeleteBtn">删除</button>
             </div>
         </div>
     </div>
+
+    <!-- 编辑商品弹窗 -->
+    <div class="modal" id="editModal">
+        <div class="modal-content edit-modal">
+            <div class="modal-title"><i class="fas fa-edit"></i> 编辑商品</div>
+            <div class="edit-form">
+                <div class="form-group">
+                    <label>商品分类</label>
+                    <select id="editCategory">
+                        <option value="japanese">日系 Japanese</option>
+                        <option value="korean">韩系 Korean</option>
+                        <option value="german">德系 German</option>
+                        <option value="chinese">国产 Chinese</option>
+                        <option value="oil">机油 Engine Oil</option>
+                        <option value="other">其他 Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>OEM 编码</label>
+                    <input type="text" id="editOem" placeholder="输入 OEM 编码...">
+                </div>
+                <div class="form-group">
+                    <label>商品图片 <span style="color:#666;font-size:10px;">(可删除多余图片或修改URL)</span></label>
+                    <div class="images-editor" id="imagesEditor">
+                        <!-- 动态生成图片列表 -->
+                    </div>
+                    <button type="button" class="btn-add-image" onclick="addImageField()"><i class="fas fa-plus"></i> 添加图片</button>
+                </div>
+            </div>
+            <div class="edit-actions">
+                <button class="btn" style="background:var(--border);" onclick="closeEditModal()">取消</button>
+                <button class="btn btn-success" id="saveEditBtn"><i class="fas fa-save"></i> 保存修改</button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast" id="toast"></div>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -215,6 +285,7 @@
     const GA_PROPERTY_ID = '529242507';
     
     let allProducts = [], allInquiries = [], accessToken = null, tokenClient = null, deleteTarget = null;
+    let editingProductId = null; // 当前编辑的商品ID
     
     function checkToken() {
         if (!GH_TOKEN) {
@@ -245,14 +316,22 @@
         try {
             const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
             const j = await r.json();
-            const d = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
-            allProducts = JSON.parse(d);
+            
+            // 处理大文件情况
+            let content;
+            if (j.content) {
+                content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+            } else {
+                // 文件太大，从 raw URL 获取
+                const rawR = await fetch(j.download_url);
+                content = await rawR.text();
+            }
+            
+            allProducts = JSON.parse(content);
             window.pSha = j.sha;
-            // 缓存到 localStorage
             localStorage.setItem('cached_products', JSON.stringify({ data: allProducts, sha: j.sha, time: Date.now() }));
             renderProducts(allProducts);
         } catch(e) { 
-            // 尝试从缓存加载
             const cached = localStorage.getItem('cached_products');
             if (cached) {
                 const cachedData = JSON.parse(cached);
@@ -261,7 +340,7 @@
                 renderProducts(allProducts);
                 showToast('使用缓存数据', false);
             } else {
-                c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败</p></div>'; 
+                c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
             }
         }
     }
@@ -275,33 +354,184 @@
         
         if (!p.length) { c.innerHTML = '<div class="loading"><i class="fas fa-box-open"></i><p>暂无商品</p></div>'; return; }
         c.innerHTML = p.map(x => {
-            const img = (x.image || '').split(',')[0] || '';
+            const img = (x.image || x.images || []).toString().split(',')[0] || '';
             const cat = (x.category || 'other').toUpperCase();
-            const name = (x.name || '未命名').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            const oem = (x.oem || '').replace(/"/g, '&quot;');
+            const name = (x.name || x.title || '未命名').toString().replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const oem = (x.oem || x.oemCode || '').toString().replace(/"/g, '&quot;');
             return `<div class="product-card" data-id="${x.id}">
                 ${img ? `<img src="${img}" class="product-img" alt="" onerror="this.style.display='none'">` : '<div class="product-img" style="display:flex;align-items:center;justify-content:center;color:#555;"><i class="fas fa-image"></i></div>'}
                 <div class="product-info">
-                    <div class="product-title">${name}</div>
+                    <div class="product-title">${name.length > 60 ? name.substring(0,60) + '...' : name}</div>
                     <div class="product-meta"><span class="product-tag">${cat}</span>${oem ? `<span class="product-tag oem">OEM: ${oem}</span>` : ''}</div>
-                    <div class="product-actions"><button class="btn btn-danger delete-btn" data-id="${x.id}"><i class="fas fa-trash"></i> 删除</button></div>
+                    <div class="product-actions">
+                        <button class="btn btn-edit edit-btn" data-id="${x.id}"><i class="fas fa-edit"></i> 编辑</button>
+                        <button class="btn btn-danger delete-btn" data-id="${x.id}"><i class="fas fa-trash"></i></button>
+                    </div>
                 </div></div>`;
         }).join('');
         
-        // 使用事件委托绑定删除按钮
+        // 绑定编辑按钮
+        c.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                // 支持 number 和 string 类型的 id
+                const product = allProducts.find(x => x.id == id || x.id === parseInt(id));
+                if (product) openEditModal(product);
+            });
+        });
+        
+        // 绑定删除按钮
         c.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                const id = parseInt(this.getAttribute('data-id'));
-                const product = allProducts.find(x => x.id === id);
-                const name = product ? (product.name || '未命名') : '商品';
+                const id = this.getAttribute('data-id');
+                const product = allProducts.find(x => x.id == id || x.id === parseInt(id));
+                const name = product ? (product.name || product.title || '未命名') : '商品';
                 confirmDelete('product', id, name);
             });
         });
     }
     
+    // ===== 编辑功能 =====
+    function openEditModal(product) {
+        editingProductId = product.id;
+        
+        // 设置分类
+        document.getElementById('editCategory').value = (product.category || 'other').toLowerCase();
+        
+        // 设置 OEM
+        document.getElementById('editOem').value = product.oem || product.oemCode || '';
+        
+        // 设置图片列表
+        const imagesEditor = document.getElementById('imagesEditor');
+        const images = (product.image || product.images || '').toString().split(',').map(s => s.trim()).filter(Boolean);
+        
+        imagesEditor.innerHTML = images.map((url, i) => `
+            <div class="image-item" data-index="${i}">
+                <img src="${url}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>'">
+                <input type="text" value="${url}" class="image-url">
+                <button class="btn-remove" onclick="removeImageField(this)"><i class="fas fa-times"></i></button>
+            </div>
+        `).join('');
+        
+        if (images.length === 0) {
+            imagesEditor.innerHTML = '<div style="color:var(--text-muted);font-size:11px;padding:8px;text-align:center;">暂无图片，点击下方添加</div>';
+        }
+        
+        document.getElementById('editModal').classList.add('show');
+    }
+    
+    function closeEditModal() {
+        document.getElementById('editModal').classList.remove('show');
+        editingProductId = null;
+    }
+    
+    function addImageField() {
+        const imagesEditor = document.getElementById('imagesEditor');
+        // 移除空状态提示
+        const emptyTip = imagesEditor.querySelector('div[style]');
+        if (emptyTip) emptyTip.remove();
+        
+        const index = imagesEditor.querySelectorAll('.image-item').length;
+        const newItem = document.createElement('div');
+        newItem.className = 'image-item';
+        newItem.dataset.index = index;
+        newItem.innerHTML = `
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><rect fill='%232a2a2a' width='60' height='60'/><text x='30' y='35' text-anchor='middle' fill='%23666' font-size='8'>New</text></svg>">
+            <input type="text" value="" class="image-url" placeholder="输入图片URL..." onchange="previewImage(this)">
+            <button class="btn-remove" onclick="removeImageField(this)"><i class="fas fa-times"></i></button>
+        `;
+        imagesEditor.appendChild(newItem);
+    }
+    
+    function removeImageField(btn) {
+        btn.closest('.image-item').remove();
+        // 如果没有图片了，显示空状态
+        const imagesEditor = document.getElementById('imagesEditor');
+        if (imagesEditor.querySelectorAll('.image-item').length === 0) {
+            imagesEditor.innerHTML = '<div style="color:var(--text-muted);font-size:11px;padding:8px;text-align:center;">暂无图片，点击下方添加</div>';
+        }
+    }
+    
+    function previewImage(input) {
+        const img = input.closest('.image-item').querySelector('img');
+        if (input.value) {
+            img.src = input.value;
+        }
+    }
+    
+    async function saveProductEdit() {
+        if (!editingProductId) return;
+        
+        const category = document.getElementById('editCategory').value;
+        const oem = document.getElementById('editOem').value.trim();
+        
+        // 收集图片URL
+        const imageInputs = document.querySelectorAll('.image-item .image-url');
+        const images = Array.from(imageInputs).map(i => i.value.trim()).filter(Boolean);
+        const imageStr = images.join(',');
+        
+        showToast('正在保存...', false);
+        
+        try {
+            // 获取最新数据
+            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
+            const j = await r.json();
+            
+            let content;
+            if (j.content) {
+                content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+            } else {
+                const rawR = await fetch(j.download_url);
+                content = await rawR.text();
+            }
+            
+            let products = JSON.parse(content);
+            
+            // 找到并更新商品
+            const index = products.findIndex(x => x.id == editingProductId || x.id === parseInt(editingProductId));
+            if (index !== -1) {
+                products[index].category = category;
+                products[index].oem = oem;
+                products[index].image = imageStr;
+                // 同时更新 oemCode 字段（兼容不同字段名）
+                products[index].oemCode = oem;
+            }
+            
+            // 保存到 GitHub
+            const body = { 
+                message: 'Update product: ' + editingProductId, 
+                content: btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2)))), 
+                sha: j.sha 
+            };
+            const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { 
+                method: 'PUT', 
+                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
+                body: JSON.stringify(body) 
+            });
+            
+            if (updateR.ok) {
+                const updateJ = await updateR.json();
+                window.pSha = updateJ.content.sha;
+                localStorage.setItem('cached_products', JSON.stringify({ data: products, sha: updateJ.content.sha, time: Date.now() }));
+                allProducts = products;
+                renderProducts(allProducts);
+                closeEditModal();
+                showToast('保存成功！网站已同步更新', false);
+            } else {
+                const errData = await updateR.json();
+                showToast('保存失败: ' + (errData.message || 'GitHub错误'), true);
+            }
+        } catch(e) {
+            showToast('保存失败: ' + e.message, true);
+        }
+    }
+    
     function searchProducts() {
         const k = document.getElementById('productSearch').value.toLowerCase();
-        renderProducts(allProducts.filter(p => (p.name || '').toLowerCase().includes(k) || (p.oem || '').toLowerCase().includes(k)));
+        renderProducts(allProducts.filter(p => 
+            (p.name || p.title || '').toLowerCase().includes(k) || 
+            (p.oem || p.oemCode || '').toLowerCase().includes(k)
+        ));
     }
     
     async function loadInquiries() {
@@ -356,7 +586,6 @@
                 </div></div>`;
         }).join('');
         
-        // 绑定询盘删除按钮
         c.querySelectorAll('.inquiry-delete-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const id = parseInt(this.getAttribute('data-id'));
@@ -364,7 +593,6 @@
             });
         });
         
-        // 绑定已读按钮
         c.querySelectorAll('.mark-read-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const id = parseInt(this.getAttribute('data-id'));
@@ -393,7 +621,6 @@
         document.getElementById('deleteModal').classList.add('show');
     }
     
-    // 删除确认按钮事件绑定（在 DOM 加载后执行）
     function initDeleteButton() {
         const btn = document.getElementById('confirmDeleteBtn');
         if (!btn) return;
@@ -403,7 +630,7 @@
             
             if (!deleteTarget) {
                 showToast('请先选择要删除的项目', true);
-                closeModal();
+                closeDeleteModal();
                 return;
             }
             
@@ -412,11 +639,11 @@
             
             if (!targetType || targetId === undefined) {
                 showToast('删除目标无效', true);
-                closeModal();
+                closeDeleteModal();
                 return;
             }
             
-            closeModal();
+            closeDeleteModal();
             
             if (targetType === 'product') {
                 if (!GH_TOKEN) {
@@ -426,14 +653,20 @@
                 }
                 showToast('正在删除...', false);
                 try {
-                    // 先获取最新的 SHA
                     const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
                     const j = await r.json();
-                    let p = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
                     
-                    // 过滤删除的商品
+                    let content;
+                    if (j.content) {
+                        content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+                    } else {
+                        const rawR = await fetch(j.download_url);
+                        content = await rawR.text();
+                    }
+                    
+                    let p = JSON.parse(content);
                     const beforeCount = p.length;
-                    p = p.filter(x => x.id !== targetId);
+                    p = p.filter(x => x.id != targetId && x.id !== parseInt(targetId));
                     const afterCount = p.length;
                     
                     if (beforeCount === afterCount) {
@@ -441,14 +674,12 @@
                         return;
                     }
                     
-                    // 更新到 GitHub
                     const body = { message: 'Delete product: ' + targetId, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
                     const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
                     
                     if (updateR.ok) {
                         const updateJ = await updateR.json();
                         window.pSha = updateJ.content.sha;
-                        // 更新缓存
                         localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
                         allProducts = p;
                         renderProducts(allProducts);
@@ -469,8 +700,16 @@
         };
     }
     
-    function closeModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
-    function showToast(m, err) { const t = document.getElementById('toast'); t.textContent = m; t.className = 'toast show' + (err ? ' error' : ''); setTimeout(() => t.classList.remove('show'), 2500); }
+    // 初始化保存编辑按钮
+    function initSaveEditButton() {
+        const btn = document.getElementById('saveEditBtn');
+        if (btn) {
+            btn.onclick = saveProductEdit;
+        }
+    }
+    
+    function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
+    function showToast(m, err) { const t = document.getElementById('toast'); t.textContent = m; t.className = 'toast show' + (err ? ' error' : ''); setTimeout(() => t.classList.remove('show'), 3000); }
     
     // Google Analytics
     function handleLogin() {
@@ -511,10 +750,9 @@
     }
     
     window.onload = function() { 
-        // 初始化删除按钮事件
         initDeleteButton();
+        initSaveEditButton();
         
-        // 先尝试从缓存快速显示
         const cached = localStorage.getItem('cached_products');
         if (cached) {
             try {
@@ -524,7 +762,6 @@
                 renderProducts(allProducts);
             } catch(e) {}
         }
-        // 然后从 GitHub 刷新数据
         loadProducts(); 
         const saved = localStorage.getItem('ga_token'); 
         const expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0'); 
