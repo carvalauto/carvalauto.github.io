@@ -14746,8 +14746,8 @@
     "name": "Factory Directly DENSO Ignition Coil 099700-2560 90919-02266 for Toy/ota Alp/hard Lex/us Msd Ignition Coil Ignition Coil for Car",
     "oem": "90919-02266",
     "description": "适配车型: 48款",
-    "image": "https://s.alicdn.com/@sc04/kf/H693fdf40bfbc40018f7374df75ed9636w.jpg,https://s.alicdn.com/@sc04/kf/Hd9f62c880f9a46cbb2014947de4f726fw.jpg,https://s.alicdn.com/@sc04/kf/Ha2916ad89c414bd496ac7f5ac5a57dceo.jpg,https://s.alicdn.com/@img/imgextra/i2/O1CN01M1wlXy1IWhrOEMX42_!!6000000000901-2-tps-522-522.png,https://s.alicdn.com/@sc04/kf/Hdbd906a02d154c3fb35993652132e405C.jpg,https://s.alicdn.com/@img/imgextra/i1/O1CN017IIzE71MpGLv2nxMd_!!6000000001483-2-tps-260-112.png",
-    "category": "Oil",
+    "image": "https://s.alicdn.com/@sc04/kf/H693fdf40bfbc40018f7374df75ed9636w.jpg,https://s.alicdn.com/@sc04/kf/Hd9f62c880f9a46cbb2014947de4f726fw.jpg,https://s.alicdn.com/@sc04/kf/Ha2916ad89c414bd496ac7f5ac5a57dceo.jpg,https://s.alicdn.com/@sc04/kf/Hdbd906a02d154c3fb35993652132e405C.jpg",
+    "category": "oil",
     "url": "https://www.alibaba.com/product-detail/Factory-Directly-DENSO-Ignition-Coil-099700_1601236620618.html",
     "fitmentTable": [
       {
@@ -15039,7 +15039,8 @@
         "engine": "250h (139KW,189PS)"
       }
     ],
-    "collectedAt": "2026-04-06T17:45:27.457Z"
+    "collectedAt": "2026-04-06T17:45:27.457Z",
+    "oemCode": "90919-02266"
   },
   {
     "id": 55,
