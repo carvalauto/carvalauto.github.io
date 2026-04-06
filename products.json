@@ -14650,8 +14650,8 @@
     "name": "Factory Directly DENSO  099770-1810 30520-R1A-A01 for Lingpai Civic Binzhi XR-V Accord Msd Ignition Coil Ignition Coil for Car",
     "oem": "099770-1810",
     "description": "适配车型: 14款",
-    "image": "https://s.alicdn.com/@sc04/kf/H530459ef4a8641dc8fc63876a526f34eO.jpg,https://s.alicdn.com/@sc04/kf/H74f70f51debe437797949cef30e76ae6s.jpg,https://s.alicdn.com/@sc04/kf/H59c7a1b91304474fb4622c43e14f251dW.jpg,https://s.alicdn.com/@sc04/kf/Hae95abe843a94df1b784b042dcda968bo.jpg,https://s.alicdn.com/@img/imgextra/i2/O1CN01M1wlXy1IWhrOEMX42_!!6000000000901-2-tps-522-522.png,https://s.alicdn.com/@img/imgextra/i1/O1CN017IIzE71MpGLv2nxMd_!!6000000001483-2-tps-260-112.png",
-    "category": "Oil",
+    "image": "https://s.alicdn.com/@sc04/kf/H530459ef4a8641dc8fc63876a526f34eO.jpg,https://s.alicdn.com/@sc04/kf/H74f70f51debe437797949cef30e76ae6s.jpg,https://s.alicdn.com/@sc04/kf/H59c7a1b91304474fb4622c43e14f251dW.jpg,https://s.alicdn.com/@sc04/kf/Hae95abe843a94df1b784b042dcda968bo.jpg",
+    "category": "japanese",
     "url": "https://www.alibaba.com/product-detail/Factory-Directly-DENSO-099770-1810-30520_1601237935588.html",
     "fitmentTable": [
       {
@@ -14739,7 +14739,8 @@
         "engine": "1.8 i-VTEC (104KW,141PS)"
       }
     ],
-    "collectedAt": "2026-04-06T17:46:02.754Z"
+    "collectedAt": "2026-04-06T17:46:02.754Z",
+    "oemCode": "099770-1810"
   },
   {
     "id": 54,
