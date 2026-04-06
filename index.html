@@ -10,18 +10,39 @@
     <meta name="author" content="Guangzhou Carval Auto Parts Co., Ltd.">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="">
+    <meta property="og:url" content="https://carvalautopart.com/">
     <meta property="og:title" content="Carval Auto Parts | OEM Quality Car Parts Supplier - Guangzhou China">
     <meta property="og:description" content="Trusted OEM quality auto parts supplier in Guangzhou. Japanese, Korean, German and Chinese car parts. Worldwide shipping.">
-    <meta property="og:image" content="carval-auto-logo.png">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/carval-auto-logo.png">
 
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoPartsStore","name":"Guangzhou Carval Auto Parts Co., Ltd.","url":"https://carvalautopart.com","description":"OEM quality auto parts supplier in Guangzhou, China.","foundingDate":"2008","address":{"@type":"PostalAddress","streetAddress":"No. 450, Huangshi East Road, Baiyun District","addressLocality":"Guangzhou","addressRegion":"Guangdong","addressCountry":"CN"},"contactPoint":{"@type":"ContactPoint","telephone":"+86-195-2122-8657","contactType":"customer service"}}</script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    
+    <!-- Font Awesome - 使用 unpkg CDN (更稳定) -->
+    <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <!-- 预加载首屏 logo -->
+    <link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/carval-auto-logo.png">
+    <!-- 使用系统字体替代Google Fonts，加快加载 -->
+    <style>
+        /* 系统字体替代Google Fonts */
+        body, .hero-title, .section-title, .nav-link { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+        
+        /* 图片加载占位符 */
+        img[loading="lazy"] { background: #f0f0f0; min-height: 100px; }
+    </style>
 
-    
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MR58CNED51');</script>
+    <!-- Google Analytics - 延迟加载 -->
+    <script>
+    window.addEventListener('load', function() {
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-MR58CNED51';
+        document.head.appendChild(gtagScript);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MR58CNED51');
+    });
+    </script>
 
     <style>
     /* ===== RESET & BASE ===== */
@@ -39,8 +60,8 @@
         --text-main: #1A1A1A;
         --text-soft: #555F6D;
         --border:    #D4D8DE;
-        --font-head: 'Barlow Condensed', sans-serif;
-        --font-body: 'Barlow', sans-serif;
+        --font-head: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+        --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
         --shadow-sm: 0 2px 8px rgba(0,0,0,0.10);
         --shadow-md: 0 6px 24px rgba(0,0,0,0.14);
         --shadow-lg: 0 16px 48px rgba(0,0,0,0.18);
@@ -79,19 +100,19 @@
     .brand {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         text-decoration: none;
-        padding-right: 24px;
+        padding-right: 20px;
         border-right: 1px solid rgba(255,255,255,0.12);
     }
     .brand-logo {
-        width: 36px; height: 36px;
+        width: 32px; height: 32px;
         object-fit: contain;
         filter: brightness(1.1);
     }
     .brand-text {
         font-family: var(--font-head);
-        font-size: 22px;
+        font-size: 20px;
         font-weight: 900;
         color: white;
         letter-spacing: 2px;
@@ -996,7 +1017,7 @@
     @media (max-width: 768px) {
         .desktop-nav { display: none; }
         .hamburger { display: flex; }
-        .topbar { padding: 0 16px; min-height: 52px; }
+        .topbar { padding: 0 16px; min-height: 48px; }
         .brand-text { font-size: 18px; }
         .brand-logo { width: 28px; height: 28px; }
 
@@ -1060,14 +1081,14 @@
 <header class="topbar" id="home">
     <div class="topbar-left">
         <a href="#home" class="brand">
-            <img src="carval-auto-logo.png" alt="Carval Logo" class="brand-logo">
+            <img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/carval-auto-logo.png" alt="Carval Logo" class="brand-logo">
             <div class="brand-text" data-lang="header_logo">CARVAL <span>AUTO</span></div>
         </a>
         <nav class="desktop-nav">
-            <a href="#home"     data-lang="nav_home">Home</a>
-            <a href="#about"    data-lang="nav_company">Company</a>
+            <a href="#home"         data-lang="nav_home">Home</a>
+            <a href="#about"        data-lang="nav_company">Company</a>
             <a href="products.html" data-lang="nav_products">Products</a>
-            <a href="#contact"  data-lang="nav_contact">Contact</a>
+            <a href="#contact"      data-lang="nav_contact">Contact</a>
         </nav>
     </div>
     <div class="topbar-right">
@@ -1100,10 +1121,10 @@
         <button class="mobile-nav-close" onclick="closeNav()"><i class="fas fa-times"></i></button>
     </div>
     <div class="mobile-nav-links">
-        <a href="#home"     data-lang="nav_home"     onclick="closeNav()"><i class="fas fa-home"></i>Home</a>
-        <a href="#about"    data-lang="nav_company"  onclick="closeNav()"><i class="fas fa-building"></i>Company</a>
+        <a href="#home"         data-lang="nav_home"     onclick="closeNav()"><i class="fas fa-home"></i>Home</a>
+        <a href="#about"        data-lang="nav_company"  onclick="closeNav()"><i class="fas fa-building"></i>Company</a>
         <a href="products.html" data-lang="nav_products" onclick="closeNav()"><i class="fas fa-cogs"></i>Products</a>
-        <a href="#contact"  data-lang="nav_contact"  onclick="closeNav()"><i class="fas fa-envelope"></i>Contact</a>
+        <a href="#contact"      data-lang="nav_contact"  onclick="closeNav()"><i class="fas fa-envelope"></i>Contact</a>
     </div>
 </nav>
 
@@ -1131,11 +1152,17 @@
             </div>
         </div>
         <div class="hero-btns">
-            <a href="products.html" class="btn-primary-hero"><i class="fas fa-cogs"></i> View Products</a>
+            <a href="#products" class="btn-primary-hero"><i class="fas fa-cogs"></i> View Products</a>
             <a href="#contact"  class="btn-outline-hero"><i class="fas fa-envelope"></i> Get a Quote</a>
         </div>
     </div>
 </section>
+
+<!-- Company Name + Logo bar -->
+<div class="company-id-bar">
+    <img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/carval-auto-logo.png" alt="Carval Logo" class="company-id-logo" data-lang="logo_alt">
+    <div class="company-id-name" data-lang="company_name">Guang zhou <span>Carval</span> Auto Part Co.,Ltd</div>
+</div>
 
 <!-- ===== ABOUT ===== -->
 <section id="about" class="about-section">
@@ -1180,15 +1207,15 @@
                 <div>
                     <div class="facility-heading" data-lang="facility_office">OUR OFFICE</div>
                     <div class="gallery-grid">
-                        <div class="gallery-cell"><img src="office1.jpg" alt="Office" data-lang="office1_alt"></div>
-                        <div class="gallery-cell"><img src="office2.jpg" alt="Office" data-lang="office2_alt"></div>
-                        <div class="gallery-cell"><img src="office3.jpg" alt="Office" data-lang="office3_alt"></div>
-                        <div class="gallery-cell"><img src="office4.jpg" alt="Office" data-lang="office4_alt"></div>
-                        <div class="gallery-cell"><img src="office5.jpg" alt="Office" data-lang="office5_alt"></div>
-                        <div class="gallery-cell"><img src="office6.jpg" alt="Office" data-lang="office6_alt"></div>
-                        <div class="gallery-cell"><img src="office7.jpg" alt="Office" data-lang="office7_alt"></div>
-                        <div class="gallery-cell"><img src="office8.jpg" alt="Office" data-lang="office8_alt"></div>
-                        <div class="gallery-cell"><img src="office9.jpg" alt="Office" data-lang="office9_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/office1.jpg" alt="Office" data-lang="office1_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/office2.jpg" alt="Office" data-lang="office2_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/office3.jpg" alt="Office" data-lang="office3_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/office4.jpg" alt="Office" data-lang="office4_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/office5.jpg" alt="Office" data-lang="office5_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/office6.jpg" alt="Office" data-lang="office6_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/office7.jpg" alt="Office" data-lang="office7_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/office8.jpg" alt="Office" data-lang="office8_alt"></div>
+                        <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/office9.jpg" alt="Office" data-lang="office9_alt"></div>
                     </div>
                 </div>
             </div>
@@ -1208,15 +1235,15 @@
         <div class="facility-block">
             <div class="facility-heading" data-lang="facility_repair">OUR REPAIR SHOP</div>
             <div class="gallery-grid">
-                <div class="gallery-cell"><img src="repair1.jpg" alt="Repair Shop" data-lang="repair1_alt"></div>
-                <div class="gallery-cell"><img src="repair2.jpg" alt="Repair Shop" data-lang="repair2_alt"></div>
-                <div class="gallery-cell"><img src="repair3.jpg" alt="Repair Shop" data-lang="repair3_alt"></div>
-                <div class="gallery-cell"><img src="repair4.jpg" alt="Repair Shop" data-lang="repair4_alt"></div>
-                <div class="gallery-cell"><img src="repair5.jpg" alt="Repair Shop" data-lang="repair5_alt"></div>
-                <div class="gallery-cell"><img src="repair6.jpg" alt="Repair Shop" data-lang="repair6_alt"></div>
-                <div class="gallery-cell"><img src="repair7.jpg" alt="Repair Shop" data-lang="repair7_alt"></div>
-                <div class="gallery-cell"><img src="repair8.jpg" alt="Repair Shop" data-lang="repair8_alt"></div>
-                <div class="gallery-cell"><img src="repair9.jpg" alt="Repair Shop" data-lang="repair9_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/repair1.jpg" alt="Repair Shop" data-lang="repair1_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/repair2.jpg" alt="Repair Shop" data-lang="repair2_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/repair3.jpg" alt="Repair Shop" data-lang="repair3_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/repair4.jpg" alt="Repair Shop" data-lang="repair4_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/repair5.jpg" alt="Repair Shop" data-lang="repair5_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/repair6.jpg" alt="Repair Shop" data-lang="repair6_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/repair7.jpg" alt="Repair Shop" data-lang="repair7_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/repair8.jpg" alt="Repair Shop" data-lang="repair8_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/repair9.jpg" alt="Repair Shop" data-lang="repair9_alt"></div>
             </div>
         </div>
 
@@ -1224,15 +1251,15 @@
         <div class="facility-block">
             <div class="facility-heading" data-lang="facility_factory">OUR FACTORY</div>
             <div class="gallery-grid">
-                <div class="gallery-cell"><img src="factory1.jpg" alt="Factory" data-lang="factory1_alt"></div>
-                <div class="gallery-cell"><img src="factory2.jpg" alt="Factory" data-lang="factory2_alt"></div>
-                <div class="gallery-cell"><img src="factory3.jpg" alt="Factory" data-lang="factory3_alt"></div>
-                <div class="gallery-cell"><img src="factory4.jpg" alt="Factory" data-lang="factory4_alt"></div>
-                <div class="gallery-cell"><img src="factory5.jpg" alt="Factory" data-lang="factory5_alt"></div>
-                <div class="gallery-cell"><img src="factory6.jpg" alt="Factory" data-lang="factory6_alt"></div>
-                <div class="gallery-cell"><img src="factory7.jpg" alt="Factory" data-lang="factory7_alt"></div>
-                <div class="gallery-cell"><img src="factory8.jpg" alt="Factory" data-lang="factory8_alt"></div>
-                <div class="gallery-cell"><img src="factory9.jpg" alt="Factory" data-lang="factory9_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/factory1.jpg" alt="Factory" data-lang="factory1_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/factory2.jpg" alt="Factory" data-lang="factory2_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/factory3.jpg" alt="Factory" data-lang="factory3_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/factory4.jpg" alt="Factory" data-lang="factory4_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/factory5.jpg" alt="Factory" data-lang="factory5_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/factory6.jpg" alt="Factory" data-lang="factory6_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/factory7.jpg" alt="Factory" data-lang="factory7_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/factory8.jpg" alt="Factory" data-lang="factory8_alt"></div>
+                <div class="gallery-cell"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/factory9.jpg" alt="Factory" data-lang="factory9_alt"></div>
             </div>
         </div>
     </div>
@@ -1249,57 +1276,57 @@
         <div class="products-grid">
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="japanese-cars.jpg" alt="Japanese Car Parts" class="product-img" data-lang="japanese_cars_alt">
+                    <img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/japanese-cars.jpg" alt="Japanese Car Parts" class="product-img" data-lang="japanese_cars_alt">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Japanese</div>
                     <div class="product-name" data-lang="product_japanese">Japanese Car Parts</div>
                     <div class="product-desc" data-lang="product_japanese_desc">Complete range of OEM quality parts for Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru, Isuzu and Daihatsu.</div>
-                    <a href="products.html" class="product-btn" data-lang="view_products"><i class="fas fa-arrow-right"></i> Inquire Now</a>
+                    <a href="products.html?cat=japanese" class="product-btn" data-lang="view_products"><i class="fas fa-arrow-right"></i> Inquire Now</a>
                 </div>
             </div>
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="german-cars.jpg" alt="German Car Parts" class="product-img" data-lang="german_cars_alt">
+                    <img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/german-cars.jpg" alt="German Car Parts" class="product-img" data-lang="german_cars_alt">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">German</div>
                     <div class="product-name" data-lang="product_german">German Car Parts</div>
                     <div class="product-desc" data-lang="product_german_desc">Premium parts for BMW, Mercedes-Benz, Volkswagen, Audi, Porsche, Opel, Skoda and Seat.</div>
-                    <a href="products.html" class="product-btn" data-lang="view_products"><i class="fas fa-arrow-right"></i> Inquire Now</a>
+                    <a href="products.html?cat=korean" class="product-btn" data-lang="view_products"><i class="fas fa-arrow-right"></i> Inquire Now</a>
                 </div>
             </div>
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="korean-cars.jpg" alt="Korean Car Parts" class="product-img" data-lang="korean_cars_alt">
+                    <img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/korean-cars.jpg" alt="Korean Car Parts" class="product-img" data-lang="korean_cars_alt">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Korean</div>
                     <div class="product-name" data-lang="product_korean">Korean Car Parts</div>
                     <div class="product-desc" data-lang="product_korean_desc">Comprehensive parts for Hyundai, Kia, SsangYong and Genesis vehicles.</div>
-                    <a href="products.html" class="product-btn" data-lang="view_products"><i class="fas fa-arrow-right"></i> Inquire Now</a>
+                    <a href="products.html?cat=german" class="product-btn" data-lang="view_products"><i class="fas fa-arrow-right"></i> Inquire Now</a>
                 </div>
             </div>
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="chinese-cars.jpg" alt="Chinese Car Parts" class="product-img" data-lang="chinese_cars_alt">
+                    <img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/chinese-cars.jpg" alt="Chinese Car Parts" class="product-img" data-lang="chinese_cars_alt">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Chinese</div>
                     <div class="product-name" data-lang="product_chinese">Chinese Car Parts</div>
                     <div class="product-desc" data-lang="product_chinese_desc">High-quality parts for Baojun, Wuling, Geely and other Chinese brands.</div>
-                    <a href="products.html" class="product-btn" data-lang="view_products"><i class="fas fa-arrow-right"></i> Inquire Now</a>
+                    <a href="products.html?cat=chinese" class="product-btn" data-lang="view_products"><i class="fas fa-arrow-right"></i> Inquire Now</a>
                 </div>
             </div>
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="engine-oil.jpg" alt="Engine Oil" class="product-img" data-lang="engine_oil_alt">
+                    <img loading="lazy" src="https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/engine-oil.jpg" alt="Engine Oil" class="product-img" data-lang="engine_oil_alt">
                 </div>
                 <div class="product-body">
                     <div class="product-cat">Engine Oil</div>
                     <div class="product-name" data-lang="product_oil">Engine Oil</div>
                     <div class="product-desc" data-lang="product_oil_desc">Full range of mineral, semi-synthetic and fully synthetic engine oils in all viscosity grades.</div>
-                    <a href="products.html" class="product-btn" data-lang="view_products"><i class="fas fa-arrow-right"></i> Inquire Now</a>
+                    <a href="products.html?cat=oil" class="product-btn" data-lang="view_products"><i class="fas fa-arrow-right"></i> Inquire Now</a>
                 </div>
             </div>
         </div>
@@ -1363,7 +1390,7 @@
                 <iframe
                     class="map-frame"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3689.220426912191!2d113.2704!3d23.1645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3402f85d0d5d5d5d%3A0x0!2sNo.%20450%2C%20Huangshi%20East%20Road%2C%20Baiyun%20District%2C%20Guangzhou%2C%20Guangdong!5e0!3m2!1sen!2sus!4v1710898765432!5m2!1sen!2sus"
-                    allowfullscreen></iframe>
+                    loading="lazy" allowfullscreen></iframe>
                 <div class="contact-items">
                     <div class="contact-item">
                         <div class="contact-item-icon"><i class="fas fa-map-marker-alt"></i></div>
@@ -2500,21 +2527,5 @@
         if (window.innerWidth > 768) closeNav();
     });
     </script>
-
-<!-- Google Analytics - Delayed Load -->
-<script>
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        var gtagScript = document.createElement('script');
-        gtagScript.async = true;
-        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-MR58CNED51';
-        document.head.appendChild(gtagScript);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-MR58CNED51');
-    }, 2000);
-});
-</script>
 </body>
 </html>
