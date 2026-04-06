@@ -8463,8 +8463,8 @@
     "name": "Ignition Coil 90919-02250 90919-02256 90919-02257 90919-A2003 90919-A2005 Specifically Designed for  Vehicles",
     "oem": "90919-02250",
     "description": "适配车型: 200款",
-    "image": "https://s.alicdn.com/@sc04/kf/Had708f048b824928b15e677994d4075cv.jpg,https://s.alicdn.com/@sc04/kf/Hee61feb99e8d489fbf6fa04838726b4ah.jpg,https://s.alicdn.com/@sc01/kf/A5dd909a5bd954acc91c77d611375b1bd0.jpg,https://s.alicdn.com/@sc04/kf/H90be9cff3d5349f297147d83911effabJ.jpg,https://s.alicdn.com/@sc04/kf/H4d94c4e04226404d8e28327d673d97f3b.jpg",
-    "category": "Oil",
+    "image": "https://s.alicdn.com/@sc04/kf/Had708f048b824928b15e677994d4075cv.jpg,https://s.alicdn.com/@sc04/kf/Hee61feb99e8d489fbf6fa04838726b4ah.jpg,https://s.alicdn.com/@sc04/kf/H90be9cff3d5349f297147d83911effabJ.jpg,https://s.alicdn.com/@sc04/kf/H4d94c4e04226404d8e28327d673d97f3b.jpg",
+    "category": "oil",
     "url": "https://www.alibaba.com/product-detail/Ignition-Coil-90919-02250-90919-02256_1601488775622.html",
     "fitmentTable": [
       {
@@ -9668,7 +9668,8 @@
         "engine": "2.0 i 16V (94KW,128PS)"
       }
     ],
-    "collectedAt": "2026-04-06T17:14:54.304Z"
+    "collectedAt": "2026-04-06T17:14:54.304Z",
+    "oemCode": "90919-02250"
   },
   {
     "id": 44,
