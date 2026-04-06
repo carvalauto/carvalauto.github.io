@@ -3083,8 +3083,8 @@
     "name": "AUTO SPARE PARTS for Denso Ignition Coil Pack test 90919 02239 for toyota corolla 19500 Ae110 Ignition Coil",
     "oem": "",
     "description": "适配车型: 200款",
-    "image": "https://s.alicdn.com/@sc04/kf/HTB1kI.kcKuSBuNjSsplq6ze8pXaJ.jpg,https://s.alicdn.com/@sc04/kf/HTB1RfovcQOWBuNjSsppq6xPgpXao.jpg,https://s.alicdn.com/@sc04/kf/H779e50be103545f1ac5659b88f1a6e681.jpg,https://s.alicdn.com/@sc04/kf/HTB1OZkhcQKWBuNjy1zjq6AOypXaS.jpg,https://s.alicdn.com/@sc04/kf/HTB11q7rcHuWBuNjSszgq6z8jVXaU.jpg,https://s.alicdn.com/@sc01/kf/Hf6a280fbe35f4124936d89c4e739a9f4L.jpg",
-    "category": "Oil",
+    "image": "https://s.alicdn.com/@sc04/kf/H779e50be103545f1ac5659b88f1a6e681.jpg,https://s.alicdn.com/@sc04/kf/HTB1OZkhcQKWBuNjy1zjq6AOypXaS.jpg,https://s.alicdn.com/@sc04/kf/HTB11q7rcHuWBuNjSszgq6z8jVXaU.jpg,https://s.alicdn.com/@sc01/kf/Hf6a280fbe35f4124936d89c4e739a9f4L.jpg",
+    "category": "japanese",
     "url": "https://www.alibaba.com/product-detail/AUTO-SPARE-PARTS-for-Denso-Ignition_60741658107.html",
     "fitmentTable": [
       {
@@ -4288,7 +4288,8 @@
         "engine": "1.6 (64KW,87PS)"
       }
     ],
-    "collectedAt": "2026-04-06T16:53:00.163Z"
+    "collectedAt": "2026-04-06T16:53:00.163Z",
+    "oemCode": ""
   },
   {
     "id": 33,
