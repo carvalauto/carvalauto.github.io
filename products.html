@@ -688,37 +688,6 @@
         }
         .modal-inquire:hover { background: var(--red-dark); transform: translateY(-2px); }
 
-        /* 适配车型表格样式 */
-        .fitment-table-wrap {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 10px;
-        }
-        .fitment-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-        }
-        .fitment-table th {
-            background: #f1f3f4;
-            padding: 8px 10px;
-            text-align: left;
-            font-weight: 600;
-            color: #333;
-            border-bottom: 2px solid #ddd;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .fitment-table td {
-            padding: 6px 10px;
-            border-bottom: 1px solid #eee;
-            color: #555;
-        }
-        .fitment-table tbody tr:hover {
-            background: #f9f9f9;
-        }
-
         .modal-contact {
             padding: 20px 24px;
             background: #f8f9fa;
@@ -1041,7 +1010,7 @@ async function loadProducts() {
         if (resp.ok) {
             var json = await resp.json();
             if (json.content) {
-                var decoded = atob(json.content.replace(/\n/g, ''));
+                var decoded = decodeURIComponent(escape(atob(json.content.replace(/\n/g, ''))));
                 var data = JSON.parse(decoded);
                 if (Array.isArray(data) && data.length > 0) {
                     products = data;
@@ -1175,20 +1144,7 @@ function openProduct(id) {
     if (compatInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-check-circle"></i></div><div><div class="spec-label">Compatible With</div><div class="spec-value">' + compatInfo + '</div></div></div>';
     
     document.getElementById('modalSpecs').innerHTML = specsHtml;
-    
-    // 适配车型表格显示
-    var fitmentHtml = '';
-    if (p.fitmentTable && p.fitmentTable.length > 0) {
-        fitmentHtml = '<div class="fitment-table-wrap"><table class="fitment-table"><thead><tr><th>Make</th><th>Model</th><th>Year</th><th>Engine</th></tr></thead><tbody>';
-        p.fitmentTable.forEach(function(item) {
-            fitmentHtml += '<tr><td>' + (item.make || '-') + '</td><td>' + (item.model || '-') + '</td><td>' + (item.year || '-') + '</td><td>' + (item.engine || '-') + '</td></tr>';
-        });
-        fitmentHtml += '</tbody></table></div>';
-        document.getElementById('modalDesc').innerHTML = fitmentHtml;
-    } else {
-        document.getElementById('modalDesc').textContent = cleanDesc;
-    }
-    
+    document.getElementById('modalDesc').textContent = cleanDesc;
     document.getElementById('modalProductRef').value = p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '');
     document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '') + '. Please provide price and availability.';
 
