@@ -666,6 +666,44 @@
             line-height: 1.7;
             margin-bottom: 20px;
         }
+        .modal-fitment {
+            margin-bottom: 16px;
+        }
+        .modal-fitment-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--steel);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .modal-fitment-title i { color: var(--red); }
+        .fitment-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .fitment-table th {
+            background: var(--steel);
+            color: white;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .fitment-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #eee;
+            color: var(--text-main);
+        }
+        .fitment-table tr:hover td { background: #f5f5f5; }
+        .fitment-table tr:nth-child(even) td { background: #fafafa; }
+        .fitment-table tr:nth-child(even):hover td { background: #f0f0f0; }
         .modal-inquire {
             display: flex;
             align-items: center;
@@ -918,6 +956,7 @@
                 <div class="modal-category" id="modalCategory"></div>
                 <div class="modal-title" id="modalTitle"></div>
                 <div class="modal-specs" id="modalSpecs"></div>
+                <div class="modal-fitment" id="modalFitment"></div>
                 <div class="modal-desc" id="modalDesc"></div>
                 <a id="modalInquireBtn" class="modal-inquire" href="index.html#contact">
                     <i class="fas fa-paper-plane"></i> Send Inquiry
@@ -1042,7 +1081,7 @@ function renderProducts() {
         return;
     }
 
-    grid.innerHTML = filtered.map(function(p, index) {
+    grid.innerHTML = filtered.map(function(p) {
         var firstImg = p.image ? p.image.split(',')[0].trim() : '';
         var desc = p.description || '';
         var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
@@ -1050,11 +1089,8 @@ function renderProducts() {
         var brandInfo = brandMatch ? brandMatch[1].trim() : '';
         var compatInfo = compatMatch ? compatMatch[1].trim() : '';
         var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi, '').replace(/Compatible with:\s*[^.]+\./gi, '').replace(/\|/g, '').trim();
-        
-        // 使用 URL 作为唯一标识（因为 id 可能重复）
-        var productKey = (p.url || p.name).replace(/'/g, "\\'").replace(/"/g, '\\"');
 
-        return '<div class="product-card" data-url="' + (p.url || '') + '" onclick="openProductByKey(\'' + productKey + '\')">' +
+        return '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
             '<div class="product-img-wrap">' +
                 '<div class="img-skeleton"><i class="fas fa-image"></i></div>' +
                 (firstImg 
@@ -1070,7 +1106,7 @@ function renderProducts() {
                     (compatInfo ? '<div class="meta-row"><i class="fas fa-check-circle"></i><span><strong>Fits:</strong> ' + compatInfo + '</span></div>' : '') +
                 '</div>' +
                 (cleanDesc ? '<div class="product-desc">' + cleanDesc.substring(0, 100) + '...</div>' : '') +
-                '<button class="inquire-btn" onclick="event.stopPropagation(); openProductByKey(\'' + productKey + '\')"><i class="fas fa-info-circle"></i> View Details</button>' +
+                '<button class="inquire-btn" onclick="event.stopPropagation(); openProduct(' + p.id + ')"><i class="fas fa-info-circle"></i> View Details</button>' +
             '</div>' +
         '</div>';
     }).join('');
@@ -1106,22 +1142,9 @@ function searchProducts() {
 var carouselImages = [];
 var currentImgIndex = 0;
 
-// 根据 URL 或 name 查找产品（解决 id 重复问题）
-function openProductByKey(key) {
-    var p = productsData.find(function(x) { return x.url === key || x.name === key; });
-    if (!p) return;
-    openProductDetail(p);
-}
-
-// 根据 id 查找产品（兼容旧代码）
 function openProduct(id) {
     var p = productsData.find(function(x) { return x.id === id; });
     if (!p) return;
-    openProductDetail(p);
-}
-
-// 显示产品详情
-function openProductDetail(p) {
 
     carouselImages = p.image ? p.image.split(',').map(function(s) { return s.trim(); }).filter(Boolean) : [];
     currentImgIndex = 0;
@@ -1157,34 +1180,24 @@ function openProductDetail(p) {
     
     document.getElementById('modalSpecs').innerHTML = specsHtml;
     
-    // 显示车型表格或描述
-    var descContainer = document.getElementById('modalDesc');
+    // 显示车型表格
+    var fitmentHtml = '';
     if (p.fitmentTable && p.fitmentTable.length > 0) {
-        // 显示车型表格
-        var tableHtml = '<div style="margin-bottom:15px;"><strong style="font-size:13px;color:#333;">Compatible Vehicles:</strong></div>';
-        tableHtml += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:15px;">';
-        tableHtml += '<thead><tr style="background:#f5f5f5;">';
-        tableHtml += '<th style="padding:8px;border:1px solid #ddd;text-align:left;">Make</th>';
-        tableHtml += '<th style="padding:8px;border:1px solid #ddd;text-align:left;">Model</th>';
-        tableHtml += '<th style="padding:8px;border:1px solid #ddd;text-align:left;">Year</th>';
-        tableHtml += '<th style="padding:8px;border:1px solid #ddd;text-align:left;">Engine</th>';
-        tableHtml += '</tr></thead><tbody>';
-        p.fitmentTable.forEach(function(row) {
-            tableHtml += '<tr>';
-            tableHtml += '<td style="padding:6px 8px;border:1px solid #ddd;">' + (row.make || '-') + '</td>';
-            tableHtml += '<td style="padding:6px 8px;border:1px solid #ddd;">' + (row.model || '-') + '</td>';
-            tableHtml += '<td style="padding:6px 8px;border:1px solid #ddd;">' + (row.year || '-') + '</td>';
-            tableHtml += '<td style="padding:6px 8px;border:1px solid #ddd;">' + (row.engine || '-') + '</td>';
-            tableHtml += '</tr>';
+        fitmentHtml = '<div class="modal-fitment-title"><i class="fas fa-car-side"></i> Compatible Vehicles (' + p.fitmentTable.length + ')</div>' +
+            '<table class="fitment-table"><thead><tr><th>Make</th><th>Model</th><th>Year</th><th>Engine</th></tr></thead><tbody>';
+        p.fitmentTable.forEach(function(item) {
+            fitmentHtml += '<tr>' +
+                '<td>' + (item.make || '-') + '</td>' +
+                '<td>' + (item.model || '-') + '</td>' +
+                '<td>' + (item.year || '-') + '</td>' +
+                '<td>' + (item.engine || '-') + '</td>' +
+            '</tr>';
         });
-        tableHtml += '</tbody></table>';
-        descContainer.innerHTML = tableHtml;
-    } else if (cleanDesc) {
-        descContainer.textContent = cleanDesc;
-    } else {
-        descContainer.innerHTML = '';
+        fitmentHtml += '</tbody></table>';
     }
+    document.getElementById('modalFitment').innerHTML = fitmentHtml;
     
+    document.getElementById('modalDesc').textContent = cleanDesc;
     document.getElementById('modalProductRef').value = p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '');
     document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '') + '. Please provide price and availability.';
 
