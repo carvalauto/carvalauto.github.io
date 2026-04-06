@@ -5311,5 +5311,71 @@
     ],
     "collectedAt": "2026-04-06T16:54:04.619Z",
     "oemCode": "90919-02248"
+  },
+  {
+    "id": 34,
+    "name": "Supply 3102236L High Car Ea888 90919-02240 F6t548 90919-02238 Spark Plug 1nz 27301-2B010 68320417AA Ignition Coil",
+    "oem": "90919-02240",
+    "description": "适配车型: 9款",
+    "image": "https://s.alicdn.com/@sc04/kf/H6afee3b3230e4c9994a54ef34e03e87dF.png,https://s.alicdn.com/@sc04/kf/H449ffed3f60b4a6591144d7aceb5b503O.png,https://s.alicdn.com/@sc04/kf/He6146da80f4047ed9d10e6944ad417d1a.png,https://s.alicdn.com/@sc04/kf/Hc0e94d060dc644bdbacafa43c0a79e61S.png,https://s.alicdn.com/@sc04/kf/H19b6b45cfed340a2b71449e61ea78bf12.png,https://s.alicdn.com/@sc04/kf/H2c66bbf0744545d8b8aa77b8e160bbdfK.png",
+    "category": "Oil",
+    "url": "https://www.alibaba.com/product-detail/Supply-3102236L-High-Car-Ea888-90919_1601429300158.html",
+    "fitmentTable": [
+      {
+        "make": "Toyota",
+        "model": "CAMRY Saloon (_V4_)",
+        "year": "2006-2011",
+        "engine": "2.4 (ACV40)"
+      },
+      {
+        "make": "Toyota",
+        "model": "YARIS (_P9_)",
+        "year": "2005-",
+        "engine": "1.5 (NCP91_)"
+      },
+      {
+        "make": "Toyota",
+        "model": "PRIUS C (NHP10_)",
+        "year": "2011-",
+        "engine": "1.5 Hybrid"
+      },
+      {
+        "make": "Toyota",
+        "model": "PRIUS (_W3_)",
+        "year": "2009-",
+        "engine": "1.8 Hybrid (ZVW3_)"
+      },
+      {
+        "make": "Toyota",
+        "model": "RAV 4 III (_A3_)",
+        "year": "2005-",
+        "engine": "2.4 (ACA33)"
+      },
+      {
+        "make": "Toyota",
+        "model": "RAV 4 II (_A2_)",
+        "year": "2000-2005",
+        "engine": "2.0 4WD (ACA21, ACA20)"
+      },
+      {
+        "make": "Toyota",
+        "model": "VIOS/YARIS Saloon (_P9_)",
+        "year": "2005-",
+        "engine": "1.5 (NCP93_)"
+      },
+      {
+        "make": "Toyota",
+        "model": "PRIUS PLUS (_W4_)",
+        "year": "2011-",
+        "engine": "1.8 Hybrid (ZVW4_)"
+      },
+      {
+        "make": "Toyota",
+        "model": "YARIS (_P1_)",
+        "year": "1999-2005",
+        "engine": "1.3 (SCP12_)"
+      }
+    ],
+    "collectedAt": "2026-04-06T17:06:09.057Z"
   }
 ]
