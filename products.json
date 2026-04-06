@@ -15046,8 +15046,8 @@
     "name": "Factory Directly DENSO 099700-1470 30520-R40-007 for Song Poetry Civic Odyssey Elysion Msd Ignition Coil Ignition Coil for Car",
     "oem": "099700-1470",
     "description": "适配车型: 21款",
-    "image": "https://s.alicdn.com/@sc04/kf/H31069fd99bdb4004bcd891144e117b68r.jpg,https://s.alicdn.com/@sc04/kf/H2793df58e4324939b53d1703b052d9a3f.jpg,https://s.alicdn.com/@sc04/kf/H038b4599740f491b9b0e80444c8456f0z.jpg,https://s.alicdn.com/@sc04/kf/H463b6f2b844742dd973fd0f4551e51e4M.jpg,https://s.alicdn.com/@img/imgextra/i2/O1CN01M1wlXy1IWhrOEMX42_!!6000000000901-2-tps-522-522.png,https://s.alicdn.com/@img/imgextra/i1/O1CN017IIzE71MpGLv2nxMd_!!6000000001483-2-tps-260-112.png",
-    "category": "Oil",
+    "image": "https://s.alicdn.com/@sc04/kf/H31069fd99bdb4004bcd891144e117b68r.jpg,https://s.alicdn.com/@sc04/kf/H2793df58e4324939b53d1703b052d9a3f.jpg,https://s.alicdn.com/@sc04/kf/H038b4599740f491b9b0e80444c8456f0z.jpg,https://s.alicdn.com/@sc04/kf/H463b6f2b844742dd973fd0f4551e51e4M.jpg",
+    "category": "oil",
     "url": "https://www.alibaba.com/product-detail/Factory-Directly-DENSO-099700-1470-30520_1601238042244.html",
     "fitmentTable": [
       {
@@ -15177,6 +15177,7 @@
         "engine": ""
       }
     ],
-    "collectedAt": "2026-04-06T17:45:51.073Z"
+    "collectedAt": "2026-04-06T17:45:51.073Z",
+    "oemCode": "099700-1470"
   }
 ]
