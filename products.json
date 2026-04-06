@@ -13432,5 +13432,1217 @@
       }
     ],
     "collectedAt": "2026-04-06T17:39:58.224Z"
+  },
+  {
+    "id": 52,
+    "name": "High Performance Auto Parts Iridium Blue Iridium Spark Plug SC20HR11 for Toyo-ta Denso 90919-01249",
+    "oem": "90919-01249",
+    "description": "适配车型: 200款",
+    "image": "https://s.alicdn.com/@sc04/kf/Ha1b94075110446b3b00b5a13139bdeb6E.jpg,https://s.alicdn.com/@sc04/kf/Hc944dcd71c58445da4e745964573e47dT.jpg,https://s.alicdn.com/@sc04/kf/Hf982eb2769774b1c919d43c340a2eb25L.jpg,https://s.alicdn.com/@sc04/kf/Hfffd8fc963f24a3d9a80193c51d4708dh.jpg,https://s.alicdn.com/@sc04/kf/Hb5f44a2556dd4d4bae34770f73701fc3F.jpg,https://s.alicdn.com/@sc04/kf/Heea168a1b9544bd6a914bbbfe2db8b83i.jpg",
+    "category": "Japanese",
+    "url": "https://www.alibaba.com/product-detail/High-Performance-Auto-Parts-Iridium-Blue_1601267044918.html",
+    "fitmentTable": [
+      {
+        "make": "VW",
+        "model": "PASSAT B5",
+        "year": "1999.08-2000.11",
+        "engine": "1.9 TDI 4motion (85KW,115PS)"
+      },
+      {
+        "make": "VW",
+        "model": "TRANSPORTER T4 Van",
+        "year": "1996.05-2000.05",
+        "engine": "2.8 VR6 (103KW,140PS)"
+      },
+      {
+        "make": "VW",
+        "model": "LT 40-55 I Van",
+        "year": "1982.12-1992.07",
+        "engine": "2.4 4WD (66KW,90PS)"
+      },
+      {
+        "make": "VW",
+        "model": "TIGUAN VAN",
+        "year": "2009.11-2011.05",
+        "engine": "2.0 TSI 4motion (147KW,200PS)"
+      },
+      {
+        "make": "VW",
+        "model": "SCIROCCO",
+        "year": "1983.08-1984.07",
+        "engine": "1.3 (40KW,55PS)"
+      },
+      {
+        "make": "VW",
+        "model": "PASSAT B2 Variant",
+        "year": "1981.01-1983.02",
+        "engine": "1.6 (63KW,85PS)"
+      },
+      {
+        "make": "VW",
+        "model": "GOLF V Variant",
+        "year": "2007.06-2009.07",
+        "engine": "2.0 TFSI (147KW,200PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "V40 Estate",
+        "year": "1999.03-2004.06",
+        "engine": "1.8 LPG (90KW,122PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "V90 II Estate",
+        "year": "2016.03-2018.12",
+        "engine": "T8 Plug-in-Hybrid AWD (299KW,407PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "V40 Estate",
+        "year": "1997.10-2000.07",
+        "engine": "2.0 T (118KW,160PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "480",
+        "year": "1986.04-1989.07",
+        "engine": "1.7 (78KW,106PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "850",
+        "year": "1991.06-1996.12",
+        "engine": "2.0 (105KW,143PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "V90 II Cross Country",
+        "year": "2017.10-",
+        "engine": "T6 Polestar AWD (240KW,326PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "S90 I",
+        "year": "1997.01-1998.05",
+        "engine": "2.9 (150KW,204PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "S60 II",
+        "year": "2015.08-2018.12",
+        "engine": "T5 AWD (187KW,254PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "760 Kombi",
+        "year": "1986.05-1991.08",
+        "engine": "2.8 (105KW,143PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "940",
+        "year": "1990.08-1994.12",
+        "engine": "2.3 (96KW,131PS)"
+      },
+      {
+        "make": "VOLVO",
+        "model": "V70 I",
+        "year": "1998.06-1999.12",
+        "engine": "2.4 AWD (121KW,165PS)"
+      },
+      {
+        "make": "RENAULT",
+        "model": "19 II Chamade",
+        "year": "1992.04-1994.05",
+        "engine": "1.8 (81KW,110PS)"
+      },
+      {
+        "make": "RENAULT",
+        "model": "15",
+        "year": "1972.03-1980.10",
+        "engine": "1.6 (66KW,90PS)"
+      },
+      {
+        "make": "RENAULT",
+        "model": "MEGANE CC",
+        "year": "2010.06-2015.08",
+        "engine": "2.0 TCe (132KW,180PS)"
+      },
+      {
+        "make": "RENAULT",
+        "model": "19 I Chamade",
+        "year": "1989.06-1990.08",
+        "engine": "1.4 (58KW,79PS)"
+      },
+      {
+        "make": "RENAULT",
+        "model": "MEGANE II",
+        "year": "2006.08-2008.02",
+        "engine": "2.0 (169KW,230PS)"
+      },
+      {
+        "make": "RENAULT",
+        "model": "19 II Chamade",
+        "year": "1992.05-1994.09",
+        "engine": "1.8 (67KW,91PS)"
+      },
+      {
+        "make": "RENAULT",
+        "model": "21",
+        "year": "1989.09-1994.06",
+        "engine": "2.2 (79KW,107PS)"
+      },
+      {
+        "make": "RENAULT",
+        "model": "LAGUNA II",
+        "year": "2001.03-2007.12",
+        "engine": "1.8 16V (85KW,116PS)"
+      },
+      {
+        "make": "KIA",
+        "model": "SORENTO II SUV Van",
+        "year": "2009.06-2015.12",
+        "engine": "CVVT 4WD (128KW,174PS)"
+      },
+      {
+        "make": "KIA",
+        "model": "OPTIMA",
+        "year": "2018.09-2019.12",
+        "engine": "1.6 T-GDI (132KW,179PS)"
+      },
+      {
+        "make": "KIA",
+        "model": "PRIDE",
+        "year": "1990.01-2000.10",
+        "engine": "1.3 (44KW,60PS)"
+      },
+      {
+        "make": "KIA",
+        "model": "CEED",
+        "year": "2019.09-",
+        "engine": "1.0 T-GDI (74KW,101PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "J5 Platform/Chassis",
+        "year": "1990.10-1994.02",
+        "engine": "2.0 (62KW,84PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "207 SW",
+        "year": "2007.06-2013.10",
+        "engine": "1.6 16V (88KW,120PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "306",
+        "year": "1997.03-2001.05",
+        "engine": "2.0 (97KW,132PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "SC",
+        "year": "1988.01-...",
+        "engine": "SC 50 LD (FO51-D)(2KW,3PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "305 II",
+        "year": "1982.10-1988.07",
+        "engine": "1.6 (55KW,75PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "307",
+        "year": "2000.08-2005.06",
+        "engine": "2.0 16V (100KW,136PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "308 I",
+        "year": "2009.10-2014.10",
+        "engine": "1.6 THP 16V (115KW,156PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "205 Hatchback Van",
+        "year": "1983.02-1987.07",
+        "engine": "1.4 (44KW,60PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "205 II",
+        "year": "1987.01-1991.10",
+        "engine": "1.6 GTX (69KW,94PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "EXPERT Van",
+        "year": "1996.10-2000.09",
+        "engine": "1.8 (74KW,101PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "205 II",
+        "year": "1987.10-1989.12",
+        "engine": "1.6 GTI (76KW,103PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "108",
+        "year": "2014.05-",
+        "engine": "1.2 (60KW,82PS)"
+      },
+      {
+        "make": "PEUGEOT",
+        "model": "103",
+        "year": "1981.01-",
+        "engine": "103 SPM-D (1KW,1PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2009.11-2011.08",
+        "engine": "523 i (150KW,204PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "F",
+        "year": "2005.12-",
+        "engine": "F 800 R (25KW,34PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "Z3 Roadster",
+        "year": "1997.01-2000.06",
+        "engine": "M 3.2 (236KW,321PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "K",
+        "year": "2012.01-",
+        "engine": "K 1300 S mit HP Paket (129KW,175PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "K",
+        "year": "2003.02-2008.06",
+        "engine": "K 1200 LT (85KW,116PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "Z3 Roadster",
+        "year": "1995.10-1998.10",
+        "engine": "1.8 i (85KW,116PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "2 Active Tourer",
+        "year": "2015.02-2018.02",
+        "engine": "216 i (75KW,102PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "2007.03-2010.02",
+        "engine": "330 xi (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2006.09-2011.12",
+        "engine": "328 i (172KW,234PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "1 Coupe",
+        "year": "2009.09-2013.10",
+        "engine": "120 i (115KW,156PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Convertible",
+        "year": "2000.09-2007.12",
+        "engine": "320 Ci (125KW,170PS)"
+      },
+      {
+        "make": "MITSUBISHI",
+        "model": "GALANT VIII Estate",
+        "year": "2000.09-2003.10",
+        "engine": "2.5 V6 24V (118KW,160PS)"
+      },
+      {
+        "make": "MITSUBISHI",
+        "model": "TREDIA",
+        "year": "1982.09-1985.05",
+        "engine": "1.6 Turbo (84KW,114PS)"
+      },
+      {
+        "make": "CHEVROLET",
+        "model": "LUMINA APV MPV",
+        "year": "1993.10-1996.07",
+        "engine": "2.3 (101KW,137PS)"
+      },
+      {
+        "make": "CHEVROLET",
+        "model": "CAMARO",
+        "year": "1998.07-2002.12",
+        "engine": "5.7 (212KW,288PS)"
+      },
+      {
+        "make": "CHEVROLET",
+        "model": "MATIZ",
+        "year": "2005.03-2013.12",
+        "engine": "0.8 (38KW,52PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "ZAFIRA TOURER C",
+        "year": "2011.10-",
+        "engine": "1.8 (85KW,115PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "KADETT E Estate",
+        "year": "1990.01-1991.08",
+        "engine": "1.4 i (44KW,60PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "VECTRA B Hatchback",
+        "year": "2000.09-2003.07",
+        "engine": "2.6 i V6 (125KW,170PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "ASTRA H TwinTop",
+        "year": "2005.09-2010.10",
+        "engine": "2.0 Turbo (147KW,200PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "ASTRA F CLASSIC Estate",
+        "year": "1998.01-2005.01",
+        "engine": "1.6 i 16V (74KW,101PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "ASTRA H",
+        "year": "2009.08-2010.10",
+        "engine": "1.4 LPG (66KW,90PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "KADETT E Combo",
+        "year": "1986.09-1991.12",
+        "engine": "1.6 (60KW,82PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "ANTARA A",
+        "year": "2008.09-2011.12",
+        "engine": "2.4 (103KW,140PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "KADETT B",
+        "year": "1971.08-1973.08",
+        "engine": "1.2 S (44KW,60PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "ASTRA H",
+        "year": "2006.01-2010.10",
+        "engine": "1.8 (103KW,140PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "KADETT D",
+        "year": "1979.09-1982.08",
+        "engine": "1.0 (30KW,41PS)"
+      },
+      {
+        "make": "OPEL",
+        "model": "VECTRA B Hatchback",
+        "year": "2000.07-2002.07",
+        "engine": "2.2 i 16V (102KW,139PS)"
+      },
+      {
+        "make": "YAMAHA",
+        "model": "XJ",
+        "year": "1982.01-1983.12",
+        "engine": "XJ 650 Turbo (11T)(66KW,90PS)"
+      },
+      {
+        "make": "AUDI",
+        "model": "A5",
+        "year": "2008.11-2012.03",
+        "engine": "2.0 TFSI (132KW,180PS)"
+      },
+      {
+        "make": "AUDI",
+        "model": "A3 Limousine",
+        "year": "2013.11-2020.10",
+        "engine": "1.8 TFSI (125KW,170PS)"
+      },
+      {
+        "make": "AUDI",
+        "model": "A6 C5",
+        "year": "1999.07-2001.05",
+        "engine": "2.8 quattro (140KW,190PS)"
+      },
+      {
+        "make": "AUDI",
+        "model": "A4 B5",
+        "year": "1997.12-2000.11",
+        "engine": "1.8 T quattro (132KW,180PS)"
+      },
+      {
+        "make": "AUDI",
+        "model": "200 C3 Saloon",
+        "year": "1983.08-1988.01",
+        "engine": "2.1 Turbo (134KW,182PS)"
+      },
+      {
+        "make": "AUDI",
+        "model": "TT Roadster",
+        "year": "2000.02-2006.06",
+        "engine": "1.8 T quattro (132KW,180PS)"
+      },
+      {
+        "make": "AUDI",
+        "model": "80 B2 Saloon",
+        "year": "1983.10-1984.09",
+        "engine": "2.0 quattro (85KW,115PS)"
+      },
+      {
+        "make": "AUDI",
+        "model": "A3 Limousine",
+        "year": "2013.10-2020.10",
+        "engine": "S3 quattro (221KW,300PS)"
+      },
+      {
+        "make": "LANCIA",
+        "model": "THEMA SW",
+        "year": "1989.05-1992.08",
+        "engine": "2000 i.e. 16V (108KW,147PS)"
+      },
+      {
+        "make": "LANCIA",
+        "model": "THEMA",
+        "year": "1987.09-1992.05",
+        "engine": "2000 i.e. (85KW,115PS)"
+      },
+      {
+        "make": "LANCIA",
+        "model": "KAPPA",
+        "year": "1996.07-2001.10",
+        "engine": "2.0 20V (114KW,155PS)"
+      },
+      {
+        "make": "MAZDA",
+        "model": "PREMACY",
+        "year": "1999.07-2005.03",
+        "engine": "1.9 (84KW,114PS)"
+      },
+      {
+        "make": "MAZDA",
+        "model": "6 Estate",
+        "year": "2013.01-",
+        "engine": "2.0 (121KW,165PS)"
+      },
+      {
+        "make": "MAZDA",
+        "model": "MPV II",
+        "year": "2002.07-2006.02",
+        "engine": "2.3 (104KW,141PS)"
+      },
+      {
+        "make": "MAZDA",
+        "model": "2",
+        "year": "2007.10-2015.06",
+        "engine": "1.3 (63KW,86PS)"
+      },
+      {
+        "make": "MAZDA",
+        "model": "323 III Hatchback",
+        "year": "1985.10-1993.08",
+        "engine": "1.6 GT Turbo (103KW,140PS)"
+      },
+      {
+        "make": "MAZDA",
+        "model": "323 II Saloon",
+        "year": "1982.03-1986.09",
+        "engine": "1.5 (65KW,88PS)"
+      },
+      {
+        "make": "MAZDA",
+        "model": "2",
+        "year": "2010.01-2015.06",
+        "engine": "1.3 MZR (62KW,84PS)"
+      },
+      {
+        "make": "ISUZU",
+        "model": "TROOPER II",
+        "year": "1991.08-1996.04",
+        "engine": "2.6 4x4 (85KW,116PS)"
+      },
+      {
+        "make": "DAF",
+        "model": "66 Coupe",
+        "year": "1973.09-1975.08",
+        "engine": "1300 MARATHON (42KW,57PS)"
+      },
+      {
+        "make": "DAF",
+        "model": "44",
+        "year": "1966.11-1974.09",
+        "engine": "0.8 (25KW,34PS)"
+      },
+      {
+        "make": "HARLEY-DAVIDSON",
+        "model": "BAD BOY",
+        "year": "1995.01-1999.12",
+        "engine": "1340 Bad Boy (37KW,50PS)"
+      },
+      {
+        "make": "HARLEY-DAVIDSON",
+        "model": "SOFTAIL ( - 1700cc)",
+        "year": "2004.01-2005.12",
+        "engine": "1450 Softail Night Train (FXSTBI)(24KW,33PS)"
+      },
+      {
+        "make": "HARLEY-DAVIDSON",
+        "model": "DYNA",
+        "year": "1999.01-",
+        "engine": "1340 Dyna Low Rider (36KW,49PS)"
+      },
+      {
+        "make": "HARLEY-DAVIDSON",
+        "model": "SPORTSTER",
+        "year": "1995.01-1997.12",
+        "engine": "1200 Sportster Sport (36KW,49PS)"
+      },
+      {
+        "make": "HARLEY-DAVIDSON",
+        "model": "SPORTSTER",
+        "year": "1995.01-1999.12",
+        "engine": "1200 Sportster Custom (25KW,34PS)"
+      },
+      {
+        "make": "HARLEY-DAVIDSON",
+        "model": "STREET GLIDE",
+        "year": "2011.01-2011.12",
+        "engine": "1800 Street Glide CVO (FLHXSE)(62KW,84PS)"
+      },
+      {
+        "make": "HARLEY-DAVIDSON",
+        "model": "WIDE GLIDE",
+        "year": "1982.01-1985.12",
+        "engine": "1340 Wide Glide (49KW,67PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "INSIGHT",
+        "year": "2000.04-2006.12",
+        "engine": "1.0 IMA (56KW,76PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CR-V III",
+        "year": "2007.01-2012.06",
+        "engine": "2.0 i-VTEC (110KW,150PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CBR",
+        "year": "1986.01-1988.12",
+        "engine": "CBR 600 F (63KW,86PS)"
+      },
+      {
+        "make": "LAND ROVER",
+        "model": "RANGE ROVER IV",
+        "year": "2012.08-2021.09",
+        "engine": "5.0 SCV8 4x4 (375KW,510PS)"
+      },
+      {
+        "make": "LAND ROVER",
+        "model": "RANGE ROVER I",
+        "year": "1988.11-1992.12",
+        "engine": "3.9 4x4 (134KW,182PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Saloon",
+        "year": "2003.09-2008.11",
+        "engine": "2.4 VVT-i (125KW,170PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "C-HR",
+        "year": "2023.10-",
+        "engine": "PHEV (164KW,223PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CELICA Coupe",
+        "year": "1977.08-1981.07",
+        "engine": "1.6 ST (63KW,86PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "STARLET Estate",
+        "year": "1979.10-1982.07",
+        "engine": "1.2 (39KW,53PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "COROLLA",
+        "year": "1974.08-1980.12",
+        "engine": "1.2 (40KW,54PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CELICA Coupe",
+        "year": "1981.12-1985.12",
+        "engine": "2.8 Supra (103KW,140PS)"
+      },
+      {
+        "make": "SEAT",
+        "model": "LEON",
+        "year": "2001.02-2006.06",
+        "engine": "2.8 Cupra 4 (150KW,204PS)"
+      },
+      {
+        "make": "SEAT",
+        "model": "ALTEA",
+        "year": "2007.11-2015.07",
+        "engine": "1.4 TSI (92KW,125PS)"
+      },
+      {
+        "make": "SEAT",
+        "model": "TOLEDO III",
+        "year": "2004.10-2009.05",
+        "engine": "2.0 FSI (110KW,150PS)"
+      },
+      {
+        "make": "SEAT",
+        "model": "ALHAMBRA",
+        "year": "2000.06-2010.03",
+        "engine": "2.8 V6 4motion (150KW,204PS)"
+      },
+      {
+        "make": "SEAT",
+        "model": "IBIZA I",
+        "year": "1991.01-1993.05",
+        "engine": "1.7 (72KW,98PS)"
+      },
+      {
+        "make": "MERCEDES-BENZ",
+        "model": "M-CLASS",
+        "year": "2012.08-2015.02",
+        "engine": "ML 300 4-matic (185KW,252PS)"
+      },
+      {
+        "make": "MERCEDES-BENZ",
+        "model": "C-CLASS T-Model",
+        "year": "2011.06-2014.08",
+        "engine": "C 350 CGI (225KW,306PS)"
+      },
+      {
+        "make": "MERCEDES-BENZ",
+        "model": "SL",
+        "year": "1980.05-1985.12",
+        "engine": "500 SL (170KW,231PS)"
+      },
+      {
+        "make": "MERCEDES-BENZ",
+        "model": "SPRINTER 5-t Platform/Chassis",
+        "year": "2008.09-2018.12",
+        "engine": "516 NGT (115KW,156PS)"
+      },
+      {
+        "make": "MERCEDES-BENZ",
+        "model": "R-CLASS",
+        "year": "2007.01-2012.12",
+        "engine": "R 350 (200KW,272PS)"
+      },
+      {
+        "make": "MERCEDES-BENZ",
+        "model": "G-CLASS",
+        "year": "1994.09-1997.12",
+        "engine": "G 320 (155KW,211PS)"
+      },
+      {
+        "make": "MERCEDES-BENZ",
+        "model": "G-CLASS Cabrio",
+        "year": "1986.08-1993.05",
+        "engine": "230 GE (90KW,122PS)"
+      },
+      {
+        "make": "MERCEDES-BENZ",
+        "model": "E-CLASS",
+        "year": "1993.07-1994.10",
+        "engine": "E 500 (240KW,326PS)"
+      },
+      {
+        "make": "SACHS",
+        "model": "KX",
+        "year": "1997.01-1999.12",
+        "engine": "KX 50 Classic (4KW,5PS)"
+      },
+      {
+        "make": "TRIUMPH",
+        "model": "VITESSE I",
+        "year": "1968.12-1971.12",
+        "engine": "2.0 (77KW,105PS)"
+      },
+      {
+        "make": "TRIUMPH",
+        "model": "SPRINT",
+        "year": "1994.01-1997.12",
+        "engine": "Sprint 900 (T300A)(72KW,98PS)"
+      },
+      {
+        "make": "CITROËN",
+        "model": "DS Break",
+        "year": "1972.09-1975.07",
+        "engine": "23 (81KW,110PS)"
+      },
+      {
+        "make": "CITROËN",
+        "model": "NEMO Box Body/MPV",
+        "year": "2008.02-",
+        "engine": "1.4 (54KW,73PS)"
+      },
+      {
+        "make": "CITROËN",
+        "model": "C5 I Break",
+        "year": "2003.09-2004.08",
+        "engine": "3.0 Carlsson (173KW,235PS)"
+      },
+      {
+        "make": "CITROËN",
+        "model": "BERLINGO MULTISPACE",
+        "year": "2008.04-",
+        "engine": "1.6 (80KW,109PS)"
+      },
+      {
+        "make": "CITROËN",
+        "model": "CX I Break",
+        "year": "1982.07-1983.06",
+        "engine": "2400 GTi (94KW,128PS)"
+      },
+      {
+        "make": "CITROËN",
+        "model": "SM",
+        "year": "1970.04-1972.06",
+        "engine": "2.7 (118KW,160PS)"
+      },
+      {
+        "make": "CITROËN",
+        "model": "ID Break",
+        "year": "1969.02-1972.11",
+        "engine": "21 F (76KW,103PS)"
+      },
+      {
+        "make": "CITROËN",
+        "model": "ID",
+        "year": "1969.02-1972.11",
+        "engine": "21 F (76KW,103PS)"
+      },
+      {
+        "make": "CITROËN",
+        "model": "C5 III",
+        "year": "2010.07-2016.07",
+        "engine": "1.6 THP 150 (110KW,150PS)"
+      },
+      {
+        "make": "CAGIVA",
+        "model": "GRAN CANYON",
+        "year": "1998.01-2000.12",
+        "engine": "Gran Canyon (54KW,73PS)"
+      },
+      {
+        "make": "FERRARI",
+        "model": "512 M",
+        "year": "1994.11-1996.08",
+        "engine": "4.9 (324KW,440PS)"
+      },
+      {
+        "make": "FERRARI",
+        "model": "512 TR",
+        "year": "1992.01-1994.10",
+        "engine": "4.9 (315KW,428PS)"
+      },
+      {
+        "make": "PORSCHE",
+        "model": "911 Targa",
+        "year": "1975.09-1977.06",
+        "engine": "3.0 SC Carrera (147KW,200PS)"
+      },
+      {
+        "make": "PORSCHE",
+        "model": "911 Convertible",
+        "year": "1989.05-1994.05",
+        "engine": "3.6 Carrera 4 (184KW,250PS)"
+      },
+      {
+        "make": "PORSCHE",
+        "model": "911",
+        "year": "1991.06-1993.09",
+        "engine": "3.6 Carrera RS (191KW,260PS)"
+      },
+      {
+        "make": "PORSCHE",
+        "model": "911",
+        "year": "2010.02-2012.12",
+        "engine": "3.8 Turbo S (390KW,530PS)"
+      },
+      {
+        "make": "PORSCHE",
+        "model": "356 Cabriolet/Speedster",
+        "year": "1959.09-1963.08",
+        "engine": "B 1600 (44KW,60PS)"
+      },
+      {
+        "make": "MOTO GUZZI",
+        "model": "CALIFORNIA",
+        "year": "2001.01-2002.12",
+        "engine": "California EV 80 (54KW,73PS)"
+      },
+      {
+        "make": "MOTO GUZZI",
+        "model": "CALIFORNIA",
+        "year": "1982.01-1986.12",
+        "engine": "California II (49KW,67PS)"
+      },
+      {
+        "make": "MOTO GUZZI",
+        "model": "NORGE",
+        "year": "2006.01-2009.12",
+        "engine": "Norge 1200 GT (68KW,92PS)"
+      },
+      {
+        "make": "MOTO GUZZI",
+        "model": "NORGE",
+        "year": "2006.01-2008.12",
+        "engine": "Norge 1200 T (68KW,92PS)"
+      },
+      {
+        "make": "SKODA",
+        "model": "SUPERB I",
+        "year": "2001.12-2003.08",
+        "engine": "2.5 TDI (114KW,155PS)"
+      },
+      {
+        "make": "SKODA",
+        "model": "FABIA I Combi",
+        "year": "2001.07-2007.12",
+        "engine": "1.2 (40KW,54PS)"
+      },
+      {
+        "make": "SKODA",
+        "model": "SUPERB II Estate",
+        "year": "2010.05-2015.05",
+        "engine": "2.0 TFSI (147KW,200PS)"
+      },
+      {
+        "make": "SKODA",
+        "model": "105,120",
+        "year": "1987.08-1990.12",
+        "engine": "1.2 120 L (35KW,48PS)"
+      },
+      {
+        "make": "HYUNDAI",
+        "model": "SONATA II",
+        "year": "1991.01-1993.10",
+        "engine": "3.0 i V6 (107KW,145PS)"
+      },
+      {
+        "make": "HYUNDAI",
+        "model": "KONA",
+        "year": "2017.07-2023.04",
+        "engine": "1.0 T-GDi (88KW,120PS)"
+      },
+      {
+        "make": "CADILLAC",
+        "model": "SEVILLE",
+        "year": "1992.06-1997.09",
+        "engine": "4.6 (220KW,299PS)"
+      },
+      {
+        "make": "CADILLAC",
+        "model": "BLS",
+        "year": "2007.12-",
+        "engine": "2.0 T Flexpower (147KW,200PS)"
+      },
+      {
+        "make": "CADILLAC",
+        "model": "SRX",
+        "year": "2004.01-2008.12",
+        "engine": "3.6 (190KW,258PS)"
+      },
+      {
+        "make": "FORD",
+        "model": "ESCORT III",
+        "year": "1982.10-1985.12",
+        "engine": "1.6 XR3i (77KW,105PS)"
+      },
+      {
+        "make": "FORD",
+        "model": "FOCUS I",
+        "year": "2002.10-2004.11",
+        "engine": "RS (158KW,215PS)"
+      },
+      {
+        "make": "FORD",
+        "model": "MONDEO IV",
+        "year": "2009.07-2015.01",
+        "engine": "2.0 LPG (107KW,145PS)"
+      },
+      {
+        "make": "FORD",
+        "model": "ESCORT VI",
+        "year": "1995.01-1995.08",
+        "engine": "1.8 16V (77KW,105PS)"
+      },
+      {
+        "make": "FORD",
+        "model": "TAUNUS 20M II Turnier",
+        "year": "1967.09-1974.04",
+        "engine": "2.0 (63KW,86PS)"
+      },
+      {
+        "make": "FORD",
+        "model": "IKON V",
+        "year": "2008.01-2008.12",
+        "engine": "ST150 (110KW,150PS)"
+      },
+      {
+        "make": "FORD",
+        "model": "TAUNUS 20M II XL",
+        "year": "1967.07-1974.04",
+        "engine": "2.3 (79KW,107PS)"
+      },
+      {
+        "make": "DUCATI",
+        "model": "888",
+        "year": "1992.01-1992.12",
+        "engine": "888 SP4 (82KW,112PS)"
+      },
+      {
+        "make": "DUCATI",
+        "model": "916",
+        "year": "1998.01-1999.12",
+        "engine": "916 Senna (80KW,109PS)"
+      },
+      {
+        "make": "DUCATI",
+        "model": "900",
+        "year": "1990.01-1996.12",
+        "engine": "900 SS N (57KW,78PS)"
+      },
+      {
+        "make": "SUZUKI",
+        "model": "JIMNY Open Off-Road Vehicle",
+        "year": "2013.03-",
+        "engine": "1.3 4WD (63KW,86PS)"
+      },
+      {
+        "make": "SUZUKI",
+        "model": "VITARA Cabrio",
+        "year": "1988.07-1995.01",
+        "engine": "1.6 (59KW,80PS)"
+      },
+      {
+        "make": "NISSAN",
+        "model": "TERRANO II",
+        "year": "1996.05-2002.01",
+        "engine": "2.4 4WD (85KW,116PS)"
+      },
+      {
+        "make": "NISSAN",
+        "model": "CHERRY II Coupe",
+        "year": "1981.08-1982.09",
+        "engine": "1.3 (44KW,60PS)"
+      },
+      {
+        "make": "NISSAN",
+        "model": "PRIMERA Traveller",
+        "year": "2002.01-2006.04",
+        "engine": "1.6 Visia (80KW,109PS)"
+      },
+      {
+        "make": "VESPA",
+        "model": "PX",
+        "year": "1987.01-1997.01",
+        "engine": "PX 150 E Lusso (7KW,10PS)"
+      },
+      {
+        "make": "VESPA",
+        "model": "PK",
+        "year": "1983.01-1986.12",
+        "engine": "PK 50 S (2KW,3PS)"
+      },
+      {
+        "make": "SAAB",
+        "model": "9-3 Convertible",
+        "year": "2006.02-2015.02",
+        "engine": "2.8 Turbo V6 (184KW,250PS)"
+      },
+      {
+        "make": "SAAB",
+        "model": "9-3X",
+        "year": "2009.02-2012.12",
+        "engine": "2.0 t BioPower XWD (154KW,209PS)"
+      },
+      {
+        "make": "SUBARU",
+        "model": "IMPREZA Estate",
+        "year": "2000.10-2006.09",
+        "engine": "1.6 (70KW,95PS)"
+      },
+      {
+        "make": "UAZ",
+        "model": "CARGO",
+        "year": "2008.11-2017.09",
+        "engine": "2.7 (94KW,128PS)"
+      },
+      {
+        "make": "FIAT",
+        "model": "REGATA",
+        "year": "1983.10-1989.07",
+        "engine": "100 Super 1.6 (70KW,95PS)"
+      },
+      {
+        "make": "FIAT",
+        "model": "BRAVO I",
+        "year": "1996.03-2001.10",
+        "engine": "1.6 16V (76KW,103PS)"
+      },
+      {
+        "make": "FIAT",
+        "model": "131",
+        "year": "1979.03-1982.03",
+        "engine": "1.6 Super Mirafiori (72KW,98PS)"
+      },
+      {
+        "make": "KAWASAKI",
+        "model": "KLX",
+        "year": "1993.01-2001.12",
+        "engine": "KLX 650 (KLX650A/B, KLX650C)(33KW,45PS)"
+      },
+      {
+        "make": "KAWASAKI",
+        "model": "VULCAN",
+        "year": "2015.01-...",
+        "engine": "Vulcan 1700 Voyager ABS (VNT70A)(54KW,73PS)"
+      },
+      {
+        "make": "PLYMOUTH",
+        "model": "NEON Saloon",
+        "year": "1994.06-1999.08",
+        "engine": "2.0 16V (107KW,145PS)"
+      },
+      {
+        "make": "PLYMOUTH",
+        "model": "NEON Saloon",
+        "year": "1994.05-1999.08",
+        "engine": "2.0 16V (98KW,133PS)"
+      },
+      {
+        "make": "CHRYSLER",
+        "model": "VOYAGER / GRAND VOYAGER III",
+        "year": "1997.02-2001.03",
+        "engine": "2.4 AWD (111KW,151PS)"
+      },
+      {
+        "make": "CHRYSLER",
+        "model": "CIRRUS",
+        "year": "1994.10-2000.09",
+        "engine": "2.5 LX (120KW,163PS)"
+      },
+      {
+        "make": "ASTON MARTIN",
+        "model": "DB9 Vantage",
+        "year": "2008.01-2012.07",
+        "engine": "6.0 V12 (350KW,476PS)"
+      },
+      {
+        "make": "LADA",
+        "model": "SAMARA FORMA Saloon",
+        "year": "1994.11-2006.12",
+        "engine": "1500 (52KW,71PS)"
+      },
+      {
+        "make": "DS",
+        "model": "DS 5",
+        "year": "2015.04-2018.12",
+        "engine": "1.6 THP 210 (155KW,210PS)"
+      },
+      {
+        "make": "KYMCO",
+        "model": "YAGER",
+        "year": "2001.01-2006.12",
+        "engine": "YAGER 125 (SH)(8KW,11PS)"
+      },
+      {
+        "make": "DAIHATSU",
+        "model": "CUORE V",
+        "year": "2000.10-2003.02",
+        "engine": "1.0 DVVT (43KW,58PS)"
+      },
+      {
+        "make": "ALFA ROMEO",
+        "model": "33 Sportwagon",
+        "year": "1992.04-1994.09",
+        "engine": "1.7 i.e. (77KW,105PS)"
+      },
+      {
+        "make": "FSO",
+        "model": "POLONEZ III Saloon",
+        "year": "1992.09-2002.03",
+        "engine": "1.6 i (57KW,78PS)"
+      },
+      {
+        "make": "AUSTIN",
+        "model": "METRO I Fastback",
+        "year": "1985.11-1990.04",
+        "engine": "1.3 Surf (44KW,60PS)"
+      },
+      {
+        "make": "PIAGGIO",
+        "model": "CIAO",
+        "year": "1988.01-1996.12",
+        "engine": "Ciao PX Lusso (1KW,1PS)"
+      },
+      {
+        "make": "MINI",
+        "model": "MINI Convertible",
+        "year": "2004.04-2008.07",
+        "engine": "Cooper (85KW,116PS)"
+      },
+      {
+        "make": "DAEWOO",
+        "model": "NUBIRA Wagon",
+        "year": "2003.07-",
+        "engine": "1.8 (90KW,122PS)"
+      },
+      {
+        "make": "JAGUAR",
+        "model": "Mk VIII",
+        "year": "1956.05-1958.10",
+        "engine": "3.4 (156KW,212PS)"
+      },
+      {
+        "make": "TALBOT",
+        "model": "SIMCA 1100 Hatchback",
+        "year": "1971.10-1977.09",
+        "engine": "1.2 Spezial (55KW,75PS)"
+      }
+    ],
+    "collectedAt": "2026-04-06T17:41:10.884Z"
   }
 ]
