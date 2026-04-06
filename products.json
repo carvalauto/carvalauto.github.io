@@ -14740,5 +14740,305 @@
       }
     ],
     "collectedAt": "2026-04-06T17:43:19.680Z"
+  },
+  {
+    "id": 54,
+    "name": "Factory Directly DENSO Ignition Coil 099700-2560 90919-02266 for Toy/ota Alp/hard Lex/us Msd Ignition Coil Ignition Coil for Car",
+    "oem": "90919-02266",
+    "description": "适配车型: 48款",
+    "image": "https://s.alicdn.com/@sc04/kf/H693fdf40bfbc40018f7374df75ed9636w.jpg,https://s.alicdn.com/@sc04/kf/Hd9f62c880f9a46cbb2014947de4f726fw.jpg,https://s.alicdn.com/@sc04/kf/Ha2916ad89c414bd496ac7f5ac5a57dceo.jpg,https://s.alicdn.com/@img/imgextra/i2/O1CN01M1wlXy1IWhrOEMX42_!!6000000000901-2-tps-522-522.png,https://s.alicdn.com/@sc04/kf/Hdbd906a02d154c3fb35993652132e405C.jpg,https://s.alicdn.com/@img/imgextra/i1/O1CN017IIzE71MpGLv2nxMd_!!6000000001483-2-tps-260-112.png",
+    "category": "Oil",
+    "url": "https://www.alibaba.com/product-detail/Factory-Directly-DENSO-Ignition-Coil-099700_1601236620618.html",
+    "fitmentTable": [
+      {
+        "make": "TOYOTA",
+        "model": "CAMRY Saloon",
+        "year": "2006.01-2011.09",
+        "engine": "2.4 Hybrid (140KW,190PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Estate",
+        "year": "2003.04-2008.11",
+        "engine": "2.0 VVT-i (114KW,155PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "PREVIA II",
+        "year": "2000.02-2006.02",
+        "engine": "2.4 (115KW,156PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "RAV 4 II",
+        "year": "2000.08-2005.11",
+        "engine": "1.8 (92KW,125PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "RAV 4 II",
+        "year": "2000.05-2005.11",
+        "engine": "2.0 4WD (110KW,150PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Liftback",
+        "year": "2000.10-2003.02",
+        "engine": "2.0 VVT-i (110KW,150PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS",
+        "year": "2000.10-2003.02",
+        "engine": "2.0 VVT-i (110KW,150PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Estate",
+        "year": "2000.10-2003.02",
+        "engine": "2.0 VVT-i (110KW,150PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS VERSO",
+        "year": "2001.08-2009.11",
+        "engine": "2.0 VVT-i (110KW,150PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "PICNIC",
+        "year": "2000.06-2001.12",
+        "engine": "2.0 (90KW,122PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CAMRY Saloon",
+        "year": "2001.11-2006.11",
+        "engine": "2.4 (112KW,152PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Saloon",
+        "year": "2003.04-2008.11",
+        "engine": "2.0 VVT-i (108KW,147PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Estate",
+        "year": "2003.04-2008.11",
+        "engine": "2.0 VVT-i (108KW,147PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS",
+        "year": "2003.03-2008.11",
+        "engine": "2.0 VVT-i (108KW,147PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Saloon",
+        "year": "2003.10-2008.10",
+        "engine": "2.4 VVT-i (120KW,163PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS",
+        "year": "2003.10-2008.10",
+        "engine": "2.4 VVT-i (120KW,163PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Estate",
+        "year": "2003.10-2008.10",
+        "engine": "2.4 VVT-i (120KW,163PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "RAV 4 III",
+        "year": "2006.02-2013.06",
+        "engine": "2.0 4WD (112KW,152PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CAMRY Saloon",
+        "year": "2006.01-2011.09",
+        "engine": "2.4 (116KW,158PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "RAV 4 III",
+        "year": "2005.11-2013.12",
+        "engine": "2.4 (125KW,170PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CAMRY Saloon",
+        "year": "2001.08-2006.11",
+        "engine": "2.0 (110KW,150PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CAMRY",
+        "year": "1988.08-1991.05",
+        "engine": "2.0 4WD (94KW,128PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "PREVIA III",
+        "year": "2005.10-",
+        "engine": "2.4 (125KW,170PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Estate",
+        "year": "2008.11-2018.10",
+        "engine": "2.0 VVT-i (112KW,152PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "RAV 4 III",
+        "year": "2008.12-2013.06",
+        "engine": "2.0 4WD (116KW,158PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CAMRY Saloon",
+        "year": "2006.01-2011.09",
+        "engine": "2.4 (123KW,167PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CARINA V Saloon",
+        "year": "1987.12-1992.03",
+        "engine": "2.0 GLI (89KW,121PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CARINA V",
+        "year": "1987.12-1992.03",
+        "engine": "2.0 GLI (89KW,121PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CAMRY",
+        "year": "1986.11-1991.05",
+        "engine": "2.0 (94KW,128PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CAMRY",
+        "year": "1986.11-1993.02",
+        "engine": "2.0 (89KW,121PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CAMRY Estate",
+        "year": "1986.11-1991.05",
+        "engine": "2.0 (94KW,128PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CAMRY Estate",
+        "year": "1986.11-1993.02",
+        "engine": "2.0 (89KW,121PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CARINA E VI Saloon",
+        "year": "1993.01-1997.09",
+        "engine": "2.0 (98KW,133PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CARINA E VI",
+        "year": "1992.04-1997.09",
+        "engine": "2.0 GLI (98KW,133PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CARINA E VI Sportswagon",
+        "year": "1993.01-1997.09",
+        "engine": "2.0 GLI (98KW,133PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "RAV 4 I",
+        "year": "1994.06-2000.06",
+        "engine": "2.0 4WD (95KW,129PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CARINA E VI Saloon",
+        "year": "1992.12-1997.09",
+        "engine": "2.0 i (93KW,126PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CARINA E VI",
+        "year": "1993.12-1997.09",
+        "engine": "2.0 i (93KW,126PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CARINA E VI Sportswagon",
+        "year": "1995.05-1997.09",
+        "engine": "2.0 i (93KW,126PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "RAV 4 III",
+        "year": "2005.11-2013.06",
+        "engine": "2.4 4WD (125KW,170PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "CARINA V Estate",
+        "year": "1987.12-1992.04",
+        "engine": "2.0 (89KW,121PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "PICNIC",
+        "year": "1996.08-2000.09",
+        "engine": "2.0 16V (94KW,128PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS",
+        "year": "1997.09-2000.10",
+        "engine": "2.0 i (94KW,128PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Liftback",
+        "year": "1997.09-2000.10",
+        "engine": "2.0 i (94KW,128PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "AVENSIS Estate",
+        "year": "1997.09-2000.10",
+        "engine": "2.0 i (94KW,128PS)"
+      },
+      {
+        "make": "TOYOTA",
+        "model": "RAV 4 I Cabrio",
+        "year": "1997.12-2000.06",
+        "engine": "2.0 4WD (94KW,129PS)"
+      },
+      {
+        "make": "FORD",
+        "model": "MONDEO I Saloon",
+        "year": "1993.02-1996.08",
+        "engine": "2.0 i 16V 4x4 (100KW,136PS)"
+      },
+      {
+        "make": "LEXUS",
+        "model": "HS",
+        "year": "2009.09-2012.12",
+        "engine": "250h (139KW,189PS)"
+      }
+    ],
+    "collectedAt": "2026-04-06T17:45:27.457Z"
   }
 ]
