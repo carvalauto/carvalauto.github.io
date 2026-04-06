@@ -1156,7 +1156,35 @@ function openProductDetail(p) {
     if (compatInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-check-circle"></i></div><div><div class="spec-label">Compatible With</div><div class="spec-value">' + compatInfo + '</div></div></div>';
     
     document.getElementById('modalSpecs').innerHTML = specsHtml;
-    document.getElementById('modalDesc').textContent = cleanDesc;
+    
+    // 显示车型表格或描述
+    var descContainer = document.getElementById('modalDesc');
+    if (p.fitmentTable && p.fitmentTable.length > 0) {
+        // 显示车型表格
+        var tableHtml = '<div style="margin-bottom:15px;"><strong style="font-size:13px;color:#333;">Compatible Vehicles:</strong></div>';
+        tableHtml += '<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:15px;">';
+        tableHtml += '<thead><tr style="background:#f5f5f5;">';
+        tableHtml += '<th style="padding:8px;border:1px solid #ddd;text-align:left;">Make</th>';
+        tableHtml += '<th style="padding:8px;border:1px solid #ddd;text-align:left;">Model</th>';
+        tableHtml += '<th style="padding:8px;border:1px solid #ddd;text-align:left;">Year</th>';
+        tableHtml += '<th style="padding:8px;border:1px solid #ddd;text-align:left;">Engine</th>';
+        tableHtml += '</tr></thead><tbody>';
+        p.fitmentTable.forEach(function(row) {
+            tableHtml += '<tr>';
+            tableHtml += '<td style="padding:6px 8px;border:1px solid #ddd;">' + (row.make || '-') + '</td>';
+            tableHtml += '<td style="padding:6px 8px;border:1px solid #ddd;">' + (row.model || '-') + '</td>';
+            tableHtml += '<td style="padding:6px 8px;border:1px solid #ddd;">' + (row.year || '-') + '</td>';
+            tableHtml += '<td style="padding:6px 8px;border:1px solid #ddd;">' + (row.engine || '-') + '</td>';
+            tableHtml += '</tr>';
+        });
+        tableHtml += '</tbody></table>';
+        descContainer.innerHTML = tableHtml;
+    } else if (cleanDesc) {
+        descContainer.textContent = cleanDesc;
+    } else {
+        descContainer.innerHTML = '';
+    }
+    
     document.getElementById('modalProductRef').value = p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '');
     document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '') + '. Please provide price and availability.';
 
