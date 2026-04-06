@@ -1042,7 +1042,7 @@ function renderProducts() {
         return;
     }
 
-    grid.innerHTML = filtered.map(function(p) {
+    grid.innerHTML = filtered.map(function(p, index) {
         var firstImg = p.image ? p.image.split(',')[0].trim() : '';
         var desc = p.description || '';
         var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
@@ -1050,8 +1050,11 @@ function renderProducts() {
         var brandInfo = brandMatch ? brandMatch[1].trim() : '';
         var compatInfo = compatMatch ? compatMatch[1].trim() : '';
         var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi, '').replace(/Compatible with:\s*[^.]+\./gi, '').replace(/\|/g, '').trim();
+        
+        // 使用 URL 作为唯一标识（因为 id 可能重复）
+        var productKey = (p.url || p.name).replace(/'/g, "\\'").replace(/"/g, '\\"');
 
-        return '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
+        return '<div class="product-card" data-url="' + (p.url || '') + '" onclick="openProductByKey(\'' + productKey + '\')">' +
             '<div class="product-img-wrap">' +
                 '<div class="img-skeleton"><i class="fas fa-image"></i></div>' +
                 (firstImg 
@@ -1067,7 +1070,7 @@ function renderProducts() {
                     (compatInfo ? '<div class="meta-row"><i class="fas fa-check-circle"></i><span><strong>Fits:</strong> ' + compatInfo + '</span></div>' : '') +
                 '</div>' +
                 (cleanDesc ? '<div class="product-desc">' + cleanDesc.substring(0, 100) + '...</div>' : '') +
-                '<button class="inquire-btn" onclick="event.stopPropagation(); openProduct(' + p.id + ')"><i class="fas fa-info-circle"></i> View Details</button>' +
+                '<button class="inquire-btn" onclick="event.stopPropagation(); openProductByKey(\'' + productKey + '\')"><i class="fas fa-info-circle"></i> View Details</button>' +
             '</div>' +
         '</div>';
     }).join('');
@@ -1103,9 +1106,22 @@ function searchProducts() {
 var carouselImages = [];
 var currentImgIndex = 0;
 
+// 根据 URL 或 name 查找产品（解决 id 重复问题）
+function openProductByKey(key) {
+    var p = productsData.find(function(x) { return x.url === key || x.name === key; });
+    if (!p) return;
+    openProductDetail(p);
+}
+
+// 根据 id 查找产品（兼容旧代码）
 function openProduct(id) {
     var p = productsData.find(function(x) { return x.id === id; });
     if (!p) return;
+    openProductDetail(p);
+}
+
+// 显示产品详情
+function openProductDetail(p) {
 
     carouselImages = p.image ? p.image.split(',').map(function(s) { return s.trim(); }).filter(Boolean) : [];
     currentImgIndex = 0;
