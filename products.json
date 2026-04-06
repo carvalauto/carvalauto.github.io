@@ -155,11 +155,12 @@
     "id": 10,
     "name": "Mobil Delvac ESP 5W40 Engine Oil Automotive Lubricant Anti-Wear SAE 4X1 GAL US 122897",
     "category": "oil",
-    "oem": "AUTOMOTIVE",
+    "oem": "5w40",
     "description": "",
     "image": "https://s.alicdn.com/@sc04/kf/A055fd9031d0d4f9e8d6a3f66a7da6b410.png,https://s.alicdn.com/@img/imgextra/i3/O1CN01cbEaKF1YIzoMkO0fS,https://s.alicdn.com/@img/imgextra/i4/O1CN017fKWgn1TOQQQtZBdg,https://s.alicdn.com/@img/imgextra/i3/O1CN01TbQNWM1edxdI2lOFH,https://s.alicdn.com/@img/imgextra/i2/O1CN01GbklvK23NLezYrFLb,https://s.alicdn.com/@img/imgextra/i4/O1CN01ozt9DY1W111pw7f2C",
     "fitmentTable": [],
-    "url": "https://www.alibaba.com/product-detail/Mobil-Delvac-ESP-5W40-Engine-Oil_11000029425225.html"
+    "url": "https://www.alibaba.com/product-detail/Mobil-Delvac-ESP-5W40-Engine-Oil_11000029425225.html",
+    "oemCode": "5w40"
   },
   {
     "id": 12,
