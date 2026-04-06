@@ -14644,5 +14644,101 @@
       }
     ],
     "collectedAt": "2026-04-06T17:41:10.884Z"
+  },
+  {
+    "id": 53,
+    "name": "Factory Directly DENSO  099770-1810 30520-R1A-A01 for Lingpai Civic Binzhi XR-V Accord Msd Ignition Coil Ignition Coil for Car",
+    "oem": "099770-1810",
+    "description": "适配车型: 14款",
+    "image": "https://s.alicdn.com/@sc04/kf/H530459ef4a8641dc8fc63876a526f34eO.jpg,https://s.alicdn.com/@sc04/kf/H74f70f51debe437797949cef30e76ae6s.jpg,https://s.alicdn.com/@sc04/kf/H59c7a1b91304474fb4622c43e14f251dW.jpg,https://s.alicdn.com/@sc04/kf/Hae95abe843a94df1b784b042dcda968bo.jpg,https://s.alicdn.com/@img/imgextra/i2/O1CN01M1wlXy1IWhrOEMX42_!!6000000000901-2-tps-522-522.png,https://s.alicdn.com/@img/imgextra/i4/O1CN018KnDNq1JleFgkjLRq_!!6000000001069-2-tps-447-132.png",
+    "category": "Oil",
+    "url": "https://www.alibaba.com/product-detail/Factory-Directly-DENSO-099770-1810-30520_1601237935588.html",
+    "fitmentTable": [
+      {
+        "make": "HONDA",
+        "model": "CIVIC IX Saloon",
+        "year": "2012.02-2016.12",
+        "engine": "1.8 (104KW,141PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CR-V III",
+        "year": "2006.10-2012.06",
+        "engine": "2.0 i-VTEC 4WD (110KW,150PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CIVIC X Saloon",
+        "year": "2019.01-2022.12",
+        "engine": "1.6 i-VTEC LPG (92KW,125PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CR-V IV",
+        "year": "2012.10-2018.12",
+        "engine": "2.0 iVtec (114KW,155PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CIVIC IX Saloon",
+        "year": "2011.09-2016.12",
+        "engine": "1.8 (104KW,141PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CIVIC IX",
+        "year": "2012.02-2016.12",
+        "engine": "1.8 i-VTEC (104KW,141PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CIVIC IX Saloon",
+        "year": "2011.09-2016.12",
+        "engine": "1.6 (92KW,125PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CR-V III",
+        "year": "2007.01-2012.06",
+        "engine": "2.0 i-VTEC (110KW,150PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CR-V IV",
+        "year": "2012.01-2018.12",
+        "engine": "2.0 (110KW,150PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CR-V IV",
+        "year": "2012.10-2018.12",
+        "engine": "2.0 AWD (114KW,155PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CR-V V",
+        "year": "2018.12-",
+        "engine": "2.0 e-CVT Hybrid (158KW,215PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CIVIC VIII Saloon",
+        "year": "2005.09-2012.02",
+        "engine": "1.8 (103KW,140PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CIVIC X Saloon",
+        "year": "2016.09-2022.12",
+        "engine": "1.6 i-VTEC (92KW,125PS)"
+      },
+      {
+        "make": "HONDA",
+        "model": "CIVIC IX Tourer",
+        "year": "2014.01-2016.12",
+        "engine": "1.8 i-VTEC (104KW,141PS)"
+      }
+    ],
+    "collectedAt": "2026-04-06T17:41:48.770Z"
   }
 ]
