@@ -281,6 +281,21 @@
 
     <div class="toast" id="toast"></div>
 
+    <!-- 成功提示弹窗 -->
+    <div class="modal" id="successModal">
+        <div class="modal-content" style="max-width:320px;">
+            <div style="font-size:48px;color:#2ecc71;margin-bottom:10px;"><i class="fas fa-check-circle"></i></div>
+            <div class="modal-title" id="successModalTitle">操作成功</div>
+            <div class="modal-text" id="successModalText">网站已同步更新</div>
+            <div class="modal-actions" style="flex-direction:column;gap:8px;">
+                <a href="https://carvalauto.github.io/products.html" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center;">
+                    <i class="fas fa-external-link-alt"></i> 查看网站
+                </a>
+                <button class="btn" style="background:var(--border);width:100%;" onclick="closeSuccessModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
     let GH_TOKEN = localStorage.getItem('gh_token') || '';
@@ -528,7 +543,7 @@
                 allProducts = products;
                 renderProducts(allProducts);
                 closeEditModal();
-                showToast('保存成功！网站已同步更新', false);
+                showSuccessModal('保存成功！', '商品信息已更新到 GitHub，网站将在几秒内同步更新。\n\n如未看到更新，请刷新网站页面。');
             } else {
                 const errData = await updateR.json();
                 showToast('保存失败: ' + (errData.message || 'GitHub错误'), true);
@@ -695,7 +710,7 @@
                         localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
                         allProducts = p;
                         renderProducts(allProducts);
-                        showToast('删除成功！网站已同步更新', false);
+                        showSuccessModal('删除成功！', '商品已从 GitHub 删除，网站将在几秒内同步更新。\n\n如仍看到该商品，请刷新网站页面。');
                     } else {
                         const errData = await updateR.json();
                         showToast('删除失败: ' + (errData.message || 'GitHub错误'), true);
@@ -722,6 +737,14 @@
     
     function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
     function showToast(m, err) { const t = document.getElementById('toast'); t.textContent = m; t.className = 'toast show' + (err ? ' error' : ''); setTimeout(() => t.classList.remove('show'), 3000); }
+    
+    // 成功弹窗
+    function showSuccessModal(title, text) {
+        document.getElementById('successModalTitle').textContent = title || '操作成功';
+        document.getElementById('successModalText').textContent = text || '网站已同步更新';
+        document.getElementById('successModal').classList.add('show');
+    }
+    function closeSuccessModal() { document.getElementById('successModal').classList.remove('show'); }
     
     // Google Analytics
     function handleLogin() {
