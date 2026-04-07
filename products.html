@@ -305,6 +305,44 @@
         }
         .products-count span { color: var(--red); font-weight: 700; }
 
+        /* ===== PAGINATION ===== */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 40px;
+            padding: 20px 0;
+        }
+        .page-btn {
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            background: white;
+            font-family: var(--font-head);
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .page-btn:hover:not(:disabled) {
+            border-color: var(--steel);
+            color: var(--steel);
+        }
+        .page-btn.active {
+            background: var(--steel);
+            border-color: var(--steel);
+            color: white;
+        }
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .page-info {
+            font-size: 13px;
+            color: var(--text-soft);
+            margin: 0 12px;
+        }
+
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -825,9 +863,39 @@
             .brand-logo { width: 28px; height: 28px; }
 
             .page-hero { padding: 40px 20px; }
-            .filter-bar { flex-direction: column; align-items: stretch; padding: 14px 16px; }
-            .search-box { margin-left: 0; margin-top: 8px; }
-            .search-box input { flex: 1; width: auto; }
+            /* 手机端分类导航优化 - 横向滚动 */
+            .filter-bar { 
+                flex-direction: row; 
+                align-items: center; 
+                padding: 10px 12px; 
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                gap: 8px;
+            }
+            .filter-bar span { 
+                font-size: 10px; 
+                flex-shrink: 0;
+            }
+            .filter-btn { 
+                padding: 5px 10px; 
+                font-size: 10px; 
+                flex-shrink: 0;
+            }
+            .search-box { 
+                margin-left: 0; 
+                margin-top: 0; 
+                flex-shrink: 0;
+                min-width: 120px;
+            }
+            .search-box input { 
+                flex: 1; 
+                width: 80px; 
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+            .search-box button { padding: 6px 10px; font-size: 11px; }
+            
             .products-section { padding: 24px 16px; }
             .products-grid { grid-template-columns: 1fr; }
             .modal-inner { grid-template-columns: 1fr; }
@@ -928,6 +996,8 @@
     <div class="products-grid" id="productsGrid">
         <!-- Products loaded by JS -->
     </div>
+    <!-- 分页 -->
+    <div class="pagination" id="pagination"></div>
 </div>
 
 <!-- ===== FOOTER ===== -->
@@ -1017,6 +1087,19 @@ var products = [];
 var productsData = [];
 var currentFilter = 'all';
 var currentSearch = '';
+var currentPage = 1;
+var itemsPerPage = 50; // 默认电脑端50个
+
+// 检测设备类型，设置每页显示数量
+function detectItemsPerPage() {
+    if (window.innerWidth <= 768) {
+        itemsPerPage = 20; // 手机端20个
+    } else {
+        itemsPerPage = 50; // 电脑端50个
+    }
+}
+detectItemsPerPage();
+window.addEventListener('resize', detectItemsPerPage);
 
 var categoryLabels = {
     japanese: 'Japanese',
@@ -1064,6 +1147,7 @@ async function loadProducts() {
 function renderProducts() {
     var grid = document.getElementById('productsGrid');
     var countEl = document.getElementById('countDisplay');
+    var paginationEl = document.getElementById('pagination');
 
     var filtered = productsData.filter(function(p) {
         var matchCat = currentFilter === 'all' || p.category === currentFilter;
@@ -1078,10 +1162,21 @@ function renderProducts() {
 
     if (filtered.length === 0) {
         grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><h3>No Products Found</h3><p>Try adjusting your filter or search.</p></div>';
+        paginationEl.innerHTML = '';
         return;
     }
 
-    grid.innerHTML = filtered.map(function(p) {
+    // 计算分页
+    var totalPages = Math.ceil(filtered.length / itemsPerPage);
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+    
+    var startIndex = (currentPage - 1) * itemsPerPage;
+    var endIndex = startIndex + itemsPerPage;
+    var pageProducts = filtered.slice(startIndex, endIndex);
+
+    // 渲染当前页产品
+    grid.innerHTML = pageProducts.map(function(p) {
         var firstImg = p.image ? p.image.split(',')[0].trim() : '';
         var desc = p.description || '';
         var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
@@ -1110,10 +1205,63 @@ function renderProducts() {
             '</div>' +
         '</div>';
     }).join('');
+
+    // 渲染分页
+    renderPagination(totalPages, filtered.length);
+}
+
+function renderPagination(totalPages, totalItems) {
+    var paginationEl = document.getElementById('pagination');
+    
+    if (totalPages <= 1) {
+        paginationEl.innerHTML = '';
+        return;
+    }
+
+    var html = '';
+    
+    // 上一页按钮
+    html += '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '>&laquo; Prev</button>';
+    
+    // 页码按钮
+    var startPage = Math.max(1, currentPage - 2);
+    var endPage = Math.min(totalPages, currentPage + 2);
+    
+    if (startPage > 1) {
+        html += '<button class="page-btn" onclick="goToPage(1)">1</button>';
+        if (startPage > 2) html += '<span class="page-info">...</span>';
+    }
+    
+    for (var i = startPage; i <= endPage; i++) {
+        html += '<button class="page-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+    }
+    
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) html += '<span class="page-info">...</span>';
+        html += '<button class="page-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
+    }
+    
+    // 下一页按钮
+    html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>Next &raquo;</button>';
+    
+    // 页码信息
+    var startItem = (currentPage - 1) * itemsPerPage + 1;
+    var endItem = Math.min(currentPage * itemsPerPage, totalItems);
+    html += '<span class="page-info">' + startItem + '-' + endItem + ' / ' + totalItems + '</span>';
+    
+    paginationEl.innerHTML = html;
+}
+
+function goToPage(page) {
+    currentPage = page;
+    renderProducts();
+    // 滚动到产品列表顶部
+    document.getElementById('productsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function filterProducts(cat, btn) {
     currentFilter = cat;
+    currentPage = 1; // 重置页码
     document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
     renderProducts();
@@ -1121,6 +1269,7 @@ function filterProducts(cat, btn) {
 
 function searchProducts() {
     currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
+    currentPage = 1; // 重置页码
     renderProducts();
 }
 
