@@ -217,9 +217,7 @@
             flex-shrink: 0;
             width: 14px;
         }
-        .meta-row span strong {
-            color: #222;
-        }
+        .meta-row span strong { color: #222; }
         .product-oem {
             display: inline-block;
             background-color: #f1f1f1;
@@ -381,12 +379,8 @@
             background: rgba(230, 57, 70, 0.95);
             opacity: 1;
         }
-        .carousel-arrow.prev {
-            left: 8px;
-        }
-        .carousel-arrow.next {
-            right: 8px;
-        }
+        .carousel-arrow.prev { left: 8px; }
+        .carousel-arrow.next { right: 8px; }
         .modal-thumbs {
             display: flex;
             gap: 8px;
@@ -424,7 +418,6 @@
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-
             color: var(--accent-color);
             margin-bottom: 10px;
         }
@@ -460,7 +453,6 @@
             font-size: 13px;
             flex-shrink: 0;
         }
-        .spec-content {}
         .spec-label {
             font-size: 11px;
             text-transform: uppercase;
@@ -520,7 +512,7 @@
         .modal-form-group input, .modal-form-group textarea {
             padding: 10px 12px;
             border: 1.5px solid #ddd;
-            font-family: 'Barlow', sans-serif;
+            font-family: 'Roboto', sans-serif;
             font-size: 14px;
             outline: none;
             transition: border 0.2s;
@@ -597,10 +589,10 @@
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-MR58CNED51"></script>
     <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MR58CNED51');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MR58CNED51');
     </script>
 </head>
 <body>
@@ -661,15 +653,19 @@
     <footer>
         <div class="footer-slogan">Carvalauto- Given your car a second life</div>
         <p class="footer-copyright">&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.</p>
-        <p>Professional Auto Parts Manufacturer & Global Supplier</p>
+        <p>Professional Auto Parts Manufacturer &amp; Global Supplier</p>
     </footer>
     <script>
     // ============================================================
-    // 从 GitHub/CDN 加载产品数据 (products.json)
-    // 直接获取最新数据，无缓存
+    // 从 GitHub 加载产品数据 (products.json)
+    // 直接从 GitHub 获取最新数据，无缓存
     // ============================================================
     var products = [];
     var productsData = [];
+    
+    // GitHub 仓库配置
+    var GH_REPO = 'carvalauto/carvalauto.github.io';
+    var GH_FILE = 'products.json';
     
     // 默认示例数据（仅在 GitHub 加载失败时使用）
     var defaultProducts = [
@@ -699,43 +695,67 @@
         }
     ];
     
-    // Load products from GitHub (直接获取最新数据，无缓存)
-    async function loadProducts() {
-        var grid = document.getElementById('productsGrid');
-        
-        // 显示加载动画
-        grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;grid-column:1/-1;"><i class="fas fa-spinner fa-spin" style="font-size:28px;"></i><p style="margin-top:12px;">Loading products...</p></div>';
-        
-        // 直接获取最新数据（添加时间戳绕过浏览器缓存）
+    // 从 GitHub 加载产品数据 - 直接获取最新数据，添加时间戳绕过缓存
+    async function loadProductsFromGitHub() {
         try {
-            var cdnUrl = 'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json';
-            var resp = await fetch(cdnUrl + '?t=' + Date.now());
+            // 添加时间戳参数绕过浏览器缓存
+            var timestamp = Date.now();
+            var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FILE + '?t=' + timestamp;
             
-            if (!resp.ok) {
-                resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?t=' + Date.now());
-            }
+            console.log('正在从 GitHub 加载产品数据...');
             
-            if (resp.ok) {
-                var data = await resp.json();
-                if (Array.isArray(data) && data.length > 0) {
-                    products = data;
-                    productsData = products;
+            var response = await fetch(apiUrl, {
+                headers: { 
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache'
+                },
+                cache: 'no-cache'
+            });
+            
+            if (response.ok) {
+                var json = await response.json();
+                if (json.content) {
+                    var decoded = atob(json.content.replace(/\n/g, ''));
+                    var data = JSON.parse(decoded);
+                    if (Array.isArray(data) && data.length > 0) {
+                        products = data;
+                        console.log('✓ 从 GitHub 加载了 ' + products.length + ' 个产品');
+                        return true;
+                    }
                 }
             }
         } catch(e) {
-            console.log('Fetch error:', e);
+            console.log('GitHub 加载失败，使用默认数据:', e.message);
+        }
+        return false;
+    }
+    
+    // 初始化函数
+    async function initProducts() {
+        // 显示加载状态
+        var grid = document.getElementById('productsGrid');
+        grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;"><i class="fas fa-spinner fa-spin" style="font-size:32px;"></i><p style="margin-top:15px;">Loading products...</p></div>';
+        
+        // 直接从 GitHub 加载最新数据
+        var loaded = await loadProductsFromGitHub();
+        
+        // 如果失败，使用默认数据
+        if (!loaded || products.length === 0) {
+            products = defaultProducts;
+            console.log('使用默认示例数据');
         }
         
-        if (products.length === 0) products = defaultProducts;
         productsData = products;
         renderProducts();
     }
     
     // 页面加载完成后初始化
-    document.addEventListener('DOMContentLoaded', loadProducts);
+    document.addEventListener('DOMContentLoaded', initProducts);
     
     let currentFilter = 'all';
     let currentSearch = '';
+    
     const categoryLabels = {
         japanese: 'Japanese',
         korean: 'Korean',
@@ -744,18 +764,22 @@
         oil: 'Engine Oil',
         other: 'Other'
     };
+    
     function renderProducts() {
         const grid = document.getElementById('productsGrid');
         const countEl = document.getElementById('countDisplay');
+        
         let filtered = productsData.filter(p => {
             const matchCat = currentFilter === 'all' || p.category === currentFilter;
             const matchSearch = currentSearch === '' ||
                 p.name.toLowerCase().includes(currentSearch) ||
-                p.oem.toLowerCase().includes(currentSearch) ||
-                p.description.toLowerCase().includes(currentSearch);
+                (p.oem && p.oem.toLowerCase().includes(currentSearch)) ||
+                (p.description && p.description.toLowerCase().includes(currentSearch));
             return matchCat && matchSearch;
         });
+        
         countEl.textContent = filtered.length;
+        
         if (filtered.length === 0) {
             grid.innerHTML = `
                 <div class="empty-state">
@@ -765,9 +789,11 @@
                 </div>`;
             return;
         }
+        
         grid.innerHTML = filtered.map(p => {
             // Parse first image for card display
             var firstImg = p.image ? p.image.split(',')[0].trim() : '';
+            
             // Parse brand and compatible models from description
             var desc = p.description || '';
             var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
@@ -776,6 +802,7 @@
             var brandInfo = brandMatch ? brandMatch[1].trim() : '';
             var compatInfo = compatMatch ? compatMatch[1].trim() : '';
             var specsInfo = specsMatch ? specsMatch[1].trim() : '';
+            
             // Clean description - remove parsed metadata
             var cleanDesc = desc
                 .replace(/Brand:\s*[^|.]+[|.]?/gi, '')
@@ -783,6 +810,7 @@
                 .replace(/Specs:\s*[^.]+\./gi, '')
                 .replace(/\|/g, '')
                 .trim();
+            
             return `
             <div class="product-card" data-category="${p.category}" onclick="openProduct(${p.id})" style="cursor:pointer;">
                 <div class="product-img-wrap">
@@ -801,23 +829,25 @@
                     </div>
                     ${cleanDesc ? `<div class="product-desc">${cleanDesc.substring(0,100)}...</div>` : ''}
                     <button class="inquire-btn" onclick="event.stopPropagation(); openProduct(${p.id})">
-
                         <i class="fas fa-info-circle"></i> View Details
                     </button>
                 </div>
             </div>`;
         }).join('');
     }
+    
     function filterProducts(cat, btn) {
         currentFilter = cat;
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         renderProducts();
     }
+    
     function searchProducts() {
         currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
         renderProducts();
     }
+    
     // 初始化 - 支持URL参数自动筛选
     (function() {
         var params = new URLSearchParams(window.location.search);
@@ -831,12 +861,16 @@
             }
         }
     })();
+    
     renderProducts();
+    
     // ===== Product Detail Modal =====
     var categoryLabelsModal = { japanese:'🇯🇵 Japanese', korean:'🇰🇷 Korean', german:'🇩🇪 German', chinese:'🇨🇳 Chinese', oil:'🛢️ Engine Oil', other:'📦 Other' };
+    
     // Carousel state
     var currentCarouselIndex = 0;
     var carouselImages = [];
+    
     function updateCarousel() {
         var carousel = document.getElementById('modalCarouselInner');
         carousel.style.transform = 'translateX(-' + (currentCarouselIndex * 100) + '%)';
@@ -850,22 +884,33 @@
         document.getElementById('carouselPrev').style.display = carouselImages.length > 1 ? 'flex' : 'none';
         document.getElementById('carouselNext').style.display = carouselImages.length > 1 ? 'flex' : 'none';
     }
+    
     function prevCarouselImg() {
         currentCarouselIndex = (currentCarouselIndex - 1 + carouselImages.length) % carouselImages.length;
         updateCarousel();
     }
+    
     function nextCarouselImg() {
         currentCarouselIndex = (currentCarouselIndex + 1) % carouselImages.length;
         updateCarousel();
     }
+    
+    function switchCarouselImg(index) {
+        currentCarouselIndex = index;
+        updateCarousel();
+    }
+    
     function openProduct(id) {
         var p = productsData.find(function(x) { return x.id === id; });
         if (!p) return;
+        
         // Images
         carouselImages = p.image ? p.image.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
         currentCarouselIndex = 0;
+        
         var carousel = document.getElementById('modalCarouselInner');
         var thumbsEl = document.getElementById('modalThumbs');
+        
         if (carouselImages.length > 0) {
             // Build carousel items with click-to-zoom
             carousel.innerHTML = carouselImages.map(function(img, i) {
@@ -884,9 +929,11 @@
             document.getElementById('carouselPrev').style.display = 'none';
             document.getElementById('carouselNext').style.display = 'none';
         }
+        
         // Info
         document.getElementById('modalCategory').textContent = categoryLabelsModal[p.category] || p.category;
         document.getElementById('modalTitle').textContent = p.name;
+        
         // Parse description for specs
         var desc = p.description || '';
         var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
@@ -896,31 +943,34 @@
         var compatInfo = compatMatch ? compatMatch[1].trim() : '';
         var specsInfo = specsMatch ? specsMatch[1].trim() : '';
         var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi,'').replace(/Compatible with:\s*[^.]+\./gi,'').replace(/Specs:\s*[^.]+\./gi,'').replace(/\|/g,'').trim();
+        
         var specsHtml = '';
         if (p.oem) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-barcode"></i></div><div class="spec-content"><div class="spec-label">OEM Number</div><div class="spec-value">' + p.oem + '</div></div></div>';
         if (brandInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-car"></i></div><div class="spec-content"><div class="spec-label">Brand</div><div class="spec-value">' + brandInfo + '</div></div></div>';
         if (compatInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-check-circle"></i></div><div class="spec-content"><div class="spec-label">Compatible With</div><div class="spec-value">' + compatInfo + '</div></div></div>';
         if (specsInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-cog"></i></div><div class="spec-content"><div class="spec-label">Specifications</div><div class="spec-value">' + specsInfo + '</div></div></div>';
+        
         document.getElementById('modalSpecs').innerHTML = specsHtml;
         document.getElementById('modalDesc').textContent = cleanDesc;
+        
         // Pre-fill message
         document.getElementById('modalProductRef').value = p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '');
         document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '') + '. Please provide price and availability.';
+        
         // Show modal
         document.getElementById('productModal').classList.add('show');
         document.body.style.overflow = 'hidden';
     }
-    function switchCarouselImg(index) {
-        currentCarouselIndex = index;
-        updateCarousel();
-    }
+    
     function closeProductModal() {
         document.getElementById('productModal').classList.remove('show');
         document.body.style.overflow = '';
     }
+    
     function closeModal(e) {
         if (e.target === document.getElementById('productModal')) closeProductModal();
     }
+    
     // Handle modal form submit
     document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -928,6 +978,7 @@
         var btn = this.querySelector('.modal-send-btn');
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
         btn.disabled = true;
+        
         try {
             var resp = await fetch(this.action, { method:'POST', body:formData, headers:{'Accept':'application/json'} });
             if (resp.ok) {
@@ -945,6 +996,7 @@
             btn.disabled = false;
         }
     });
+    
     // ESC key to close
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeProductModal(); });
     
@@ -955,9 +1007,11 @@
             if (e.key === 'ArrowRight') nextCarouselImg();
         }
     });
+    
     // ===== Lightbox 图片放大功能 =====
     var lightboxImages = [];
     var lightboxIndex = 0;
+    
     function openLightbox(index) {
         lightboxImages = carouselImages;
         lightboxIndex = index;
@@ -965,18 +1019,22 @@
         document.getElementById('lightbox').classList.add('show');
         document.body.style.overflow = 'hidden';
     }
+    
     function closeLightbox() {
         document.getElementById('lightbox').classList.remove('show');
         document.body.style.overflow = '';
     }
+    
     function prevLightboxImg() {
         lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
         document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
     }
+    
     function nextLightboxImg() {
         lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
         document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
     }
+    
     // Lightbox keyboard navigation
     document.addEventListener('keydown', function(e) {
         if (document.getElementById('lightbox').classList.contains('show')) {
@@ -1010,7 +1068,7 @@
                     <div class="modal-title" id="modalTitle"></div>
                     <div class="modal-specs" id="modalSpecs"></div>
                     <div class="modal-desc" id="modalDesc"></div>
-                    <a id="modalInquireBtn" class="modal-inquire">
+                    <a id="modalInquireBtn" class="modal-inquire" onclick="closeProductModal(); document.getElementById('productModal').classList.remove('show');">
                         <i class="fas fa-paper-plane"></i> Send Inquiry
                     </a>
                 </div>
@@ -1026,27 +1084,4 @@
                             <input type="text" name="name" required placeholder="John Smith">
                         </div>
                         <div class="modal-form-group">
-                            <label>Your Email</label>
-                            <input type="email" name="email" required placeholder="john@example.com">
-                        </div>
-                    </div>
-                    <div class="modal-form-group" style="margin-bottom:12px;">
-                        <label>Message (OEM number & quantity)</label>
-                        <textarea name="message" id="modalMessage" placeholder="Please include OEM number and required quantity..."></textarea>
-                    </div>
-                    <button type="submit" class="modal-send-btn">
-                        <i class="fas fa-paper-plane"></i> Send Message
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Lightbox 图片放大查看 -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        <span class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); prevLightboxImg()"><i class="fas fa-chevron-left"></i></span>
-        <img id="lightboxImg" src="" alt="">
-        <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); nextLightboxImg()"><i class="fas fa-chevron-right"></i></span>
-    </div>
-</body>
-</html>
+ 
