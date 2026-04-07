@@ -1,296 +1,548 @@
-网页标题：
-
-网页链接：https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.html
-
-网页内容：<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products - Carval Auto Parts</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Products - Carval Auto Parts | OEM Quality Auto Parts Supplier</title>
+    <meta name="description" content="Browse our complete catalog of OEM quality auto parts for Japanese, Korean, German and Chinese vehicles. Toyota, Honda, BMW, Mercedes, Hyundai parts available.">
+    <meta name="keywords" content="auto parts catalog, OEM car parts, Toyota parts, Honda parts, BMW parts, Mercedes parts, Hyundai parts, Chinese car parts">
+    
+    <!-- 关键CSS内联 -->
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Roboto', sans-serif; color: #222; background-color: #f1f1f1; line-height: 1.6; }
+        
         :root {
-            --primary-color: #0f4c81;
-            --accent-color: #e63946;
-            --dark-color: #1a1a1a;
-            --light-color: #f8f9fa;
-            --border-color: #dee2e6;
+            --red: #D62B2B;
+            --red-dark: #A81F1F;
+            --steel: #1C2B3A;
+            --steel-mid: #243447;
+            --steel-lite: #2F4560;
+            --chrome-dk: #B0B8C1;
+            --offwhite: #F5F4F0;
+            --text-main: #1A1A1A;
+            --text-soft: #555F6D;
+            --border: #D4D8DE;
+            --font-head: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
         }
-        /* 顶部头部 */
-        .top-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 30px; background-color: var(--dark-color); color: white;
-            border-bottom: 4px solid var(--accent-color); position: relative;
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--offwhite);
+            color: var(--text-main);
+            line-height: 1.6;
         }
-        .header-brand {
-            display: flex; flex-direction: row; align-items: center; gap: 10px;
-            position: absolute; left: 50%; transform: translateX(-50%);
-        }
-        .header-logo-text { font-family: 'Oswald', sans-serif; font-size: 26px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
-        .header-slogan { font-size: 14px; color: #ccc; font-style: italic; }
-        .language-switch select {
-            padding: 8px 18px; border: 2px solid var(--accent-color);
-            background-color: var(--dark-color); color: white;
-            font-family: 'Roboto', sans-serif; font-weight: 500;
-            cursor: pointer; border-radius: 0; font-size: 14px;
-        }
-        /* 导航栏 */
-        nav { background-color: var(--primary-color); padding: 20px 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .nav-links { display: flex; list-style: none; gap: 45px; }
-        .nav-links a {
-            color: white; text-decoration: none; font-family: 'Oswald', sans-serif;
-            font-size: 17px; text-transform: uppercase; letter-spacing: 1px;
-            transition: all 0.3s ease; position: relative; padding: 5px 0;
-        }
-        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-color: var(--accent-color); transition: width 0.3s ease; }
-        .nav-links a:hover { color: var(--accent-color); }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-        .nav-links a.active { color: var(--accent-color); }
-        /* 页面标题区 */
-        .page-hero {
-            background-color: var(--dark-color);
-            padding: 60px 30px;
-            text-align: center;
-            border-bottom: 4px solid var(--accent-color);
-        }
-        .page-hero h1 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 48px;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-        }
-        .page-hero h1 span { color: var(--accent-color); }
-        .page-hero p { color: #ccc; font-size: 16px; max-width: 600px; margin: 0 auto; }
-        /* 筛选栏 */
-        .filter-bar {
-            background-color: white;
-            padding: 20px 30px;
-            border-bottom: 2px solid var(--border-color);
+        /* ===== 极简导航栏 ===== */
+        .topbar {
+            background: var(--steel);
+            border-bottom: 2px solid var(--red);
+            padding: 0 24px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: space-between;
+            height: 56px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .brand-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+        
+        .brand-text {
+            font-family: var(--font-head);
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .brand-text span { color: var(--red); }
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .desktop-nav a {
+            padding: 8px 16px;
+            color: var(--chrome-dk);
+            text-decoration: none;
+            font-family: var(--font-head);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .desktop-nav a:hover,
+        .desktop-nav a.active {
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .lang-select {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 6px 12px;
+            font-family: var(--font-body);
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            outline: none;
+        }
+        .lang-select option { background: var(--steel); color: white; }
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s;
+            border-radius: 1px;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        /* Mobile nav */
+        .nav-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+        }
+        .nav-overlay.show { display: block; }
+        .mobile-nav {
+            position: fixed;
+            top: 0; right: -280px;
+            width: 280px; height: 100vh;
+            background: var(--steel);
+            z-index: 999;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            border-left: 3px solid var(--red);
+        }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .mobile-nav-logo {
+            font-family: var(--font-head);
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+        }
+        .mobile-nav-logo span { color: var(--red); }
+        .mobile-nav-close {
+            background: none; border: none;
+            color: var(--chrome-dk); cursor: pointer;
+            font-size: 20px;
+        }
+        .mobile-nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: var(--chrome-dk);
+            text-decoration: none;
+            font-family: var(--font-head);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.2s;
+        }
+        .mobile-nav-links a:hover { color: white; background: rgba(255,255,255,0.05); }
+        .mobile-nav-links a i { color: var(--red); width: 18px; }
+        /* ===== PAGE HERO ===== */
+        .page-hero {
+            background: var(--steel);
+            background-image: linear-gradient(135deg, rgba(28,43,58,0.98) 0%, rgba(214,43,43,0.1) 100%);
+            padding: 60px 24px;
+            text-align: center;
+            border-bottom: 2px solid var(--red);
+        }
+        .page-hero h1 {
+            font-family: var(--font-head);
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 900;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+        .page-hero h1 span { color: var(--red); }
+        .page-hero p {
+            color: var(--chrome-dk);
+            font-size: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
             flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto;
         }
         .filter-bar span {
-            font-family: 'Oswald', sans-serif;
-            font-size: 15px;
+            font-family: var(--font-head);
+            font-size: 12px;
             text-transform: uppercase;
-            color: var(--dark-color);
+            color: var(--text-soft);
             letter-spacing: 1px;
         }
         .filter-btn {
-            padding: 8px 20px;
-            border: 2px solid var(--border-color);
+            padding: 7px 16px;
+            border: 1px solid var(--border);
             background: white;
-            font-family: 'Oswald', sans-serif;
-            font-size: 14px;
+            font-family: var(--font-head);
+            font-size: 12px;
             text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
             letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 3px;
         }
-        .filter-btn:hover, .filter-btn.active {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--steel);
+            border-color: var(--steel);
             color: white;
         }
         .search-box {
             margin-left: auto;
             display: flex;
-            gap: 0;
         }
         .search-box input {
-            padding: 8px 15px;
-            border: 2px solid var(--border-color);
+            padding: 8px 14px;
+            border: 1px solid var(--border);
             border-right: none;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            width: 220px;
+            font-family: var(--font-body);
+            font-size: 13px;
+            width: 200px;
             outline: none;
+            border-radius: 3px 0 0 3px;
         }
-        .search-box input:focus { border-color: var(--primary-color); }
+        .search-box input:focus { border-color: var(--steel); }
         .search-box button {
-            padding: 8px 15px;
-            background-color: var(--primary-color);
-            border: 2px solid var(--primary-color);
+            padding: 8px 14px;
+            background: var(--steel);
+            border: 1px solid var(--steel);
             color: white;
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
+            font-size: 13px;
+            border-radius: 0 3px 3px 0;
+            transition: background 0.2s;
         }
-        .search-box button:hover { background-color: var(--accent-color); border-color: var(--accent-color); }
-        /* 商品网格 */
+        .search-box button:hover { background: var(--red); border-color: var(--red); }
+        /* ===== PRODUCTS ===== */
         .products-section {
-            max-width: 1500px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 50px 30px;
+            padding: 40px 24px;
         }
         .products-count {
-            font-family: 'Oswald', sans-serif;
-            color: #888;
-            font-size: 15px;
-            margin-bottom: 30px;
+            font-family: var(--font-head);
+            color: var(--text-soft);
+            font-size: 13px;
+            margin-bottom: 24px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .products-count span { color: var(--accent-color); }
+        .products-count span { color: var(--red); font-weight: 700; }
+        /* ===== PAGINATION ===== */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 40px;
+            padding: 20px 0;
+        }
+        .page-btn {
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            background: white;
+            font-family: var(--font-head);
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .page-btn:hover:not(:disabled) {
+            border-color: var(--steel);
+            color: var(--steel);
+        }
+        .page-btn.active {
+            background: var(--steel);
+            border-color: var(--steel);
+            color: white;
+        }
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .page-info {
+            font-size: 13px;
+            color: var(--text-soft);
+            margin: 0 12px;
+        }
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
         }
-        /* 商品卡片 */
+        /* ===== PRODUCT CARD ===== */
         .product-card {
-            background-color: white;
+            background: white;
             overflow: hidden;
-            transition: all 0.4s ease;
+            transition: all 0.3s;
             position: relative;
-            border-bottom: 4px solid var(--primary-color);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border-bottom: 3px solid var(--steel);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            cursor: pointer;
         }
         .product-card::before {
-            content: ''; position: absolute; top: 0; left: 0;
-            width: 4px; height: 100%;
-            background-color: var(--accent-color);
-            transition: width 0.3s ease;
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 0;
+            background: var(--red);
+            transition: height 0.3s;
         }
-        .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.15); border-color: var(--accent-color); }
-        .product-card:hover::before { width: 6px; }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: var(--red);
+        }
+        .product-card:hover::before { height: 100%; }
         .product-img-wrap {
             position: relative;
-            width: 100%; height: 260px;
-            overflow: hidden; background-color: #f8f8f8;
-            display: flex; align-items: center; justify-content: center;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        
+        /* 图片骨架屏 */
+        .img-skeleton {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            font-size: 36px;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
         .product-img-wrap img {
-            width: 100%; height: 100%;
-            object-fit: contain; padding: 10px;
-            transition: transform 0.5s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 16px;
+            transition: transform 0.4s ease;
+            opacity: 0;
+        }
+        .product-img-wrap img.loaded {
+            opacity: 1;
         }
         .product-card:hover .product-img-wrap img { transform: scale(1.05); }
-        /* 无图片占位 */
         .no-image {
-            width: 100%; height: 100%;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            color: #ccc; gap: 10px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            gap: 8px;
         }
-        .no-image i { font-size: 48px; }
-        .no-image span { font-size: 13px; font-family: 'Oswald', sans-serif; letter-spacing: 1px; }
-        .product-body { padding: 25px 25px 25px 30px; }
+        .no-image i { font-size: 40px; }
+        .no-image span { font-size: 11px; font-family: var(--font-head); letter-spacing: 1px; text-transform: uppercase; }
+        .product-body {
+            padding: 18px 20px 20px;
+        }
         .product-category {
-            font-family: 'Oswald', sans-serif;
-            font-size: 11px;
-            color: var(--accent-color);
+            font-family: var(--font-head);
+            font-size: 10px;
+            color: var(--red);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+            font-weight: 700;
         }
         .product-name {
-            font-family: 'Oswald', sans-serif;
-            font-size: 20px;
-            color: var(--primary-color);
+            font-family: var(--font-head);
+            font-size: 17px;
+            color: var(--steel);
             text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             line-height: 1.3;
+            font-weight: 800;
         }
         .product-meta {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            margin-bottom: 12px;
+            gap: 4px;
+            margin-bottom: 10px;
         }
         .meta-row {
             display: flex;
             align-items: flex-start;
             gap: 8px;
-            font-size: 13px;
-            color: #444;
-            line-height: 1.5;
+            font-size: 12px;
+            color: var(--text-soft);
         }
         .meta-row i {
-            color: var(--primary-color);
-            font-size: 12px;
+            color: var(--steel);
+            font-size: 11px;
             margin-top: 2px;
-            flex-shrink: 0;
             width: 14px;
         }
-        .meta-row span strong {
-            color: #222;
-        }
+        .meta-row strong { color: var(--text-main); }
         .product-oem {
             display: inline-block;
-            background-color: #f1f1f1;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-family: var(--font-body);
             color: #666;
-            margin-bottom: 12px;
-            border-left: 3px solid var(--accent-color);
+            margin-bottom: 10px;
+            border-left: 2px solid var(--red);
         }
         .product-desc {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.7;
-            margin-bottom: 20px;
+            color: var(--text-soft);
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 16px;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
         .inquire-btn {
-            display: inline-block;
-            padding: 10px 25px;
-            background-color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 18px;
+            background: var(--steel);
             color: white;
             text-decoration: none;
-            font-family: 'Oswald', sans-serif;
+            font-family: var(--font-head);
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 14px;
+            font-size: 12px;
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s;
+            border-radius: 3px;
         }
-        .inquire-btn:hover { background-color: var(--accent-color); transform: translateX(4px); }
-        /* 空状态 */
+        .inquire-btn:hover { background: var(--red); transform: translateX(4px); }
+        /* ===== EMPTY STATE ===== */
         .empty-state {
             text-align: center;
-            padding: 80px 30px;
+            padding: 60px 24px;
             color: #aaa;
             grid-column: 1 / -1;
         }
-        .empty-state i { font-size: 60px; margin-bottom: 20px; display: block; }
-        .empty-state h3 { font-family: 'Oswald', sans-serif; font-size: 24px; margin-bottom: 10px; color: #ccc; text-transform: uppercase; }
-        /* 页脚 */
-        footer { background-color: var(--dark-color); color: #ccc; padding: 40px 30px; text-align: center; font-size: 15px; border-top: 6px solid var(--accent-color); }
-        .footer-slogan { font-family: 'Oswald', sans-serif; font-size: 18px; margin-bottom: 15px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; }
-        .footer-copyright { margin-bottom: 10px; }
-        /* 社交媒体 */
-        .social-icons { position: fixed; bottom: 40px; right: 40px; display: flex; flex-direction: column; gap: 20px; z-index: 999; }
-        .social-icon { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 26px; transition: all 0.4s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .social-icon:hover { transform: scale(1.15) rotate(8deg); }
-        .facebook { background-color: #3b5998; }
-        .instagram { background-color: #e1306c; }
-        .whatsapp { background-color: #25d366; }
-        @media (max-width: 768px) {
-            .top-header { flex-direction: column; gap: 15px; padding: 15px; }
-            .header-brand { position: static; transform: none; }
-            .nav-links { flex-direction: column; gap: 15px; }
-            .filter-bar { flex-direction: column; align-items: flex-start; }
-            .search-box { margin-left: 0; width: 100%; }
-            .search-box input { flex: 1; }
-            .page-hero h1 { font-size: 32px; }
-            .social-icons { flex-direction: row; bottom: 20px; right: 50%; transform: translateX(50%); gap: 15px; }
-            .social-icon { width: 50px; height: 50px; font-size: 22px; }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; display: block; }
+        .empty-state h3 { font-family: var(--font-head); font-size: 20px; margin-bottom: 8px; color: #ccc; text-transform: uppercase; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--steel);
+            color: var(--chrome-dk);
+            padding: 32px 24px;
+            text-align: center;
+            font-size: 13px;
+            border-top: 3px solid var(--red);
         }
-        /* ===== Product Detail Modal ===== */
+        .footer-slogan {
+            font-family: var(--font-head);
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .footer-slogan span { color: var(--red); }
+        .footer-copyright { color: var(--chrome-dk); }
+        /* ===== SOCIAL FLOAT ===== */
+        .social-float {
+            position: fixed;
+            bottom: 24px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 900;
+        }
+        .social-btn {
+            width: 42px; height: 42px;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s;
+            border-radius: 50%;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+        }
+        .social-btn:hover { transform: scale(1.1) translateY(-2px); }
+        .social-btn.fb { background: #3b5998; }
+        .social-btn.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .social-btn.wa { background: #25d366; }
+        /* ===== MODAL ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -306,20 +558,22 @@
             background: white;
             max-width: 900px;
             width: 100%;
-            margin: auto;
+            margin: 20px auto;
             position: relative;
             animation: modalIn 0.3s ease;
+            border-radius: 4px;
+            overflow: hidden;
         }
         @keyframes modalIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
         .modal-close {
             position: absolute;
-            top: 14px; right: 18px;
+            top: 12px; right: 16px;
             background: none; border: none;
-            font-size: 26px; cursor: pointer;
+            font-size: 24px; cursor: pointer;
             color: #999; z-index: 10;
             line-height: 1;
         }
-        .modal-close:hover { color: #333; }
+        .modal-close:hover { color: var(--red); }
         .modal-inner {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -327,7 +581,7 @@
         }
         .modal-images {
             background: #f8f9fa;
-            padding: 30px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -338,215 +592,199 @@
             object-fit: contain;
             background: white;
             border: 1px solid #eee;
-            padding: 10px;
+            padding: 12px;
             cursor: zoom-in;
-        }
-        .modal-images-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-carousel {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-        }
-        .modal-carousel-inner {
-            display: flex;
-            transition: transform 0.4s ease;
-        }
-        .modal-carousel-item {
-            min-width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .carousel-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 28px;
-            height: 28px;
-            background: rgba(15, 76, 129, 0.8);
-            color: white;
-            border: none;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 10;
-            border-radius: 50%;
-            opacity: 0.7;
-        }
-        .carousel-arrow:hover {
-            background: rgba(230, 57, 70, 0.95);
-            opacity: 1;
-        }
-        .carousel-arrow.prev {
-            left: 8px;
-        }
-        .carousel-arrow.next {
-            right: 8px;
+            border-radius: 4px;
         }
         .modal-thumbs {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin-top: 12px;
             justify-content: center;
         }
         .modal-thumb {
-            width: 60px; height: 60px;
+            width: 56px; height: 56px;
             object-fit: contain;
             border: 2px solid transparent;
             cursor: pointer;
             background: white;
             padding: 4px;
             transition: all 0.2s;
-            flex-shrink: 0;
+            border-radius: 3px;
         }
-        .modal-thumb.active {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 8px rgba(230, 57, 70, 0.5);
-        }
-        .modal-thumb:hover {
-            border-color: var(--primary-color);
-            transform: scale(1.05);
-        }
+        .modal-thumb.active { border-color: var(--red); }
+        .modal-thumb:hover { border-color: var(--steel); }
         .modal-info {
-            padding: 36px 32px;
+            padding: 28px 24px;
             display: flex;
             flex-direction: column;
             gap: 0;
         }
         .modal-category {
-            font-family: 'Oswald', sans-serif;
-            font-size: 12px;
+            font-family: var(--font-head);
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-
-            color: var(--accent-color);
-            margin-bottom: 10px;
+            color: var(--red);
+            margin-bottom: 8px;
         }
         .modal-title {
-            font-family: 'Oswald', sans-serif;
-            font-size: 26px;
+            font-family: var(--font-head);
+            font-size: 22px;
             font-weight: 800;
-            color: var(--primary-color);
+            color: var(--steel);
             text-transform: uppercase;
             line-height: 1.2;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .modal-specs {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            padding: 20px 0;
-            border-top: 2px solid #f0f0f0;
-            border-bottom: 2px solid #f0f0f0;
-            margin-bottom: 20px;
+            gap: 8px;
+            padding: 16px 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 16px;
         }
         .spec-row {
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            font-size: 14px;
+            font-size: 13px;
         }
         .spec-icon {
-            width: 32px; height: 32px;
-            background: var(--primary-color);
+            width: 28px; height: 28px;
+            background: var(--steel);
             color: white;
             display: flex; align-items: center; justify-content: center;
-            font-size: 13px;
-            flex-shrink: 0;
-        }
-        .spec-content {}
-        .spec-label {
             font-size: 11px;
+            flex-shrink: 0;
+            border-radius: 3px;
+        }
+        .spec-label {
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #888;
-            font-family: 'Oswald', sans-serif;
+            font-family: var(--font-head);
         }
         .spec-value {
-            font-size: 14px;
-            color: #1a1a1a;
+            font-size: 13px;
+            color: var(--text-main);
             font-weight: 500;
             margin-top: 1px;
         }
         .modal-desc {
-            font-size: 14px;
-            color: #555;
-            line-height: 1.75;
-            margin-bottom: 24px;
+            font-size: 13px;
+            color: var(--text-soft);
+            line-height: 1.7;
+            margin-bottom: 20px;
         }
+        .modal-fitment {
+            margin-bottom: 16px;
+        }
+        .modal-fitment-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--steel);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .modal-fitment-title i { color: var(--red); }
+        .fitment-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .fitment-table th {
+            background: var(--steel);
+            color: white;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .fitment-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #eee;
+            color: var(--text-main);
+        }
+        .fitment-table tr:hover td { background: #f5f5f5; }
+        .fitment-table tr:nth-child(even) td { background: #fafafa; }
+        .fitment-table tr:nth-child(even):hover td { background: #f0f0f0; }
         .modal-inquire {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 15px;
-            background: var(--accent-color);
+            gap: 8px;
+            padding: 14px;
+            background: var(--red);
             color: white;
             border: none;
-            font-family: 'Oswald', sans-serif;
-            font-size: 16px;
+            font-family: var(--font-head);
+            font-size: 14px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.25s;
             text-decoration: none;
             width: 100%;
+            border-radius: 3px;
         }
-        .modal-inquire:hover { background: #c0392b; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(214,43,43,0.35); }
-        /* Contact form inside modal */
+        .modal-inquire:hover { background: var(--red-dark); transform: translateY(-2px); }
         .modal-contact {
-            padding: 24px 32px;
+            padding: 20px 24px;
             background: #f8f9fa;
             border-top: 1px solid #eee;
+            grid-column: 1 / -1;
         }
         .modal-contact h3 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 16px;
+            font-family: var(--font-head);
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--primary-color);
-            margin-bottom: 16px;
+            color: var(--steel);
+            margin-bottom: 14px;
         }
         .modal-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-        .modal-form-group { display: flex; flex-direction: column; gap: 5px; }
-        .modal-form-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-family: 'Oswald', sans-serif; }
+        .modal-form-group { display: flex; flex-direction: column; gap: 4px; }
+        .modal-form-group label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-family: var(--font-head); }
         .modal-form-group input, .modal-form-group textarea {
             padding: 10px 12px;
-            border: 1.5px solid #ddd;
-            font-family: 'Barlow', sans-serif;
-            font-size: 14px;
+            border: 1px solid #ddd;
+            font-family: var(--font-body);
+            font-size: 13px;
             outline: none;
             transition: border 0.2s;
+            border-radius: 3px;
         }
-        .modal-form-group input:focus, .modal-form-group textarea:focus { border-color: var(--primary-color); }
-        .modal-form-group textarea { min-height: 80px; resize: vertical; }
+        .modal-form-group input:focus, .modal-form-group textarea:focus { border-color: var(--steel); }
+        .modal-form-group textarea { min-height: 70px; resize: vertical; }
         .modal-send-btn {
             width: 100%;
             padding: 12px;
-            background: var(--primary-color);
+            background: var(--steel);
             color: white;
             border: none;
-            font-family: 'Oswald', sans-serif;
-            font-size: 14px;
+            font-family: var(--font-head);
+            font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.25s;
             margin-top: 4px;
+            border-radius: 3px;
         }
-        .modal-send-btn:hover { background: #0a3a6e; }
-        /* Lightbox 放大查看 */
+        .modal-send-btn:hover { background: var(--steel-mid); }
+        /* ===== LIGHTBOX ===== */
         .lightbox {
             display: none;
             position: fixed;
@@ -568,7 +806,7 @@
             position: absolute;
             top: 20px; right: 20px;
             color: white;
-            font-size: 32px;
+            font-size: 28px;
             cursor: pointer;
             opacity: 0.7;
             transition: opacity 0.3s;
@@ -579,9 +817,9 @@
             top: 50%;
             transform: translateY(-50%);
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
-            padding: 10px 15px;
+            padding: 10px 14px;
             opacity: 0.6;
             transition: opacity 0.3s;
             background: rgba(0,0,0,0.3);
@@ -590,1587 +828,747 @@
         .lightbox-nav:hover { opacity: 1; }
         .lightbox-prev { left: 20px; }
         .lightbox-next { right: 20px; }
-        @media (max-width: 700px) {
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .desktop-nav { display: none; }
+            .hamburger { display: flex; }
+            .topbar { padding: 0 16px; height: 52px; }
+            .brand-text { font-size: 16px; }
+            .brand-logo { width: 28px; height: 28px; }
+            .page-hero { padding: 40px 20px; }
+            /* 手机端分类导航优化 - 横向滚动 */
+            .filter-bar { 
+                flex-direction: row; 
+                align-items: center; 
+                padding: 10px 12px; 
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                gap: 8px;
+            }
+            .filter-bar span { 
+                font-size: 10px; 
+                flex-shrink: 0;
+            }
+            .filter-btn { 
+                padding: 5px 10px; 
+                font-size: 10px; 
+                flex-shrink: 0;
+            }
+            .search-box { 
+                margin-left: 0; 
+                margin-top: 0; 
+                flex-shrink: 0;
+                min-width: 120px;
+            }
+            .search-box input { 
+                flex: 1; 
+                width: 80px; 
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+            .search-box button { padding: 6px 10px; font-size: 11px; }
+            
+            /* 手机端产品网格 - 每行2个，美观大方 */
+            .products-section { padding: 16px 12px; }
+            .products-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 12px;
+            }
+            .product-card { 
+                padding: 10px;
+                border-radius: 6px;
+                background: white;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            }
+            .product-img-wrap { 
+                height: 130px; 
+                border-radius: 4px;
+                margin-bottom: 8px;
+                background: #f5f5f5;
+            }
+            .img-skeleton { display: none !important; }
+            .product-img-wrap img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                padding: 0;
+                opacity: 1;
+                border-radius: 4px;
+            }
+            .no-image { 
+                font-size: 10px;
+                gap: 4px;
+            }
+            .no-image i { font-size: 24px; }
+            .no-image span { font-size: 8px; }
+            .product-body { padding: 0; }
+            .product-category { 
+                font-size: 9px; 
+                padding: 3px 6px;
+                margin-bottom: 4px;
+                border-radius: 2px;
+            }
+            .product-name { 
+                font-size: 11px; 
+                line-height: 1.4;
+                max-height: 2.8em;
+                overflow: hidden;
+                margin-bottom: 6px;
+                font-weight: 500;
+            }
+            .product-meta { 
+                display: block;
+                font-size: 9px;
+            }
+            .product-meta .meta-row { 
+                margin-bottom: 2px; 
+                font-size: 9px;
+            }
+            .product-meta .meta-row i { font-size: 8px; }
+            .product-desc { display: none; }
+            .inquire-btn { 
+                font-size: 10px; 
+                padding: 6px 10px;
+                border-radius: 4px;
+                margin-top: 6px;
+            }
+            .empty-state, .loading { grid-column: 1 / -1; }
             .modal-inner { grid-template-columns: 1fr; }
-            .modal-info { padding: 24px 20px; }
-            .modal-contact { padding: 20px; }
+            .modal-images { padding: 16px; }
+            .modal-info { padding: 20px 16px; }
+            .modal-contact { padding: 16px; }
             .modal-form-row { grid-template-columns: 1fr; }
-            .modal-title { font-size: 20px; }
+            .social-float { right: 12px; bottom: 16px; gap: 8px; }
+            .social-btn { width: 38px; height: 38px; font-size: 15px; }
         }
-        /* ===== Pagination ===== */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            margin-top: 40px;
-            padding: 20px 0;
-            flex-wrap: wrap;
-        }
-        .pagination-btn {
-            min-width: 40px;
-            height: 40px;
-            padding: 0 12px;
-            border: 2px solid var(--border-color);
-            background: white;
-            font-family: 'Oswald', sans-serif;
-            font-size: 14px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--dark-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .pagination-btn:hover:not(:disabled) {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-        }
-        .pagination-btn.active {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            color: white;
-        }
-        .pagination-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        .pagination-info {
-            font-family: 'Oswald', sans-serif;
-            font-size: 13px;
-            color: #888;
-            margin: 0 10px;
-        }
-        .pagination-ellipsis {
-            padding: 0 8px;
-            color: #888;
-        }
-
     </style>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MR58CNED51"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MR58CNED51');
-</script>
-</head>
-<body>
-    <!-- 顶部头部 -->
-    <header class="top-header">
-        <div class="language-switch">
-            <select id="language-select" onchange="location.href='index.html'">
-                <option value="en">English</option>
-            </select>
-        </div>
-        <div class="header-brand">
-            <div class="header-logo-text">CARVAL AUTO-</div>
-            <div class="header-slogan">Given your car a second life</div>
-        </div>
-    </header>
-    <!-- 导航栏 -->
-    <nav>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="index.html#about">Company</a></li>
-            <li><a href="products.html" class="active">Product</a></li>
-            <li><a href="index.html#contact">Contact</a></li>
-        </ul>
-    </nav>
-    <!-- 页面标题 -->
-    <div class="page-hero">
-        <h1>Our <span>Product</span> Catalog</h1>
-        <p>Browse our full range of OEM-quality auto parts for Japanese, Korean, German and Chinese vehicles</p>
-    </div>
-    <!-- 筛选栏 -->
-    <div class="filter-bar">
-        <span>Filter:</span>
-        <button class="filter-btn active" onclick="filterProducts('all', this)" data-cat="all">All</button>
-        <button class="filter-btn" onclick="filterProducts('japanese', this)" data-cat="japanese">Japanese</button>
-        <button class="filter-btn" onclick="filterProducts('korean', this)" data-cat="korean">Korean</button>
-        <button class="filter-btn" onclick="filterProducts('german', this)" data-cat="german">German</button>
-        <button class="filter-btn" onclick="filterProducts('chinese', this)" data-cat="chinese">Chinese</button>
-        <button class="filter-btn" onclick="filterProducts('oil', this)" data-cat="oil">Engine Oil</button>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search by name or OEM number..." oninput="searchProducts()">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-    </div>
-    <!-- 商品列表 -->
-    <div class="products-section">
-        <div class="products-count">Showing <span id="countDisplay">0</span> products (<span id="pageInfo">Page 1</span>)</div>
-        <div class="products-grid" id="productsGrid">
-            <!-- 商品由JS动态生成 -->
-        
-        <div class="pagination" id="pagination"></div>
-</div>
-    </div>
-    <!-- 社交媒体 -->
-    <div class="social-icons">
-        <a href="https://www.facebook.com/share/18W9wuCPT4/?mibextid=wwXIfr" class="social-icon facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://www.instagram.com/carval_auto?igsh=MXd0Nm1wenJyZm96ag%3D%3D&utm_source=qr" class="social-icon instagram" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://wa.me/8619521228657" class="social-icon whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
-    </div>
-    <!-- 页脚 -->
-    <footer>
-        <div class="footer-slogan">Carvalauto- Given your car a second life</div>
-        <p class="footer-copyright">&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.</p>
-        <p>Professional Auto Parts Manufacturer &amp; Global Supplier</p>
-    </footer>
+    <!-- Font Awesome 延迟加载 -->
+    <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    
+    <!-- Google Analytics 延迟加载 -->
     <script>
-    // ===== Pagination =====
-var currentPage = 1;
-var itemsPerPage = 50;
-var totalFiltered = [];
-
-function getItemsPerPage() {
-    return window.innerWidth > 768 ? 50 : 20;
-}
-
-function updatePagination() {
-    itemsPerPage = getItemsPerPage();
-    var totalPages = Math.ceil(totalFiltered.length / itemsPerPage) || 1;
-    if (currentPage > totalPages) currentPage = totalPages;
-    renderPagination();
-    renderPageProducts();
-}
-
-function renderPagination() {
-    var pagination = document.getElementById('pagination');
-    if (!pagination) return;
-    var totalPages = Math.ceil(totalFiltered.length / itemsPerPage) || 1;
-    var pageInfoEl = document.getElementById('pageInfo');
-    if (pageInfoEl) pageInfoEl.textContent = 'Page ' + currentPage;
-    if (totalPages <= 1) { pagination.innerHTML = ''; return; }
-    var html = '<button class="pagination-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '><i class="fas fa-chevron-left"></i></button>';
-    if (totalPages <= 7) {
-        for (var i = 1; i <= totalPages; i++) html += '<button class="pagination-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-    } else {
-        if (currentPage <= 4) {
-            for (var i = 1; i <= 5; i++) html += '<button class="pagination-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-            html += '<span class="pagination-ellipsis">...</span><button class="pagination-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
-        } else if (currentPage >= totalPages - 3) {
-            html += '<button class="pagination-btn" onclick="goToPage(1)">1</button><span class="pagination-ellipsis">...</span>';
-            for (var i = totalPages - 4; i <= totalPages; i++) html += '<button class="pagination-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-        } else {
-            html += '<button class="pagination-btn" onclick="goToPage(1)">1</button><span class="pagination-ellipsis">...</span>';
-            for (var i = currentPage - 1; i <= currentPage + 1; i++) html += '<button class="pagination-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-            html += '<span class="pagination-ellipsis">...</span><button class="pagination-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
-        }
-    }
-    html += '<button class="pagination-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '><i class="fas fa-chevron-right"></i></button>';
-    pagination.innerHTML = html;
-}
-
-function goToPage(page) {
-    var totalPages = Math.ceil(totalFiltered.length / itemsPerPage) || 1;
-    if (page < 1) page = 1;
-    if (page > totalPages) page = totalPages;
-    currentPage = page;
-    renderPagination();
-    renderPageProducts();
-    window.scrollTo({ top: 200, behavior: 'smooth' });
-}
-
-function renderPageProducts() {
-    var grid = document.getElementById('productsGrid');
-    var start = (currentPage - 1) * itemsPerPage;
-    var end = start + itemsPerPage;
-    var pageProducts = totalFiltered.slice(start, end);
-    if (pageProducts.length === 0) {
-        grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><h3>No Products Found</h3><p>Try adjusting your filter or search keyword.</p></div>';
-        return;
-    }
-    grid.innerHTML = pageProducts.map(function(p) {
-        var firstImg = p.image ? p.image.split(',')[0].trim() : '';
-        var desc = p.description || '';
-        var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
-        var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
-        var brandInfo = brandMatch ? brandMatch[1].trim() : '';
-        var compatInfo = compatMatch ? compatMatch[1].trim() : '';
-        var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi, '').replace(/Compatible with:\s*[^.]+\./gi, '').replace(/Specs:\s*[^.]+\./gi, '').replace(/\|/g, '').trim();
-        return '<div class="product-card" data-category="' + p.category + '" onclick="openProduct(' + p.id + ')" style="cursor:pointer;"><div class="product-img-wrap">' +
-            (firstImg ? '<img src="' + firstImg + '" alt="' + p.name + '" loading="lazy">' : '<div class="no-image"><i class="fas fa-car"></i><span>Image Coming Soon</span></div>') +
-            '</div><div class="product-body"><div class="product-category">' + (categoryLabels[p.category] || p.category) + '</div>' +
-            '<div class="product-name">' + p.name + '</div><div class="product-meta">' +
-            (p.oem ? '<div class="meta-row"><i class="fas fa-barcode"></i><span><strong>OEM:</strong> ' + p.oem + '</span></div>' : '') +
-            (brandInfo ? '<div class="meta-row"><i class="fas fa-car"></i><span><strong>Brand:</strong> ' + brandInfo + '</span></div>' : '') +
-            (compatInfo ? '<div class="meta-row"><i class="fas fa-check-circle"></i><span><strong>Fits:</strong> ' + compatInfo + '</span></div>' : '') +
-            '</div>' + (cleanDesc ? '<div class="product-desc">' + cleanDesc.substring(0,100) + '...</div>' : '') +
-            '<button class="inquire-btn" onclick="event.stopPropagation(); openProduct(' + p.id + ')"><i class="fas fa-info-circle"></i> View Details</button></div></div>';
-    }).join('');
-}
-
-function renderProducts() {
-    var grid = document.getElementById('productsGrid');
-    var countEl = document.getElementById('countDisplay');
-    totalFiltered = productsData.filter(function(p) {
-        var matchCat = currentFilter === 'all' || p.category === currentFilter;
-        var matchSearch = currentSearch === '' ||
-            p.name.toLowerCase().includes(currentSearch) ||
-            (p.oem && p.oem.toLowerCase().includes(currentSearch)) ||
-            (p.description && p.description.toLowerCase().includes(currentSearch));
-        return matchCat && matchSearch;
-    });
-    countEl.textContent = totalFiltered.length;
-    currentPage = 1;
-    updatePagination();
-}
-
-// ============================================================
-    // 从 GitHub 加载产品数据 (products.json)
-    // 如果加载失败，使用下面的默认数据
-    // ===== Pagination =====
-var currentPage = 1;
-var itemsPerPage = 50;
-var totalFiltered = [];
-
-function getItemsPerPage() {
-    return window.innerWidth > 768 ? 50 : 20;
-}
-
-function updatePagination() {
-    itemsPerPage = getItemsPerPage();
-    var totalPages = Math.ceil(totalFiltered.length / itemsPerPage) || 1;
-    if (currentPage > totalPages) currentPage = totalPages;
-    renderPagination();
-    renderPageProducts();
-}
-
-function renderPagination() {
-    var pagination = document.getElementById('pagination');
-    if (!pagination) return;
-    var totalPages = Math.ceil(totalFiltered.length / itemsPerPage) || 1;
-    var pageInfoEl = document.getElementById('pageInfo');
-    if (pageInfoEl) pageInfoEl.textContent = 'Page ' + currentPage;
-    if (totalPages <= 1) { pagination.innerHTML = ''; return; }
-    var html = '<button class="pagination-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '><i class="fas fa-chevron-left"></i></button>';
-    if (totalPages <= 7) {
-        for (var i = 1; i <= totalPages; i++) html += '<button class="pagination-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-    } else {
-        if (currentPage <= 4) {
-            for (var i = 1; i <= 5; i++) html += '<button class="pagination-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-            html += '<span class="pagination-ellipsis">...</span><button class="pagination-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
-        } else if (currentPage >= totalPages - 3) {
-            html += '<button class="pagination-btn" onclick="goToPage(1)">1</button><span class="pagination-ellipsis">...</span>';
-            for (var i = totalPages - 4; i <= totalPages; i++) html += '<button class="pagination-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-        } else {
-            html += '<button class="pagination-btn" onclick="goToPage(1)">1</button><span class="pagination-ellipsis">...</span>';
-            for (var i = currentPage - 1; i <= currentPage + 1; i++) html += '<button class="pagination-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-            html += '<span class="pagination-ellipsis">...</span><button class="pagination-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
-        }
-    }
-    html += '<button class="pagination-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '><i class="fas fa-chevron-right"></i></button>';
-    pagination.innerHTML = html;
-}
-
-function goToPage(page) {
-    var totalPages = Math.ceil(totalFiltered.length / itemsPerPage) || 1;
-    if (page < 1) page = 1;
-    if (page > totalPages) page = totalPages;
-    currentPage = page;
-    renderPagination();
-    renderPageProducts();
-    window.scrollTo({ top: 200, behavior: 'smooth' });
-}
-
-function renderPageProducts() {
-    var grid = document.getElementById('productsGrid');
-    var start = (currentPage - 1) * itemsPerPage;
-    var end = start + itemsPerPage;
-    var pageProducts = totalFiltered.slice(start, end);
-    if (pageProducts.length === 0) {
-        grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><h3>No Products Found</h3><p>Try adjusting your filter or search keyword.</p></div>';
-        return;
-    }
-    grid.innerHTML = pageProducts.map(function(p) {
-        var firstImg = p.image ? p.image.split(',')[0].trim() : '';
-        var desc = p.description || '';
-        var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
-        var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
-        var brandInfo = brandMatch ? brandMatch[1].trim() : '';
-        var compatInfo = compatMatch ? compatMatch[1].trim() : '';
-        var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi, '').replace(/Compatible with:\s*[^.]+\./gi, '').replace(/Specs:\s*[^.]+\./gi, '').replace(/\|/g, '').trim();
-        return '<div class="product-card" data-category="' + p.category + '" onclick="openProduct(' + p.id + ')" style="cursor:pointer;"><div class="product-img-wrap">' +
-            (firstImg ? '<img src="' + firstImg + '" alt="' + p.name + '" loading="lazy">' : '<div class="no-image"><i class="fas fa-car"></i><span>Image Coming Soon</span></div>') +
-            '</div><div class="product-body"><div class="product-category">' + (categoryLabels[p.category] || p.category) + '</div>' +
-            '<div class="product-name">' + p.name + '</div><div class="product-meta">' +
-            (p.oem ? '<div class="meta-row"><i class="fas fa-barcode"></i><span><strong>OEM:</strong> ' + p.oem + '</span></div>' : '') +
-            (brandInfo ? '<div class="meta-row"><i class="fas fa-car"></i><span><strong>Brand:</strong> ' + brandInfo + '</span></div>' : '') +
-            (compatInfo ? '<div class="meta-row"><i class="fas fa-check-circle"></i><span><strong>Fits:</strong> ' + compatInfo + '</span></div>' : '') +
-            '</div>' + (cleanDesc ? '<div class="product-desc">' + cleanDesc.substring(0,100) + '...</div>' : '') +
-            '<button class="inquire-btn" onclick="event.stopPropagation(); openProduct(' + p.id + ')"><i class="fas fa-info-circle"></i> View Details</button></div></div>';
-    }).join('');
-}
-
-function renderProducts() {
-    var grid = document.getElementById('productsGrid');
-    var countEl = document.getElementById('countDisplay');
-    totalFiltered = productsData.filter(function(p) {
-        var matchCat = currentFilter === 'all' || p.category === currentFilter;
-        var matchSearch = currentSearch === '' ||
-            p.name.toLowerCase().includes(currentSearch) ||
-            (p.oem && p.oem.toLowerCase().includes(currentSearch)) ||
-            (p.description && p.description.toLowerCase().includes(currentSearch));
-        return matchCat && matchSearch;
-    });
-    countEl.textContent = totalFiltered.length;
-    currentPage = 1;
-    updatePagination();
-}
-
-// ============================================================
-    var products = [];
-    var productsData = [];
-    var dataLoaded = false;
-    
-    // GitHub 仓库配置
-    var GH_REPO = 'carvalauto/carvalauto.github.io';
-    var GH_FILE = 'products.json';
-    
-    // 默认示例数据（仅在 GitHub 加载失败时使用）
-    var defaultProducts = [
-        {
-            id: 1,
-            name: "Toyota Camry Brake Pads",
-            category: "japanese",
-            oem: "04465-06110",
-            description: "High-performance brake pads for Toyota Camry 2018-2023. OEM quality, verified by real-vehicle test.",
-            image: ""
-        },
-        {
-            id: 2,
-            name: "Honda Civic Air Filter",
-            category: "japanese",
-            oem: "17220-RNA-A00",
-            description: "Genuine quality air filter for Honda Civic 2016-2021. Improves engine performance and fuel efficiency.",
-            image: ""
-        },
-        {
-            id: 3,
-            name: "BMW 3 Series Oil Filter",
-            category: "german",
-            oem: "11427788454",
-            description: "Premium oil filter for BMW 3 Series (F30/G20). Meets OEM specifications.",
-            image: ""
-        }
-    ];
-    
-    // 从 GitHub 加载产品数据
-    async function loadProductsFromGitHub() {
-        try {
-            var response = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FILE, {
-                headers: { 'Accept': 'application/vnd.github.v3+json' }
-            });
-            
-            if (response.ok) {
-                var json = await response.json();
-                if (json.content) {
-                    var decoded = atob(json.content.replace(/\n/g, ''));
-                    var data = JSON.parse(decoded);
-                    if (Array.isArray(data) && data.length > 0) {
-                        products = data;
-                        console.log('✓ 从 GitHub 加载了 ' + products.length + ' 个产品');
-                        return true;
-                    }
-                }
-            }
-        } catch(e) {
-            console.log('GitHub 加载失败，使用默认数据:', e.message);
-        }
-        return false;
-    }
-    
-    // 初始化函数
-    async function initProducts() {
-        // 显示加载状态
-        var grid = document.getElementById('productsGrid');
-        grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;"><i class="fas fa-spinner fa-spin" style="font-size:32px;"></i><p style="margin-top:15px;">Loading products...</p></div>';
-        
-        // 尝试从 GitHub 加载
-        var loaded = await loadProductsFromGitHub();
-        
-        // 如果失败，使用默认数据
-        if (!loaded || products.length === 0) {
-            products = defaultProducts;
-            console.log('使用默认示例数据');
-        }
-        
-        productsData = products;
-        dataLoaded = true;
-        renderProducts();
-    }
-    
-    // 页面加载完成后初始化
-    document.addEventListener('DOMContentLoaded', initProducts);
-    let currentFilter = 'all';
-    let currentSearch = '';
-    const categoryLabels = {
-        japanese: 'Japanese',
-        korean: 'Korean',
-        german: 'German',
-        chinese: 'Chinese',
-        oil: 'Engine Oil',
-        other: 'Other'
-    };
-    function renderProducts() {
-        const grid = document.getElementById('productsGrid');
-        const countEl = document.getElementById('countDisplay');
-        let filtered = productsData.filter(p => {
-            const matchCat = currentFilter === 'all' || p.category === currentFilter;
-            const matchSearch = currentSearch === '' ||
-                p.name.toLowerCase().includes(currentSearch) ||
-                p.oem.toLowerCase().includes(currentSearch) ||
-                p.description.toLowerCase().includes(currentSearch);
-            return matchCat && matchSearch;
-        });
-        countEl.textContent = filtered.length;
-        if (filtered.length === 0) {
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-box-open"></i>
-                    <h3>No Products Found</h3>
-                    <p>Try adjusting your filter or search keyword.</p>
-                </div>`;
-            return;
-        }
-        grid.innerHTML = filtered.map(p => {
-            // Parse first image for card display
-            var firstImg = p.image ? p.image.split(',')[0].trim() : '';
-            // Parse brand and compatible models from description
-            var desc = p.description || '';
-            var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
-            var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
-            var specsMatch = desc.match(/Specs:\s*([^.]+)/i);
-            var brandInfo = brandMatch ? brandMatch[1].trim() : '';
-            var compatInfo = compatMatch ? compatMatch[1].trim() : '';
-            var specsInfo = specsMatch ? specsMatch[1].trim() : '';
-            // Clean description - remove parsed metadata
-            var cleanDesc = desc
-                .replace(/Brand:\s*[^|.]+[|.]?/gi, '')
-                .replace(/Compatible with:\s*[^.]+\./gi, '')
-                .replace(/Specs:\s*[^.]+\./gi, '')
-                .replace(/\|/g, '')
-                .trim();
-            return `
-            <div class="product-card" data-category="${p.category}" onclick="openProduct(${p.id})" style="cursor:pointer;">
-                <div class="product-img-wrap">
-                    ${firstImg
-                        ? `<img src="${firstImg}" alt="${p.name}" loading="lazy">`
-                        : `<div class="no-image"><i class="fas fa-car"></i><span>Image Coming Soon</span></div>`
-                    }
-                </div>
-                <div class="product-body">
-                    <div class="product-category">${categoryLabels[p.category] || p.category}</div>
-                    <div class="product-name">${p.name}</div>
-                    <div class="product-meta">
-                        ${p.oem ? `<div class="meta-row"><i class="fas fa-barcode"></i><span><strong>OEM:</strong> ${p.oem}</span></div>` : ''}
-                        ${brandInfo ? `<div class="meta-row"><i class="fas fa-car"></i><span><strong>Brand:</strong> ${brandInfo}</span></div>` : ''}
-                        ${compatInfo ? `<div class="meta-row"><i class="fas fa-check-circle"></i><span><strong>Fits:</strong> ${compatInfo}</span></div>` : ''}
-                    </div>
-                    ${cleanDesc ? `<div class="product-desc">${cleanDesc.substring(0,100)}...</div>` : ''}
-                    <button class="inquire-btn" onclick="event.stopPropagation(); openProduct(${p.id})">
-
-                        <i class="fas fa-info-circle"></i> View Details
-                    </button>
-                </div>
-            </div>`;
-        }).join('');
-    }
-    function filterProducts(cat, btn) {
-        currentFilter = cat;
-        document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        currentPage = 1;
-        renderProducts();
-    }
-    function searchProducts() {
-        currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
-        currentPage = 1;
-        renderProducts();
-    }
-    // 初始化 - 支持URL参数自动筛选
-    (function() {
-        var params = new URLSearchParams(window.location.search);
-        var cat = params.get('cat');
-        if (cat) {
-            var btn = document.querySelector('.filter-btn[data-cat="' + cat + '"]');
-            if (btn) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = cat;
-            }
-        }
-    })();
-    renderProducts();
-    // ===== Product Detail Modal =====
-    var categoryLabelsModal = { japanese:'🇯🇵 Japanese', korean:'🇰🇷 Korean', german:'🇩🇪 German', chinese:'🇨🇳 Chinese', oil:'🛢️ Engine Oil', other:'📦 Other' };
-    // Carousel state
-    var currentCarouselIndex = 0;
-    var carouselImages = [];
-    function updateCarousel() {
-        var carousel = document.getElementById('modalCarouselInner');
-        carousel.style.transform = 'translateX(-' + (currentCarouselIndex * 100) + '%)';
-        
-        // Update thumbs
-        document.querySelectorAll('.modal-thumb').forEach(function(t, i) {
-            t.classList.toggle('active', i === currentCarouselIndex);
-        });
-        
-        // Show/hide arrows
-        document.getElementById('carouselPrev').style.display = carouselImages.length > 1 ? 'flex' : 'none';
-        document.getElementById('carouselNext').style.display = carouselImages.length > 1 ? 'flex' : 'none';
-    }
-    function prevCarouselImg() {
-        currentCarouselIndex = (currentCarouselIndex - 1 + carouselImages.length) % carouselImages.length;
-        updateCarousel();
-    }
-    function nextCarouselImg() {
-        currentCarouselIndex = (currentCarouselIndex + 1) % carouselImages.length;
-        updateCarousel();
-    }
-    function openProduct(id) {
-        var p = productsData.find(function(x) { return x.id === id; });
-        if (!p) return;
-        // Images
-        carouselImages = p.image ? p.image.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
-        currentCarouselIndex = 0;
-        var carousel = document.getElementById('modalCarouselInner');
-        var thumbsEl = document.getElementById('modalThumbs');
-        if (carouselImages.length > 0) {
-            // Build carousel items with click-to-zoom
-            carousel.innerHTML = carouselImages.map(function(img, i) {
-                return '<div class="modal-carousel-item"><img class="modal-main-img" src="' + img + '" alt="" onclick="openLightbox(' + i + ')"></div>';
-            }).join('');
-            
-            // Build thumbnails
-            thumbsEl.innerHTML = carouselImages.map(function(img, i) {
-                return '<img class="modal-thumb' + (i===0?' active':'') + '" src="' + img + '" onclick="switchCarouselImg(' + i + ')" title="Image ' + (i+1) + '">';
-            }).join('');
-            
-            updateCarousel();
-        } else {
-            carousel.innerHTML = '<div class="modal-carousel-item"><div style="width:100%;aspect-ratio:1;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#ccc;flex-direction:column;gap:10px;"><i class="fas fa-car" style="font-size:48px;"></i><span style="font-size:13px;">Image Coming Soon</span></div></div>';
-            thumbsEl.innerHTML = '';
-            document.getElementById('carouselPrev').style.display = 'none';
-            document.getElementById('carouselNext').style.display = 'none';
-        }
-        // Info
-        document.getElementById('modalCategory').textContent = categoryLabelsModal[p.category] || p.category;
-        document.getElementById('modalTitle').textContent = p.name;
-        // Parse description for specs
-        var desc = p.description || '';
-        var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
-        var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
-        var specsMatch = desc.match(/Specs:\s*([^.]+)/i);
-        var brandInfo = brandMatch ? brandMatch[1].trim() : '';
-        var compatInfo = compatMatch ? compatMatch[1].trim() : '';
-        var specsInfo = specsMatch ? specsMatch[1].trim() : '';
-        var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi,'').replace(/Compatible with:\s*[^.]+\./gi,'').replace(/Specs:\s*[^.]+\./gi,'').replace(/\|/g,'').trim();
-        var specsHtml = '';
-        if (p.oem) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-barcode"></i></div><div class="spec-content"><div class="spec-label">OEM Number</div><div class="spec-value">' + p.oem + '</div></div></div>';
-        if (brandInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-car"></i></div><div class="spec-content"><div class="spec-label">Brand</div><div class="spec-value">' + brandInfo + '</div></div></div>';
-        if (compatInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-check-circle"></i></div><div class="spec-content"><div class="spec-label">Compatible With</div><div class="spec-value">' + compatInfo + '</div></div></div>';
-        if (specsInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-cog"></i></div><div class="spec-content"><div class="spec-label">Specifications</div><div class="spec-value">' + specsInfo + '</div></div></div>';
-        document.getElementById('modalSpecs').innerHTML = specsHtml;
-        document.getElementById('modalDesc').textContent = cleanDesc;
-        // Pre-fill message
-        document.getElementById('modalProductRef').value = p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '');
-        document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '') + '. Please provide price and availability.';
-        // Show modal
-        document.getElementById('productModal').classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-    function switchCarouselImg(index) {
-        currentCarouselIndex = index;
-        updateCarousel();
-    }
-    function closeProductModal() {
-        document.getElementById('productModal').classList.remove('show');
-        document.body.style.overflow = '';
-    }
-    function closeModal(e) {
-        if (e.target === document.getElementById('productModal')) closeProductModal();
-    }
-    // Handle modal form submit
-    document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        var btn = this.querySelector('.modal-send-btn');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        btn.disabled = true;
-        try {
-            var resp = await fetch(this.action, { method:'POST', body:formData, headers:{'Accept':'application/json'} });
-            if (resp.ok) {
-                btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-                btn.style.background = '#2ecc71';
-                this.reset();
-                setTimeout(function(){ closeProductModal(); }, 1500);
-            } else {
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-                btn.disabled = false;
-                alert('Something went wrong. Please try again.');
-            }
-        } catch(err) {
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-            btn.disabled = false;
-        }
-    });
-    // ESC key to close
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeProductModal(); });
-    
-    // Keyboard navigation for carousel
-    document.addEventListener('keydown', function(e) {
-        if (document.getElementById('productModal').classList.contains('show')) {
-            if (e.key === 'ArrowLeft') prevCarouselImg();
-            if (e.key === 'ArrowRight') nextCarouselImg();
-        }
-    });
-    // ===== Lightbox 图片放大功能 =====
-    var lightboxImages = [];
-    var lightboxIndex = 0;
-    function openLightbox(index) {
-        lightboxImages = carouselImages;
-        lightboxIndex = index;
-        document.getElementById('lightboxImg').src = lightboxImages[index];
-        document.getElementById('lightbox').classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-    function closeLightbox() {
-        document.getElementById('lightbox').classList.remove('show');
-        document.body.style.overflow = '';
-    }
-    function prevLightboxImg() {
-        lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
-        document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
-    }
-    function nextLightboxImg() {
-        lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
-        document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
-    }
-    // Lightbox keyboard navigation
-    document.addEventListener('keydown', function(e) {
-        if (document.getElementById('lightbox').classList.contains('show')) {
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowLeft') prevLightboxImg();
-            if (e.key === 'ArrowRight') nextLightboxImg();
-        }
+    window.addEventListener('load', function() {
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-MR58CNED51';
+        document.head.appendChild(gtagScript);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MR58CNED51');
     });
     </script>
-<!-- Product Detail Modal -->
+</head>
+<body>
+<!-- ===== TOPBAR ===== -->
+<header class="topbar">
+    <div class="topbar-left">
+        <a href="index.html" class="brand">
+            <img src="carval-auto-logo.png" alt="Carval Logo" class="brand-logo" onerror="this.style.display='none'">
+            <div class="brand-text">CARVAL <span>AUTO</span></div>
+        </a>
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#about">Company</a>
+            <a href="products.html" class="active">Products</a>
+            <a href="index.html#contact">Contact</a>
+        </nav>
+    </div>
+
+    <div class="topbar-right">
+        <select id="language-select" class="lang-select">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+        </select>
+        <button class="hamburger" onclick="toggleNav()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+<!-- Mobile nav -->
+<div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+        <div class="mobile-nav-logo">CARVAL <span>AUTO</span></div>
+        <button class="mobile-nav-close" onclick="closeNav()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="mobile-nav-links">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="index.html#about"><i class="fas fa-building"></i> Company</a>
+        <a href="products.html"><i class="fas fa-cogs"></i> Products</a>
+        <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
+    </div>
+</nav>
+<!-- ===== PAGE HERO ===== -->
+<div class="page-hero">
+    <h1>Our <span>Product</span> Catalog</h1>
+    <p>Browse our full range of OEM-quality auto parts for Japanese, Korean, German and Chinese vehicles</p>
+</div>
+<!-- ===== FILTER BAR ===== -->
+<div class="filter-bar">
+    <span>Filter:</span>
+    <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+    <button class="filter-btn" onclick="filterProducts('japanese', this)">Japanese</button>
+    <button class="filter-btn" onclick="filterProducts('korean', this)">Korean</button>
+    <button class="filter-btn" onclick="filterProducts('german', this)">German</button>
+    <button class="filter-btn" onclick="filterProducts('chinese', this)">Chinese</button>
+    <button class="filter-btn" onclick="filterProducts('oil', this)">Engine Oil</button>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search by name or OEM..." oninput="searchProducts()">
+        <button><i class="fas fa-search"></i></button>
+    </div>
+</div>
+<!-- ===== PRODUCTS LIST ===== -->
+<div class="products-section">
+    <div class="products-count">Showing <span id="countDisplay">0</span> products</div>
+    <div class="products-grid" id="productsGrid">
+        <!-- Products loaded by JS -->
+    </div>
+    <!-- 分页 -->
+    <div class="pagination" id="pagination"></div>
+</div>
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="footer-slogan">CARVAL <span>AUTO</span> - Given your car a second life</div>
+    <p class="footer-copyright">&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.</p>
+</footer>
+<!-- Social Float -->
+<div class="social-float">
+    <a href="https://www.facebook.com/share/18W9wuCPT4/" class="social-btn fb" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/carval_auto" class="social-btn ig" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/8619521228657" class="social-btn wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
+</div>
+<!-- ===== PRODUCT MODAL ===== -->
 <div class="modal-overlay" id="productModal" onclick="closeModal(event)">
-    <div class="modal-box" id="modalBox">
+    <div class="modal-box">
         <button class="modal-close" onclick="closeProductModal()">&times;</button>
         <div class="modal-inner">
             <div class="modal-images">
-                <div class="modal-images-container">
-                    <div class="modal-carousel">
-                        <div class="modal-carousel-inner" id="modalCarouselInner">
-                            <div class="modal-carousel-item">
-                                <img id="modalMainImg" class="modal-main-img" src="" alt="">
-                            </div>
-                        </div>
-                        <button class="carousel-arrow prev" id="carouselPrev" onclick="prevCarouselImg()" style="display:none;"><i class="fas fa-chevron-left"></i></button>
-                        <button class="carousel-arrow next" id="carouselNext" onclick="nextCarouselImg()" style="display:none;"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                </div>
+                <img loading="lazy" decoding="async" id="modalMainImg" class="modal-main-img" src="" alt="" onclick="openLightbox(0)">
                 <div class="modal-thumbs" id="modalThumbs"></div>
             </div>
             <div class="modal-info">
                 <div class="modal-category" id="modalCategory"></div>
                 <div class="modal-title" id="modalTitle"></div>
                 <div class="modal-specs" id="modalSpecs"></div>
+                <div class="modal-fitment" id="modalFitment"></div>
                 <div class="modal-desc" id="modalDesc"></div>
-                <a id="modalInquireBtn" class="modal-inquire">
+                <a id="modalInquireBtn" class="modal-inquire" href="index.html#contact">
                     <i class="fas fa-paper-plane"></i> Send Inquiry
                 </a>
             </div>
-        </div>
-        <!-- Contact Form -->
-        <div class="modal-contact">
-            <h3><i class="fas fa-envelope"></i> Send Us a Message</h3>
-            <form id="modalContactForm" action="https://formspree.io/f/xyknoyzw" method="POST">
-                <input type="hidden" id="modalProductRef" name="product_ref" value="">
-                <div class="modal-form-row">
-                    <div class="modal-form-group">
-                        <label>Your Name</label>
-                        <input type="text" name="name" required placeholder="John Smith">
+            <div class="modal-contact">
+                <h3><i class="fas fa-envelope"></i> Quick Contact</h3>
+                <form id="modalContactForm" action="https://formspree.io/f/xyknoyzw" method="POST">
+                    <input type="hidden" id="modalProductRef" name="product_ref" value="">
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label>Your Name</label>
+                            <input type="text" id="modalName" name="name" required placeholder="John Smith">
+                        </div>
+                        <div class="modal-form-group">
+                            <label>Your Email</label>
+                            <input type="email" id="modalEmail" name="email" required placeholder="john@example.com">
+                        </div>
                     </div>
-                    <div class="modal-form-group">
-                        <label>Your Email</label>
-                        <input type="email" name="email" required placeholder="john@example.com">
+                    <div class="modal-form-group" style="margin-bottom:12px;">
+                        <label>Phone (Optional)</label>
+                        <input type="tel" id="modalPhone" name="phone" placeholder="+1 234 567 8900">
                     </div>
-                </div>
-                <div class="modal-form-group" style="margin-bottom:12px;">
-                    <label>Message (OEM number & quantity)</label>
-                    <textarea name="message" id="modalMessage" placeholder="Please include OEM number and required quantity..."></textarea>
-                </div>
-                <button type="submit" class="modal-send-btn">
-                    <i class="fas fa-paper-plane"></i> Send Message
-                </button>
-            </form>
+                    <div class="modal-form-group" style="margin-bottom:12px;">
+                        <label>Message</label>
+                        <textarea name="message" id="modalMessage" placeholder="Please include OEM number and quantity..."></textarea>
+                    </div>
+                    <button type="submit" class="modal-send-btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-<!-- Lightbox 图片放大查看 -->
+<!-- ===== LIGHTBOX ===== -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <span class="lightbox-close">&times;</span>
     <span class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); prevLightboxImg()"><i class="fas fa-chevron-left"></i></span>
-    <img id="lightboxImg" src="" alt="">
+    <img loading="lazy" decoding="async" id="lightboxImg" src="" alt="">
     <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); nextLightboxImg()"><i class="fas fa-chevron-right"></i></span>
 </div>
+<script>
+// ===== Navigation =====
+function toggleNav() {
+    document.getElementById('mobileNav').classList.toggle('open');
+    document.getElementById('navOverlay').classList.toggle('show');
+}
+function closeNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+    document.getElementById('navOverlay').classList.remove('show');
+}
+// ===== Products Data =====
+var products = [];
+var productsData = [];
+var currentFilter = 'all';
+var currentSearch = '';
+var currentPage = 1;
+var itemsPerPage = 50; // 默认电脑端50个
+// 检测设备类型，设置每页显示数量
+function detectItemsPerPage() {
+    if (window.innerWidth <= 768) {
+        itemsPerPage = 20; // 手机端20个
+    } else {
+        itemsPerPage = 50; // 电脑端50个
+    }
+}
+detectItemsPerPage();
+window.addEventListener('resize', detectItemsPerPage);
+var categoryLabels = {
+    japanese: 'Japanese',
+    korean: 'Korean', 
+    german: 'German',
+    chinese: 'Chinese',
+    oil: 'Engine Oil',
+    other: 'Other'
+};
+// Default sample data
+var defaultProducts = [
+    { id: 1, name: "Toyota Camry Brake Pads", category: "japanese", oem: "04465-06110", description: "High-performance brake pads for Toyota Camry 2018-2023. OEM quality, verified by real-vehicle test.", image: "" },
+    { id: 2, name: "Honda Civic Air Filter", category: "japanese", oem: "17220-RNA-A00", description: "Genuine quality air filter for Honda Civic 2016-2021.", image: "" },
+    { id: 3, name: "BMW 3 Series Oil Filter", category: "german", oem: "11427788454", description: "Premium oil filter for BMW 3 Series. Meets OEM specifications.", image: "" },
+    { id: 4, name: "Hyundai Elantra Spark Plug", category: "korean", oem: "18854-10060", description: "Iridium spark plug for Hyundai Elantra 2017-2023.", image: "" },
+    { id: 5, name: "Wuling Hongguang Clutch Kit", category: "chinese", oem: "WLG-CK001", description: "Complete clutch kit for Wuling Hongguang series.", image: "" },
+    { id: 6, name: "Shell Helix 5W-30 Engine Oil", category: "oil", oem: "SHELL-5W30", description: "Fully synthetic engine oil 5W-30, 4L bottle. Suitable for most gasoline engines.", image: "" }
+];
+// Load products from GitHub (优化：先显示缓存，后台更新)
+async function loadProducts() {
+    var grid = document.getElementById('productsGrid');
+    
+    // 1. 先尝试从 localStorage 读取缓存，立即显示
+    try {
+        var cached = localStorage.getItem('carval_products_cache');
+        if (cached) {
+            var cacheData = JSON.parse(cached);
+            // 缓存有效期为 1 小时
+            if (cacheData.time && (Date.now() - cacheData.time < 3600000)) {
+                products = cacheData.data;
+                productsData = products;
+                console.log('Loaded from cache:', products.length, 'products');
+                renderProducts();
+                // 后台静默更新
+                fetchLatestProducts();
+                return;
+            }
+        }
+    } catch(e) {
+        console.log('Cache read error:', e);
+    }
+    
+    // 2. 没有缓存或缓存过期，显示加载动画
+    grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;grid-column:1/-1;"><i class="fas fa-spinner fa-spin" style="font-size:28px;"></i><p style="margin-top:12px;">Loading products...</p></div>';
+    
+    // 3. 从 jsDelivr CDN 获取（更快）
+    await fetchLatestProducts();
+    
+    if (products.length === 0) products = defaultProducts;
+    productsData = products;
+    renderProducts();
+}
+// 后台获取最新数据
+async function fetchLatestProducts() {
+    try {
+        // 优先使用 jsDelivr CDN（全球加速）
+        var cdnUrl = 'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json';
+        var resp = await fetch(cdnUrl + '?t=' + Date.now());
+        
+        // 如果 CDN 失败，回退到 GitHub raw
+        if (!resp.ok) {
+            resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?t=' + Date.now());
+        }
+        
+        if (resp.ok) {
+            var data = await resp.json();
+            if (Array.isArray(data) && data.length > 0) {
+                products = data;
+                productsData = products;
+                // 保存到缓存
+                localStorage.setItem('carval_products_cache', JSON.stringify({
+                    data: data,
+                    time: Date.now()
+                }));
+                console.log('Updated cache:', data.length, 'products');
+                // 如果已经有渲染，更新显示
+                if (document.getElementById('productsGrid').children.length > 0) {
+                    renderProducts();
+                }
+            }
+        }
+    } catch(e) {
+        console.log('Fetch error:', e);
+    }
+}
+function renderProducts() {
+    var grid = document.getElementById('productsGrid');
+    var countEl = document.getElementById('countDisplay');
+    var paginationEl = document.getElementById('pagination');
+    var filtered = productsData.filter(function(p) {
+        var matchCat = currentFilter === 'all' || p.category === currentFilter;
+        var matchSearch = currentSearch === '' ||
+            p.name.toLowerCase().includes(currentSearch) ||
+            (p.oem && p.oem.toLowerCase().includes(currentSearch)) ||
+            (p.description && p.description.toLowerCase().includes(currentSearch));
+        return matchCat && matchSearch;
+    });
+    countEl.textContent = filtered.length;
+    if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><h3>No Products Found</h3><p>Try adjusting your filter or search.</p></div>';
+        paginationEl.innerHTML = '';
+        return;
+    }
+    // 计算分页
+    var totalPages = Math.ceil(filtered.length / itemsPerPage);
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+    
+    var startIndex = (currentPage - 1) * itemsPerPage;
+    var endIndex = startIndex + itemsPerPage;
+    var pageProducts = filtered.slice(startIndex, endIndex);
+    // 渲染当前页产品
+    grid.innerHTML = pageProducts.map(function(p) {
+        var firstImg = p.image ? p.image.split(',')[0].trim() : '';
+        var desc = p.description || '';
+        var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
+        var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
+        var brandInfo = brandMatch ? brandMatch[1].trim() : '';
+        var compatInfo = compatMatch ? compatMatch[1].trim() : '';
+        var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi, '').replace(/Compatible with:\s*[^.]+\./gi, '').replace(/\|/g, '').trim();
+        return '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
+            '<div class="product-img-wrap">' +
+                '<div class="img-skeleton"><i class="fas fa-image"></i></div>' +
+                (firstImg 
+                    ? '<img src="' + firstImg + '" alt="' + p.name + '" loading="lazy" onload="this.classList.add(\'loaded\');this.previousElementSibling.style.display=\'none\'" onerror="this.style.display=\'none\'">'
+                    : '<div class="no-image"><i class="fas fa-car"></i><span>Image Coming Soon</span></div>') +
+            '</div>' +
+            '<div class="product-body">' +
+                '<div class="product-category">' + (categoryLabels[p.category] || p.category) + '</div>' +
+                '<div class="product-name">' + p.name + '</div>' +
+                '<div class="product-meta">' +
+                    (p.oem ? '<div class="meta-row"><i class="fas fa-barcode"></i><span><strong>OEM:</strong> ' + p.oem + '</span></div>' : '') +
+                    (brandInfo ? '<div class="meta-row"><i class="fas fa-car"></i><span><strong>Brand:</strong> ' + brandInfo + '</span></div>' : '') +
+                    (compatInfo ? '<div class="meta-row"><i class="fas fa-check-circle"></i><span><strong>Fits:</strong> ' + compatInfo + '</span></div>' : '') +
+                '</div>' +
+                (cleanDesc ? '<div class="product-desc">' + cleanDesc.substring(0, 100) + '...</div>' : '') +
+                '<button class="inquire-btn" onclick="event.stopPropagation(); openProduct(' + p.id + ')"><i class="fas fa-info-circle"></i> View Details</button>' +
+            '</div>' +
+        '</div>';
+    }).join('');
+    // 渲染分页
+    renderPagination(totalPages, filtered.length);
+}
+function renderPagination(totalPages, totalItems) {
+    var paginationEl = document.getElementById('pagination');
+    
+    if (totalPages <= 1) {
+        paginationEl.innerHTML = '';
+        return;
+    }
+    var html = '';
+    
+    // 上一页按钮
+    html += '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '>&laquo; Prev</button>';
+    
+    // 页码按钮
+    var startPage = Math.max(1, currentPage - 2);
+    var endPage = Math.min(totalPages, currentPage + 2);
+    
+    if (startPage > 1) {
+        html += '<button class="page-btn" onclick="goToPage(1)">1</button>';
+        if (startPage > 2) html += '<span class="page-info">...</span>';
+    }
+    
+    for (var i = startPage; i <= endPage; i++) {
+        html += '<button class="page-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+    }
+    
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) html += '<span class="page-info">...</span>';
+        html += '<button class="page-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
+    }
+    
+    // 下一页按钮
+
+    html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>Next &raquo;</button>';
+    
+    // 页码信息
+    var startItem = (currentPage - 1) * itemsPerPage + 1;
+    var endItem = Math.min(currentPage * itemsPerPage, totalItems);
+    html += '<span class="page-info">' + startItem + '-' + endItem + ' / ' + totalItems + '</span>';
+    
+    paginationEl.innerHTML = html;
+}
+function goToPage(page) {
+    currentPage = page;
+    renderProducts();
+    // 滚动到产品列表顶部
+    document.getElementById('productsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function filterProducts(cat, btn) {
+    currentFilter = cat;
+    currentPage = 1; // 重置页码
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderProducts();
+}
+function searchProducts() {
+    currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
+    currentPage = 1; // 重置页码
+    renderProducts();
+}
+// URL param filter
+(function() {
+    var params = new URLSearchParams(window.location.search);
+    var cat = params.get('cat');
+    if (cat) {
+        var btn = document.querySelector('.filter-btn[onclick*="' + cat + '"]');
+        if (btn) {
+            document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            currentFilter = cat;
+        }
+    }
+})();
+// ===== Modal =====
+var carouselImages = [];
+var currentImgIndex = 0;
+function openProduct(id) {
+    var p = productsData.find(function(x) { return x.id === id; });
+    if (!p) return;
+    carouselImages = p.image ? p.image.split(',').map(function(s) { return s.trim(); }).filter(Boolean) : [];
+    currentImgIndex = 0;
+    var mainImg = document.getElementById('modalMainImg');
+    var thumbsEl = document.getElementById('modalThumbs');
+    if (carouselImages.length > 0) {
+        mainImg.src = carouselImages[0];
+        mainImg.style.display = 'block';
+        thumbsEl.innerHTML = carouselImages.map(function(img, i) {
+            return '<img loading="lazy" decoding="async" class="modal-thumb' + (i === 0 ? ' active' : '') + '" src="' + img + '" onclick="switchImg(' + i + ')">';
+        }).join('');
+    } else {
+        mainImg.style.display = 'none';
+        thumbsEl.innerHTML = '';
+    }
+    document.getElementById('modalCategory').textContent = categoryLabels[p.category] || p.category;
+    document.getElementById('modalTitle').textContent = p.name;
+    var desc = p.description || '';
+    var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
+    var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
+    var brandInfo = brandMatch ? brandMatch[1].trim() : '';
+    var compatInfo = compatMatch ? compatMatch[1].trim() : '';
+    var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi, '').replace(/Compatible with:\s*[^.]+\./gi, '').replace(/\|/g, '').trim();
+    var specsHtml = '';
+    if (p.oem) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-barcode"></i></div><div><div class="spec-label">OEM Number</div><div class="spec-value">' + p.oem + '</div></div></div>';
+    if (brandInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-car"></i></div><div><div class="spec-label">Brand</div><div class="spec-value">' + brandInfo + '</div></div></div>';
+    if (compatInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-check-circle"></i></div><div><div class="spec-label">Compatible With</div><div class="spec-value">' + compatInfo + '</div></div></div>';
+    
+    document.getElementById('modalSpecs').innerHTML = specsHtml;
+    
+    // 显示车型表格
+    var fitmentHtml = '';
+    if (p.fitmentTable && p.fitmentTable.length > 0) {
+        fitmentHtml = '<div class="modal-fitment-title"><i class="fas fa-car-side"></i> Compatible Vehicles (' + p.fitmentTable.length + ')</div>' +
+            '<table class="fitment-table"><thead><tr><th>Make</th><th>Model</th><th>Year</th><th>Engine</th></tr></thead><tbody>';
+        p.fitmentTable.forEach(function(item) {
+            fitmentHtml += '<tr>' +
+                '<td>' + (item.make || '-') + '</td>' +
+                '<td>' + (item.model || '-') + '</td>' +
+                '<td>' + (item.year || '-') + '</td>' +
+                '<td>' + (item.engine || '-') + '</td>' +
+            '</tr>';
+        });
+        fitmentHtml += '</tbody></table>';
+    }
+    document.getElementById('modalFitment').innerHTML = fitmentHtml;
+    
+    document.getElementById('modalDesc').textContent = cleanDesc;
+    document.getElementById('modalProductRef').value = p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '');
+    document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '') + '. Please provide price and availability.';
+    document.getElementById('productModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+function switchImg(index) {
+    currentImgIndex = index;
+    document.getElementById('modalMainImg').src = carouselImages[index];
+    document.querySelectorAll('.modal-thumb').forEach(function(t, i) {
+        t.classList.toggle('active', i === index);
+    });
+}
+function closeProductModal() {
+    document.getElementById('productModal').classList.remove('show');
+    document.body.style.overflow = '';
+}
+function closeModal(e) {
+    if (e.target === document.getElementById('productModal')) closeProductModal();
+}
+// ===== Lightbox =====
+function openLightbox(index) {
+    if (carouselImages.length === 0) return;
+    document.getElementById('lightboxImg').src = carouselImages[index];
+    document.getElementById('lightbox').classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('show');
+    document.body.style.overflow = '';
+}
+function prevLightboxImg() {
+    currentImgIndex = (currentImgIndex - 1 + carouselImages.length) % carouselImages.length;
+    document.getElementById('lightboxImg').src = carouselImages[currentImgIndex];
+}
+function nextLightboxImg() {
+    currentImgIndex = (currentImgIndex + 1) % carouselImages.length;
+    document.getElementById('lightboxImg').src = carouselImages[currentImgIndex];
+}
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+    if (document.getElementById('productModal').classList.contains('show')) {
+        if (e.key === 'Escape') closeProductModal();
+        if (e.key === 'ArrowLeft' && carouselImages.length > 1) switchImg((currentImgIndex - 1 + carouselImages.length) % carouselImages.length);
+        if (e.key === 'ArrowRight' && carouselImages.length > 1) switchImg((currentImgIndex + 1) % carouselImages.length);
+    }
+    if (document.getElementById('lightbox').classList.contains('show')) {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') prevLightboxImg();
+        if (e.key === 'ArrowRight') nextLightboxImg();
+    }
+});
+// Modal form submit - 双通道提交：Formspree + GitHub
+document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var btn = this.querySelector('.modal-send-btn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    btn.disabled = true;
+    
+    try {
+        // 获取表单数据
+        var formData = {
+            id: Date.now(),
+            name: document.getElementById('modalName').value,
+            email: document.getElementById('modalEmail').value,
+            phone: document.getElementById('modalPhone').value || '',
+            message: document.getElementById('modalMessage').value,
+            product: document.getElementById('modalProductRef').value,
+            oem: '',
+            timestamp: Date.now(),
+            date: new Date().toISOString(),
+            read: false,
+            source: '产品询盘',
+            device: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? '手机' : '电脑',
+            browser: (function() {
+                var ua = navigator.userAgent;
+                if (ua.includes('Chrome')) return 'Chrome';
+                if (ua.includes('Safari')) return 'Safari';
+                if (ua.includes('Firefox')) return 'Firefox';
+                if (ua.includes('Edge')) return 'Edge';
+                return 'Other';
+            })()
+        };
+        
+        // 获取地理位置
+        try {
+            var geoResp = await fetch('https://ipapi.co/json/');
+            var geoData = await geoResp.json();
+            formData.country = geoData.country_name || 'Unknown';
+            formData.countryCode = geoData.country_code || '';
+            formData.city = geoData.city || '';
+            formData.region = geoData.region || '';
+            formData.ip = geoData.ip || '';
+            formData.timezone = geoData.timezone || '';
+        } catch(e) {
+            formData.country = 'Unknown';
+        }
+        
+        // 双通道提交
+        var formspreeOk = false;
+        var githubOk = false;
+        
+        // 通道1: Formspree 发送邮件
+        try {
+            var resp1 = await fetch('https://formspree.io/f/xyknoyzw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            formspreeOk = resp1.ok;
+        } catch(e) {
+            console.error('Formspree error:', e);
+        }
+        
+        // 通道2: 保存到 GitHub
+        var ghToken = localStorage.getItem('gh_token');
+        if (ghToken) {
+            try {
+                // 获取现有数据
+                var getResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json', {
+                    headers: { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github.v3+json' }
+                });
+                var existingData = [];
+                var sha = null;
+                if (getResp.ok) {
+                    var getData = await getResp.json();
+                    sha = getData.sha;
+                    var content = decodeURIComponent(escape(atob(getData.content.replace(/
+/g, ''))));
+                    existingData = JSON.parse(content);
+                    if (!Array.isArray(existingData)) existingData = [];
+                }
+                
+                // 添加新询盘
+                existingData.push(formData);
+                
+                // 保存回 GitHub
+                var saveResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'token ' + ghToken,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'New inquiry from ' + formData.name,
+                        content: btoa(unescape(encodeURIComponent(JSON.stringify(existingData, null, 2)))),
+                        sha: sha
+                    })
+                });
+                githubOk = saveResp.ok;
+            } catch(e) {
+                console.error('GitHub save error:', e);
+            }
+        }
+        
+        // 结果反馈
+        if (formspreeOk || githubOk) {
+            btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
+            btn.style.background = '#2ecc71';
+            this.reset();
+            setTimeout(closeProductModal, 1500);
+        } else {
+            throw new Error('Both channels failed');
+        }
+    } catch(err) {
+        console.error(err);
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+        btn.disabled = false;
+        alert('Error sending message. Please try again.');
+    }
+});
+// Initialize
+document.addEventListener('DOMContentLoaded', loadProducts);
+</script>
 </body>
 </html>
 
 
 ----------------
 网页标题：
-
-网页链接：https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/admin.html
-
-网页内容：<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carval Auto - 后台管理</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary: #0f4c81;
-            --accent: #e63946;
-            --bg-dark: #0f0f0f;
-            --bg-card: #1a1a1a;
-            --text: #f5f5f5;
-            --text-muted: #888;
-            --border: #333;
-        }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; }
-        
-        .header { background: linear-gradient(135deg, var(--primary) 0%, #1a3a5c 100%); padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; position: sticky; top: 0; z-index: 100; }
-        .header-logo { font-size: 16px; font-weight: 700; }
-        .header-logo span { color: var(--accent); }
-        .tab-nav { display: flex; gap: 4px; }
-        .tab-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 7px 10px; cursor: pointer; font-size: 11px; font-weight: 500; border-radius: 5px; display: flex; align-items: center; gap: 4px; }
-        .tab-btn.active { background: var(--accent); }
-        .header-right a { color: white; text-decoration: none; font-size: 11px; padding: 6px 10px; background: rgba(255,255,255,0.1); border-radius: 5px; }
-        
-        .page { display: none; padding: 12px; max-width: 1400px; margin: 0 auto; }
-        .page.active { display: block; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
-        .stat-card { background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid var(--primary); }
-        .stat-card.accent { border-left-color: var(--accent); }
-        .stat-card.success { border-left-color: #2ecc71; }
-        .stat-card.warning { border-left-color: #f39c12; }
-        .stat-num { font-size: 20px; font-weight: 700; }
-        .stat-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
-        
-        .product-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .product-card { background: var(--bg-card); border-radius: 8px; overflow: hidden; }
-        .product-img { width: 100%; height: 120px; object-fit: contain; background: #2a2a2a; padding: 10px; }
-        .product-info { padding: 10px; }
-        .product-title { font-size: 12px; font-weight: 600; margin-bottom: 5px; line-height: 1.3; }
-        .product-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
-        .product-tag { font-size: 8px; padding: 2px 5px; border-radius: 3px; background: rgba(15,76,129,0.3); color: #6db3f2; }
-        .product-tag.oem { background: rgba(230,57,70,0.2); color: #ff6b7a; }
-        .product-actions { display: flex; gap: 6px; padding-top: 8px; border-top: 1px solid var(--border); }
-        .btn { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; display: flex; align-items: center; gap: 4px; }
-        .btn-danger { background: rgba(230,57,70,0.2); color: #ff6b7a; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-success { background: rgba(46,204,113,0.2); color: #7dcea0; }
-        .btn-edit { background: rgba(52,152,219,0.2); color: #5dade2; }
-        .btn-sm { padding: 5px 8px; font-size: 9px; }
-        
-        .inquiry-list { display: flex; flex-direction: column; gap: 8px; }
-        .inquiry-card { background: var(--bg-card); border-radius: 8px; padding: 10px; border-left: 3px solid var(--primary); }
-        .inquiry-card.unread { border-left-color: var(--accent); }
-        .inquiry-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-        .inquiry-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
-        .inquiry-info { flex: 1; min-width: 0; }
-        .inquiry-name { font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
-        .inquiry-email { font-size: 10px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .inquiry-badge { font-size: 8px; padding: 1px 4px; border-radius: 2px; background: var(--accent); color: white; }
-        .inquiry-meta { display: flex; flex-wrap: wrap; gap: 5px; font-size: 9px; color: var(--text-muted); margin-bottom: 6px; }
-        .inquiry-message { font-size: 11px; color: var(--text); line-height: 1.4; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 8px; word-break: break-word; }
-        .inquiry-actions { display: flex; flex-wrap: wrap; gap: 5px; }
-        
-        .login-card { background: var(--bg-card); padding: 25px 15px; border-radius: 10px; text-align: center; max-width: 300px; margin: 30px auto; }
-        .login-card .logo { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
-        .login-card .logo span { color: var(--accent); }
-        .login-card p { color: var(--text-muted); margin-bottom: 15px; font-size: 12px; }
-        .btn-google { background: white; color: #333; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-google img { width: 14px; height: 14px; }
-        
-        .charts-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
-        .chart-card { background: var(--bg-card); border-radius: 8px; padding: 10px; }
-        .chart-title { font-size: 11px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
-        .chart-title i { color: var(--primary); }
-        .date-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; background: var(--bg-card); padding: 8px 10px; border-radius: 6px; }
-        .date-btn { background: rgba(255,255,255,0.1); border: none; color: var(--text); padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; }
-        .date-btn.active { background: var(--primary); }
-        .ga-user-info { display: flex; align-items: center; gap: 6px; margin-left: auto; }
-        .ga-avatar { width: 24px; height: 24px; border-radius: 50%; }
-        .ga-name { font-size: 10px; max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .btn-logout { background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 9px; }
-        
-        .search-bar { margin-bottom: 12px; }
-        .search-input { width: 100%; padding: 8px 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 5px; color: var(--text); font-size: 11px; }
-        
-        .loading { text-align: center; padding: 25px; color: var(--text-muted); }
-        .loading i { font-size: 24px; margin-bottom: 6px; animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        
-        .toast { position: fixed; bottom: 12px; left: 12px; right: 12px; background: #2ecc71; color: white; padding: 10px 12px; border-radius: 5px; font-size: 11px; z-index: 1000; opacity: 0; transform: translateY(20px); transition: all 0.3s; text-align: center; }
-        .toast.show { opacity: 1; transform: translateY(0); }
-        .toast.error { background: #e74c3c; }
-        
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; padding: 12px; overflow-y: auto; }
-        .modal.show { display: flex; }
-        .modal-content { background: var(--bg-card); padding: 16px; border-radius: 8px; max-width: 280px; width: 100%; text-align: center; }
-        .modal-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-        .modal-text { color: var(--text-muted); font-size: 12px; margin-bottom: 12px; }
-        .modal-actions { display: flex; gap: 6px; justify-content: center; }
-        
-        /* 编辑弹窗样式 */
-        .edit-modal { max-width: 500px; text-align: left; }
-        .edit-modal .modal-title { text-align: center; margin-bottom: 16px; }
-        .edit-form { display: flex; flex-direction: column; gap: 12px; }
-        .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .form-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-group select, .form-group input, .form-group textarea {
-            padding: 10px 12px;
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            color: var(--text);
-            font-size: 13px;
-        }
-        .form-group select:focus, .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        /* 图片编辑区域 */
-        .images-editor { display: flex; flex-direction: column; gap: 8px; }
-        .image-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 5px; }
-        .image-item img { width: 60px; height: 60px; object-fit: contain; background: #2a2a2a; border-radius: 4px; }
-        .image-item input { flex: 1; padding: 6px 8px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-size: 10px; }
-        .image-item .btn-remove { padding: 4px 8px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
-        .btn-add-image { padding: 8px; background: rgba(46,204,113,0.1); color: #7dcea0; border: 1px dashed #7dcea0; border-radius: 5px; cursor: pointer; font-size: 11px; text-align: center; }
-        .btn-add-image:hover { background: rgba(46,204,113,0.2); }
-        
-        .edit-actions { display: flex; gap: 8px; margin-top: 8px; }
-        .edit-actions .btn { flex: 1; justify-content: center; padding: 10px; }
-        
-        @media (min-width: 600px) {
-            .header { padding: 12px 18px; }
-            .header-logo { font-size: 18px; }
-            .tab-btn { padding: 9px 14px; font-size: 12px; }
-            .page { padding: 18px; }
-            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
-            .stat-num { font-size: 24px; }
-            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .product-img { height: 140px; }
-            .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
-            .edit-modal { max-width: 550px; }
-        }
-        
-        @media (min-width: 1024px) {
-            .stats-grid { grid-template-columns: repeat(7, 1fr); }
-            .product-grid { grid-template-columns: repeat(3, 1fr); }
-            .charts-grid { grid-template-columns: repeat(3, 1fr); }
-            .login-card { padding: 35px; max-width: 380px; }
-        }
-        /* ===== Pagination ===== */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            margin-top: 40px;
-            padding: 20px 0;
-            flex-wrap: wrap;
-        }
-        .pagination-btn {
-            min-width: 40px;
-            height: 40px;
-            padding: 0 12px;
-            border: 2px solid var(--border-color);
-            background: white;
-            font-family: 'Oswald', sans-serif;
-            font-size: 14px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--dark-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .pagination-btn:hover:not(:disabled) {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-        }
-        .pagination-btn.active {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            color: white;
-        }
-        .pagination-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        .pagination-info {
-            font-family: 'Oswald', sans-serif;
-            font-size: 13px;
-            color: #888;
-            margin: 0 10px;
-        }
-        .pagination-ellipsis {
-            padding: 0 8px;
-            color: #888;
-        }
-
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="header-logo">CARVAL <span>AUTO</span></div>
-        <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('products', this)"><i class="fas fa-box"></i> 商品</button>
-            <button class="tab-btn" onclick="switchTab('inquiries', this)" id="inquiriesTabBtn"><i class="fas fa-envelope"></i> 询盘<span id="inquiryBadge" style="display:none;"></span></button>
-            <button class="tab-btn" onclick="switchTab('analytics', this)"><i class="fas fa-chart-line"></i> 流量</button>
-        </div>
-        <div class="header-right">
-            <a href="https://carvalautopart.com" target="_blank"><i class="fas fa-external-link-alt"></i> 网站</a>
-        </div>
-    </div>
-    <div class="page active" id="page-products">
-        <div class="stats-grid">
-            <div class="stat-card"><div class="stat-num" id="totalCount">-</div><div class="stat-label">总商品</div></div>
-            <div class="stat-card accent"><div class="stat-num" id="cat_japanese">-</div><div class="stat-label">日系</div></div>
-            <div class="stat-card"><div class="stat-num" id="cat_korean">-</div><div class="stat-label">韩系</div></div>
-            <div class="stat-card success"><div class="stat-num" id="cat_german">-</div><div class="stat-label">德系</div></div>
-            <div class="stat-card warning"><div class="stat-num" id="cat_chinese">-</div><div class="stat-label">国产</div></div>
-            <div class="stat-card"><div class="stat-num" id="cat_oil">-</div><div class="stat-label">机油</div></div>
-            <div class="stat-card accent"><div class="stat-num" id="cat_other">-</div><div class="stat-label">其他</div></div>
-        </div>
-        <div class="search-bar"><input type="text" class="search-input" id="productSearch" placeholder="搜索商品名称、OEM..." oninput="searchProducts()"></div>
-        <div class="product-grid" id="productList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
-    </div>
-    <div class="page" id="page-inquiries">
-        <div class="stats-grid">
-            <div class="stat-card"><div class="stat-num" id="inq_total">-</div><div class="stat-label">总询盘</div></div>
-            <div class="stat-card accent"><div class="stat-num" id="inq_unread">-</div><div class="stat-label">未读</div></div>
-            <div class="stat-card success"><div class="stat-num" id="inq_today">-</div><div class="stat-label">今日</div></div>
-            <div class="stat-card warning"><div class="stat-num" id="inq_countries">-</div><div class="stat-label">国家</div></div>
-        </div>
-        <div class="inquiry-list" id="inquiryList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
-    </div>
-    <div class="page" id="page-analytics">
-        <div id="loginSection">
-            <div class="login-card">
-                <div class="logo">CARVAL <span>AUTO</span></div>
-                <p>连接 Google Analytics<br>查看网站流量数据</p>
-                <button class="btn-google" onclick="handleLogin()"><img src="https://www.google.com/favicon.ico" alt=""> Google 登录</button>
-            </div>
-        </div>
-        <div id="dashboardSection" style="display:none;">
-            <div class="date-bar">
-                <span style="font-size:11px;color:var(--text-muted);">时间：</span>
-                <button class="date-btn active" onclick="setDateRange('7daysAgo', this)">7天</button>
-                <button class="date-btn" onclick="setDateRange('30daysAgo', this)">30天</button>
-                <button class="date-btn" onclick="setDateRange('90daysAgo', this)">90天</button>
-                <div class="ga-user-info">
-                    <img id="userAvatar" class="ga-avatar" src="" alt="">
-                    <span class="ga-name" id="userName"></span>
-                    <button class="btn-logout" onclick="handleLogout()">退出</button>
-                </div>
-            </div>
-            <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);">
-                <div class="stat-card"><div class="stat-num" id="statPageviews">-</div><div class="stat-label">浏览量</div></div>
-                <div class="stat-card accent"><div class="stat-num" id="statUsers">-</div><div class="stat-label">访客</div></div>
-                <div class="stat-card success"><div class="stat-num" id="statSessions">-</div><div class="stat-label">会话</div></div>
-
-                <div class="stat-card warning"><div class="stat-num" id="statDuration">-</div><div class="stat-label">停留</div></div>
-                <div class="stat-card"><div class="stat-num" id="statRealtime">-</div><div class="stat-label">在线</div></div>
-            </div>
-            <div class="charts-grid">
-                <div class="chart-card"><div class="chart-title"><i class="fas fa-chart-line"></i> 流量趋势</div><canvas id="trendChart"></canvas></div>
-                <div class="chart-card"><div class="chart-title"><i class="fas fa-globe"></i> 国家分布</div><canvas id="countryChart"></canvas></div>
-                <div class="chart-card"><div class="chart-title"><i class="fas fa-mobile-alt"></i> 设备分布</div><canvas id="deviceChart"></canvas></div>
-            </div>
-        </div>
-    </div>
-    <!-- 删除确认弹窗 -->
-    <div class="modal" id="deleteModal">
-        <div class="modal-content">
-            <div class="modal-title">确认删除</div>
-            <div class="modal-text" id="deleteModalText">确定要删除吗？</div>
-            <div class="modal-actions">
-                <button class="btn" style="background:var(--border);" onclick="closeDeleteModal()">取消</button>
-                <button class="btn btn-danger" id="confirmDeleteBtn">删除</button>
-            </div>
-        </div>
-    </div>
-    <!-- 编辑商品弹窗 -->
-    <div class="modal" id="editModal">
-        <div class="modal-content edit-modal">
-            <div class="modal-title"><i class="fas fa-edit"></i> 编辑商品</div>
-            <div class="edit-form">
-                <div class="form-group">
-                    <label>商品标题</label>
-                    <input type="text" id="editTitle" placeholder="输入商品标题..." style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;">
-                </div>
-                <div class="form-group">
-                    <label>商品分类</label>
-                    <select id="editCategory">
-                        <option value="japanese">日系 Japanese</option>
-                        <option value="korean">韩系 Korean</option>
-                        <option value="german">德系 German</option>
-                        <option value="chinese">国产 Chinese</option>
-                        <option value="oil">机油 Engine Oil</option>
-                        <option value="other">其他 Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>OEM 编码</label>
-                    <input type="text" id="editOem" placeholder="输入 OEM 编码...">
-                </div>
-                <div class="form-group">
-                    <label>商品图片 <span style="color:#666;font-size:10px;">(可删除多余图片或修改URL)</span></label>
-                    <div class="images-editor" id="imagesEditor">
-                        <!-- 动态生成图片列表 -->
-                    </div>
-                    <button type="button" class="btn-add-image" onclick="addImageField()"><i class="fas fa-plus"></i> 添加图片</button>
-                </div>
-            </div>
-            <div class="edit-actions">
-                <button class="btn" style="background:var(--border);" onclick="closeEditModal()">取消</button>
-                <button class="btn btn-success" id="saveEditBtn"><i class="fas fa-save"></i> 保存修改</button>
-            </div>
-        </div>
-    </div>
-    <div class="toast" id="toast"></div>
-    <!-- 成功提示弹窗 -->
-    <div class="modal" id="successModal">
-        <div class="modal-content" style="max-width:320px;">
-            <div style="font-size:48px;color:#2ecc71;margin-bottom:10px;"><i class="fas fa-check-circle"></i></div>
-            <div class="modal-title" id="successModalTitle">操作成功</div>
-            <div class="modal-text" id="successModalText">网站已同步更新</div>
-            <div class="modal-actions" style="flex-direction:column;gap:8px;">
-                <a href="https://carvalauto.github.io/products.html" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center;">
-                    <i class="fas fa-external-link-alt"></i> 查看网站
-                </a>
-                <button class="btn" style="background:var(--border);width:100%;" onclick="closeSuccessModal()">关闭</button>
-            </div>
-        </div>
-    </div>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script>
-    let GH_TOKEN = localStorage.getItem('gh_token') || '';
-    const GH_REPO = 'carvalauto/carvalauto.github.io';
-    const GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
-    const GA_PROPERTY_ID = '529242507';
-    
-    let allProducts = [], allInquiries = [], accessToken = null, tokenClient = null, deleteTarget = null;
-    let editingProductId = null; // 当前编辑的商品ID
-    
-    function checkToken() {
-        if (!GH_TOKEN) {
-            const t = prompt('请输入GitHub Token：');
-            if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); return true; }
-            return false;
-        }
-        return true;
-    }
-    
-    function switchTab(tab, btn) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('page-' + tab).classList.add('active');
-        btn.classList.add('active');
-        if (tab === 'products') loadProducts();
-        if (tab === 'inquiries') loadInquiries();
-        if (tab === 'analytics') {
-            if (accessToken) { document.getElementById('loginSection').style.display = 'none'; document.getElementById('dashboardSection').style.display = 'block'; loadAllData(); }
-            else { document.getElementById('loginSection').style.display = 'block'; document.getElementById('dashboardSection').style.display = 'none'; }
-        }
-    }
-    
-    async function loadProducts() {
-        if (!checkToken()) return;
-        const c = document.getElementById('productList');
-        
-        // 显示加载动画
-        c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-        
-        // 直接从 GitHub 获取最新数据
-        await fetchLatestProducts();
-    }
-    
-    // 直接获取最新数据
-    async function fetchLatestProducts() {
-        try {
-            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
-            const j = await r.json();
-            
-            let content;
-            if (j.content) {
-                content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
-            } else {
-                const rawR = await fetch(j.download_url);
-                content = await rawR.text();
-            }
-            
-            const products = JSON.parse(content);
-            allProducts = products;
-            window.pSha = j.sha;
-            
-            // 直接渲染，不使用缓存
-            renderProducts(allProducts);
-        } catch(e) {
-            console.log('Fetch error:', e);
-            document.getElementById('productList').innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>';
-        }
-    }
-    
-    function renderProducts(p) {
-        const c = document.getElementById('productList');
-        document.getElementById('totalCount').textContent = p.length;
-        const cats = { japanese: 0, korean: 0, german: 0, chinese: 0, oil: 0, other: 0 };
-        p.forEach(x => { const cat = (x.category || 'other').toLowerCase(); if (cats[cat] !== undefined) cats[cat]++; else cats.other++; });
-        Object.keys(cats).forEach(k => { const el = document.getElementById('cat_' + k); if (el) el.textContent = cats[k]; });
-        
-        if (!p.length) { c.innerHTML = '<div class="loading"><i class="fas fa-box-open"></i><p>暂无商品</p></div>'; return; }
-        c.innerHTML = p.map(x => {
-            const img = (x.image || x.images || []).toString().split(',')[0] || '';
-            const cat = (x.category || 'other').toUpperCase();
-            const name = (x.name || x.title || '未命名').toString().replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            const oem = (x.oem || x.oemCode || '').toString().replace(/"/g, '&quot;');
-            return `<div class="product-card" data-id="${x.id}">
-                ${img ? `<img src="${img}" class="product-img" alt="" onerror="this.style.display='none'">` : '<div class="product-img" style="display:flex;align-items:center;justify-content:center;color:#555;"><i class="fas fa-image"></i></div>'}
-                <div class="product-info">
-                    <div class="product-title">${name.length > 60 ? name.substring(0,60) + '...' : name}</div>
-                    <div class="product-meta"><span class="product-tag">${cat}</span>${oem ? `<span class="product-tag oem">OEM: ${oem}</span>` : ''}</div>
-                    <div class="product-actions">
-                        <button class="btn btn-edit edit-btn" data-id="${x.id}"><i class="fas fa-edit"></i> 编辑</button>
-                        <button class="btn btn-danger delete-btn" data-id="${x.id}"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div></div>`;
-        }).join('');
-        
-        // 绑定编辑按钮
-        c.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                // 支持 number 和 string 类型的 id
-                const product = allProducts.find(x => x.id == id || x.id === parseInt(id));
-                if (product) openEditModal(product);
-            });
-        });
-        
-        // 绑定删除按钮
-        c.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const product = allProducts.find(x => x.id == id || x.id === parseInt(id));
-                const name = product ? (product.name || product.title || '未命名') : '商品';
-                confirmDelete('product', id, name);
-            });
-        });
-    }
-    
-    // ===== 编辑功能 =====
-    function openEditModal(product) {
-        editingProductId = product.id;
-        
-        // 设置标题
-        document.getElementById('editTitle').value = product.name || product.title || '';
-        
-        // 设置分类
-        document.getElementById('editCategory').value = (product.category || 'other').toLowerCase();
-        
-        // 设置 OEM
-        document.getElementById('editOem').value = product.oem || product.oemCode || '';
-        
-        // 设置图片列表
-        const imagesEditor = document.getElementById('imagesEditor');
-        const images = (product.image || product.images || '').toString().split(',').map(s => s.trim()).filter(Boolean);
-        
-        imagesEditor.innerHTML = images.map((url, i) => `
-            <div class="image-item" data-index="${i}">
-                <img src="${url}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>'">
-                <input type="text" value="${url}" class="image-url">
-                <button class="btn-remove" onclick="removeImageField(this)"><i class="fas fa-times"></i></button>
-            </div>
-        `).join('');
-        
-        if (images.length === 0) {
-            imagesEditor.innerHTML = '<div style="color:var(--text-muted);font-size:11px;padding:8px;text-align:center;">暂无图片，点击下方添加</div>';
-        }
-        
-        document.getElementById('editModal').classList.add('show');
-    }
-    
-    function closeEditModal() {
-        document.getElementById('editModal').classList.remove('show');
-        editingProductId = null;
-    }
-    
-    function addImageField() {
-        const imagesEditor = document.getElementById('imagesEditor');
-        // 移除空状态提示
-        const emptyTip = imagesEditor.querySelector('div[style]');
-        if (emptyTip) emptyTip.remove();
-        
-        const index = imagesEditor.querySelectorAll('.image-item').length;
-        const newItem = document.createElement('div');
-        newItem.className = 'image-item';
-        newItem.dataset.index = index;
-        newItem.innerHTML = `
-            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><rect fill='%232a2a2a' width='60' height='60'/><text x='30' y='35' text-anchor='middle' fill='%23666' font-size='8'>New</text></svg>">
-            <input type="text" value="" class="image-url" placeholder="输入图片URL..." onchange="previewImage(this)">
-            <button class="btn-remove" onclick="removeImageField(this)"><i class="fas fa-times"></i></button>
-        `;
-        imagesEditor.appendChild(newItem);
-    }
-    
-    function removeImageField(btn) {
-        btn.closest('.image-item').remove();
-        // 如果没有图片了，显示空状态
-        const imagesEditor = document.getElementById('imagesEditor');
-        if (imagesEditor.querySelectorAll('.image-item').length === 0) {
-            imagesEditor.innerHTML = '<div style="color:var(--text-muted);font-size:11px;padding:8px;text-align:center;">暂无图片，点击下方添加</div>';
-        }
-    }
-    
-    function previewImage(input) {
-        const img = input.closest('.image-item').querySelector('img');
-        if (input.value) {
-            img.src = input.value;
-        }
-    }
-    
-    async function saveProductEdit() {
-        if (!editingProductId) return;
-        
-        const title = document.getElementById('editTitle').value.trim();
-        const category = document.getElementById('editCategory').value;
-        const oem = document.getElementById('editOem').value.trim();
-        
-        // 收集图片URL
-        const imageInputs = document.querySelectorAll('.image-item .image-url');
-        const images = Array.from(imageInputs).map(i => i.value.trim()).filter(Boolean);
-        const imageStr = images.join(',');
-        
-        showToast('正在保存...', false);
-        
-        try {
-            // 获取最新数据
-            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
-            const j = await r.json();
-            
-            let content;
-            if (j.content) {
-                content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
-            } else {
-                const rawR = await fetch(j.download_url);
-                content = await rawR.text();
-            }
-            
-            let products = JSON.parse(content);
-            
-            // 找到并更新商品
-            const index = products.findIndex(x => x.id == editingProductId || x.id === parseInt(editingProductId));
-            if (index !== -1) {
-                if (title) {
-                    products[index].name = title;
-                    products[index].title = title;
-                }
-                products[index].category = category;
-                products[index].oem = oem;
-                products[index].image = imageStr;
-                // 同时更新 oemCode 字段（兼容不同字段名）
-                products[index].oemCode = oem;
-            }
-            
-            // 保存到 GitHub
-            const body = { 
-                message: 'Update product: ' + editingProductId, 
-                content: btoa(unescape(encodeURIComponent(JSON.stringify(products, null,
- 2)))), 
-                sha: j.sha 
-            };
-            const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { 
-                method: 'PUT', 
-                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
-                body: JSON.stringify(body) 
-            });
-            
-            if (updateR.ok) {
-                const updateJ = await updateR.json();
-                window.pSha = updateJ.content.sha;
-                allProducts = products;
-                renderProducts(allProducts);
-                closeEditModal();
-                showSuccessModal('保存成功！', '商品信息已更新到 GitHub，网站将在几秒内同步更新。\n\n如未看到更新，请刷新网站页面。');
-            } else {
-                const errData = await updateR.json();
-                showToast('保存失败: ' + (errData.message || 'GitHub错误'), true);
-            }
-        } catch(e) {
-            showToast('保存失败: ' + e.message, true);
-        }
-    }
-    
-    function searchProducts() {
-        const k = document.getElementById('productSearch').value.toLowerCase();
-        renderProducts(allProducts.filter(p => 
-            (p.name || p.title || '').toLowerCase().includes(k) || 
-            (p.oem || p.oemCode || '').toLowerCase().includes(k)
-        ));
-    }
-    
-    async function loadInquiries() {
-        if (!checkToken()) return;
-        const c = document.getElementById('inquiryList');
-        c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-        try {
-            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/inquiries.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
-            const j = await r.json();
-            const d = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
-            allInquiries = JSON.parse(d);
-            window.iSha = j.sha;
-            renderInquiries(allInquiries);
-        } catch(e) { c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; }
-    }
-    
-    function renderInquiries(list) {
-        const c = document.getElementById('inquiryList');
-        list = list.filter(i => i && (i.name || i.email || i.message));
-        
-        const unread = list.filter(i => !i.read).length;
-        const today = new Date().toDateString();
-        const todayCount = list.filter(i => { try { return new Date(i.timestamp).toDateString() === today; } catch(e) { return false; } }).length;
-        const countries = new Set(list.map(i => i.country).filter(x => x)).size;
-        
-        document.getElementById('inq_total').textContent = list.length;
-        document.getElementById('inq_unread').textContent = unread;
-        document.getElementById('inq_today').textContent = todayCount;
-        document.getElementById('inq_countries').textContent = countries;
-        
-        const badge = document.getElementById('inquiryBadge');
-        if (unread > 0) { badge.style.cssText = 'background:var(--accent);color:white;border-radius:50%;width:14px;height:14px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;margin-left:3px;'; badge.textContent = unread; }
-        else badge.style.display = 'none';
-        
-        if (!list.length) { c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>'; return; }
-        
-        const flags = { 'China': '🇨🇳', 'United States': '🇺🇸', 'Japan': '🇯🇵', 'Germany': '🇩🇪', 'United Kingdom': '🇬🇧', 'France': '🇫🇷', 'South Korea': '🇰🇷', 'Australia': '🇦🇺', 'Canada': '🇨🇦', 'Hong Kong': '🇭🇰', 'Chile': '🇨🇱' };
-        
-        c.innerHTML = list.map(i => {
-            const flag = flags[i.country] || '🌍';
-            const timeAgo = ((ts) => { if (!ts) return '-'; const diff = Date.now() - ts; const m = Math.floor(diff/60000); if (m < 1) return '刚刚'; if (m < 60) return m + '分前'; const h = Math.floor(m/60); if (h < 24) return h + '时前'; return Math.floor(h/24) + '天前'; })(i.timestamp);
-            const msg = (i.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
-            const devIcon = i.device === '手机' ? 'mobile-alt' : (i.device === '平板' ? 'tablet-alt' : 'desktop');
-            return `<div class="inquiry-card ${i.read ? '' : 'unread'}" data-id="${i.id}">
-                <div class="inquiry-header"><div class="inquiry-avatar">${(i.name || 'U').charAt(0).toUpperCase()}</div><div class="inquiry-info"><div class="inquiry-name">${i.name || 'Unknown'} ${!i.read ? '<span class="inquiry-badge">NEW</span>' : ''}</div><div class="inquiry-email">${i.email || ''}</div></div></div>
-                <div class="inquiry-meta"><span><i class="fas fa-map-marker-alt"></i> ${flag} ${i.country || '-'}</span><span><i class="fas fa-${devIcon}"></i> ${i.device || '电脑'}</span><span><i class="fas fa-clock"></i> ${timeAgo}</span></div>
-                <div class="inquiry-message">${msg}</div>
-                <div class="inquiry-actions">
-                    <button class="btn btn-primary btn-sm" onclick="window.open('mailto:${i.email || ''}')"><i class="fas fa-reply"></i> 邮件</button>
-                    ${!i.read ? `<button class="btn btn-success btn-sm mark-read-btn" data-id="${i.id}"><i class="fas fa-check"></i> 已读</button>` : ''}
-                    <button class="btn btn-danger btn-sm inquiry-delete-btn" data-id="${i.id}"><i class="fas fa-trash"></i></button>
-                </div></div>`;
-        }).join('');
-        
-        c.querySelectorAll('.inquiry-delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = parseInt(this.getAttribute('data-id'));
-                confirmDelete('inquiry', id, '');
-            });
-        });
-        
-        c.querySelectorAll('.mark-read-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = parseInt(this.getAttribute('data-id'));
-                markRead(id);
-            });
-        });
-    }
-    
-    async function markRead(id) {
-        const i = allInquiries.find(x => x.id === id);
-        if (i) { i.read = true; await saveInquiries(); renderInquiries(allInquiries); }
-    }
-    
-    async function saveInquiries() {
-        try {
-            const body = { message: 'Update inquiries', content: btoa(unescape(encodeURIComponent(JSON.stringify(allInquiries)))), sha: window.iSha };
-            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/inquiries.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-            const j = await r.json(); window.iSha = j.content.sha;
-        } catch(e) {}
-    }
-    
-    function confirmDelete(type, id, name) {
-        deleteTarget = { type, id };
-        const text = type === 'product' ? `删除"${name || '该商品'}"？网站将同步删除。` : '删除这条询盘？';
-        document.getElementById('deleteModalText').textContent = text;
-        document.getElementById('deleteModal').classList.add('show');
-    }
-    
-    function initDeleteButton() {
-        const btn = document.getElementById('confirmDeleteBtn');
-        if (!btn) return;
-        
-        btn.onclick = async function(e) {
-            e.preventDefault();
-            
-            if (!deleteTarget) {
-                showToast('请先选择要删除的项目', true);
-                closeDeleteModal();
-                return;
-            }
-            
-            const targetType = deleteTarget.type;
-            const targetId = deleteTarget.id;
-            
-            if (!targetType || targetId === undefined) {
-                showToast('删除目标无效', true);
-                closeDeleteModal();
-                return;
-            }
-            
-            closeDeleteModal();
-            
-            if (targetType === 'product') {
-                if (!GH_TOKEN) {
-                    const t = prompt('请输入GitHub Token：');
-                    if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); }
-                    else { showToast('需要Token才能删除', true); return; }
-                }
-                showToast('正在删除...', false);
-                try {
-                    const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
-                    const j = await r.json();
-                    
-                    let content;
-                    if (j.content) {
-                        content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
-                    } else {
-                        const rawR = await fetch(j.download_url);
-                        content = await rawR.text();
-                    }
-                    
-                    let p = JSON.parse(content);
-                    const beforeCount = p.length;
-                    p = p.filter(x => x.id != targetId && x.id !== parseInt(targetId));
-                    const afterCount = p.length;
-                    
-                    if (beforeCount === afterCount) {
-                        showToast('未找到该商品', true);
-                        return;
-                    }
-                    
-                    const body = { message: 'Delete product: ' + targetId, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
-                    const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-                    
-                    if (updateR.ok) {
-                        const updateJ = await updateR.json();
-                        window.pSha = updateJ.content.sha;
-                        allProducts = p;
-                        renderProducts(allProducts);
-                        showSuccessModal('删除成功！', '商品已从 GitHub 删除，网站将在几秒内同步更新。\n\n如仍看到该商品，请刷新网站页面。');
-                    } else {
-                        const errData = await updateR.json();
-                        showToast('删除失败: ' + (errData.message || 'GitHub错误'), true);
-                    }
-                } catch(e) { 
-                    showToast('删除失败: ' + e.message, true); 
-                }
-            } else if (targetType === 'inquiry') {
-                allInquiries = allInquiries.filter(x => x.id !== targetId);
-                await saveInquiries();
-                renderInquiries(allInquiries);
-                showToast('已删除');
-            }
-        };
-    }
-    
-    // 初始化保存编辑按钮
-    function initSaveEditButton() {
-        const btn = document.getElementById('saveEditBtn');
-        if (btn) {
-            btn.onclick = saveProductEdit;
-        }
-    }
-    
-    function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
-    function showToast(m, err) { const t = document.getElementById('toast'); t.textContent = m; t.className = 'toast show' + (err ? ' error' : ''); setTimeout(() => t.classList.remove('show'), 3000); }
-    
-    // 成功弹窗
-    function showSuccessModal(title, text) {
-        document.getElementById('successModalTitle').textContent = title || '操作成功';
-        document.getElementById('successModalText').textContent = text || '网站已同步更新';
-        document.getElementById('successModal').classList.add('show');
-    }
-    function closeSuccessModal() { document.getElementById('successModal').classList.remove('show'); }
-    
-    // Google Analytics
-    function handleLogin() {
-        tokenClient = google.accounts.oauth2.initTokenClient({
-            client_id: GA_CLIENT_ID,
-            scope: 'https://www.googleapis.com/auth/analytics.readonly',
-            callback: (r) => { if (r.access_token) { accessToken = r.access_token; localStorage.setItem('ga_token', accessToken); localStorage.setItem('ga_token_expiry', Date.now() + 3600000); document.getElementById('loginSection').style.display = 'none'; document.getElementById('dashboardSection').style.display = 'block'; loadAllData(); } }
-        });
-        tokenClient.requestAccessToken();
-    }
-    
-    function handleLogout() { accessToken = null; localStorage.removeItem('ga_token'); localStorage.removeItem('ga_token_expiry'); document.getElementById('loginSection').style.display = 'block'; document.getElementById('dashboardSection').style.display = 'none'; }
-    
-    let startDate = '7daysAgo', endDate = 'yesterday';
-    function setDateRange(s, btn) { startDate = s; document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); loadAllData(); }
-    function loadAllData() { if (!accessToken) return; loadRealtime(); loadMetrics(); loadTrend(); loadCountries(); loadDevices(); }
-    
-    async function loadRealtime() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runRealtimeReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ metrics: [{ name: 'activeUsers' }] }) }); const d = await r.json(); document.getElementById('statRealtime').textContent = d.rows?.[0]?.metricValues?.[0]?.value || '0'; } catch(e) { document.getElementById('statRealtime').textContent = '-'; }
-    }
-    
-    async function loadMetrics() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }, { name: 'sessions' }, { name: 'averageSessionDuration' }] }) }); const d = await r.json(); const v = d.rows?.[0]?.metricValues || []; document.getElementById('statPageviews').textContent = parseInt(v[0]?.value || 0).toLocaleString(); document.getElementById('statUsers').textContent = parseInt(v[1]?.value || 0).toLocaleString(); document.getElementById('statSessions').textContent = parseInt(v[2]?.value || 0).toLocaleString(); const dur = parseFloat(v[3]?.value || 0); document.getElementById('statDuration').textContent = dur > 60 ? Math.floor(dur/60) + '分' : Math.round(dur) + '秒'; } catch(e) {}
-    }
-    
-    let trendChart, countryChart, deviceChart;
-    
-    async function loadTrend() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'date' }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }], orderBys: [{ dimension: { dimensionName: 'date' } }] }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value.slice(-4)) || []; const views = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; const users = d.rows?.map(x => parseInt(x.metricValues[1].value)) || []; if (trendChart) trendChart.destroy(); trendChart = new Chart(document.getElementById('trendChart'), { type: 'line', data: { labels, datasets: [{ label: '浏览', data: views, borderColor: '#0f4c81', backgroundColor: 'rgba(15,76,129,0.1)', fill: true, tension: 0.4, pointRadius: 0 }, { label: '访客', data: users, borderColor: '#e63946', backgroundColor: 'rgba(230,57,70,0.1)', fill:
- true, tension: 0.4, pointRadius: 0 }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#888' } } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); } catch(e) {}
-    }
-    
-    async function loadCountries() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'country' }], metrics: [{ name: 'totalUsers' }], orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }], limit: 10 }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value) || []; const values = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; if (countryChart) countryChart.destroy(); countryChart = new Chart(document.getElementById('countryChart'), { type: 'bar', data: { labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#3498db', '#95a5a6', '#d35400'] }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); } catch(e) {}
-    }
-    
-    async function loadDevices() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'totalUsers' }] }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value) || []; const values = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; if (deviceChart) deviceChart.destroy(); deviceChart = new Chart(document.getElementById('deviceChart'), { type: 'doughnut', data: { labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#888' } } } } }); } catch(e) {}
-    }
-    
-    window.onload = function() { 
-        initDeleteButton();
-        initSaveEditButton();
-        loadProducts(); 
-        const saved = localStorage.getItem('ga_token'); 
-        const expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0'); 
-        if (saved && Date.now() < expiry) accessToken = saved; 
-    };
-    </script>
-</body>
-</html>
 
