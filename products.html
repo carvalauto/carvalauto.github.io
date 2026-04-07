@@ -3,568 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products - Carval Auto Parts | OEM Quality Auto Parts Supplier</title>
-    <meta name="description" content="Browse our complete catalog of OEM quality auto parts for Japanese, Korean, German and Chinese vehicles. Toyota, Honda, BMW, Mercedes, Hyundai parts available.">
-    <meta name="keywords" content="auto parts catalog, OEM car parts, Toyota parts, Honda parts, BMW parts, Mercedes parts, Hyundai parts, Chinese car parts">
-    
-    <!-- 关键CSS内联 -->
+    <title>Products - Carval Auto Parts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        body { font-family: 'Roboto', sans-serif; color: #222; background-color: #f1f1f1; line-height: 1.6; }
         :root {
-            --red: #D62B2B;
-            --red-dark: #A81F1F;
-            --steel: #1C2B3A;
-            --steel-mid: #243447;
-            --steel-lite: #2F4560;
-            --chrome-dk: #B0B8C1;
-            --offwhite: #F5F4F0;
-            --text-main: #1A1A1A;
-            --text-soft: #555F6D;
-            --border: #D4D8DE;
-            --font-head: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            --primary-color: #0f4c81;
+            --accent-color: #e63946;
+            --dark-color: #1a1a1a;
+            --light-color: #f8f9fa;
+            --border-color: #dee2e6;
         }
-        
-        body {
-            font-family: var(--font-body);
-            background: var(--offwhite);
-            color: var(--text-main);
-            line-height: 1.6;
+        /* 顶部头部 */
+        .top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px; background-color: var(--dark-color); color: white;
+            border-bottom: 4px solid var(--accent-color); position: relative;
         }
-
-        /* ===== 极简导航栏 ===== */
-        .topbar {
-            background: var(--steel);
-            border-bottom: 2px solid var(--red);
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 56px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+        .header-brand {
+            display: flex; flex-direction: row; align-items: center; gap: 10px;
+            position: absolute; left: 50%; transform: translateX(-50%);
         }
-
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 32px;
+        .header-logo-text { font-family: 'Oswald', sans-serif; font-size: 26px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+        .header-slogan { font-size: 14px; color: #ccc; font-style: italic; }
+        .language-switch select {
+            padding: 8px 18px; border: 2px solid var(--accent-color);
+            background-color: var(--dark-color); color: white;
+            font-family: 'Roboto', sans-serif; font-weight: 500;
+            cursor: pointer; border-radius: 0; font-size: 14px;
         }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
+        /* 导航栏 */
+        nav { background-color: var(--primary-color); padding: 20px 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .nav-links { display: flex; list-style: none; gap: 45px; }
+        .nav-links a {
+            color: white; text-decoration: none; font-family: 'Oswald', sans-serif;
+            font-size: 17px; text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.3s ease; position: relative; padding: 5px 0;
         }
-        
-        .brand-logo {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-        }
-        
-        .brand-text {
-            font-family: var(--font-head);
-            font-size: 18px;
-            font-weight: 800;
-            color: white;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-        .brand-text span { color: var(--red); }
-
-        .desktop-nav {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .desktop-nav a {
-            padding: 8px 16px;
-            color: var(--chrome-dk);
-            text-decoration: none;
-            font-family: var(--font-head);
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        
-        .desktop-nav a:hover,
-        .desktop-nav a.active {
-            color: white;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .lang-select {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: white;
-            padding: 6px 12px;
-            font-family: var(--font-body);
-            font-size: 12px;
-            cursor: pointer;
-            border-radius: 4px;
-            outline: none;
-        }
-        .lang-select option { background: var(--steel); color: white; }
-
-        /* Hamburger */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 8px;
-            background: none;
-            border: none;
-        }
-        .hamburger span {
-            display: block;
-            width: 20px;
-            height: 2px;
-            background: white;
-            transition: all 0.3s;
-            border-radius: 1px;
-        }
-        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-        /* Mobile nav */
-        .nav-overlay {
-            display: none;
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 998;
-        }
-        .nav-overlay.show { display: block; }
-
-        .mobile-nav {
-            position: fixed;
-            top: 0; right: -280px;
-            width: 280px; height: 100vh;
-            background: var(--steel);
-            z-index: 999;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-            border-left: 3px solid var(--red);
-        }
-        .mobile-nav.open { right: 0; }
-
-        .mobile-nav-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .mobile-nav-logo {
-            font-family: var(--font-head);
-            font-size: 18px;
-            font-weight: 800;
-            color: white;
-        }
-        .mobile-nav-logo span { color: var(--red); }
-        .mobile-nav-close {
-            background: none; border: none;
-            color: var(--chrome-dk); cursor: pointer;
-            font-size: 20px;
-        }
-        .mobile-nav-links a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 20px;
-            color: var(--chrome-dk);
-            text-decoration: none;
-            font-family: var(--font-head);
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.2s;
-        }
-        .mobile-nav-links a:hover { color: white; background: rgba(255,255,255,0.05); }
-        .mobile-nav-links a i { color: var(--red); width: 18px; }
-
-        /* ===== PAGE HERO ===== */
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-color: var(--accent-color); transition: width 0.3s ease; }
+        .nav-links a:hover { color: var(--accent-color); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a.active { color: var(--accent-color); }
+        /* 页面标题区 */
         .page-hero {
-            background: var(--steel);
-            background-image: linear-gradient(135deg, rgba(28,43,58,0.98) 0%, rgba(214,43,43,0.1) 100%);
-            padding: 60px 24px;
+            background-color: var(--dark-color);
+            padding: 60px 30px;
             text-align: center;
-            border-bottom: 2px solid var(--red);
+            border-bottom: 4px solid var(--accent-color);
         }
         .page-hero h1 {
-            font-family: var(--font-head);
-            font-size: clamp(28px, 5vw, 42px);
-            font-weight: 900;
+            font-family: 'Oswald', sans-serif;
+            font-size: 48px;
             color: white;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
         }
-        .page-hero h1 span { color: var(--red); }
-        .page-hero p {
-            color: var(--chrome-dk);
-            font-size: 15px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* ===== FILTER BAR ===== */
+        .page-hero h1 span { color: var(--accent-color); }
+        .page-hero p { color: #ccc; font-size: 16px; max-width: 600px; margin: 0 auto; }
+        /* 筛选栏 */
         .filter-bar {
-            background: white;
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--border);
+            background-color: white;
+            padding: 20px 30px;
+            border-bottom: 2px solid var(--border-color);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             flex-wrap: wrap;
-            max-width: 1400px;
-            margin: 0 auto;
         }
         .filter-bar span {
-            font-family: var(--font-head);
-            font-size: 12px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 15px;
             text-transform: uppercase;
-            color: var(--text-soft);
+            color: var(--dark-color);
             letter-spacing: 1px;
         }
         .filter-btn {
-            padding: 7px 16px;
-            border: 1px solid var(--border);
+            padding: 8px 20px;
+            border: 2px solid var(--border-color);
             background: white;
-            font-family: var(--font-head);
-            font-size: 12px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 3px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
         }
-        .filter-btn:hover,
-        .filter-btn.active {
-            background: var(--steel);
-            border-color: var(--steel);
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
             color: white;
         }
         .search-box {
             margin-left: auto;
             display: flex;
+            gap: 0;
         }
         .search-box input {
-            padding: 8px 14px;
-            border: 1px solid var(--border);
+            padding: 8px 15px;
+            border: 2px solid var(--border-color);
             border-right: none;
-            font-family: var(--font-body);
-            font-size: 13px;
-            width: 200px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            width: 220px;
             outline: none;
-            border-radius: 3px 0 0 3px;
         }
-        .search-box input:focus { border-color: var(--steel); }
+        .search-box input:focus { border-color: var(--primary-color); }
         .search-box button {
-            padding: 8px 14px;
-            background: var(--steel);
-            border: 1px solid var(--steel);
+            padding: 8px 15px;
+            background-color: var(--primary-color);
+            border: 2px solid var(--primary-color);
             color: white;
             cursor: pointer;
-            font-size: 13px;
-            border-radius: 0 3px 3px 0;
-            transition: background 0.2s;
+            font-size: 14px;
+            transition: background 0.3s;
         }
-        .search-box button:hover { background: var(--red); border-color: var(--red); }
-
-        /* ===== PRODUCTS ===== */
+        .search-box button:hover { background-color: var(--accent-color); border-color: var(--accent-color); }
+        /* 商品网格 */
         .products-section {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
-            padding: 40px 24px;
+            padding: 50px 30px;
         }
         .products-count {
-            font-family: var(--font-head);
-            color: var(--text-soft);
-            font-size: 13px;
-            margin-bottom: 24px;
+            font-family: 'Oswald', sans-serif;
+            color: #888;
+            font-size: 15px;
+            margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .products-count span { color: var(--red); font-weight: 700; }
-
-        /* ===== PAGINATION ===== */
-        .pagination {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 40px;
-            padding: 20px 0;
-        }
-        .page-btn {
-            padding: 8px 14px;
-            border: 1px solid var(--border);
-            background: white;
-            font-family: var(--font-head);
-            font-size: 13px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        .page-btn:hover:not(:disabled) {
-            border-color: var(--steel);
-            color: var(--steel);
-        }
-        .page-btn.active {
-            background: var(--steel);
-            border-color: var(--steel);
-            color: white;
-        }
-        .page-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .page-info {
-            font-size: 13px;
-            color: var(--text-soft);
-            margin: 0 12px;
-        }
-
+        .products-count span { color: var(--accent-color); }
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
         }
-
-        /* ===== PRODUCT CARD ===== */
+        /* 商品卡片 */
         .product-card {
-            background: white;
+            background-color: white;
             overflow: hidden;
-            transition: all 0.3s;
+            transition: all 0.4s ease;
             position: relative;
-            border-bottom: 3px solid var(--steel);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            cursor: pointer;
+            border-bottom: 4px solid var(--primary-color);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
         .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 4px; height: 0;
-            background: var(--red);
-            transition: height 0.3s;
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
         }
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            border-color: var(--red);
-        }
-        .product-card:hover::before { height: 100%; }
-
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.15); border-color: var(--accent-color); }
+        .product-card:hover::before { width: 6px; }
         .product-img-wrap {
             position: relative;
-            width: 100%;
-            height: 220px;
-            overflow: hidden;
-            background: #f8f8f8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100%; height: 260px;
+            overflow: hidden; background-color: #f8f8f8;
+            display: flex; align-items: center; justify-content: center;
         }
-        
-        /* 图片骨架屏 */
-        .img-skeleton {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ccc;
-            font-size: 36px;
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        
         .product-img-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 16px;
-            transition: transform 0.4s ease;
-            opacity: 0;
-        }
-        .product-img-wrap img.loaded {
-            opacity: 1;
+            width: 100%; height: 100%;
+            object-fit: contain; padding: 10px;
+            transition: transform 0.5s ease;
         }
         .product-card:hover .product-img-wrap img { transform: scale(1.05); }
-
+        /* 无图片占位 */
         .no-image {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #ccc;
-            gap: 8px;
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            color: #ccc; gap: 10px;
         }
-        .no-image i { font-size: 40px; }
-        .no-image span { font-size: 11px; font-family: var(--font-head); letter-spacing: 1px; text-transform: uppercase; }
-
-        .product-body {
-            padding: 18px 20px 20px;
-        }
+        .no-image i { font-size: 48px; }
+        .no-image span { font-size: 13px; font-family: 'Oswald', sans-serif; letter-spacing: 1px; }
+        .product-body { padding: 25px 25px 25px 30px; }
         .product-category {
-            font-family: var(--font-head);
-            font-size: 10px;
-            color: var(--red);
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            color: var(--accent-color);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 6px;
-            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
         }
         .product-name {
-            font-family: var(--font-head);
-            font-size: 17px;
-            color: var(--steel);
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            color: var(--primary-color);
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             line-height: 1.3;
-            font-weight: 800;
         }
         .product-meta {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            margin-bottom: 10px;
+            gap: 5px;
+            margin-bottom: 12px;
         }
         .meta-row {
             display: flex;
             align-items: flex-start;
             gap: 8px;
-            font-size: 12px;
-            color: var(--text-soft);
+            font-size: 13px;
+            color: #444;
+            line-height: 1.5;
         }
         .meta-row i {
-            color: var(--steel);
-            font-size: 11px;
+            color: var(--primary-color);
+            font-size: 12px;
             margin-top: 2px;
+            flex-shrink: 0;
             width: 14px;
         }
-        .meta-row strong { color: var(--text-main); }
+        .meta-row span strong {
+            color: #222;
+        }
         .product-oem {
             display: inline-block;
-            background: #f5f5f5;
-            padding: 3px 10px;
-            font-size: 11px;
-            font-family: var(--font-body);
+            background-color: #f1f1f1;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-family: 'Roboto', sans-serif;
             color: #666;
-            margin-bottom: 10px;
-            border-left: 2px solid var(--red);
+            margin-bottom: 12px;
+            border-left: 3px solid var(--accent-color);
         }
         .product-desc {
-            color: var(--text-soft);
-            font-size: 13px;
-            line-height: 1.6;
-            margin-bottom: 16px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
         .inquire-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 9px 18px;
-            background: var(--steel);
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: var(--primary-color);
             color: white;
             text-decoration: none;
-            font-family: var(--font-head);
+            font-family: 'Oswald', sans-serif;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 12px;
+            font-size: 14px;
             border: none;
             cursor: pointer;
-            transition: all 0.25s;
-            border-radius: 3px;
+            transition: all 0.3s ease;
         }
-        .inquire-btn:hover { background: var(--red); transform: translateX(4px); }
-
-        /* ===== EMPTY STATE ===== */
+        .inquire-btn:hover { background-color: var(--accent-color); transform: translateX(4px); }
+        /* 空状态 */
         .empty-state {
             text-align: center;
-            padding: 60px 24px;
+            padding: 80px 30px;
             color: #aaa;
             grid-column: 1 / -1;
         }
-        .empty-state i { font-size: 48px; margin-bottom: 16px; display: block; }
-        .empty-state h3 { font-family: var(--font-head); font-size: 20px; margin-bottom: 8px; color: #ccc; text-transform: uppercase; }
-
-        /* ===== FOOTER ===== */
-        footer {
-            background: var(--steel);
-            color: var(--chrome-dk);
-            padding: 32px 24px;
-            text-align: center;
-            font-size: 13px;
-            border-top: 3px solid var(--red);
+        .empty-state i { font-size: 60px; margin-bottom: 20px; display: block; }
+        .empty-state h3 { font-family: 'Oswald', sans-serif; font-size: 24px; margin-bottom: 10px; color: #ccc; text-transform: uppercase; }
+        /* 页脚 */
+        footer { background-color: var(--dark-color); color: #ccc; padding: 40px 30px; text-align: center; font-size: 15px; border-top: 6px solid var(--accent-color); }
+        .footer-slogan { font-family: 'Oswald', sans-serif; font-size: 18px; margin-bottom: 15px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; }
+        .footer-copyright { margin-bottom: 10px; }
+        /* 社交媒体 */
+        .social-icons { position: fixed; bottom: 40px; right: 40px; display: flex; flex-direction: column; gap: 20px; z-index: 999; }
+        .social-icon { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 26px; transition: all 0.4s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .social-icon:hover { transform: scale(1.15) rotate(8deg); }
+        .facebook { background-color: #3b5998; }
+        .instagram { background-color: #e1306c; }
+        .whatsapp { background-color: #25d366; }
+        @media (max-width: 768px) {
+            .top-header { flex-direction: column; gap: 15px; padding: 15px; }
+            .header-brand { position: static; transform: none; }
+            .nav-links { flex-direction: column; gap: 15px; }
+            .filter-bar { flex-direction: column; align-items: flex-start; }
+            .search-box { margin-left: 0; width: 100%; }
+            .search-box input { flex: 1; }
+            .page-hero h1 { font-size: 32px; }
+            .social-icons { flex-direction: row; bottom: 20px; right: 50%; transform: translateX(50%); gap: 15px; }
+            .social-icon { width: 50px; height: 50px; font-size: 22px; }
         }
-        .footer-slogan {
-            font-family: var(--font-head);
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .footer-slogan span { color: var(--red); }
-        .footer-copyright { color: var(--chrome-dk); }
-
-        /* ===== SOCIAL FLOAT ===== */
-        .social-float {
-            position: fixed;
-            bottom: 24px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 900;
-        }
-        .social-btn {
-            width: 42px; height: 42px;
-            display: flex; align-items: center; justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            transition: all 0.3s;
-            border-radius: 50%;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
-        }
-        .social-btn:hover { transform: scale(1.1) translateY(-2px); }
-        .social-btn.fb { background: #3b5998; }
-        .social-btn.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-        .social-btn.wa { background: #25d366; }
-
-        /* ===== MODAL ===== */
+        /* ===== Product Detail Modal ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -580,22 +302,20 @@
             background: white;
             max-width: 900px;
             width: 100%;
-            margin: 20px auto;
+            margin: auto;
             position: relative;
             animation: modalIn 0.3s ease;
-            border-radius: 4px;
-            overflow: hidden;
         }
         @keyframes modalIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
         .modal-close {
             position: absolute;
-            top: 12px; right: 16px;
+            top: 14px; right: 18px;
             background: none; border: none;
-            font-size: 24px; cursor: pointer;
+            font-size: 26px; cursor: pointer;
             color: #999; z-index: 10;
             line-height: 1;
         }
-        .modal-close:hover { color: var(--red); }
+        .modal-close:hover { color: #333; }
         .modal-inner {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -603,7 +323,7 @@
         }
         .modal-images {
             background: #f8f9fa;
-            padding: 24px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -614,202 +334,215 @@
             object-fit: contain;
             background: white;
             border: 1px solid #eee;
-            padding: 12px;
+            padding: 10px;
             cursor: zoom-in;
-            border-radius: 4px;
+        }
+        .modal-images-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        .modal-carousel-inner {
+            display: flex;
+            transition: transform 0.4s ease;
+        }
+        .modal-carousel-item {
+            min-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: rgba(15, 76, 129, 0.8);
+            color: white;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+        .carousel-arrow:hover {
+            background: rgba(230, 57, 70, 0.95);
+            opacity: 1;
+        }
+        .carousel-arrow.prev {
+            left: 8px;
+        }
+        .carousel-arrow.next {
+            right: 8px;
         }
         .modal-thumbs {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            margin-top: 12px;
             justify-content: center;
         }
         .modal-thumb {
-            width: 56px; height: 56px;
+            width: 60px; height: 60px;
             object-fit: contain;
             border: 2px solid transparent;
             cursor: pointer;
             background: white;
             padding: 4px;
             transition: all 0.2s;
-            border-radius: 3px;
+            flex-shrink: 0;
         }
-        .modal-thumb.active { border-color: var(--red); }
-        .modal-thumb:hover { border-color: var(--steel); }
-
+        .modal-thumb.active {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(230, 57, 70, 0.5);
+        }
+        .modal-thumb:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
         .modal-info {
-            padding: 28px 24px;
+            padding: 36px 32px;
             display: flex;
             flex-direction: column;
             gap: 0;
         }
         .modal-category {
-            font-family: var(--font-head);
-            font-size: 11px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 12px;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--red);
-            margin-bottom: 8px;
+
+            color: var(--accent-color);
+            margin-bottom: 10px;
         }
         .modal-title {
-            font-family: var(--font-head);
-            font-size: 22px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 26px;
             font-weight: 800;
-            color: var(--steel);
+            color: var(--primary-color);
             text-transform: uppercase;
             line-height: 1.2;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
         .modal-specs {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding: 16px 0;
-            border-top: 1px solid #f0f0f0;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 16px;
+            gap: 10px;
+            padding: 20px 0;
+            border-top: 2px solid #f0f0f0;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
         }
         .spec-row {
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            font-size: 13px;
+            font-size: 14px;
         }
         .spec-icon {
-            width: 28px; height: 28px;
-            background: var(--steel);
+            width: 32px; height: 32px;
+            background: var(--primary-color);
             color: white;
             display: flex; align-items: center; justify-content: center;
-            font-size: 11px;
+            font-size: 13px;
             flex-shrink: 0;
-            border-radius: 3px;
         }
+        .spec-content {}
         .spec-label {
-            font-size: 10px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #888;
-            font-family: var(--font-head);
+            font-family: 'Oswald', sans-serif;
         }
         .spec-value {
-            font-size: 13px;
-            color: var(--text-main);
+            font-size: 14px;
+            color: #1a1a1a;
             font-weight: 500;
             margin-top: 1px;
         }
         .modal-desc {
-            font-size: 13px;
-            color: var(--text-soft);
-            line-height: 1.7;
-            margin-bottom: 20px;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.75;
+            margin-bottom: 24px;
         }
-        .modal-fitment {
-            margin-bottom: 16px;
-        }
-        .modal-fitment-title {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--steel);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .modal-fitment-title i { color: var(--red); }
-        .fitment-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-        .fitment-table th {
-            background: var(--steel);
-            color: white;
-            padding: 8px 10px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .fitment-table td {
-            padding: 7px 10px;
-            border-bottom: 1px solid #eee;
-            color: var(--text-main);
-        }
-        .fitment-table tr:hover td { background: #f5f5f5; }
-        .fitment-table tr:nth-child(even) td { background: #fafafa; }
-        .fitment-table tr:nth-child(even):hover td { background: #f0f0f0; }
         .modal-inquire {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 14px;
-            background: var(--red);
+            gap: 10px;
+            padding: 15px;
+            background: var(--accent-color);
             color: white;
             border: none;
-            font-family: var(--font-head);
-            font-size: 14px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             cursor: pointer;
             transition: all 0.25s;
             text-decoration: none;
             width: 100%;
-            border-radius: 3px;
         }
-        .modal-inquire:hover { background: var(--red-dark); transform: translateY(-2px); }
-
+        .modal-inquire:hover { background: #c0392b; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(214,43,43,0.35); }
+        /* Contact form inside modal */
         .modal-contact {
-            padding: 20px 24px;
+            padding: 24px 32px;
             background: #f8f9fa;
             border-top: 1px solid #eee;
-            grid-column: 1 / -1;
         }
         .modal-contact h3 {
-            font-family: var(--font-head);
-            font-size: 14px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--steel);
-            margin-bottom: 14px;
+            color: var(--primary-color);
+            margin-bottom: 16px;
         }
         .modal-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-        .modal-form-group { display: flex; flex-direction: column; gap: 4px; }
-        .modal-form-group label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-family: var(--font-head); }
+        .modal-form-group { display: flex; flex-direction: column; gap: 5px; }
+        .modal-form-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-family: 'Oswald', sans-serif; }
         .modal-form-group input, .modal-form-group textarea {
             padding: 10px 12px;
-            border: 1px solid #ddd;
-            font-family: var(--font-body);
-            font-size: 13px;
+            border: 1.5px solid #ddd;
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
             outline: none;
             transition: border 0.2s;
-            border-radius: 3px;
         }
-        .modal-form-group input:focus, .modal-form-group textarea:focus { border-color: var(--steel); }
-        .modal-form-group textarea { min-height: 70px; resize: vertical; }
+        .modal-form-group input:focus, .modal-form-group textarea:focus { border-color: var(--primary-color); }
+        .modal-form-group textarea { min-height: 80px; resize: vertical; }
         .modal-send-btn {
             width: 100%;
             padding: 12px;
-            background: var(--steel);
+            background: var(--primary-color);
             color: white;
             border: none;
-            font-family: var(--font-head);
-            font-size: 13px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             cursor: pointer;
             transition: all 0.25s;
             margin-top: 4px;
-            border-radius: 3px;
         }
-        .modal-send-btn:hover { background: var(--steel-mid); }
-
-        /* ===== LIGHTBOX ===== */
+        .modal-send-btn:hover { background: #0a3a6e; }
+        /* Lightbox 放大查看 */
         .lightbox {
             display: none;
             position: fixed;
@@ -831,7 +564,7 @@
             position: absolute;
             top: 20px; right: 20px;
             color: white;
-            font-size: 28px;
+            font-size: 32px;
             cursor: pointer;
             opacity: 0.7;
             transition: opacity 0.3s;
@@ -842,9 +575,9 @@
             top: 50%;
             transform: translateY(-50%);
             color: white;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
-            padding: 10px 14px;
+            padding: 10px 15px;
             opacity: 0.6;
             transition: opacity 0.3s;
             background: rgba(0,0,0,0.3);
@@ -853,269 +586,453 @@
         .lightbox-nav:hover { opacity: 1; }
         .lightbox-prev { left: 20px; }
         .lightbox-next { right: 20px; }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 900px) {
-            .desktop-nav { display: none; }
-            .hamburger { display: flex; }
-            .topbar { padding: 0 16px; height: 52px; }
-            .brand-text { font-size: 16px; }
-            .brand-logo { width: 28px; height: 28px; }
-
-            .page-hero { padding: 40px 20px; }
-            /* 手机端分类导航优化 - 横向滚动 */
-            .filter-bar { 
-                flex-direction: row; 
-                align-items: center; 
-                padding: 10px 12px; 
-                overflow-x: auto;
-                white-space: nowrap;
-                -webkit-overflow-scrolling: touch;
-                gap: 8px;
-            }
-            .filter-bar span { 
-                font-size: 10px; 
-                flex-shrink: 0;
-            }
-            .filter-btn { 
-                padding: 5px 10px; 
-                font-size: 10px; 
-                flex-shrink: 0;
-            }
-            .search-box { 
-                margin-left: 0; 
-                margin-top: 0; 
-                flex-shrink: 0;
-                min-width: 120px;
-            }
-            .search-box input { 
-                flex: 1; 
-                width: 80px; 
-                font-size: 11px;
-                padding: 6px 10px;
-            }
-            .search-box button { padding: 6px 10px; font-size: 11px; }
-            
-            /* 手机端产品网格 - 每行2个，美观大方 */
-            .products-section { padding: 16px 12px; }
-            .products-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-                gap: 12px;
-            }
-            .product-card { 
-                padding: 10px;
-                border-radius: 6px;
-                background: white;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            }
-            .product-img-wrap { 
-                height: 130px; 
-                border-radius: 4px;
-                margin-bottom: 8px;
-                background: #f5f5f5;
-            }
-            .img-skeleton { display: none !important; }
-            .product-img-wrap img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                padding: 0;
-                opacity: 1;
-                border-radius: 4px;
-            }
-            .no-image { 
-                font-size: 10px;
-                gap: 4px;
-            }
-            .no-image i { font-size: 24px; }
-            .no-image span { font-size: 8px; }
-            .product-body { padding: 0; }
-            .product-category { 
-                font-size: 9px; 
-                padding: 3px 6px;
-                margin-bottom: 4px;
-                border-radius: 2px;
-            }
-            .product-name { 
-                font-size: 11px; 
-                line-height: 1.4;
-                max-height: 2.8em;
-                overflow: hidden;
-                margin-bottom: 6px;
-                font-weight: 500;
-            }
-            .product-meta { 
-                display: block;
-                font-size: 9px;
-            }
-            .product-meta .meta-row { 
-                margin-bottom: 2px; 
-                font-size: 9px;
-            }
-            .product-meta .meta-row i { font-size: 8px; }
-            .product-desc { display: none; }
-            .inquire-btn { 
-                font-size: 10px; 
-                padding: 6px 10px;
-                border-radius: 4px;
-                margin-top: 6px;
-            }
-            .empty-state, .loading { grid-column: 1 / -1; }
+        @media (max-width: 700px) {
             .modal-inner { grid-template-columns: 1fr; }
-            .modal-images { padding: 16px; }
-            .modal-info { padding: 20px 16px; }
-            .modal-contact { padding: 16px; }
+            .modal-info { padding: 24px 20px; }
+            .modal-contact { padding: 20px; }
             .modal-form-row { grid-template-columns: 1fr; }
-            .social-float { right: 12px; bottom: 16px; gap: 8px; }
-            .social-btn { width: 38px; height: 38px; font-size: 15px; }
+            .modal-title { font-size: 20px; }
         }
     </style>
-
-    <!-- Font Awesome 延迟加载 -->
-    <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-    
-    <!-- Google Analytics 延迟加载 -->
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MR58CNED51"></script>
     <script>
-    window.addEventListener('load', function() {
-        var gtagScript = document.createElement('script');
-        gtagScript.async = true;
-        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-MR58CNED51';
-        document.head.appendChild(gtagScript);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-MR58CNED51');
-    });
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MR58CNED51');
     </script>
 </head>
 <body>
-
-<!-- ===== TOPBAR ===== -->
-<header class="topbar">
-    <div class="topbar-left">
-        <a href="index.html" class="brand">
-            <img src="carval-auto-logo.png" alt="Carval Logo" class="brand-logo" onerror="this.style.display='none'">
-            <div class="brand-text">CARVAL <span>AUTO</span></div>
-        </a>
-        <nav class="desktop-nav">
-            <a href="index.html">Home</a>
-            <a href="index.html#about">Company</a>
-            <a href="products.html" class="active">Products</a>
-            <a href="index.html#contact">Contact</a>
-        </nav>
+    <!-- 顶部头部 -->
+    <header class="top-header">
+        <div class="language-switch">
+            <select id="language-select" onchange="location.href='index.html'">
+                <option value="en">English</option>
+            </select>
+        </div>
+        <div class="header-brand">
+            <div class="header-logo-text">CARVAL AUTO-</div>
+            <div class="header-slogan">Given your car a second life</div>
+        </div>
+    </header>
+    <!-- 导航栏 -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#about">Company</a></li>
+            <li><a href="products.html" class="active">Product</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <!-- 页面标题 -->
+    <div class="page-hero">
+        <h1>Our <span>Product</span> Catalog</h1>
+        <p>Browse our full range of OEM-quality auto parts for Japanese, Korean, German and Chinese vehicles</p>
     </div>
-    <div class="topbar-right">
-        <select id="language-select" class="lang-select">
-            <option value="en">English</option>
-            <option value="zh">中文</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-        </select>
-        <button class="hamburger" onclick="toggleNav()">
-            <span></span><span></span><span></span>
-        </button>
+    <!-- 筛选栏 -->
+    <div class="filter-bar">
+        <span>Filter:</span>
+        <button class="filter-btn active" onclick="filterProducts('all', this)" data-cat="all">All</button>
+        <button class="filter-btn" onclick="filterProducts('japanese', this)" data-cat="japanese">Japanese</button>
+        <button class="filter-btn" onclick="filterProducts('korean', this)" data-cat="korean">Korean</button>
+        <button class="filter-btn" onclick="filterProducts('german', this)" data-cat="german">German</button>
+        <button class="filter-btn" onclick="filterProducts('chinese', this)" data-cat="chinese">Chinese</button>
+        <button class="filter-btn" onclick="filterProducts('oil', this)" data-cat="oil">Engine Oil</button>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by name or OEM number..." oninput="searchProducts()">
+            <button><i class="fas fa-search"></i></button>
+        </div>
     </div>
-</header>
-
-<!-- Mobile nav -->
-<div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
-<nav class="mobile-nav" id="mobileNav">
-    <div class="mobile-nav-header">
-        <div class="mobile-nav-logo">CARVAL <span>AUTO</span></div>
-        <button class="mobile-nav-close" onclick="closeNav()"><i class="fas fa-times"></i></button>
+    <!-- 商品列表 -->
+    <div class="products-section">
+        <div class="products-count">Showing <span id="countDisplay">0</span> products</div>
+        <div class="products-grid" id="productsGrid">
+            <!-- 商品由JS动态生成 -->
+        </div>
     </div>
-    <div class="mobile-nav-links">
-        <a href="index.html"><i class="fas fa-home"></i> Home</a>
-        <a href="index.html#about"><i class="fas fa-building"></i> Company</a>
-        <a href="products.html"><i class="fas fa-cogs"></i> Products</a>
-        <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
+    <!-- 社交媒体 -->
+    <div class="social-icons">
+        <a href="https://www.facebook.com/share/18W9wuCPT4/?mibextid=wwXIfr" class="social-icon facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/carval_auto?igsh=MXd0Nm1wenJyZm96ag%3D%3D&utm_source=qr" class="social-icon instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/8619521228657" class="social-icon whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
     </div>
-</nav>
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-slogan">Carvalauto- Given your car a second life</div>
+        <p class="footer-copyright">&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.</p>
+        <p>Professional Auto Parts Manufacturer & Global Supplier</p>
+    </footer>
+    <script>
+    // ============================================================
+    // 从 GitHub/CDN 加载产品数据 (products.json)
+    // 直接获取最新数据，无缓存
+    // ============================================================
+    var products = [];
+    var productsData = [];
+    
+    // 默认示例数据（仅在 GitHub 加载失败时使用）
+    var defaultProducts = [
+        {
+            id: 1,
+            name: "Toyota Camry Brake Pads",
+            category: "japanese",
+            oem: "04465-06110",
+            description: "High-performance brake pads for Toyota Camry 2018-2023. OEM quality, verified by real-vehicle test.",
+            image: ""
+        },
+        {
+            id: 2,
+            name: "Honda Civic Air Filter",
+            category: "japanese",
+            oem: "17220-RNA-A00",
+            description: "Genuine quality air filter for Honda Civic 2016-2021. Improves engine performance and fuel efficiency.",
+            image: ""
+        },
+        {
+            id: 3,
+            name: "BMW 3 Series Oil Filter",
+            category: "german",
+            oem: "11427788454",
+            description: "Premium oil filter for BMW 3 Series (F30/G20). Meets OEM specifications.",
+            image: ""
+        }
+    ];
+    
+    // Load products from GitHub (直接获取最新数据，无缓存)
+    async function loadProducts() {
+        var grid = document.getElementById('productsGrid');
+        
+        // 显示加载动画
+        grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;grid-column:1/-1;"><i class="fas fa-spinner fa-spin" style="font-size:28px;"></i><p style="margin-top:12px;">Loading products...</p></div>';
+        
+        // 直接获取最新数据（添加时间戳绕过浏览器缓存）
+        try {
+            var cdnUrl = 'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json';
+            var resp = await fetch(cdnUrl + '?t=' + Date.now());
+            
+            if (!resp.ok) {
+                resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?t=' + Date.now());
+            }
+            
+            if (resp.ok) {
+                var data = await resp.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    products = data;
+                    productsData = products;
+                }
+            }
+        } catch(e) {
+            console.log('Fetch error:', e);
+        }
+        
+        if (products.length === 0) products = defaultProducts;
+        productsData = products;
+        renderProducts();
+    }
+    
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', loadProducts);
+    
+    let currentFilter = 'all';
+    let currentSearch = '';
+    const categoryLabels = {
+        japanese: 'Japanese',
+        korean: 'Korean',
+        german: 'German',
+        chinese: 'Chinese',
+        oil: 'Engine Oil',
+        other: 'Other'
+    };
+    function renderProducts() {
+        const grid = document.getElementById('productsGrid');
+        const countEl = document.getElementById('countDisplay');
+        let filtered = productsData.filter(p => {
+            const matchCat = currentFilter === 'all' || p.category === currentFilter;
+            const matchSearch = currentSearch === '' ||
+                p.name.toLowerCase().includes(currentSearch) ||
+                p.oem.toLowerCase().includes(currentSearch) ||
+                p.description.toLowerCase().includes(currentSearch);
+            return matchCat && matchSearch;
+        });
+        countEl.textContent = filtered.length;
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <h3>No Products Found</h3>
+                    <p>Try adjusting your filter or search keyword.</p>
+                </div>`;
+            return;
+        }
+        grid.innerHTML = filtered.map(p => {
+            // Parse first image for card display
+            var firstImg = p.image ? p.image.split(',')[0].trim() : '';
+            // Parse brand and compatible models from description
+            var desc = p.description || '';
+            var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
+            var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
+            var specsMatch = desc.match(/Specs:\s*([^.]+)/i);
+            var brandInfo = brandMatch ? brandMatch[1].trim() : '';
+            var compatInfo = compatMatch ? compatMatch[1].trim() : '';
+            var specsInfo = specsMatch ? specsMatch[1].trim() : '';
+            // Clean description - remove parsed metadata
+            var cleanDesc = desc
+                .replace(/Brand:\s*[^|.]+[|.]?/gi, '')
+                .replace(/Compatible with:\s*[^.]+\./gi, '')
+                .replace(/Specs:\s*[^.]+\./gi, '')
+                .replace(/\|/g, '')
+                .trim();
+            return `
+            <div class="product-card" data-category="${p.category}" onclick="openProduct(${p.id})" style="cursor:pointer;">
+                <div class="product-img-wrap">
+                    ${firstImg
+                        ? `<img src="${firstImg}" alt="${p.name}" loading="lazy">`
+                        : `<div class="no-image"><i class="fas fa-car"></i><span>Image Coming Soon</span></div>`
+                    }
+                </div>
+                <div class="product-body">
+                    <div class="product-category">${categoryLabels[p.category] || p.category}</div>
+                    <div class="product-name">${p.name}</div>
+                    <div class="product-meta">
+                        ${p.oem ? `<div class="meta-row"><i class="fas fa-barcode"></i><span><strong>OEM:</strong> ${p.oem}</span></div>` : ''}
+                        ${brandInfo ? `<div class="meta-row"><i class="fas fa-car"></i><span><strong>Brand:</strong> ${brandInfo}</span></div>` : ''}
+                        ${compatInfo ? `<div class="meta-row"><i class="fas fa-check-circle"></i><span><strong>Fits:</strong> ${compatInfo}</span></div>` : ''}
+                    </div>
+                    ${cleanDesc ? `<div class="product-desc">${cleanDesc.substring(0,100)}...</div>` : ''}
+                    <button class="inquire-btn" onclick="event.stopPropagation(); openProduct(${p.id})">
 
-<!-- ===== PAGE HERO ===== -->
-<div class="page-hero">
-    <h1>Our <span>Product</span> Catalog</h1>
-    <p>Browse our full range of OEM-quality auto parts for Japanese, Korean, German and Chinese vehicles</p>
-</div>
-
-<!-- ===== FILTER BAR ===== -->
-<div class="filter-bar">
-    <span>Filter:</span>
-    <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
-    <button class="filter-btn" onclick="filterProducts('japanese', this)">Japanese</button>
-    <button class="filter-btn" onclick="filterProducts('korean', this)">Korean</button>
-    <button class="filter-btn" onclick="filterProducts('german', this)">German</button>
-    <button class="filter-btn" onclick="filterProducts('chinese', this)">Chinese</button>
-    <button class="filter-btn" onclick="filterProducts('oil', this)">Engine Oil</button>
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search by name or OEM..." oninput="searchProducts()">
-        <button><i class="fas fa-search"></i></button>
-    </div>
-</div>
-
-<!-- ===== PRODUCTS LIST ===== -->
-<div class="products-section">
-    <div class="products-count">Showing <span id="countDisplay">0</span> products</div>
-    <div class="products-grid" id="productsGrid">
-        <!-- Products loaded by JS -->
-    </div>
-    <!-- 分页 -->
-    <div class="pagination" id="pagination"></div>
-</div>
-
-<!-- ===== FOOTER ===== -->
-<footer>
-    <div class="footer-slogan">CARVAL <span>AUTO</span> - Given your car a second life</div>
-    <p class="footer-copyright">&copy; 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.</p>
-</footer>
-
-<!-- Social Float -->
-<div class="social-float">
-    <a href="https://www.facebook.com/share/18W9wuCPT4/" class="social-btn fb" target="_blank"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://www.instagram.com/carval_auto" class="social-btn ig" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://wa.me/8619521228657" class="social-btn wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
-</div>
-
-<!-- ===== PRODUCT MODAL ===== -->
-<div class="modal-overlay" id="productModal" onclick="closeModal(event)">
-    <div class="modal-box">
-        <button class="modal-close" onclick="closeProductModal()">&times;</button>
-        <div class="modal-inner">
-            <div class="modal-images">
-                <img loading="lazy" decoding="async" id="modalMainImg" class="modal-main-img" src="" alt="" onclick="openLightbox(0)">
-                <div class="modal-thumbs" id="modalThumbs"></div>
+                        <i class="fas fa-info-circle"></i> View Details
+                    </button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+    function filterProducts(cat, btn) {
+        currentFilter = cat;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderProducts();
+    }
+    function searchProducts() {
+        currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
+        renderProducts();
+    }
+    // 初始化 - 支持URL参数自动筛选
+    (function() {
+        var params = new URLSearchParams(window.location.search);
+        var cat = params.get('cat');
+        if (cat) {
+            var btn = document.querySelector('.filter-btn[data-cat="' + cat + '"]');
+            if (btn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = cat;
+            }
+        }
+    })();
+    renderProducts();
+    // ===== Product Detail Modal =====
+    var categoryLabelsModal = { japanese:'🇯🇵 Japanese', korean:'🇰🇷 Korean', german:'🇩🇪 German', chinese:'🇨🇳 Chinese', oil:'🛢️ Engine Oil', other:'📦 Other' };
+    // Carousel state
+    var currentCarouselIndex = 0;
+    var carouselImages = [];
+    function updateCarousel() {
+        var carousel = document.getElementById('modalCarouselInner');
+        carousel.style.transform = 'translateX(-' + (currentCarouselIndex * 100) + '%)';
+        
+        // Update thumbs
+        document.querySelectorAll('.modal-thumb').forEach(function(t, i) {
+            t.classList.toggle('active', i === currentCarouselIndex);
+        });
+        
+        // Show/hide arrows
+        document.getElementById('carouselPrev').style.display = carouselImages.length > 1 ? 'flex' : 'none';
+        document.getElementById('carouselNext').style.display = carouselImages.length > 1 ? 'flex' : 'none';
+    }
+    function prevCarouselImg() {
+        currentCarouselIndex = (currentCarouselIndex - 1 + carouselImages.length) % carouselImages.length;
+        updateCarousel();
+    }
+    function nextCarouselImg() {
+        currentCarouselIndex = (currentCarouselIndex + 1) % carouselImages.length;
+        updateCarousel();
+    }
+    function openProduct(id) {
+        var p = productsData.find(function(x) { return x.id === id; });
+        if (!p) return;
+        // Images
+        carouselImages = p.image ? p.image.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
+        currentCarouselIndex = 0;
+        var carousel = document.getElementById('modalCarouselInner');
+        var thumbsEl = document.getElementById('modalThumbs');
+        if (carouselImages.length > 0) {
+            // Build carousel items with click-to-zoom
+            carousel.innerHTML = carouselImages.map(function(img, i) {
+                return '<div class="modal-carousel-item"><img class="modal-main-img" src="' + img + '" alt="" onclick="openLightbox(' + i + ')"></div>';
+            }).join('');
+            
+            // Build thumbnails
+            thumbsEl.innerHTML = carouselImages.map(function(img, i) {
+                return '<img class="modal-thumb' + (i===0?' active':'') + '" src="' + img + '" onclick="switchCarouselImg(' + i + ')" title="Image ' + (i+1) + '">';
+            }).join('');
+            
+            updateCarousel();
+        } else {
+            carousel.innerHTML = '<div class="modal-carousel-item"><div style="width:100%;aspect-ratio:1;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#ccc;flex-direction:column;gap:10px;"><i class="fas fa-car" style="font-size:48px;"></i><span style="font-size:13px;">Image Coming Soon</span></div></div>';
+            thumbsEl.innerHTML = '';
+            document.getElementById('carouselPrev').style.display = 'none';
+            document.getElementById('carouselNext').style.display = 'none';
+        }
+        // Info
+        document.getElementById('modalCategory').textContent = categoryLabelsModal[p.category] || p.category;
+        document.getElementById('modalTitle').textContent = p.name;
+        // Parse description for specs
+        var desc = p.description || '';
+        var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
+        var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
+        var specsMatch = desc.match(/Specs:\s*([^.]+)/i);
+        var brandInfo = brandMatch ? brandMatch[1].trim() : '';
+        var compatInfo = compatMatch ? compatMatch[1].trim() : '';
+        var specsInfo = specsMatch ? specsMatch[1].trim() : '';
+        var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi,'').replace(/Compatible with:\s*[^.]+\./gi,'').replace(/Specs:\s*[^.]+\./gi,'').replace(/\|/g,'').trim();
+        var specsHtml = '';
+        if (p.oem) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-barcode"></i></div><div class="spec-content"><div class="spec-label">OEM Number</div><div class="spec-value">' + p.oem + '</div></div></div>';
+        if (brandInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-car"></i></div><div class="spec-content"><div class="spec-label">Brand</div><div class="spec-value">' + brandInfo + '</div></div></div>';
+        if (compatInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-check-circle"></i></div><div class="spec-content"><div class="spec-label">Compatible With</div><div class="spec-value">' + compatInfo + '</div></div></div>';
+        if (specsInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-cog"></i></div><div class="spec-content"><div class="spec-label">Specifications</div><div class="spec-value">' + specsInfo + '</div></div></div>';
+        document.getElementById('modalSpecs').innerHTML = specsHtml;
+        document.getElementById('modalDesc').textContent = cleanDesc;
+        // Pre-fill message
+        document.getElementById('modalProductRef').value = p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '');
+        document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '') + '. Please provide price and availability.';
+        // Show modal
+        document.getElementById('productModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    function switchCarouselImg(index) {
+        currentCarouselIndex = index;
+        updateCarousel();
+    }
+    function closeProductModal() {
+        document.getElementById('productModal').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+    function closeModal(e) {
+        if (e.target === document.getElementById('productModal')) closeProductModal();
+    }
+    // Handle modal form submit
+    document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        var btn = this.querySelector('.modal-send-btn');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        btn.disabled = true;
+        try {
+            var resp = await fetch(this.action, { method:'POST', body:formData, headers:{'Accept':'application/json'} });
+            if (resp.ok) {
+                btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+                btn.style.background = '#2ecc71';
+                this.reset();
+                setTimeout(function(){ closeProductModal(); }, 1500);
+            } else {
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+                btn.disabled = false;
+                alert('Something went wrong. Please try again.');
+            }
+        } catch(err) {
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+            btn.disabled = false;
+        }
+    });
+    // ESC key to close
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeProductModal(); });
+    
+    // Keyboard navigation for carousel
+    document.addEventListener('keydown', function(e) {
+        if (document.getElementById('productModal').classList.contains('show')) {
+            if (e.key === 'ArrowLeft') prevCarouselImg();
+            if (e.key === 'ArrowRight') nextCarouselImg();
+        }
+    });
+    // ===== Lightbox 图片放大功能 =====
+    var lightboxImages = [];
+    var lightboxIndex = 0;
+    function openLightbox(index) {
+        lightboxImages = carouselImages;
+        lightboxIndex = index;
+        document.getElementById('lightboxImg').src = lightboxImages[index];
+        document.getElementById('lightbox').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+    function prevLightboxImg() {
+        lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+        document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
+    }
+    function nextLightboxImg() {
+        lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
+        document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
+    }
+    // Lightbox keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (document.getElementById('lightbox').classList.contains('show')) {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') prevLightboxImg();
+            if (e.key === 'ArrowRight') nextLightboxImg();
+        }
+    });
+    </script>
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay" id="productModal" onclick="closeModal(event)">
+        <div class="modal-box" id="modalBox">
+            <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            <div class="modal-inner">
+                <div class="modal-images">
+                    <div class="modal-images-container">
+                        <div class="modal-carousel">
+                            <div class="modal-carousel-inner" id="modalCarouselInner">
+                                <div class="modal-carousel-item">
+                                    <img id="modalMainImg" class="modal-main-img" src="" alt="">
+                                </div>
+                            </div>
+                            <button class="carousel-arrow prev" id="carouselPrev" onclick="prevCarouselImg()" style="display:none;"><i class="fas fa-chevron-left"></i></button>
+                            <button class="carousel-arrow next" id="carouselNext" onclick="nextCarouselImg()" style="display:none;"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="modal-thumbs" id="modalThumbs"></div>
+                </div>
+                <div class="modal-info">
+                    <div class="modal-category" id="modalCategory"></div>
+                    <div class="modal-title" id="modalTitle"></div>
+                    <div class="modal-specs" id="modalSpecs"></div>
+                    <div class="modal-desc" id="modalDesc"></div>
+                    <a id="modalInquireBtn" class="modal-inquire">
+                        <i class="fas fa-paper-plane"></i> Send Inquiry
+                    </a>
+                </div>
             </div>
-            <div class="modal-info">
-                <div class="modal-category" id="modalCategory"></div>
-                <div class="modal-title" id="modalTitle"></div>
-                <div class="modal-specs" id="modalSpecs"></div>
-                <div class="modal-fitment" id="modalFitment"></div>
-                <div class="modal-desc" id="modalDesc"></div>
-                <a id="modalInquireBtn" class="modal-inquire" href="index.html#contact">
-                    <i class="fas fa-paper-plane"></i> Send Inquiry
-                </a>
-            </div>
+            <!-- Contact Form -->
             <div class="modal-contact">
-                <h3><i class="fas fa-envelope"></i> Quick Contact</h3>
+                <h3><i class="fas fa-envelope"></i> Send Us a Message</h3>
                 <form id="modalContactForm" action="https://formspree.io/f/xyknoyzw" method="POST">
                     <input type="hidden" id="modalProductRef" name="product_ref" value="">
                     <div class="modal-form-row">
                         <div class="modal-form-group">
                             <label>Your Name</label>
-                            <input type="text" id="modalName" name="name" required placeholder="John Smith">
+                            <input type="text" name="name" required placeholder="John Smith">
                         </div>
                         <div class="modal-form-group">
                             <label>Your Email</label>
-                            <input type="email" id="modalEmail" name="email" required placeholder="john@example.com">
+                            <input type="email" name="email" required placeholder="john@example.com">
                         </div>
                     </div>
                     <div class="modal-form-group" style="margin-bottom:12px;">
-                        <label>Phone (Optional)</label>
-                        <input type="tel" id="modalPhone" name="phone" placeholder="+1 234 567 8900">
-                    </div>
-                    <div class="modal-form-group" style="margin-bottom:12px;">
-                        <label>Message</label>
-                        <textarea name="message" id="modalMessage" placeholder="Please include OEM number and quantity..."></textarea>
+                        <label>Message (OEM number & quantity)</label>
+                        <textarea name="message" id="modalMessage" placeholder="Please include OEM number and required quantity..."></textarea>
                     </div>
                     <button type="submit" class="modal-send-btn">
                         <i class="fas fa-paper-plane"></i> Send Message
@@ -1124,523 +1041,12 @@
             </div>
         </div>
     </div>
-</div>
-
-<!-- ===== LIGHTBOX ===== -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <span class="lightbox-close">&times;</span>
-    <span class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); prevLightboxImg()"><i class="fas fa-chevron-left"></i></span>
-    <img loading="lazy" decoding="async" id="lightboxImg" src="" alt="">
-    <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); nextLightboxImg()"><i class="fas fa-chevron-right"></i></span>
-</div>
-
-<script>
-// ===== Navigation =====
-function toggleNav() {
-    document.getElementById('mobileNav').classList.toggle('open');
-    document.getElementById('navOverlay').classList.toggle('show');
-}
-function closeNav() {
-    document.getElementById('mobileNav').classList.remove('open');
-    document.getElementById('navOverlay').classList.remove('show');
-}
-
-// ===== Products Data =====
-var products = [];
-var productsData = [];
-var currentFilter = 'all';
-var currentSearch = '';
-var currentPage = 1;
-var itemsPerPage = 50; // 默认电脑端50个
-
-// 检测设备类型，设置每页显示数量
-function detectItemsPerPage() {
-    if (window.innerWidth <= 768) {
-        itemsPerPage = 20; // 手机端20个
-    } else {
-        itemsPerPage = 50; // 电脑端50个
-    }
-}
-detectItemsPerPage();
-window.addEventListener('resize', detectItemsPerPage);
-
-var categoryLabels = {
-    japanese: 'Japanese',
-    korean: 'Korean', 
-    german: 'German',
-    chinese: 'Chinese',
-    oil: 'Engine Oil',
-    other: 'Other'
-};
-
-// Default sample data
-var defaultProducts = [
-    { id: 1, name: "Toyota Camry Brake Pads", category: "japanese", oem: "04465-06110", description: "High-performance brake pads for Toyota Camry 2018-2023. OEM quality, verified by real-vehicle test.", image: "" },
-    { id: 2, name: "Honda Civic Air Filter", category: "japanese", oem: "17220-RNA-A00", description: "Genuine quality air filter for Honda Civic 2016-2021.", image: "" },
-    { id: 3, name: "BMW 3 Series Oil Filter", category: "german", oem: "11427788454", description: "Premium oil filter for BMW 3 Series. Meets OEM specifications.", image: "" },
-    { id: 4, name: "Hyundai Elantra Spark Plug", category: "korean", oem: "18854-10060", description: "Iridium spark plug for Hyundai Elantra 2017-2023.", image: "" },
-    { id: 5, name: "Wuling Hongguang Clutch Kit", category: "chinese", oem: "WLG-CK001", description: "Complete clutch kit for Wuling Hongguang series.", image: "" },
-    { id: 6, name: "Shell Helix 5W-30 Engine Oil", category: "oil", oem: "SHELL-5W30", description: "Fully synthetic engine oil 5W-30, 4L bottle. Suitable for most gasoline engines.", image: "" }
-];
-
-// Load products from GitHub (优化：先显示缓存，后台更新)
-async function loadProducts() {
-    var grid = document.getElementById('productsGrid');
-    
-    // 1. 先尝试从 localStorage 读取缓存，立即显示
-    try {
-        var cached = localStorage.getItem('carval_products_cache');
-        if (cached) {
-            var cacheData = JSON.parse(cached);
-            // 缓存有效期缩短为 10 分钟
-            if (cacheData.time && (Date.now() - cacheData.time < 600000)) {
-                products = cacheData.data;
-                productsData = products;
-                console.log('Loaded from cache:', products.length, 'products');
-                renderProducts();
-                // 后台静默更新
-                fetchLatestProducts();
-                return;
-            }
-        }
-    } catch(e) {
-        console.log('Cache read error:', e);
-        // 清除损坏的缓存
-        localStorage.removeItem('carval_products_cache');
-    }
-    
-    // 2. 没有缓存或缓存过期，显示加载动画
-    grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;grid-column:1/-1;"><i class="fas fa-spinner fa-spin" style="font-size:28px;"></i><p style="margin-top:12px;">Loading products...</p></div>';
-    
-    // 3. 从 jsDelivr CDN 获取（更快）
-    await fetchLatestProducts();
-    
-    if (products.length === 0) products = defaultProducts;
-    productsData = products;
-    renderProducts();
-}
-
-// 后台获取最新数据
-async function fetchLatestProducts() {
-    try {
-        // 优先使用 jsDelivr CDN（全球加速）
-        var cdnUrl = 'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json';
-        var resp = await fetch(cdnUrl + '?t=' + Date.now());
-        
-        // 如果 CDN 失败，回退到 GitHub raw
-        if (!resp.ok) {
-            resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?t=' + Date.now());
-        }
-        
-        if (resp.ok) {
-            var data = await resp.json();
-            if (Array.isArray(data) && data.length > 0) {
-                products = data;
-                productsData = products;
-                // 保存到缓存
-                localStorage.setItem('carval_products_cache', JSON.stringify({
-                    data: data,
-                    time: Date.now()
-                }));
-                console.log('Updated cache:', data.length, 'products');
-                // 如果已经有渲染，更新显示
-                if (document.getElementById('productsGrid').children.length > 0) {
-                    renderProducts();
-                }
-            }
-        }
-    } catch(e) {
-        console.log('Fetch error:', e);
-    }
-}
-
-function renderProducts() {
-    var grid = document.getElementById('productsGrid');
-    var countEl = document.getElementById('countDisplay');
-    var paginationEl = document.getElementById('pagination');
-
-    var filtered = productsData.filter(function(p) {
-        var matchCat = currentFilter === 'all' || p.category === currentFilter;
-        var matchSearch = currentSearch === '' ||
-            p.name.toLowerCase().includes(currentSearch) ||
-            (p.oem && p.oem.toLowerCase().includes(currentSearch)) ||
-            (p.description && p.description.toLowerCase().includes(currentSearch));
-        return matchCat && matchSearch;
-    });
-
-    countEl.textContent = filtered.length;
-
-    if (filtered.length === 0) {
-        grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><h3>No Products Found</h3><p>Try adjusting your filter or search.</p></div>';
-        paginationEl.innerHTML = '';
-        return;
-    }
-
-    // 计算分页
-    var totalPages = Math.ceil(filtered.length / itemsPerPage);
-    if (currentPage > totalPages) currentPage = totalPages;
-    if (currentPage < 1) currentPage = 1;
-    
-    var startIndex = (currentPage - 1) * itemsPerPage;
-    var endIndex = startIndex + itemsPerPage;
-    var pageProducts = filtered.slice(startIndex, endIndex);
-
-    // 渲染当前页产品
-    grid.innerHTML = pageProducts.map(function(p) {
-        var firstImg = p.image ? p.image.split(',')[0].trim() : '';
-        var desc = p.description || '';
-        var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
-        var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
-        var brandInfo = brandMatch ? brandMatch[1].trim() : '';
-        var compatInfo = compatMatch ? compatMatch[1].trim() : '';
-        var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi, '').replace(/Compatible with:\s*[^.]+\./gi, '').replace(/\|/g, '').trim();
-
-        return '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
-            '<div class="product-img-wrap">' +
-                '<div class="img-skeleton"><i class="fas fa-image"></i></div>' +
-                (firstImg 
-                    ? '<img src="' + firstImg + '" alt="' + p.name + '" loading="lazy" onload="this.classList.add(\'loaded\');this.previousElementSibling.style.display=\'none\'" onerror="this.style.display=\'none\'">'
-                    : '<div class="no-image"><i class="fas fa-car"></i><span>Image Coming Soon</span></div>') +
-            '</div>' +
-            '<div class="product-body">' +
-                '<div class="product-category">' + (categoryLabels[p.category] || p.category) + '</div>' +
-                '<div class="product-name">' + p.name + '</div>' +
-                '<div class="product-meta">' +
-                    (p.oem ? '<div class="meta-row"><i class="fas fa-barcode"></i><span><strong>OEM:</strong> ' + p.oem + '</span></div>' : '') +
-                    (brandInfo ? '<div class="meta-row"><i class="fas fa-car"></i><span><strong>Brand:</strong> ' + brandInfo + '</span></div>' : '') +
-                    (compatInfo ? '<div class="meta-row"><i class="fas fa-check-circle"></i><span><strong>Fits:</strong> ' + compatInfo + '</span></div>' : '') +
-                '</div>' +
-                (cleanDesc ? '<div class="product-desc">' + cleanDesc.substring(0, 100) + '...</div>' : '') +
-                '<button class="inquire-btn" onclick="event.stopPropagation(); openProduct(' + p.id + ')"><i class="fas fa-info-circle"></i> View Details</button>' +
-            '</div>' +
-        '</div>';
-    }).join('');
-
-    // 渲染分页
-    renderPagination(totalPages, filtered.length);
-}
-
-function renderPagination(totalPages, totalItems) {
-    var paginationEl = document.getElementById('pagination');
-    
-    if (totalPages <= 1) {
-        paginationEl.innerHTML = '';
-        return;
-    }
-
-    var html = '';
-    
-    // 上一页按钮
-    html += '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '>&laquo; Prev</button>';
-    
-    // 页码按钮
-    var startPage = Math.max(1, currentPage - 2);
-    var endPage = Math.min(totalPages, currentPage + 2);
-    
-    if (startPage > 1) {
-        html += '<button class="page-btn" onclick="goToPage(1)">1</button>';
-        if (startPage > 2) html += '<span class="page-info">...</span>';
-    }
-    
-    for (var i = startPage; i <= endPage; i++) {
-        html += '<button class="page-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-    }
-    
-    if (endPage < totalPages) {
-        if (endPage < totalPages - 1) html += '<span class="page-info">...</span>';
-        html += '<button class="page-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
-    }
-    
-    // 下一页按钮
-    html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>Next &raquo;</button>';
-    
-    // 页码信息
-    var startItem = (currentPage - 1) * itemsPerPage + 1;
-    var endItem = Math.min(currentPage * itemsPerPage, totalItems);
-    html += '<span class="page-info">' + startItem + '-' + endItem + ' / ' + totalItems + '</span>';
-    
-    paginationEl.innerHTML = html;
-}
-
-function goToPage(page) {
-    currentPage = page;
-    renderProducts();
-    // 滚动到产品列表顶部
-    document.getElementById('productsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function filterProducts(cat, btn) {
-    currentFilter = cat;
-    currentPage = 1; // 重置页码
-    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-    renderProducts();
-}
-
-function searchProducts() {
-    currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
-    currentPage = 1; // 重置页码
-    renderProducts();
-}
-
-// URL param filter
-(function() {
-    var params = new URLSearchParams(window.location.search);
-    var cat = params.get('cat');
-    if (cat) {
-        var btn = document.querySelector('.filter-btn[onclick*="' + cat + '"]');
-        if (btn) {
-            document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-            currentFilter = cat;
-        }
-    }
-})();
-
-// ===== Modal =====
-var carouselImages = [];
-var currentImgIndex = 0;
-
-function openProduct(id) {
-    var p = productsData.find(function(x) { return x.id === id; });
-    if (!p) return;
-
-    carouselImages = p.image ? p.image.split(',').map(function(s) { return s.trim(); }).filter(Boolean) : [];
-    currentImgIndex = 0;
-
-    var mainImg = document.getElementById('modalMainImg');
-    var thumbsEl = document.getElementById('modalThumbs');
-
-    if (carouselImages.length > 0) {
-        mainImg.src = carouselImages[0];
-        mainImg.style.display = 'block';
-        thumbsEl.innerHTML = carouselImages.map(function(img, i) {
-            return '<img loading="lazy" decoding="async" class="modal-thumb' + (i === 0 ? ' active' : '') + '" src="' + img + '" onclick="switchImg(' + i + ')">';
-        }).join('');
-    } else {
-        mainImg.style.display = 'none';
-        thumbsEl.innerHTML = '';
-    }
-
-    document.getElementById('modalCategory').textContent = categoryLabels[p.category] || p.category;
-    document.getElementById('modalTitle').textContent = p.name;
-
-    var desc = p.description || '';
-    var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
-    var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
-    var brandInfo = brandMatch ? brandMatch[1].trim() : '';
-    var compatInfo = compatMatch ? compatMatch[1].trim() : '';
-    var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi, '').replace(/Compatible with:\s*[^.]+\./gi, '').replace(/\|/g, '').trim();
-
-    var specsHtml = '';
-    if (p.oem) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-barcode"></i></div><div><div class="spec-label">OEM Number</div><div class="spec-value">' + p.oem + '</div></div></div>';
-    if (brandInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-car"></i></div><div><div class="spec-label">Brand</div><div class="spec-value">' + brandInfo + '</div></div></div>';
-    if (compatInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-check-circle"></i></div><div><div class="spec-label">Compatible With</div><div class="spec-value">' + compatInfo + '</div></div></div>';
-    
-    document.getElementById('modalSpecs').innerHTML = specsHtml;
-    
-    // 显示车型表格
-    var fitmentHtml = '';
-    if (p.fitmentTable && p.fitmentTable.length > 0) {
-        fitmentHtml = '<div class="modal-fitment-title"><i class="fas fa-car-side"></i> Compatible Vehicles (' + p.fitmentTable.length + ')</div>' +
-            '<table class="fitment-table"><thead><tr><th>Make</th><th>Model</th><th>Year</th><th>Engine</th></tr></thead><tbody>';
-        p.fitmentTable.forEach(function(item) {
-            fitmentHtml += '<tr>' +
-                '<td>' + (item.make || '-') + '</td>' +
-                '<td>' + (item.model || '-') + '</td>' +
-                '<td>' + (item.year || '-') + '</td>' +
-                '<td>' + (item.engine || '-') + '</td>' +
-            '</tr>';
-        });
-        fitmentHtml += '</tbody></table>';
-    }
-    document.getElementById('modalFitment').innerHTML = fitmentHtml;
-    
-    document.getElementById('modalDesc').textContent = cleanDesc;
-    document.getElementById('modalProductRef').value = p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '');
-    document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '') + '. Please provide price and availability.';
-
-    document.getElementById('productModal').classList.add('show');
-    document.body.style.overflow = 'hidden';
-}
-
-function switchImg(index) {
-    currentImgIndex = index;
-    document.getElementById('modalMainImg').src = carouselImages[index];
-    document.querySelectorAll('.modal-thumb').forEach(function(t, i) {
-        t.classList.toggle('active', i === index);
-    });
-}
-
-function closeProductModal() {
-    document.getElementById('productModal').classList.remove('show');
-    document.body.style.overflow = '';
-}
-
-function closeModal(e) {
-    if (e.target === document.getElementById('productModal')) closeProductModal();
-}
-
-// ===== Lightbox =====
-function openLightbox(index) {
-    if (carouselImages.length === 0) return;
-    document.getElementById('lightboxImg').src = carouselImages[index];
-    document.getElementById('lightbox').classList.add('show');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('show');
-    document.body.style.overflow = '';
-}
-
-function prevLightboxImg() {
-    currentImgIndex = (currentImgIndex - 1 + carouselImages.length) % carouselImages.length;
-    document.getElementById('lightboxImg').src = carouselImages[currentImgIndex];
-}
-
-function nextLightboxImg() {
-    currentImgIndex = (currentImgIndex + 1) % carouselImages.length;
-    document.getElementById('lightboxImg').src = carouselImages[currentImgIndex];
-}
-
-// Keyboard navigation
-document.addEventListener('keydown', function(e) {
-    if (document.getElementById('productModal').classList.contains('show')) {
-        if (e.key === 'Escape') closeProductModal();
-        if (e.key === 'ArrowLeft' && carouselImages.length > 1) switchImg((currentImgIndex - 1 + carouselImages.length) % carouselImages.length);
-        if (e.key === 'ArrowRight' && carouselImages.length > 1) switchImg((currentImgIndex + 1) % carouselImages.length);
-    }
-    if (document.getElementById('lightbox').classList.contains('show')) {
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') prevLightboxImg();
-        if (e.key === 'ArrowRight') nextLightboxImg();
-    }
-});
-
-// Modal form submit - 双通道提交：Formspree + GitHub
-document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    var btn = this.querySelector('.modal-send-btn');
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-    btn.disabled = true;
-    
-    try {
-        // 获取表单数据
-        var formData = {
-            id: Date.now(),
-            name: document.getElementById('modalName').value,
-            email: document.getElementById('modalEmail').value,
-            phone: document.getElementById('modalPhone').value || '',
-            message: document.getElementById('modalMessage').value,
-            product: document.getElementById('modalProductRef').value,
-            oem: '',
-            timestamp: Date.now(),
-            date: new Date().toISOString(),
-            read: false,
-            source: '产品询盘',
-            device: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? '手机' : '电脑',
-            browser: (function() {
-                var ua = navigator.userAgent;
-                if (ua.includes('Chrome')) return 'Chrome';
-                if (ua.includes('Safari')) return 'Safari';
-                if (ua.includes('Firefox')) return 'Firefox';
-                if (ua.includes('Edge')) return 'Edge';
-                return 'Other';
-            })()
-        };
-        
-        // 获取地理位置
-        try {
-            var geoResp = await fetch('https://ipapi.co/json/');
-            var geoData = await geoResp.json();
-            formData.country = geoData.country_name || 'Unknown';
-            formData.countryCode = geoData.country_code || '';
-            formData.city = geoData.city || '';
-            formData.region = geoData.region || '';
-            formData.ip = geoData.ip || '';
-            formData.timezone = geoData.timezone || '';
-        } catch(e) {
-            formData.country = 'Unknown';
-        }
-        
-        // 双通道提交
-        var formspreeOk = false;
-        var githubOk = false;
-        
-        // 通道1: Formspree 发送邮件
-        try {
-            var resp1 = await fetch('https://formspree.io/f/xyknoyzw', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-            formspreeOk = resp1.ok;
-        } catch(e) {
-            console.error('Formspree error:', e);
-        }
-        
-        // 通道2: 保存到 GitHub
-        var ghToken = localStorage.getItem('gh_token');
-        if (ghToken) {
-            try {
-                // 获取现有数据
-                var getResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json', {
-                    headers: { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github.v3+json' }
-                });
-                var existingData = [];
-                var sha = null;
-                if (getResp.ok) {
-                    var getData = await getResp.json();
-                    sha = getData.sha;
-                    var content = decodeURIComponent(escape(atob(getData.content.replace(/\n/g, ''))));
-                    existingData = JSON.parse(content);
-                    if (!Array.isArray(existingData)) existingData = [];
-                }
-                
-                // 添加新询盘
-                existingData.push(formData);
-                
-                // 保存回 GitHub
-                var saveResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json', {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': 'token ' + ghToken,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: 'New inquiry from ' + formData.name,
-                        content: btoa(unescape(encodeURIComponent(JSON.stringify(existingData, null, 2)))),
-                        sha: sha
-                    })
-                });
-                githubOk = saveResp.ok;
-            } catch(e) {
-                console.error('GitHub save error:', e);
-            }
-        }
-        
-        // 结果反馈
-        if (formspreeOk || githubOk) {
-            btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
-            btn.style.background = '#2ecc71';
-            this.reset();
-            setTimeout(closeProductModal, 1500);
-        } else {
-            throw new Error('Both channels failed');
-        }
-    } catch(err) {
-        console.error(err);
-        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-        btn.disabled = false;
-        alert('Error sending message. Please try again.');
-    }
-});
-
-// Initialize
-document.addEventListener('DOMContentLoaded', loadProducts);
-</script>
-
+    <!-- Lightbox 图片放大查看 -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <span class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); prevLightboxImg()"><i class="fas fa-chevron-left"></i></span>
+        <img id="lightboxImg" src="" alt="">
+        <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); nextLightboxImg()"><i class="fas fa-chevron-right"></i></span>
+    </div>
 </body>
 </html>
