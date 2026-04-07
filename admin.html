@@ -168,7 +168,6 @@
             <a href="https://carvalautopart.com" target="_blank"><i class="fas fa-external-link-alt"></i> 网站</a>
         </div>
     </div>
-
     <div class="page active" id="page-products">
         <div class="stats-grid">
             <div class="stat-card"><div class="stat-num" id="totalCount">-</div><div class="stat-label">总商品</div></div>
@@ -182,7 +181,6 @@
         <div class="search-bar"><input type="text" class="search-input" id="productSearch" placeholder="搜索商品名称、OEM..." oninput="searchProducts()"></div>
         <div class="product-grid" id="productList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
     </div>
-
     <div class="page" id="page-inquiries">
         <div class="stats-grid">
             <div class="stat-card"><div class="stat-num" id="inq_total">-</div><div class="stat-label">总询盘</div></div>
@@ -192,7 +190,6 @@
         </div>
         <div class="inquiry-list" id="inquiryList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
     </div>
-
     <div class="page" id="page-analytics">
         <div id="loginSection">
             <div class="login-card">
@@ -217,6 +214,7 @@
                 <div class="stat-card"><div class="stat-num" id="statPageviews">-</div><div class="stat-label">浏览量</div></div>
                 <div class="stat-card accent"><div class="stat-num" id="statUsers">-</div><div class="stat-label">访客</div></div>
                 <div class="stat-card success"><div class="stat-num" id="statSessions">-</div><div class="stat-label">会话</div></div>
+
                 <div class="stat-card warning"><div class="stat-num" id="statDuration">-</div><div class="stat-label">停留</div></div>
                 <div class="stat-card"><div class="stat-num" id="statRealtime">-</div><div class="stat-label">在线</div></div>
             </div>
@@ -227,7 +225,6 @@
             </div>
         </div>
     </div>
-
     <!-- 删除确认弹窗 -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
@@ -239,7 +236,6 @@
             </div>
         </div>
     </div>
-
     <!-- 编辑商品弹窗 -->
     <div class="modal" id="editModal">
         <div class="modal-content edit-modal">
@@ -278,9 +274,7 @@
             </div>
         </div>
     </div>
-
     <div class="toast" id="toast"></div>
-
     <!-- 成功提示弹窗 -->
     <div class="modal" id="successModal">
         <div class="modal-content" style="max-width:320px;">
@@ -295,7 +289,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
     let GH_TOKEN = localStorage.getItem('gh_token') || '';
@@ -331,37 +324,37 @@
     async function loadProducts() {
         if (!checkToken()) return;
         const c = document.getElementById('productList');
-        
-        // 显示加载动画
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-        
-        // 直接从 GitHub 获取最新数据
-        await fetchLatestProducts();
-    }
-    
-    // 直接获取最新数据
-    async function fetchLatestProducts() {
         try {
             const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
             const j = await r.json();
             
+            // 处理大文件情况
             let content;
             if (j.content) {
-                content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+                content = decodeURIComponent(escape(atob(j.content.replace(/
+/g, ''))));
             } else {
+                // 文件太大，从 raw URL 获取
                 const rawR = await fetch(j.download_url);
                 content = await rawR.text();
             }
             
-            const products = JSON.parse(content);
-            allProducts = products;
+            allProducts = JSON.parse(content);
             window.pSha = j.sha;
-            
-            // 直接渲染，不使用缓存
+            localStorage.setItem('cached_products', JSON.stringify({ data: allProducts, sha: j.sha, time: Date.now() }));
             renderProducts(allProducts);
-        } catch(e) {
-            console.log('Fetch error:', e);
-            document.getElementById('productList').innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>';
+        } catch(e) { 
+            const cached = localStorage.getItem('cached_products');
+            if (cached) {
+                const cachedData = JSON.parse(cached);
+                allProducts = cachedData.data;
+                window.pSha = cachedData.sha;
+                renderProducts(allProducts);
+                showToast('使用缓存数据', false);
+            } else {
+                c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
+            }
         }
     }
     
@@ -503,7 +496,8 @@
             
             let content;
             if (j.content) {
-                content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+                content = decodeURIComponent(escape(atob(j.content.replace(/
+/g, ''))));
             } else {
                 const rawR = await fetch(j.download_url);
                 content = await rawR.text();
@@ -525,6 +519,7 @@
                 products[index].oemCode = oem;
             }
             
+
             // 保存到 GitHub
             const body = { 
                 message: 'Update product: ' + editingProductId, 
@@ -540,10 +535,13 @@
             if (updateR.ok) {
                 const updateJ = await updateR.json();
                 window.pSha = updateJ.content.sha;
+                localStorage.setItem('cached_products', JSON.stringify({ data: products, sha: updateJ.content.sha, time: Date.now() }));
                 allProducts = products;
                 renderProducts(allProducts);
                 closeEditModal();
-                showSuccessModal('保存成功！', '商品信息已更新到 GitHub，网站将在几秒内同步更新。\n\n如未看到更新，请刷新网站页面。');
+                showSuccessModal('保存成功！', '商品信息已更新到 GitHub，网站将在几秒内同步更新。
+
+如未看到更新，请刷新网站页面。');
             } else {
                 const errData = await updateR.json();
                 showToast('保存失败: ' + (errData.message || 'GitHub错误'), true);
@@ -568,7 +566,8 @@
         try {
             const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/inquiries.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
             const j = await r.json();
-            const d = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+            const d = decodeURIComponent(escape(atob(j.content.replace(/
+/g, ''))));
             allInquiries = JSON.parse(d);
             window.iSha = j.sha;
             renderInquiries(allInquiries);
@@ -600,7 +599,8 @@
         c.innerHTML = list.map(i => {
             const flag = flags[i.country] || '🌍';
             const timeAgo = ((ts) => { if (!ts) return '-'; const diff = Date.now() - ts; const m = Math.floor(diff/60000); if (m < 1) return '刚刚'; if (m < 60) return m + '分前'; const h = Math.floor(m/60); if (h < 24) return h + '时前'; return Math.floor(h/24) + '天前'; })(i.timestamp);
-            const msg = (i.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+            const msg = (i.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/
+/g, '<br>');
             const devIcon = i.device === '手机' ? 'mobile-alt' : (i.device === '平板' ? 'tablet-alt' : 'desktop');
             return `<div class="inquiry-card ${i.read ? '' : 'unread'}" data-id="${i.id}">
                 <div class="inquiry-header"><div class="inquiry-avatar">${(i.name || 'U').charAt(0).toUpperCase()}</div><div class="inquiry-info"><div class="inquiry-name">${i.name || 'Unknown'} ${!i.read ? '<span class="inquiry-badge">NEW</span>' : ''}</div><div class="inquiry-email">${i.email || ''}</div></div></div>
@@ -685,7 +685,8 @@
                     
                     let content;
                     if (j.content) {
-                        content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+                        content = decodeURIComponent(escape(atob(j.content.replace(/
+/g, ''))));
                     } else {
                         const rawR = await fetch(j.download_url);
                         content = await rawR.text();
@@ -707,9 +708,12 @@
                     if (updateR.ok) {
                         const updateJ = await updateR.json();
                         window.pSha = updateJ.content.sha;
+                        localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
                         allProducts = p;
                         renderProducts(allProducts);
-                        showSuccessModal('删除成功！', '商品已从 GitHub 删除，网站将在几秒内同步更新。\n\n如仍看到该商品，请刷新网站页面。');
+                        showSuccessModal('删除成功！', '商品已从 GitHub 删除，网站将在几秒内同步更新。
+
+如仍看到该商品，请刷新网站页面。');
                     } else {
                         const errData = await updateR.json();
                         showToast('删除失败: ' + (errData.message || 'GitHub错误'), true);
@@ -772,7 +776,8 @@
     let trendChart, countryChart, deviceChart;
     
     async function loadTrend() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'date' }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }], orderBys: [{ dimension: { dimensionName: 'date' } }] }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value.slice(-4)) || []; const views = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; const users = d.rows?.map(x => parseInt(x.metricValues[1].value)) || []; if (trendChart) trendChart.destroy(); trendChart = new Chart(document.getElementById('trendChart'), { type: 'line', data: { labels, datasets: [{ label: '浏览', data: views, borderColor: '#0f4c81', backgroundColor: 'rgba(15,76,129,0.1)', fill: true, tension: 0.4, pointRadius: 0 }, { label: '访客', data: users, borderColor: '#e63946', backgroundColor: 'rgba(230,57,70,0.1)', fill: true, tension: 0.4, pointRadius: 0 }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#888' } } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); } catch(e) {}
+        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'date' }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }], orderBys: [{ dimension: { dimensionName: 'date' } }] }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value.slice(-4)) || []; const views = d.rows?
+.map(x => parseInt(x.metricValues[0].value)) || []; const users = d.rows?.map(x => parseInt(x.metricValues[1].value)) || []; if (trendChart) trendChart.destroy(); trendChart = new Chart(document.getElementById('trendChart'), { type: 'line', data: { labels, datasets: [{ label: '浏览', data: views, borderColor: '#0f4c81', backgroundColor: 'rgba(15,76,129,0.1)', fill: true, tension: 0.4, pointRadius: 0 }, { label: '访客', data: users, borderColor: '#e63946', backgroundColor: 'rgba(230,57,70,0.1)', fill: true, tension: 0.4, pointRadius: 0 }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#888' } } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); } catch(e) {}
     }
     
     async function loadCountries() {
@@ -786,6 +791,16 @@
     window.onload = function() { 
         initDeleteButton();
         initSaveEditButton();
+        
+        const cached = localStorage.getItem('cached_products');
+        if (cached) {
+            try {
+                const cachedData = JSON.parse(cached);
+                allProducts = cachedData.data;
+                window.pSha = cachedData.sha;
+                renderProducts(allProducts);
+            } catch(e) {}
+        }
         loadProducts(); 
         const saved = localStorage.getItem('ga_token'); 
         const expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0'); 
@@ -794,3 +809,4 @@
     </script>
 </body>
 </html>
+
