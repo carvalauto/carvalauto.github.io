@@ -1192,8 +1192,8 @@ async function loadProducts() {
         var cached = localStorage.getItem('carval_products_cache');
         if (cached) {
             var cacheData = JSON.parse(cached);
-            // 缓存有效期为 1 小时
-            if (cacheData.time && (Date.now() - cacheData.time < 3600000)) {
+            // 缓存有效期缩短为 10 分钟
+            if (cacheData.time && (Date.now() - cacheData.time < 600000)) {
                 products = cacheData.data;
                 productsData = products;
                 console.log('Loaded from cache:', products.length, 'products');
@@ -1205,6 +1205,8 @@ async function loadProducts() {
         }
     } catch(e) {
         console.log('Cache read error:', e);
+        // 清除损坏的缓存
+        localStorage.removeItem('carval_products_cache');
     }
     
     // 2. 没有缓存或缓存过期，显示加载动画
