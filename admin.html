@@ -246,6 +246,10 @@
             <div class="modal-title"><i class="fas fa-edit"></i> 编辑商品</div>
             <div class="edit-form">
                 <div class="form-group">
+                    <label>商品标题</label>
+                    <input type="text" id="editTitle" placeholder="输入商品标题..." style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;">
+                </div>
+                <div class="form-group">
                     <label>商品分类</label>
                     <select id="editCategory">
                         <option value="japanese">日系 Japanese</option>
@@ -395,6 +399,9 @@
     function openEditModal(product) {
         editingProductId = product.id;
         
+        // 设置标题
+        document.getElementById('editTitle').value = product.name || product.title || '';
+        
         // 设置分类
         document.getElementById('editCategory').value = (product.category || 'other').toLowerCase();
         
@@ -462,6 +469,7 @@
     async function saveProductEdit() {
         if (!editingProductId) return;
         
+        const title = document.getElementById('editTitle').value.trim();
         const category = document.getElementById('editCategory').value;
         const oem = document.getElementById('editOem').value.trim();
         
@@ -490,6 +498,10 @@
             // 找到并更新商品
             const index = products.findIndex(x => x.id == editingProductId || x.id === parseInt(editingProductId));
             if (index !== -1) {
+                if (title) {
+                    products[index].name = title;
+                    products[index].title = title;
+                }
                 products[index].category = category;
                 products[index].oem = oem;
                 products[index].image = imageStr;
