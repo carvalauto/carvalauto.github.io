@@ -14707,7 +14707,7 @@
     "oem": "90919-02266",
     "description": "ÃÂ©ÃÂÃÂÃÂ©ÃÂÃÂÃÂ¨ÃÂ½ÃÂ¦ÃÂ¥ÃÂÃÂ: 48ÃÂ¦ÃÂ¬ÃÂ¾",
     "image": "https://s.alicdn.com/@sc04/kf/H693fdf40bfbc40018f7374df75ed9636w.jpg,https://s.alicdn.com/@sc04/kf/Hd9f62c880f9a46cbb2014947de4f726fw.jpg,https://s.alicdn.com/@sc04/kf/Ha2916ad89c414bd496ac7f5ac5a57dceo.jpg,https://s.alicdn.com/@sc04/kf/Hdbd906a02d154c3fb35993652132e405C.jpg",
-    "category": "oil",
+    "category": "japanese",
     "url": "https://www.alibaba.com/product-detail/Factory-Directly-DENSO-Ignition-Coil-099700_1601236620618.html",
     "fitmentTable": [
       {
@@ -15000,7 +15000,8 @@
       }
     ],
     "collectedAt": "2026-04-06T17:45:27.457Z",
-    "oemCode": "90919-02266"
+    "oemCode": "90919-02266",
+    "title": "Factory Directly DENSO Ignition Coil 099700-2560 90919-02266 for Toy/ota Alp/hard Lex/us Msd Ignition Coil Ignition Coil for Car"
   },
   {
     "id": 55,
@@ -15008,7 +15009,7 @@
     "oem": "099700-1470",
     "description": "ÃÂ©ÃÂÃÂÃÂ©ÃÂÃÂÃÂ¨ÃÂ½ÃÂ¦ÃÂ¥ÃÂÃÂ: 21ÃÂ¦ÃÂ¬ÃÂ¾",
     "image": "https://s.alicdn.com/@sc04/kf/H31069fd99bdb4004bcd891144e117b68r.jpg,https://s.alicdn.com/@sc04/kf/H2793df58e4324939b53d1703b052d9a3f.jpg,https://s.alicdn.com/@sc04/kf/H038b4599740f491b9b0e80444c8456f0z.jpg,https://s.alicdn.com/@sc04/kf/H463b6f2b844742dd973fd0f4551e51e4M.jpg",
-    "category": "japanese",
+    "category": "oil",
     "url": "https://www.alibaba.com/product-detail/Factory-Directly-DENSO-099700-1470-30520_1601238042244.html",
     "fitmentTable": [
       {
@@ -15139,8 +15140,7 @@
       }
     ],
     "collectedAt": "2026-04-06T17:45:51.073Z",
-    "oemCode": "099700-1470",
-    "title": "Factory Directly DENSO 099700-1470 30520-R40-007 for Song Poetry Civic Odyssey Elysion Msd Ignition Coil Ignition Coil for Car"
+    "oemCode": "099700-1470"
   },
   {
     "id": 56,
