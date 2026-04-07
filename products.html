@@ -1183,28 +1183,73 @@ var defaultProducts = [
     { id: 6, name: "Shell Helix 5W-30 Engine Oil", category: "oil", oem: "SHELL-5W30", description: "Fully synthetic engine oil 5W-30, 4L bottle. Suitable for most gasoline engines.", image: "" }
 ];
 
-// Load products from GitHub (添加时间戳绕过CDN缓存)
+// Load products from GitHub (优化：先显示缓存，后台更新)
 async function loadProducts() {
     var grid = document.getElementById('productsGrid');
-    grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;grid-column:1/-1;"><i class="fas fa-spinner fa-spin" style="font-size:28px;"></i><p style="margin-top:12px;">Loading products...</p></div>';
     
+    // 1. 先尝试从 localStorage 读取缓存，立即显示
     try {
-        // 添加时间戳参数绕过CDN缓存，确保获取最新数据
-        var timestamp = Date.now();
-        var resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?v=' + timestamp);
-        if (resp.ok) {
-            var data = await resp.json();
-            if (Array.isArray(data) && data.length > 0) {
-                products = data;
+        var cached = localStorage.getItem('carval_products_cache');
+        if (cached) {
+            var cacheData = JSON.parse(cached);
+            // 缓存有效期为 1 小时
+            if (cacheData.time && (Date.now() - cacheData.time < 3600000)) {
+                products = cacheData.data;
+                productsData = products;
+                console.log('Loaded from cache:', products.length, 'products');
+                renderProducts();
+                // 后台静默更新
+                fetchLatestProducts();
+                return;
             }
         }
     } catch(e) {
-        console.log('Using default products:', e);
+        console.log('Cache read error:', e);
     }
+    
+    // 2. 没有缓存或缓存过期，显示加载动画
+    grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;grid-column:1/-1;"><i class="fas fa-spinner fa-spin" style="font-size:28px;"></i><p style="margin-top:12px;">Loading products...</p></div>';
+    
+    // 3. 从 jsDelivr CDN 获取（更快）
+    await fetchLatestProducts();
     
     if (products.length === 0) products = defaultProducts;
     productsData = products;
     renderProducts();
+}
+
+// 后台获取最新数据
+async function fetchLatestProducts() {
+    try {
+        // 优先使用 jsDelivr CDN（全球加速）
+        var cdnUrl = 'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json';
+        var resp = await fetch(cdnUrl + '?t=' + Date.now());
+        
+        // 如果 CDN 失败，回退到 GitHub raw
+        if (!resp.ok) {
+            resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?t=' + Date.now());
+        }
+        
+        if (resp.ok) {
+            var data = await resp.json();
+            if (Array.isArray(data) && data.length > 0) {
+                products = data;
+                productsData = products;
+                // 保存到缓存
+                localStorage.setItem('carval_products_cache', JSON.stringify({
+                    data: data,
+                    time: Date.now()
+                }));
+                console.log('Updated cache:', data.length, 'products');
+                // 如果已经有渲染，更新显示
+                if (document.getElementById('productsGrid').children.length > 0) {
+                    renderProducts();
+                }
+            }
+        }
+    } catch(e) {
+        console.log('Fetch error:', e);
+    }
 }
 
 function renderProducts() {
