@@ -332,34 +332,14 @@
         if (!checkToken()) return;
         const c = document.getElementById('productList');
         
-        // 1. 先尝试从 localStorage 读取缓存，立即显示
-        try {
-            const cached = localStorage.getItem('cached_products');
-            if (cached) {
-                const cachedData = JSON.parse(cached);
-                // 缓存有效期为 1 小时
-                if (cachedData.time && (Date.now() - cachedData.time < 3600000)) {
-                    allProducts = cachedData.data;
-                    window.pSha = cachedData.sha;
-                    renderProducts(allProducts);
-                    console.log('Admin loaded from cache:', allProducts.length, 'products');
-                    // 后台静默更新
-                    fetchLatestProducts();
-                    return;
-                }
-            }
-        } catch(e) {
-            console.log('Cache read error:', e);
-        }
-        
-        // 2. 没有缓存，显示加载动画
+        // 显示加载动画
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         
-        // 3. 从 GitHub 获取
+        // 直接从 GitHub 获取最新数据
         await fetchLatestProducts();
     }
     
-    // 后台获取最新数据
+    // 直接获取最新数据
     async function fetchLatestProducts() {
         try {
             const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
@@ -377,27 +357,11 @@
             allProducts = products;
             window.pSha = j.sha;
             
-            // 保存到缓存
-            localStorage.setItem('cached_products', JSON.stringify({ data: products, sha: j.sha, time: Date.now() }));
-            console.log('Admin updated cache:', products.length, 'products');
-            
-            // 如果已经有渲染，更新显示
-            if (document.getElementById('productList').children.length > 0) {
-                renderProducts(allProducts);
-            }
+            // 直接渲染，不使用缓存
+            renderProducts(allProducts);
         } catch(e) {
             console.log('Fetch error:', e);
-            // 如果有旧缓存，显示错误提示但不影响使用
-            const cached = localStorage.getItem('cached_products');
-            if (cached) {
-                const cachedData = JSON.parse(cached);
-                allProducts = cachedData.data;
-                window.pSha = cachedData.sha;
-                renderProducts(allProducts);
-                showToast('使用缓存数据', false);
-            } else {
-                document.getElementById('productList').innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>';
-            }
+            document.getElementById('productList').innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>';
         }
     }
     
@@ -576,7 +540,6 @@
             if (updateR.ok) {
                 const updateJ = await updateR.json();
                 window.pSha = updateJ.content.sha;
-                localStorage.setItem('cached_products', JSON.stringify({ data: products, sha: updateJ.content.sha, time: Date.now() }));
                 allProducts = products;
                 renderProducts(allProducts);
                 closeEditModal();
@@ -744,7 +707,6 @@
                     if (updateR.ok) {
                         const updateJ = await updateR.json();
                         window.pSha = updateJ.content.sha;
-                        localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
                         allProducts = p;
                         renderProducts(allProducts);
                         showSuccessModal('删除成功！', '商品已从 GitHub 删除，网站将在几秒内同步更新。\n\n如仍看到该商品，请刷新网站页面。');
