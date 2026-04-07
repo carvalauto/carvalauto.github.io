@@ -1217,7 +1217,7 @@ function renderProducts() {
         var matchSearch = currentSearch === '' ||
             p.name.toLowerCase().includes(currentSearch) ||
             (p.oem && p.oem.toLowerCase().includes(currentSearch)) ||
-            (p.desc && p.desc.toLowerCase().includes(currentSearch));
+            (p.description && p.description.toLowerCase().includes(currentSearch));
         return matchCat && matchSearch;
     });
     countEl.textContent = filtered.length;
@@ -1237,7 +1237,7 @@ function renderProducts() {
     // 渲染当前页产品
     grid.innerHTML = pageProducts.map(function(p) {
         var firstImg = p.image ? p.image.split(',')[0].trim() : '';
-        var desc = p.desc || '';
+        var desc = p.description || '';
         var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
         var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
         var brandInfo = brandMatch ? brandMatch[1].trim() : '';
@@ -1360,7 +1360,7 @@ function openProduct(id) {
     }
     document.getElementById('modalCategory').textContent = categoryLabels[p.category] || p.category;
     document.getElementById('modalTitle').textContent = p.name;
-    var desc = p.desc || '';
+    var desc = p.description || '';
     var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
     var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
     var brandInfo = brandMatch ? brandMatch[1].trim() : '';
