@@ -322,7 +322,11 @@
     }
     
     async function loadProducts() {
-        if (!checkToken()) return;
+        if (!checkToken()) {
+            const c = document.getElementById('productList');
+            c.innerHTML = '<div class="loading"><i class="fas fa-key" style="color:#f39c12;"></i><p style="margin-top:10px;">请在上方弹窗中输入 GitHub Token</p></div>';
+            return;
+        }
         const c = document.getElementById('productList');
         
         // 显示加载动画
@@ -583,7 +587,11 @@
     }
     
     async function loadInquiries() {
-        if (!checkToken()) return;
+        if (!checkToken()) {
+            const c = document.getElementById('inquiryList');
+            c.innerHTML = '<div class="loading"><i class="fas fa-key" style="color:#f39c12;"></i><p style="margin-top:10px;">请在上方弹窗中输入 GitHub Token</p></div>';
+            return;
+        }
         const c = document.getElementById('inquiryList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         try {
