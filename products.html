@@ -346,11 +346,7 @@ async function loadProducts() {
 }
 async function fetchLatestProducts() {
     try {
-        // 优先使用 GitHub API（在中国大陆更稳定）
-        var resp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/products.json', {
-            headers: { 'Accept': 'application/vnd.github.v3.raw' }
-        });
-        if (!resp.ok) resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now());
+        var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now());
         if (!resp.ok) resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?t=' + Date.now());
         if (resp.ok) {
             var data = await resp.json();
