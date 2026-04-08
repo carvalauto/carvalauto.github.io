@@ -15648,7 +15648,7 @@
     "name": "Cheap Auto Spare Parts 04500 00115 Car Transmission Fluid Oil 0450000115 04500-00115 for Hyundai Kia",
     "oem": "04500-00115",
     "description": "Compatible with: SCANIA, CHEVROLET, PEUGEOT, TOYOTA, FORD",
-    "image": "https://s.alicdn.com/@sc04/kf/H8bd2df9ba0a3456c8cebeb52e0474cba0.jpg,https://s.alicdn.com/@sc04/kf/H50917050a49d4474b98794daa4f5a727I.jpg,https://s.alicdn.com/@sc04/kf/Hd4a898ff0ed142a8a61066991dad112fg.jpg,https://s.alicdn.com/@sc04/kf/Hca2f5a59b79b4332b737679f774d05e9T.jpg",
+    "image": "https://sc04.alicdn.com/kf/H99f8d15a01f64855b2b420f19ef10c80r.jpg,https://sc04.alicdn.com/kf/H4c475170102f4a14a80ec6fa2029e257o.jpg,https://s.alicdn.com/@sc04/kf/H8bd2df9ba0a3456c8cebeb52e0474cba0.jpg,https://s.alicdn.com/@sc04/kf/H50917050a49d4474b98794daa4f5a727I.jpg,https://s.alicdn.com/@sc04/kf/Hd4a898ff0ed142a8a61066991dad112fg.jpg,https://s.alicdn.com/@sc04/kf/Hca2f5a59b79b4332b737679f774d05e9T.jpg",
     "category": "oil",
     "url": "https://www.alibaba.com/product-detail/Cheap-Auto-Spare-Parts-04500-00115_1601695841413.html",
     "fitmentTable": [
@@ -16853,14 +16853,24 @@
         "engine": "5.5 (405KW,551PS)"
       }
     ],
-    "collectedAt": "2026-04-08T13:10:22.038Z",
-    "title": "Cheap Auto Spare Parts 04500 00115 Car Transmission Fluid Oil 0450000115 04500-00115 for Hyundai Kia",
-    "oemCode": "04500-00115",
-    "images": [
-      "https://s.alicdn.com/@sc04/kf/H8bd2df9ba0a3456c8cebeb52e0474cba0.jpg",
-      "https://s.alicdn.com/@sc04/kf/H50917050a49d4474b98794daa4f5a727I.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hd4a898ff0ed142a8a61066991dad112fg.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hca2f5a59b79b4332b737679f774d05e9T.jpg"
-    ]
+    "collectedAt": "2026-04-08T13:10:22.038Z"
+  },
+  {
+    "id": 79,
+    "name": "Suitable for Engine Oil and Transmission Oil5W-30 5W-40 10W-30 5W-20 0W-20 5W-30 0W-40 15W-40 20W-50 10W-40",
+    "oem": "",
+    "description": "Compatible with: Abarth",
+    "image": "https://s.alicdn.com/@sc04/kf/H6ac101345eaa4e5cb5c588ecc8f31febe.jpg,https://s.alicdn.com/@sc04/kf/Hcf206822c7c44f0b8a0c3bc655b789b5e.jpg,https://s.alicdn.com/@sc04/kf/Hd6596dba24f24ba7b88087491d5ad210a.jpg,https://s.alicdn.com/@sc04/kf/Hc4a6c92806d14e67abe1276401fdfe7bP.jpg,https://s.alicdn.com/@sc04/kf/Hd5eb10ee6be4400d9f7c925ee0ce743bx.png,https://s.alicdn.com/@img/imgextra/i2/O1CN01M1wlXy1IWhrOEMX42_!!6000000000901-2-tps-522-522.png",
+    "category": "oil",
+    "url": "https://www.alibaba.com/product-detail/Suitable-for-Engine-Oil-and-Transmission_1601522926903.html",
+    "fitmentTable": [
+      {
+        "make": "Abarth",
+        "model": "500 (312_)",
+        "year": "2008-",
+        "engine": ""
+      }
+    ],
+    "collectedAt": "2026-04-08T13:50:49.786Z"
   }
 ]
