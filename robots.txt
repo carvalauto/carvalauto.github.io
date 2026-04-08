@@ -1,0 +1,39 @@
+# Carval Auto Parts - robots.txt
+# https://carvalautopart.com
+
+# Allow all crawlers access to all content
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://carvalautopart.com/sitemap.xml
+
+# Crawl delay (optional, be considerate to the server)
+Crawl-delay: 10
+
+# Disallow admin and private pages
+Disallow: /admin
+Disallow: /data/
+Disallow: /*.json$
+Disallow: /.env
+Disallow: /test_*.py
+Disallow: /requirements.txt
+
+# Specific bot instructions
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
