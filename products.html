@@ -394,7 +394,7 @@ function renderProducts() {
         
         return '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
             '<div class="product-img-wrap">' +
-                (firstImg ? '<img src="' + firstImg + '" alt="' + (p.name || p.title || '') + '" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=\\'no-image\\'><i class=\\'fas fa-car\\'></i><span>No Image</span></div>\'">' : '<div class="no-image"><i class="fas fa-car"></i><span>No Image</span></div>') +
+                (firstImg ? '<img src="' + firstImg + '" alt="' + (p.name || p.title || '') + '" loading="lazy" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\'"><div class="no-image" style="display:none"><i class="fas fa-car"></i><span>No Image</span></div>' : '<div class="no-image"><i class="fas fa-car"></i><span>No Image</span></div>') +
             '</div>' +
             '<div class="product-body">' +
                 '<div class="product-category">' + (categoryLabels[p.category] || p.category || 'Other') + '</div>' +
