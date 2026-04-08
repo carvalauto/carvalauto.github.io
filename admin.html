@@ -5,19 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carval Auto - 后台管理</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary: #0f4c81;
-            --accent: #e63946;
-            --bg-dark: #0f0f0f;
-            --bg-card: #1a1a1a;
-            --text: #f5f5f5;
-            --text-muted: #888;
-            --border: #333;
-        }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; }
+        :root { --primary: #0f4c81; --accent: #e63946; --bg-dark: #0f0f0f; --bg-card: #1a1a1a; --text: #f5f5f5; --text-muted: #888; --border: #333; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; }
         
         .header { background: linear-gradient(135deg, var(--primary) 0%, #1a3a5c 100%); padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; position: sticky; top: 0; z-index: 100; }
         .header-logo { font-size: 16px; font-weight: 700; }
@@ -39,10 +31,10 @@
         .stat-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
         
         .product-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .product-card { background: var(--bg-card); border-radius: 8px; overflow: hidden; }
-        .product-img { width: 100%; height: 120px; object-fit: contain; background: #2a2a2a; padding: 10px; }
-        .product-info { padding: 10px; }
-        .product-title { font-size: 12px; font-weight: 600; margin-bottom: 5px; line-height: 1.3; }
+        .product-card { background: var(--bg-card); border-radius: 8px; overflow: hidden; display: flex; }
+        .product-card-img { width: 80px; height: 80px; object-fit: cover; background: #2a2a2a; flex-shrink: 0; }
+        .product-info { padding: 10px; flex: 1; min-width: 0; }
+        .product-title { font-size: 12px; font-weight: 600; margin-bottom: 5px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .product-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
         .product-tag { font-size: 8px; padding: 2px 5px; border-radius: 3px; background: rgba(15,76,129,0.3); color: #6db3f2; }
         .product-tag.oem { background: rgba(230,57,70,0.2); color: #ff6b7a; }
@@ -70,20 +62,16 @@
         .login-card { background: var(--bg-card); padding: 25px 15px; border-radius: 10px; text-align: center; max-width: 300px; margin: 30px auto; }
         .login-card .logo { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
         .login-card .logo span { color: var(--accent); }
-        .login-card p { color: var(--text-muted); margin-bottom: 15px; font-size: 12px; }
         .btn-google { background: white; color: #333; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-google img { width: 14px; height: 14px; }
         
         .charts-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
         .chart-card { background: var(--bg-card); border-radius: 8px; padding: 10px; }
-        .chart-title { font-size: 11px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
-        .chart-title i { color: var(--primary); }
+        .chart-title { font-size: 11px; font-weight: 600; margin-bottom: 8px; }
+        .chart-title i { color: var(--primary); margin-right: 5px; }
         .date-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; background: var(--bg-card); padding: 8px 10px; border-radius: 6px; }
         .date-btn { background: rgba(255,255,255,0.1); border: none; color: var(--text); padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; }
         .date-btn.active { background: var(--primary); }
         .ga-user-info { display: flex; align-items: center; gap: 6px; margin-left: auto; }
-        .ga-avatar { width: 24px; height: 24px; border-radius: 50%; }
-        .ga-name { font-size: 10px; max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .btn-logout { background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 9px; }
         
         .search-bar { margin-bottom: 12px; }
@@ -104,36 +92,27 @@
         .modal-text { color: var(--text-muted); font-size: 12px; margin-bottom: 12px; }
         .modal-actions { display: flex; gap: 6px; justify-content: center; }
         
-        /* 编辑弹窗样式 */
         .edit-modal { max-width: 500px; text-align: left; }
-        .edit-modal .modal-title { text-align: center; margin-bottom: 16px; }
         .edit-form { display: flex; flex-direction: column; gap: 12px; }
         .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .form-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-group select, .form-group input, .form-group textarea {
-            padding: 10px 12px;
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            color: var(--text);
-            font-size: 13px;
-        }
-        .form-group select:focus, .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        /* 图片编辑区域 */
+        .form-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+        .form-group input, .form-group select { padding: 10px 12px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 5px; color: var(--text); font-size: 13px; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
         .images-editor { display: flex; flex-direction: column; gap: 8px; }
         .image-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 5px; }
         .image-item img { width: 60px; height: 60px; object-fit: contain; background: #2a2a2a; border-radius: 4px; }
         .image-item input { flex: 1; padding: 6px 8px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-size: 10px; }
-        .image-item .btn-remove { padding: 4px 8px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
+        .btn-remove { padding: 4px 8px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
         .btn-add-image { padding: 8px; background: rgba(46,204,113,0.1); color: #7dcea0; border: 1px dashed #7dcea0; border-radius: 5px; cursor: pointer; font-size: 11px; text-align: center; }
-        .btn-add-image:hover { background: rgba(46,204,113,0.2); }
-        
         .edit-actions { display: flex; gap: 8px; margin-top: 8px; }
         .edit-actions .btn { flex: 1; justify-content: center; padding: 10px; }
+        
+        .pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 16px; flex-wrap: wrap; }
+        .page-btn { padding: 6px 10px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text); cursor: pointer; font-size: 11px; border-radius: 4px; min-width: 36px; }
+        .page-btn:hover { background: var(--primary); }
+        .page-btn.active { background: var(--accent); }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .page-info { font-size: 11px; color: var(--text-muted); padding: 0 8px; }
         
         @media (min-width: 600px) {
             .header { padding: 12px 18px; }
@@ -143,16 +122,14 @@
             .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
             .stat-num { font-size: 24px; }
             .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .product-img { height: 140px; }
-            .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+            .product-card-img { width: 100px; height: 100px; }
+            .charts-grid { grid-template-columns: repeat(2, 1fr); }
             .edit-modal { max-width: 550px; }
         }
-        
         @media (min-width: 1024px) {
             .stats-grid { grid-template-columns: repeat(7, 1fr); }
             .product-grid { grid-template-columns: repeat(3, 1fr); }
             .charts-grid { grid-template-columns: repeat(3, 1fr); }
-            .login-card { padding: 35px; max-width: 380px; }
         }
     </style>
 </head>
@@ -160,14 +137,15 @@
     <div class="header">
         <div class="header-logo">CARVAL <span>AUTO</span></div>
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('products', this)"><i class="fas fa-box"></i> 商品</button>
-            <button class="tab-btn" onclick="switchTab('inquiries', this)" id="inquiriesTabBtn"><i class="fas fa-envelope"></i> 询盘<span id="inquiryBadge" style="display:none;"></span></button>
-            <button class="tab-btn" onclick="switchTab('analytics', this)"><i class="fas fa-chart-line"></i> 流量</button>
+            <button class="tab-btn active" id="tab-products" onclick="switchTab('products')"><i class="fas fa-box"></i> 商品</button>
+            <button class="tab-btn" id="tab-inquiries" onclick="switchTab('inquiries')"><i class="fas fa-envelope"></i> 询盘<span id="inquiryBadge" style="display:none;"></span></button>
+            <button class="tab-btn" id="tab-analytics" onclick="switchTab('analytics')"><i class="fas fa-chart-line"></i> 流量</button>
         </div>
         <div class="header-right">
             <a href="https://carvalautopart.com" target="_blank"><i class="fas fa-external-link-alt"></i> 网站</a>
         </div>
     </div>
+    
     <div class="page active" id="page-products">
         <div class="stats-grid">
             <div class="stat-card"><div class="stat-num" id="totalCount">-</div><div class="stat-label">总商品</div></div>
@@ -180,7 +158,9 @@
         </div>
         <div class="search-bar"><input type="text" class="search-input" id="productSearch" placeholder="搜索商品名称、OEM..." oninput="searchProducts()"></div>
         <div class="product-grid" id="productList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
+        <div class="pagination" id="productPagination"></div>
     </div>
+    
     <div class="page" id="page-inquiries">
         <div class="stats-grid">
             <div class="stat-card"><div class="stat-num" id="inq_total">-</div><div class="stat-label">总询盘</div></div>
@@ -190,31 +170,29 @@
         </div>
         <div class="inquiry-list" id="inquiryList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
     </div>
+    
     <div class="page" id="page-analytics">
         <div id="loginSection">
             <div class="login-card">
                 <div class="logo">CARVAL <span>AUTO</span></div>
                 <p>连接 Google Analytics<br>查看网站流量数据</p>
-                <button class="btn-google" onclick="handleLogin()"><img src="https://www.google.com/favicon.ico" alt=""> Google 登录</button>
+                <button class="btn-google" id="googleLoginBtn"><i class="fab fa-google"></i> Google 登录</button>
             </div>
         </div>
         <div id="dashboardSection" style="display:none;">
             <div class="date-bar">
                 <span style="font-size:11px;color:var(--text-muted);">时间：</span>
-                <button class="date-btn active" onclick="setDateRange('7daysAgo', this)">7天</button>
-                <button class="date-btn" onclick="setDateRange('30daysAgo', this)">30天</button>
-                <button class="date-btn" onclick="setDateRange('90daysAgo', this)">90天</button>
+                <button class="date-btn active" id="date7" onclick="setDateRange('7daysAgo', 'date7')">7天</button>
+                <button class="date-btn" id="date30" onclick="setDateRange('30daysAgo', 'date30')">30天</button>
+                <button class="date-btn" id="date90" onclick="setDateRange('90daysAgo', 'date90')">90天</button>
                 <div class="ga-user-info">
-                    <img id="userAvatar" class="ga-avatar" src="" alt="">
-                    <span class="ga-name" id="userName"></span>
-                    <button class="btn-logout" onclick="handleLogout()">退出</button>
+                    <button class="btn-logout" id="logoutBtn">退出</button>
                 </div>
             </div>
             <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);">
                 <div class="stat-card"><div class="stat-num" id="statPageviews">-</div><div class="stat-label">浏览量</div></div>
                 <div class="stat-card accent"><div class="stat-num" id="statUsers">-</div><div class="stat-label">访客</div></div>
                 <div class="stat-card success"><div class="stat-num" id="statSessions">-</div><div class="stat-label">会话</div></div>
-
                 <div class="stat-card warning"><div class="stat-num" id="statDuration">-</div><div class="stat-label">停留</div></div>
                 <div class="stat-card"><div class="stat-num" id="statRealtime">-</div><div class="stat-label">在线</div></div>
             </div>
@@ -225,26 +203,23 @@
             </div>
         </div>
     </div>
-    <!-- 删除确认弹窗 -->
+    
     <div class="modal" id="deleteModal">
         <div class="modal-content">
             <div class="modal-title">确认删除</div>
             <div class="modal-text" id="deleteModalText">确定要删除吗？</div>
             <div class="modal-actions">
-                <button class="btn" style="background:var(--border);" onclick="closeDeleteModal()">取消</button>
+                <button class="btn" id="cancelDeleteBtn" style="background:var(--border);">取消</button>
                 <button class="btn btn-danger" id="confirmDeleteBtn">删除</button>
             </div>
         </div>
     </div>
-    <!-- 编辑商品弹窗 -->
+    
     <div class="modal" id="editModal">
         <div class="modal-content edit-modal">
             <div class="modal-title"><i class="fas fa-edit"></i> 编辑商品</div>
             <div class="edit-form">
-                <div class="form-group">
-                    <label>商品标题</label>
-                    <input type="text" id="editTitle" placeholder="输入商品标题..." style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;">
-                </div>
+                <div class="form-group"><label>商品标题</label><input type="text" id="editTitle" placeholder="输入商品标题..."></div>
                 <div class="form-group">
                     <label>商品分类</label>
                     <select id="editCategory">
@@ -256,608 +231,527 @@
                         <option value="other">其他 Other</option>
                     </select>
                 </div>
+                <div class="form-group"><label>OEM 编码</label><input type="text" id="editOem" placeholder="输入 OEM 编码..."></div>
                 <div class="form-group">
-                    <label>OEM 编码</label>
-                    <input type="text" id="editOem" placeholder="输入 OEM 编码...">
-                </div>
-                <div class="form-group">
-                    <label>商品图片 <span style="color:#666;font-size:10px;">(可删除多余图片或修改URL)</span></label>
-                    <div class="images-editor" id="imagesEditor">
-                        <!-- 动态生成图片列表 -->
-                    </div>
-                    <button type="button" class="btn-add-image" onclick="addImageField()"><i class="fas fa-plus"></i> 添加图片</button>
+                    <label>商品图片</label>
+                    <div class="images-editor" id="imagesEditor"></div>
+                    <button type="button" class="btn-add-image" id="addImageBtn"><i class="fas fa-plus"></i> 添加图片</button>
                 </div>
             </div>
             <div class="edit-actions">
-                <button class="btn" style="background:var(--border);" onclick="closeEditModal()">取消</button>
-                <button class="btn btn-success" id="saveEditBtn"><i class="fas fa-save"></i> 保存修改</button>
+                <button class="btn" id="cancelEditBtn" style="background:var(--border);">取消</button>
+                <button class="btn btn-success" id="saveEditBtn"><i class="fas fa-save"></i> 保存</button>
             </div>
         </div>
     </div>
+    
     <div class="toast" id="toast"></div>
-    <!-- 成功提示弹窗 -->
+    
     <div class="modal" id="successModal">
         <div class="modal-content" style="max-width:320px;">
             <div style="font-size:48px;color:#2ecc71;margin-bottom:10px;"><i class="fas fa-check-circle"></i></div>
             <div class="modal-title" id="successModalTitle">操作成功</div>
             <div class="modal-text" id="successModalText">网站已同步更新</div>
             <div class="modal-actions" style="flex-direction:column;gap:8px;">
-                <a href="https://carvalauto.github.io/products.html" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center;">
-                    <i class="fas fa-external-link-alt"></i> 查看网站
-                </a>
-                <button class="btn" style="background:var(--border);width:100%;" onclick="closeSuccessModal()">关闭</button>
+                <a href="https://carvalautopart.com/products.html" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center;"><i class="fas fa-external-link-alt"></i> 查看网站</a>
+                <button class="btn" id="closeSuccessBtn" style="background:var(--border);width:100%;">关闭</button>
             </div>
         </div>
     </div>
+    
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-    let GH_TOKEN = localStorage.getItem('gh_token') || '';
-    const GH_REPO = 'carvalauto/carvalauto.github.io';
-    const GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
-    const GA_PROPERTY_ID = '529242507';
+    var GH_TOKEN = localStorage.getItem('gh_token') || '';
+    var GH_REPO = 'carvalauto/carvalauto.github.io';
+    var GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
+    var GA_PROPERTY_ID = '529242507';
     
-    let allProducts = [], allInquiries = [], accessToken = null, tokenClient = null, deleteTarget = null;
-    let editingProductId = null; // 当前编辑的商品ID
+    var allProducts = [], allInquiries = [], accessToken = null, deleteTarget = null;
+    var editingProductId = null;
+    var currentProductPage = 1;
+    var productsPerPage = 20;
     
     function checkToken() {
         if (!GH_TOKEN) {
-            const t = prompt('请输入GitHub Token：');
+            var t = prompt('请输入GitHub Token：');
             if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); return true; }
             return false;
         }
         return true;
     }
     
-    function switchTab(tab, btn) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('page-' + tab).classList.add('active');
-        btn.classList.add('active');
-        if (tab === 'products') loadProducts();
-        if (tab === 'inquiries') loadInquiries();
-        if (tab === 'analytics') {
-            if (accessToken) { document.getElementById('loginSection').style.display = 'none'; document.getElementById('dashboardSection').style.display = 'block'; loadAllData(); }
-            else { document.getElementById('loginSection').style.display = 'block'; document.getElementById('dashboardSection').style.display = 'none'; }
-        }
+    function switchTab(tab) {
+        document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+        document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+        var targetPage = document.getElementById('page-' + tab);
+        if (targetPage) { targetPage.classList.add('active'); }
+        var targetBtn = document.getElementById('tab-' + tab);
+        if (targetBtn) { targetBtn.classList.add('active'); }
+        if (tab === 'products') { loadProducts(); }
+        else if (tab === 'inquiries') { loadInquiries(); }
+        else if (tab === 'analytics') { initAnalytics(); }
     }
     
     async function loadProducts() {
-        if (!checkToken()) {
-            const c = document.getElementById('productList');
-            c.innerHTML = '<div class="loading"><i class="fas fa-key" style="color:#f39c12;"></i><p style="margin-top:10px;">请在上方弹窗中输入 GitHub Token</p></div>';
-            return;
-        }
-        const c = document.getElementById('productList');
-        
-        // 显示加载动画
+        if (!checkToken()) return;
+        var c = document.getElementById('productList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-        
-        // 直接从 GitHub 获取最新数据
-        await fetchLatestProducts();
-    }
-    
-    // 直接获取最新数据
-    async function fetchLatestProducts() {
         try {
-            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/data/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
-            
-            if (!r.ok) {
-                const errText = await r.text();
-                throw new Error(`GitHub API 错误: ${r.status} - ${errText}`);
-            }
-            
-            const j = await r.json();
-            
-            let content;
-            if (j.content) {
-                content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
-            } else {
-                const rawR = await fetch(j.download_url);
+            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json', { 
+                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
+            });
+            var j = await r.json();
+            var content;
+            if (j.content) { content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))); }
+            else {
+                var rawR = await fetch(j.download_url);
                 content = await rawR.text();
             }
-            
-            // 处理空内容
-            if (!content || content.trim() === '') {
-                content = '[]';
-            }
-            
-            const products = JSON.parse(content);
-            allProducts = products;
+            allProducts = JSON.parse(content);
             window.pSha = j.sha;
-            
-            // 直接渲染，不使用缓存
-            renderProducts(allProducts);
-        } catch(e) {
-            console.error('Fetch error:', e);
-            document.getElementById('productList').innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>';
-            showToast('加载商品失败: ' + e.message, true);
+            localStorage.setItem('cached_products', JSON.stringify({ data: allProducts, sha: j.sha, time: Date.now() }));
+            currentProductPage = 1;
+            renderProducts();
+        } catch(e) { 
+            console.error('Load error:', e);
+            var cached = localStorage.getItem('cached_products');
+            if (cached) {
+                try {
+                    var cachedData = JSON.parse(cached);
+                    allProducts = cachedData.data;
+                    window.pSha = cachedData.sha;
+                    renderProducts();
+                    showToast('使用缓存数据', false);
+                } catch(e2) {
+                    c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
+                }
+            } else {
+                c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
+            }
         }
     }
     
-    function renderProducts(p) {
-        const c = document.getElementById('productList');
-        document.getElementById('totalCount').textContent = p.length;
-        const cats = { japanese: 0, korean: 0, german: 0, chinese: 0, oil: 0, other: 0 };
-        p.forEach(x => { const cat = (x.category || 'other').toLowerCase(); if (cats[cat] !== undefined) cats[cat]++; else cats.other++; });
-        Object.keys(cats).forEach(k => { const el = document.getElementById('cat_' + k); if (el) el.textContent = cats[k]; });
-        
-        if (!p.length) { c.innerHTML = '<div class="loading"><i class="fas fa-box-open"></i><p>暂无商品</p></div>'; return; }
-        c.innerHTML = p.map(x => {
-            const img = (x.image || x.images || []).toString().split(',')[0] || '';
-            const cat = (x.category || 'other').toUpperCase();
-            const name = (x.name || x.title || '未命名').toString().replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            const oem = (x.oem || x.oemCode || '').toString().replace(/"/g, '&quot;');
-            return `<div class="product-card" data-id="${x.id}">
-                ${img ? `<img src="${img}" class="product-img" alt="" onerror="this.style.display='none'">` : '<div class="product-img" style="display:flex;align-items:center;justify-content:center;color:#555;"><i class="fas fa-image"></i></div>'}
-                <div class="product-info">
-                    <div class="product-title">${name.length > 60 ? name.substring(0,60) + '...' : name}</div>
-                    <div class="product-meta"><span class="product-tag">${cat}</span>${oem ? `<span class="product-tag oem">OEM: ${oem}</span>` : ''}</div>
-                    <div class="product-actions">
-                        <button class="btn btn-edit edit-btn" data-id="${x.id}"><i class="fas fa-edit"></i> 编辑</button>
-                        <button class="btn btn-danger delete-btn" data-id="${x.id}"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div></div>`;
+    function renderProducts() {
+        var c = document.getElementById('productList');
+        var searchTerm = document.getElementById('productSearch').value.toLowerCase();
+        var filtered = allProducts;
+        if (searchTerm) {
+            filtered = allProducts.filter(function(p) { 
+                return (p.name || p.title || '').toLowerCase().includes(searchTerm) || 
+                       (p.oem || p.oemCode || '').toLowerCase().includes(searchTerm);
+            });
+        }
+        document.getElementById('totalCount').textContent = filtered.length;
+        var cats = { japanese: 0, korean: 0, german: 0, chinese: 0, oil: 0, other: 0 };
+        filtered.forEach(function(x) { 
+            var cat = (x.category || 'other').toLowerCase(); 
+            if (cats[cat] !== undefined) cats[cat]++; else cats.other++; 
+        });
+        Object.keys(cats).forEach(function(k) { 
+            var el = document.getElementById('cat_' + k); 
+            if (el) el.textContent = cats[k]; 
+        });
+        var totalPages = Math.ceil(filtered.length / productsPerPage);
+        if (currentProductPage > totalPages) currentProductPage = totalPages || 1;
+        var startIndex = (currentProductPage - 1) * productsPerPage;
+        var endIndex = startIndex + productsPerPage;
+        var pageProducts = filtered.slice(startIndex, endIndex);
+        if (!filtered.length) { 
+            c.innerHTML = '<div class="loading"><i class="fas fa-box-open"></i><p>暂无商品</p></div>'; 
+            document.getElementById('productPagination').innerHTML = '';
+            return; 
+        }
+        c.innerHTML = pageProducts.map(function(x) {
+            var img = (x.image || x.images || '').toString().split(',')[0] || '';
+            var cat = (x.category || 'other').toUpperCase();
+            var name = (x.name || x.title || '未命名').toString();
+            var oem = x.oem || x.oemCode || '';
+            return '<div class="product-card">' +
+                (img ? '<img src="' + img + '" class="product-card-img" alt="" onerror="this.style.display=\'none\'">' : '<div class="product-card-img" style="display:flex;align-items:center;justify-content:center;color:#555;font-size:24px;"><i class="fas fa-image"></i></div>') +
+                '<div class="product-info">' +
+                    '<div class="product-title" title="' + name.replace(/"/g, '&quot;') + '">' + name.substring(0, 40) + (name.length > 40 ? '...' : '') + '</div>' +
+                    '<div class="product-meta"><span class="product-tag">' + cat + '</span>' + (oem ? '<span class="product-tag oem">OEM: ' + oem.substring(0, 15) + '</span>' : '') + '</div>' +
+                    '<div class="product-actions">' +
+                        '<button class="btn btn-edit" onclick="openEditModalById(' + x.id + ')"><i class="fas fa-edit"></i> 编辑</button>' +
+                        '<button class="btn btn-danger" onclick="confirmDeleteProduct(' + x.id + ', \'' + name.replace(/'/g, "\\'") + '\')"><i class="fas fa-trash"></i></button>' +
+                    '</div>' +
+                '</div></div>';
         }).join('');
-        
-        // 绑定编辑按钮
-        c.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                // 支持 number 和 string 类型的 id
-                const product = allProducts.find(x => x.id == id || x.id === parseInt(id));
-                if (product) openEditModal(product);
-            });
-        });
-        
-        // 绑定删除按钮
-        c.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const product = allProducts.find(x => x.id == id || x.id === parseInt(id));
-                const name = product ? (product.name || product.title || '未命名') : '商品';
-                confirmDelete('product', id, name);
-            });
-        });
+        renderProductPagination(totalPages, filtered.length);
     }
     
-    // ===== 编辑功能 =====
+    function renderProductPagination(totalPages, totalItems) {
+        var pEl = document.getElementById('productPagination');
+        if (totalPages <= 1) { pEl.innerHTML = ''; return; }
+        var html = '<button class="page-btn" onclick="goToProductPage(' + (currentProductPage - 1) + ')" ' + (currentProductPage === 1 ? 'disabled' : '') + '>&laquo; 上一页</button>';
+        for (var i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || (i >= currentProductPage - 2 && i <= currentProductPage + 2)) {
+                html += '<button class="page-btn ' + (i === currentProductPage ? 'active' : '') + '" onclick="goToProductPage(' + i + ')">' + i + '</button>';
+            } else if (i === currentProductPage - 3 || i === currentProductPage + 3) {
+                html += '<span class="page-info">...</span>';
+            }
+        }
+        html += '<button class="page-btn" onclick="goToProductPage(' + (currentProductPage + 1) + ')" ' + (currentProductPage === totalPages ? 'disabled' : '') + '>下一页 &raquo;</button>';
+        var startItem = (currentProductPage - 1) * productsPerPage + 1;
+        var endItem = Math.min(currentProductPage * productsPerPage, totalItems);
+        html += '<span class="page-info">' + startItem + '-' + endItem + ' / ' + totalItems + '</span>';
+        pEl.innerHTML = html;
+    }
+    
+    function goToProductPage(page) { currentProductPage = page; renderProducts(); document.getElementById('productList').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    function searchProducts() { currentProductPage = 1; renderProducts(); }
+    
+    function openEditModalById(id) {
+        var product = allProducts.find(function(x) { return x.id == id || x.id === parseInt(id); });
+        if (product) openEditModal(product);
+    }
+    
+    function confirmDeleteProduct(id, name) {
+        deleteTarget = { type: 'product', id: id };
+        document.getElementById('deleteModalText').textContent = '删除"' + (name || '该商品') + '"？网站将同步删除。';
+        document.getElementById('deleteModal').classList.add('show');
+    }
+    
     function openEditModal(product) {
         editingProductId = product.id;
-        
-        // 设置标题
         document.getElementById('editTitle').value = product.name || product.title || '';
-        
-        // 设置分类
         document.getElementById('editCategory').value = (product.category || 'other').toLowerCase();
-        
-        // 设置 OEM
         document.getElementById('editOem').value = product.oem || product.oemCode || '';
-        
-        // 设置图片列表
-        const imagesEditor = document.getElementById('imagesEditor');
-        const images = (product.image || product.images || '').toString().split(',').map(s => s.trim()).filter(Boolean);
-        
-        imagesEditor.innerHTML = images.map((url, i) => `
-            <div class="image-item" data-index="${i}">
-                <img src="${url}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>'">
-                <input type="text" value="${url}" class="image-url">
-                <button class="btn-remove" onclick="removeImageField(this)"><i class="fas fa-times"></i></button>
-            </div>
-        `).join('');
-        
-        if (images.length === 0) {
+        var imagesEditor = document.getElementById('imagesEditor');
+        var images = (product.image || product.images || '').toString().split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+        if (images.length) {
+            imagesEditor.innerHTML = images.map(function(url, i) { 
+                return '<div class="image-item"><img src="' + url + '" alt="" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>\'"><input type="text" value="' + url + '" class="image-url"><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button></div>';
+            }).join('');
+        } else {
             imagesEditor.innerHTML = '<div style="color:var(--text-muted);font-size:11px;padding:8px;text-align:center;">暂无图片，点击下方添加</div>';
         }
-        
         document.getElementById('editModal').classList.add('show');
     }
     
-    function closeEditModal() {
-        document.getElementById('editModal').classList.remove('show');
-        editingProductId = null;
-    }
+    function closeEditModal() { document.getElementById('editModal').classList.remove('show'); editingProductId = null; }
+    function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
     
-    function addImageField() {
-        const imagesEditor = document.getElementById('imagesEditor');
-        // 移除空状态提示
-        const emptyTip = imagesEditor.querySelector('div[style]');
+    document.getElementById('addImageBtn').onclick = function() {
+        var imagesEditor = document.getElementById('imagesEditor');
+        var emptyTip = imagesEditor.querySelector('div[style]');
         if (emptyTip) emptyTip.remove();
-        
-        const index = imagesEditor.querySelectorAll('.image-item').length;
-        const newItem = document.createElement('div');
+        var newItem = document.createElement('div');
         newItem.className = 'image-item';
-        newItem.dataset.index = index;
-        newItem.innerHTML = `
-            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><rect fill='%232a2a2a' width='60' height='60'/><text x='30' y='35' text-anchor='middle' fill='%23666' font-size='8'>New</text></svg>">
-            <input type="text" value="" class="image-url" placeholder="输入图片URL..." onchange="previewImage(this)">
-            <button class="btn-remove" onclick="removeImageField(this)"><i class="fas fa-times"></i></button>
-        `;
+        newItem.innerHTML = '<img src="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 60 60\'><rect fill=\'%232a2a2a\' width=\'60\' height=\'60\'/><text x=\'30\' y=\'35\' text-anchor=\'middle\' fill=\'%23666\' font-size=\'8\'>New</text></svg>"><input type="text" value="" class="image-url" placeholder="输入图片URL..."><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
         imagesEditor.appendChild(newItem);
-    }
-    
-    function removeImageField(btn) {
-        btn.closest('.image-item').remove();
-        // 如果没有图片了，显示空状态
-        const imagesEditor = document.getElementById('imagesEditor');
-        if (imagesEditor.querySelectorAll('.image-item').length === 0) {
-            imagesEditor.innerHTML = '<div style="color:var(--text-muted);font-size:11px;padding:8px;text-align:center;">暂无图片，点击下方添加</div>';
-        }
-    }
-    
-    function previewImage(input) {
-        const img = input.closest('.image-item').querySelector('img');
-        if (input.value) {
-            img.src = input.value;
-        }
-    }
+    };
     
     async function saveProductEdit() {
-        if (!editingProductId) {
-            showToast('未选择要编辑的商品', true);
-            return;
-        }
-        
-        const title = document.getElementById('editTitle').value.trim();
-        const category = document.getElementById('editCategory').value;
-        const oem = document.getElementById('editOem').value.trim();
-        
-        // 收集图片URL
-        const imageInputs = document.querySelectorAll('.image-item .image-url');
-        const images = Array.from(imageInputs).map(i => i.value.trim()).filter(Boolean);
-        const imageStr = images.join(',');
-        
+        if (!editingProductId) return;
+        var title = document.getElementById('editTitle').value.trim();
+        var category = document.getElementById('editCategory').value;
+        var oem = document.getElementById('editOem').value.trim();
+        var imageInputs = document.querySelectorAll('.image-item .image-url');
+        var images = Array.prototype.slice.call(imageInputs).map(function(i) { return i.value.trim(); }).filter(Boolean);
+        var imageStr = images.join(',');
         showToast('正在保存...', false);
-        
         try {
-            // 获取最新数据
-            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/data/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
-            
-            if (!r.ok) {
-                throw new Error(`获取数据失败: ${r.status}`);
-            }
-            
-            const j = await r.json();
-            
-            let content;
-            if (j.content) {
-                content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
-            } else {
-                const rawR = await fetch(j.download_url);
+            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json', { 
+                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
+            });
+            var j = await r.json();
+            var content;
+            if (j.content) { content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))); }
+            else {
+                var rawR = await fetch(j.download_url);
                 content = await rawR.text();
             }
-            
-            // 处理空内容
-            if (!content || content.trim() === '') {
-                content = '[]';
-            }
-            
-            let products = JSON.parse(content);
-            
-            // 找到并更新商品
-            const index = products.findIndex(x => x.id == editingProductId || x.id === parseInt(editingProductId));
+            var products = JSON.parse(content);
+            var index = products.findIndex(function(x) { return x.id == editingProductId || x.id === parseInt(editingProductId); });
             if (index !== -1) {
-                if (title) {
-                    products[index].name = title;
-                    products[index].title = title;
-                }
+                if (title) { products[index].name = title; products[index].title = title; }
                 products[index].category = category;
                 products[index].oem = oem;
-                products[index].image = imageStr;
-                // 同时更新 oemCode 字段（兼容不同字段名）
                 products[index].oemCode = oem;
-            } else {
-                showToast('未找到该商品', true);
-                return;
+                products[index].image = imageStr;
+                products[index].images = images;
             }
-            
-            // 保存到 GitHub
-            const body = { 
-                message: 'Update product: ' + editingProductId, 
-                content: btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2)))), 
-                sha: j.sha 
-            };
-            const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/data/products.json`, { 
-                method: 'PUT', 
-                headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
-                body: JSON.stringify(body) 
+            var body = { message: 'Update product: ' + editingProductId, content: btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2)))), sha: j.sha };
+            var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json', { 
+                method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) 
             });
-            
             if (updateR.ok) {
-                const updateJ = await updateR.json();
+                var updateJ = await updateR.json();
                 window.pSha = updateJ.content.sha;
+                localStorage.setItem('cached_products', JSON.stringify({ data: products, sha: updateJ.content.sha, time: Date.now() }));
                 allProducts = products;
-                renderProducts(allProducts);
+                renderProducts();
                 closeEditModal();
-                showSuccessModal('保存成功！', '商品信息已更新到 GitHub，网站将在几秒内同步更新。\n\n如未看到更新，请刷新网站页面。');
+                showSuccessModal('保存成功！', '商品信息已更新');
             } else {
-                const errData = await updateR.json();
-                showToast('保存失败: ' + (errData.message || 'GitHub错误'), true);
+                var errData = await updateR.json();
+                showToast('保存失败: ' + (errData.message || '错误'), true);
             }
-        } catch(e) {
-            showToast('保存失败: ' + e.message, true);
-        }
+        } catch(e) { showToast('保存失败: ' + e.message, true); }
     }
     
-    function searchProducts() {
-        const k = document.getElementById('productSearch').value.toLowerCase();
-        renderProducts(allProducts.filter(p => 
-            (p.name || p.title || '').toLowerCase().includes(k) || 
-            (p.oem || p.oemCode || '').toLowerCase().includes(k)
-        ));
+    async function executeDelete() {
+        if (!deleteTarget) return;
+        var targetType = deleteTarget.type;
+        var targetId = deleteTarget.id;
+        closeDeleteModal();
+        if (targetType === 'product') {
+            if (!GH_TOKEN) {
+                var t = prompt('请输入GitHub Token：');
+                if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); }
+                else { showToast('需要Token', true); return; }
+            }
+            showToast('正在删除...', false);
+            try {
+                var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json', { 
+                    headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
+                });
+                var j = await r.json();
+                var content;
+                if (j.content) { content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))); }
+                else {
+                    var rawR = await fetch(j.download_url);
+                    content = await rawR.text();
+                }
+                var p = JSON.parse(content);
+                var beforeCount = p.length;
+                p = p.filter(function(x) { return x.id != targetId && x.id !== parseInt(targetId); });
+                if (beforeCount === p.length) { showToast('未找到该商品', true); return; }
+                var body = { message: 'Delete product: ' + targetId, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
+                var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json', { 
+                    method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) 
+                });
+                if (updateR.ok) {
+                    var updateJ = await updateR.json();
+                    window.pSha = updateJ.content.sha;
+                    localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
+                    allProducts = p;
+                    renderProducts();
+                    showSuccessModal('删除成功！', '商品已删除');
+                } else {
+                    var errData = await updateR.json();
+                    showToast('删除失败: ' + (errData.message || '错误'), true);
+                }
+            } catch(e) { showToast('删除失败: ' + e.message, true); }
+        }
     }
     
     async function loadInquiries() {
-        if (!checkToken()) {
-            const c = document.getElementById('inquiryList');
-            c.innerHTML = '<div class="loading"><i class="fas fa-key" style="color:#f39c12;"></i><p style="margin-top:10px;">请在上方弹窗中输入 GitHub Token</p></div>';
-            return;
-        }
-        const c = document.getElementById('inquiryList');
+        if (!checkToken()) return;
+        var c = document.getElementById('inquiryList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         try {
-            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/data/inquiries.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
-            
-            if (!r.ok) {
-                throw new Error(`获取数据失败: ${r.status}`);
-            }
-            
-            const j = await r.json();
-            
-            let content;
-            if (j.content) {
-                content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
-            } else {
-                const rawR = await fetch(j.download_url);
-                content = await rawR.text();
-            }
-            
-            // 处理空内容
-            if (!content || content.trim() === '') {
-                content = '[]';
-            }
-            
-            allInquiries = JSON.parse(content);
+            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json', { 
+                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
+            });
+            var j = await r.json();
+            var d = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+            allInquiries = JSON.parse(d);
             window.iSha = j.sha;
             renderInquiries(allInquiries);
         } catch(e) { 
-            c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>';
-            showToast('加载询盘失败: ' + e.message, true);
+            console.error('Load inquiries error:', e);
+            c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败</p></div>'; 
         }
     }
     
     function renderInquiries(list) {
-        const c = document.getElementById('inquiryList');
-        list = list.filter(i => i && (i.name || i.email || i.message));
-        
-        const unread = list.filter(i => !i.read).length;
-        const today = new Date().toDateString();
-        const todayCount = list.filter(i => { try { return new Date(i.timestamp).toDateString() === today; } catch(e) { return false; } }).length;
-        const countries = new Set(list.map(i => i.country).filter(x => x)).size;
-        
+        var c = document.getElementById('inquiryList');
+        list = list.filter(function(i) { return i && (i.name || i.email || i.message); });
+        var unread = list.filter(function(i) { return !i.read; }).length;
+        var today = new Date().toDateString();
+        var todayCount = list.filter(function(i) { try { return new Date(i.timestamp).toDateString() === today; } catch(e) { return false; } }).length;
+        var countries = list.map(function(i) { return i.country; }).filter(function(x) { return x; });
         document.getElementById('inq_total').textContent = list.length;
         document.getElementById('inq_unread').textContent = unread;
         document.getElementById('inq_today').textContent = todayCount;
-        document.getElementById('inq_countries').textContent = countries;
-        
-        const badge = document.getElementById('inquiryBadge');
-        if (unread > 0) { badge.style.cssText = 'background:var(--accent);color:white;border-radius:50%;width:14px;height:14px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;margin-left:3px;'; badge.textContent = unread; }
-        else badge.style.display = 'none';
-        
+        document.getElementById('inq_countries').textContent = new Set(countries).size;
+        var badge = document.getElementById('inquiryBadge');
+        if (unread > 0) { badge.style.cssText = 'background:var(--accent);color:white;border-radius:50%;width:14px;height:14px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;margin-left:3px;'; badge.textContent = unread; } 
+        else { badge.style.display = 'none'; }
         if (!list.length) { c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>'; return; }
-        
-        const flags = { 'China': '🇨🇳', 'United States': '🇺🇸', 'Japan': '🇯🇵', 'Germany': '🇩🇪', 'United Kingdom': '🇬🇧', 'France': '🇫🇷', 'South Korea': '🇰🇷', 'Australia': '🇦🇺', 'Canada': '🇨🇦', 'Hong Kong': '🇭🇰', 'Chile': '🇨🇱' };
-        
-        c.innerHTML = list.map(i => {
-            const flag = flags[i.country] || '🌍';
-            const timeAgo = ((ts) => { if (!ts) return '-'; const diff = Date.now() - ts; const m = Math.floor(diff/60000); if (m < 1) return '刚刚'; if (m < 60) return m + '分前'; const h = Math.floor(m/60); if (h < 24) return h + '时前'; return Math.floor(h/24) + '天前'; })(i.timestamp);
-            const msg = (i.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
-            const devIcon = i.device === '手机' ? 'mobile-alt' : (i.device === '平板' ? 'tablet-alt' : 'desktop');
-            return `<div class="inquiry-card ${i.read ? '' : 'unread'}" data-id="${i.id}">
-                <div class="inquiry-header"><div class="inquiry-avatar">${(i.name || 'U').charAt(0).toUpperCase()}</div><div class="inquiry-info"><div class="inquiry-name">${i.name || 'Unknown'} ${!i.read ? '<span class="inquiry-badge">NEW</span>' : ''}</div><div class="inquiry-email">${i.email || ''}</div></div></div>
-                <div class="inquiry-meta"><span><i class="fas fa-map-marker-alt"></i> ${flag} ${i.country || '-'}</span><span><i class="fas fa-${devIcon}"></i> ${i.device || '电脑'}</span><span><i class="fas fa-clock"></i> ${timeAgo}</span></div>
-                <div class="inquiry-message">${msg}</div>
-                <div class="inquiry-actions">
-                    <button class="btn btn-primary btn-sm" onclick="window.open('mailto:${i.email || ''}')"><i class="fas fa-reply"></i> 邮件</button>
-                    ${!i.read ? `<button class="btn btn-success btn-sm mark-read-btn" data-id="${i.id}"><i class="fas fa-check"></i> 已读</button>` : ''}
-                    <button class="btn btn-danger btn-sm inquiry-delete-btn" data-id="${i.id}"><i class="fas fa-trash"></i></button>
-                </div></div>`;
+        c.innerHTML = list.map(function(i) {
+            var timeAgo = function(ts) { if (!ts) return '-'; var diff = Date.now() - ts; var m = Math.floor(diff/60000); if (m < 1) return '刚刚'; if (m < 60) return m + '分前'; var h = Math.floor(m/60); if (h < 24) return h + '时前'; return Math.floor(h/24) + '天前'; }(i.timestamp);
+            var msg = (i.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+            return '<div class="inquiry-card ' + (i.read ? '' : 'unread') + '">' +
+                '<div class="inquiry-header"><div class="inquiry-avatar">' + ((i.name || 'U').charAt(0).toUpperCase()) + '</div><div class="inquiry-info"><div class="inquiry-name">' + (i.name || 'Unknown') + ' ' + (!i.read ? '<span class="inquiry-badge">NEW</span>' : '') + '</div><div class="inquiry-email">' + (i.email || '') + '</div></div></div>' +
+                '<div class="inquiry-meta"><span><i class="fas fa-map-marker-alt"></i> ' + (i.country || '-') + '</span><span><i class="fas fa-clock"></i> ' + timeAgo + '</span></div>' +
+                '<div class="inquiry-message">' + msg + '</div>' +
+                '<div class="inquiry-actions">' +
+                    '<button class="btn btn-primary btn-sm" onclick="window.open(\'mailto:' + (i.email || '') + '\')"><i class="fas fa-reply"></i></button>' +
+                    '<button class="btn btn-danger btn-sm" onclick="deleteInquiry(' + i.id + ')"><i class="fas fa-trash"></i></button>' +
+                '</div></div>';
         }).join('');
-        
-        c.querySelectorAll('.inquiry-delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = parseInt(this.getAttribute('data-id'));
-                confirmDelete('inquiry', id, '');
-            });
-        });
-        
-        c.querySelectorAll('.mark-read-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = parseInt(this.getAttribute('data-id'));
-                markRead(id);
-            });
-        });
     }
     
-    async function markRead(id) {
-        const i = allInquiries.find(x => x.id === id);
-        if (i) { i.read = true; await saveInquiries(); renderInquiries(allInquiries); }
-    }
-    
-    async function saveInquiries() {
+    async function deleteInquiry(id) {
+        if (!confirm('删除这条询盘？')) return;
+        allInquiries = allInquiries.filter(function(x) { return x.id !== id; });
         try {
-            const body = { message: 'Update inquiries', content: btoa(unescape(encodeURIComponent(JSON.stringify(allInquiries)))), sha: window.iSha };
-            const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/data/inquiries.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-            
-            if (!r.ok) {
-                throw new Error(`保存询盘失败: ${r.status}`);
-            }
-            
-            const j = await r.json(); 
+            var body = { message: 'Delete inquiry', content: btoa(unescape(encodeURIComponent(JSON.stringify(allInquiries)))), sha: window.iSha };
+            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json', { method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            var j = await r.json();
             window.iSha = j.content.sha;
-        } catch(e) {
-            showToast('保存询盘失败: ' + e.message, true);
-        }
+        } catch(e) {}
+        renderInquiries(allInquiries);
+        showToast('已删除');
     }
     
-    function confirmDelete(type, id, name) {
-        deleteTarget = { type, id };
-        const text = type === 'product' ? `删除"${name || '该商品'}"？网站将同步删除。` : '删除这条询盘？';
-        document.getElementById('deleteModalText').textContent = text;
-        document.getElementById('deleteModal').classList.add('show');
+    function showToast(m, err) {
+        var t = document.getElementById('toast');
+        t.textContent = m;
+        t.className = 'toast show' + (err ? ' error' : '');
+        setTimeout(function() { t.classList.remove('show'); }, 3000);
     }
     
-    function initDeleteButton() {
-        const btn = document.getElementById('confirmDeleteBtn');
-        if (!btn) return;
-        
-        btn.onclick = async function(e) {
-            e.preventDefault();
-            
-            if (!deleteTarget) {
-                showToast('请先选择要删除的项目', true);
-                closeDeleteModal();
-                return;
-            }
-            
-            const targetType = deleteTarget.type;
-            const targetId = deleteTarget.id;
-            
-            if (!targetType || targetId === undefined) {
-                showToast('删除目标无效', true);
-                closeDeleteModal();
-                return;
-            }
-            
-            closeDeleteModal();
-            
-            if (targetType === 'product') {
-                if (!GH_TOKEN) {
-                    const t = prompt('请输入GitHub Token：');
-                    if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); }
-                    else { showToast('需要Token才能删除', true); return; }
-                }
-                showToast('正在删除...', false);
-                try {
-                    const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/data/products.json`, { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
-                    
-                    if (!r.ok) {
-                        throw new Error(`获取数据失败: ${r.status}`);
-                    }
-                    
-                    const j = await r.json();
-                    
-                    let content;
-                    if (j.content) {
-                        content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
-                    } else {
-                        const rawR = await fetch(j.download_url);
-                        content = await rawR.text();
-                    }
-                    
-                    // 处理空内容
-                    if (!content || content.trim() === '') {
-                        content = '[]';
-                    }
-                    
-                    let p = JSON.parse(content);
-                    const beforeCount = p.length;
-                    p = p.filter(x => x.id != targetId && x.id !== parseInt(targetId));
-                    const afterCount = p.length;
-                    
-                    if (beforeCount === afterCount) {
-                        showToast('未找到该商品', true);
-                        return;
-                    }
-                    
-                    const body = { message: 'Delete product: ' + targetId, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
-                    const updateR = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/data/products.json`, { method: 'PUT', headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-                    
-                    if (updateR.ok) {
-                        const updateJ = await updateR.json();
-                        window.pSha = updateJ.content.sha;
-                        allProducts = p;
-                        renderProducts(allProducts);
-                        showSuccessModal('删除成功！', '商品已从 GitHub 删除，网站将在几秒内同步更新。\n\n如仍看到该商品，请刷新网站页面。');
-                    } else {
-                        const errData = await updateR.json();
-                        showToast('删除失败: ' + (errData.message || 'GitHub错误'), true);
-                    }
-                } catch(e) { 
-                    showToast('删除失败: ' + e.message, true); 
-                }
-            } else if (targetType === 'inquiry') {
-                allInquiries = allInquiries.filter(x => x.id !== targetId);
-                await saveInquiries();
-                renderInquiries(allInquiries);
-                showToast('已删除');
-            }
-        };
-    }
-    
-    // 初始化保存编辑按钮
-    function initSaveEditButton() {
-        const btn = document.getElementById('saveEditBtn');
-        if (btn) {
-            btn.onclick = saveProductEdit;
-        }
-    }
-    
-    function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
-    function showToast(m, err) { const t = document.getElementById('toast'); t.textContent = m; t.className = 'toast show' + (err ? ' error' : ''); setTimeout(() => t.classList.remove('show'), 3000); }
-    
-    // 成功弹窗
     function showSuccessModal(title, text) {
         document.getElementById('successModalTitle').textContent = title || '操作成功';
         document.getElementById('successModalText').textContent = text || '网站已同步更新';
         document.getElementById('successModal').classList.add('show');
     }
+    
     function closeSuccessModal() { document.getElementById('successModal').classList.remove('show'); }
     
-    // Google Analytics
-    function handleLogin() {
-        tokenClient = google.accounts.oauth2.initTokenClient({
-            client_id: GA_CLIENT_ID,
-            scope: 'https://www.googleapis.com/auth/analytics.readonly',
-            callback: (r) => { if (r.access_token) { accessToken = r.access_token; localStorage.setItem('ga_token', accessToken); localStorage.setItem('ga_token_expiry', Date.now() + 3600000); document.getElementById('loginSection').style.display = 'none'; document.getElementById('dashboardSection').style.display = 'block'; loadAllData(); } }
-        });
-        tokenClient.requestAccessToken();
+    function initAnalytics() {
+        var saved = localStorage.getItem('ga_token'); 
+        var expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0'); 
+        if (saved && Date.now() < expiry) {
+            accessToken = saved;
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'block';
+            loadAllData();
+        } else {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('dashboardSection').style.display = 'none';
+        }
     }
     
-    function handleLogout() { accessToken = null; localStorage.removeItem('ga_token'); localStorage.removeItem('ga_token_expiry'); document.getElementById('loginSection').style.display = 'block'; document.getElementById('dashboardSection').style.display = 'none'; }
+    function handleLogin() {
+        if (typeof google === 'undefined') { showToast('Google API未加载', true); return; }
+        var client = google.accounts.oauth2.initTokenClient({
+            client_id: GA_CLIENT_ID,
+            scope: 'https://www.googleapis.com/auth/analytics.readonly',
+            callback: function(r) { 
+                if (r.access_token) { 
+                    accessToken = r.access_token; 
+                    localStorage.setItem('ga_token', accessToken); 
+                    localStorage.setItem('ga_token_expiry', Date.now() + 3600000); 
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('dashboardSection').style.display = 'block';
+                    loadAllData(); 
+                } 
+            }
+        });
+        client.requestAccessToken();
+    }
     
-    let startDate = '7daysAgo', endDate = 'yesterday';
-    function setDateRange(s, btn) { startDate = s; document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); loadAllData(); }
+    function handleLogout() { 
+        accessToken = null; 
+        localStorage.removeItem('ga_token'); 
+        localStorage.removeItem('ga_token_expiry'); 
+        document.getElementById('loginSection').style.display = 'block'; 
+        document.getElementById('dashboardSection').style.display = 'none'; 
+    }
+    
+    var startDate = '7daysAgo', endDate = 'yesterday';
+    function setDateRange(s, btnId) { 
+        startDate = s; 
+        document.querySelectorAll('.date-btn').forEach(function(b) { b.classList.remove('active'); }); 
+        document.getElementById(btnId).classList.add('active'); 
+        loadAllData(); 
+    }
+    
     function loadAllData() { if (!accessToken) return; loadRealtime(); loadMetrics(); loadTrend(); loadCountries(); loadDevices(); }
     
     async function loadRealtime() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runRealtimeReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ metrics: [{ name: 'activeUsers' }] }) }); const d = await r.json(); document.getElementById('statRealtime').textContent = d.rows?.[0]?.metricValues?.[0]?.value || '0'; } catch(e) { document.getElementById('statRealtime').textContent = '-'; }
+        try { 
+            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runRealtimeReport', { 
+                method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ metrics: [{ name: 'activeUsers' }] }) 
+            }); 
+            var d = await r.json(); 
+            document.getElementById('statRealtime').textContent = (d.rows && d.rows[0] && d.rows[0].metricValues && d.rows[0].metricValues[0]) ? d.rows[0].metricValues[0].value : '0'; 
+        } catch(e) { document.getElementById('statRealtime').textContent = '-'; }
     }
     
     async function loadMetrics() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }, { name: 'sessions' }, { name: 'averageSessionDuration' }] }) }); const d = await r.json(); const v = d.rows?.[0]?.metricValues || []; document.getElementById('statPageviews').textContent = parseInt(v[0]?.value || 0).toLocaleString(); document.getElementById('statUsers').textContent = parseInt(v[1]?.value || 0).toLocaleString(); document.getElementById('statSessions').textContent = parseInt(v[2]?.value || 0).toLocaleString(); const dur = parseFloat(v[3]?.value || 0); document.getElementById('statDuration').textContent = dur > 60 ? Math.floor(dur/60) + '分' : Math.round(dur) + '秒'; } catch(e) {}
+        try { 
+            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', { 
+                method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ dateRanges: [{ startDate: startDate, endDate: endDate }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }, { name: 'sessions' }, { name: 'averageSessionDuration' }] }) 
+            }); 
+            var d = await r.json(); 
+            var v = (d.rows && d.rows[0] && d.rows[0].metricValues) ? d.rows[0].metricValues : []; 
+            document.getElementById('statPageviews').textContent = parseInt((v[0] && v[0].value) ? v[0].value : 0).toLocaleString(); 
+            document.getElementById('statUsers').textContent = parseInt((v[1] && v[1].value) ? v[1].value : 0).toLocaleString(); 
+            document.getElementById('statSessions').textContent = parseInt((v[2] && v[2].value) ? v[2].value : 0).toLocaleString(); 
+            var dur = parseFloat((v[3] && v[3].value) ? v[3].value : 0); 
+            document.getElementById('statDuration').textContent = dur > 60 ? Math.floor(dur/60) + '分' : Math.round(dur) + '秒'; 
+        } catch(e) {}
     }
     
-    let trendChart, countryChart, deviceChart;
-    
+    var trendChart, countryChart, deviceChart;
     async function loadTrend() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'date' }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }], orderBys: [{ dimension: { dimensionName: 'date' } }] }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value.slice(-4)) || []; const views = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; const users = d.rows?.map(x => parseInt(x.metricValues[1].value)) || []; if (trendChart) trendChart.destroy(); trendChart = new Chart(document.getElementById('trendChart'), { type: 'line', data: { labels, datasets: [{ label: '浏览', data: views, borderColor: '#0f4c81', backgroundColor: 'rgba(15,76,129,0.1)', fill: true, tension: 0.4, pointRadius: 0 }, { label: '访客', data: users, borderColor: '#e63946', backgroundColor: 'rgba(230,57,70,0.1)', fill: true, tension: 0.4, pointRadius: 0 }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#888' } } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); } catch(e) {}
+        try { 
+            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', { 
+                method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ dateRanges: [{ startDate: startDate, endDate: endDate }], dimensions: [{ name: 'date' }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }], orderBys: [{ dimension: { dimensionName: 'date' } }] }) 
+            }); 
+            var d = await r.json(); 
+            var labels = d.rows ? d.rows.map(function(x) { return x.dimensionValues[0].value.slice(-4); }) : []; 
+            var views = d.rows ? d.rows.map(function(x) { return parseInt(x.metricValues[0].value); }) : []; 
+            var users = d.rows ? d.rows.map(function(x) { return parseInt(x.metricValues[1].value); }) : []; 
+            if (trendChart) trendChart.destroy(); 
+            trendChart = new Chart(document.getElementById('trendChart'), { type: 'line', data: { labels: labels, datasets: [{ label: '浏览', data: views, borderColor: '#0f4c81', backgroundColor: 'rgba(15,76,129,0.1)', fill: true, tension: 0.4, pointRadius: 0 }, { label: '访客', data: users, borderColor: '#e63946', backgroundColor: 'rgba(230,57,70,0.1)', fill: true, tension: 0.4, pointRadius: 0 }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#888' } } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); 
+        } catch(e) {}
     }
-    
     async function loadCountries() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'country' }], metrics: [{ name: 'totalUsers' }], orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }], limit: 10 }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value) || []; const values = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; if (countryChart) countryChart.destroy(); countryChart = new Chart(document.getElementById('countryChart'), { type: 'bar', data: { labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#3498db', '#95a5a6', '#d35400'] }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); } catch(e) {}
+        try { 
+            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', { 
+                method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ dateRanges: [{ startDate: startDate, endDate: endDate }], dimensions: [{ name: 'country' }], metrics: [{ name: 'totalUsers' }], orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }], limit: 10 }) 
+            }); 
+            var d = await r.json(); 
+            var labels = d.rows ? d.rows.map(function(x) { return x.dimensionValues[0].value; }) : []; 
+            var values = d.rows ? d.rows.map(function(x) { return parseInt(x.metricValues[0].value); }) : []; 
+            if (countryChart) countryChart.destroy(); 
+            countryChart = new Chart(document.getElementById('countryChart'), { type: 'bar', data: { labels: labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#3498db', '#95a5a6', '#d35400'] }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); 
+        } catch(e) {}
     }
-    
     async function loadDevices() {
-        try { const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`, { method: 'POST', headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ dateRanges: [{ startDate, endDate }], dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'totalUsers' }] }) }); const d = await r.json(); const labels = d.rows?.map(x => x.dimensionValues[0].value) || []; const values = d.rows?.map(x => parseInt(x.metricValues[0].value)) || []; if (deviceChart) deviceChart.destroy(); deviceChart = new Chart(document.getElementById('deviceChart'), { type: 'doughnut', data: { labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#888' } } } } }); } catch(e) {}
+        try { 
+            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', { 
+                method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ dateRanges: [{ startDate: startDate, endDate: endDate }], dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'totalUsers' }] }) 
+            }); 
+            var d = await r.json(); 
+            var labels = d.rows ? d.rows.map(function(x) { return x.dimensionValues[0].value; }) : []; 
+            var values = d.rows ? d.rows.map(function(x) { return parseInt(x.metricValues[0].value); }) : []; 
+            if (deviceChart) deviceChart.destroy(); 
+            deviceChart = new Chart(document.getElementById('deviceChart'), { type: 'doughnut', data: { labels: labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#888' } } } } }); 
+        } catch(e) {}
     }
     
-    window.onload = function() { 
-        initDeleteButton();
-        initSaveEditButton();
-        loadProducts(); 
-        const saved = localStorage.getItem('ga_token'); 
-        const expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0'); 
-        if (saved && Date.now() < expiry) accessToken = saved; 
+    window.onload = function() {
+        document.getElementById('confirmDeleteBtn').onclick = executeDelete;
+        document.getElementById('cancelDeleteBtn').onclick = closeDeleteModal;
+        document.getElementById('saveEditBtn').onclick = saveProductEdit;
+        document.getElementById('cancelEditBtn').onclick = closeEditModal;
+        document.getElementById('googleLoginBtn').onclick = handleLogin;
+        document.getElementById('logoutBtn').onclick = handleLogout;
+        document.getElementById('closeSuccessBtn').onclick = closeSuccessModal;
+        
+        var cached = localStorage.getItem('cached_products');
+        if (cached) {
+            try {
+                var cachedData = JSON.parse(cached);
+                allProducts = cachedData.data;
+                window.pSha = cachedData.sha;
+                renderProducts();
+            } catch(e) {}
+        }
+        loadProducts();
     };
     </script>
 </body>
