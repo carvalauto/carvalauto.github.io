@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body { width: 300px; padding: 15px; font-family: Arial, sans-serif; background: #1a1a1a; color: #fff; }
+h3 { margin: 0 0 10px; color: #0f4c81; }
+.status { padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 12px; }
+.success { background: rgba(46,204,113,0.2); color: #7dcea0; }
+.error { background: rgba(230,57,70,0.2); color: #ff6b7a; }
+.info { background: rgba(52,152,219,0.2); color: #5dade2; }
+button { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 5px; cursor: pointer; font-size: 13px; }
+.btn-primary { background: #0f4c81; color: white; }
+.btn-success { background: #27ae60; color: white; }
+.btn-danger { background: #e63946; color: white; }
+input { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #333; border-radius: 5px; background: #2a2a2a; color: #fff; }
+.count { font-size: 24px; font-weight: bold; color: #e63946; }
+.log { max-height: 100px; overflow-y: auto; font-size: 10px; color: #888; margin-top: 10px; }
+</style>
+</head>
+<body>
+<h3>🚗 Carval Auto 采集器 v1.6</h3>
+<div id="status" class="status info">准备就绪</div>
+<div>已采集: <span class="count" id="count">0</span> 个商品</div>
+<button class="btn-primary" id="collectBtn">📦 采集当前商品</button>
+<button class="btn-success" id="syncBtn">🔄 同步到网站</button>
+<button class="btn-danger" id="clearBtn">🗑️ 清空列表</button>
+<div class="log" id="log"></div>
+<script src="popup.js"></script>
+</body>
+</html>
