@@ -347,9 +347,22 @@ async function loadProducts() {
     productsData = products; renderProducts();
 }
 async function fetchLatestProducts() {
+    // 优先使用 raw.githubusercontent.com（无 CDN 缓存）
     try {
-        var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now());
-        if (!resp.ok) resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?t=' + Date.now());
+        var resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?_=' + Date.now());
+        if (resp.ok) {
+            var data = await resp.json();
+            if (Array.isArray(data) && data.length > 0) {
+                products = data; productsData = products;
+                localStorage.setItem('carval_products_v3', JSON.stringify({ data: data, time: Date.now() }));
+                if (document.getElementById('productsGrid').children.length > 0) renderProducts();
+                return;
+            }
+        }
+    } catch(e) {}
+    // 备用：jsDelivr
+    try {
+        var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?_=' + Date.now());
         if (resp.ok) {
             var data = await resp.json();
             if (Array.isArray(data) && data.length > 0) {
