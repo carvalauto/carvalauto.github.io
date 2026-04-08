@@ -347,9 +347,17 @@ async function loadProducts() {
     productsData = products; renderProducts();
 }
 async function fetchLatestProducts() {
-    // 优先使用 raw.githubusercontent.com（无 CDN 缓存）
-    try {
-        var resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?_=' + Date.now());
+    // 使用多个数据源，确保实时显示
+    var urls = [
+        'https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/products.json?_=' + Date.now(),
+        'https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?_=' + Date.now(),
+        'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?_=' + Date.now()
+    ];
+    
+    for (var i = 0; i < urls.length; i++) {
+        try {
+            var resp = await fetch(urls[i], i === 0 ? { headers: { 'Accept': 'application/vnd.github.v3.raw' } } : {});
+            if (resp.ok) {
         if (resp.ok) {
             var data = await resp.json();
             if (Array.isArray(data) && data.length > 0) {
