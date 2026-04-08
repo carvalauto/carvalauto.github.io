@@ -15648,8 +15648,8 @@
     "name": "WEILI Wholesale Manufacturer Auto Spare Parts for toyota Aygo Celica Avalon Japanese Car Parts",
     "oem": "",
     "description": "适配车型: 1款",
-    "image": "https://s.alicdn.com/@sc04/kf/H44a39cf6ca9043a08da8d527ad36de7bW.jpg,https://s.alicdn.com/@sc04/kf/Hed5b9ea360284ba7888013be3a9c6343v.jpg,https://s.alicdn.com/@sc04/kf/H62667eac05b04c278743ea25ced8b683x.jpg,https://s.alicdn.com/@sc04/kf/H010ed2634ba34ef08472bd0e75b11b87F.jpg,https://s.alicdn.com/@sc04/kf/Hcf8cbc98b4ea4a42bc430e6b75f141f4u.jpg,https://s.alicdn.com/@sc04/kf/H8b1578c3f88f48e98e23664f3fe5a1c9R.jpg",
-    "category": "Japanese",
+    "image": "https://s.alicdn.com/@sc04/kf/H44a39cf6ca9043a08da8d527ad36de7bW.jpg,https://s.alicdn.com/@sc04/kf/Hed5b9ea360284ba7888013be3a9c6343v.jpg,https://s.alicdn.com/@sc04/kf/H62667eac05b04c278743ea25ced8b683x.jpg",
+    "category": "japanese",
     "url": "https://www.alibaba.com/product-detail/WEILI-Wholesale-Manufacturer-Auto-Spare-Parts_1601610564410.html",
     "fitmentTable": [
       {
@@ -15659,6 +15659,13 @@
         "engine": ""
       }
     ],
-    "collectedAt": "2026-04-08T12:43:44.479Z"
+    "collectedAt": "2026-04-08T12:43:44.479Z",
+    "title": "WEILI Wholesale Manufacturer Auto Spare Parts for toyota Aygo Celica Avalon Japanese Car Parts",
+    "oemCode": "",
+    "images": [
+      "https://s.alicdn.com/@sc04/kf/H44a39cf6ca9043a08da8d527ad36de7bW.jpg",
+      "https://s.alicdn.com/@sc04/kf/Hed5b9ea360284ba7888013be3a9c6343v.jpg",
+      "https://s.alicdn.com/@sc04/kf/H62667eac05b04c278743ea25ced8b683x.jpg"
+    ]
   }
 ]
