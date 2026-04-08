@@ -297,14 +297,14 @@
         var c = document.getElementById('productList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         try {
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json', { 
+            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
             });
             var j = await r.json();
             var content;
             if (j.content) { content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))); }
             else {
-                var rawR = await fetch(j.download_url);
+                var rawR = await fetch(j.download_url + '?t=' + Date.now());
                 content = await rawR.text();
             }
             allProducts = JSON.parse(content);
@@ -452,14 +452,14 @@
         var imageStr = images.join(',');
         showToast('正在保存...', false);
         try {
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json', { 
+            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
             });
             var j = await r.json();
             var content;
             if (j.content) { content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))); }
             else {
-                var rawR = await fetch(j.download_url);
+                var rawR = await fetch(j.download_url + '?t=' + Date.now());
                 content = await rawR.text();
             }
             var products = JSON.parse(content);
@@ -473,7 +473,7 @@
                 products[index].images = images;
             }
             var body = { message: 'Update product: ' + editingProductId, content: btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2)))), sha: j.sha };
-            var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json', { 
+            var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
                 method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) 
             });
             if (updateR.ok) {
@@ -504,14 +504,14 @@
             }
             showToast('正在删除...', false);
             try {
-                var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json', { 
+                var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
                     headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
                 });
                 var j = await r.json();
                 var content;
                 if (j.content) { content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))); }
                 else {
-                    var rawR = await fetch(j.download_url);
+                    var rawR = await fetch(j.download_url + '?t=' + Date.now());
                     content = await rawR.text();
                 }
                 var p = JSON.parse(content);
@@ -519,7 +519,7 @@
                 p = p.filter(function(x) { return x.id != targetId && x.id !== parseInt(targetId); });
                 if (beforeCount === p.length) { showToast('未找到该商品', true); return; }
                 var body = { message: 'Delete product: ' + targetId, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
-                var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json', { 
+                var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
                     method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) 
                 });
                 if (updateR.ok) {
@@ -542,7 +542,7 @@
         var c = document.getElementById('inquiryList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         try {
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json', { 
+            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
             });
             var j = await r.json();
@@ -590,7 +590,7 @@
         allInquiries = allInquiries.filter(function(x) { return x.id !== id; });
         try {
             var body = { message: 'Delete inquiry', content: btoa(unescape(encodeURIComponent(JSON.stringify(allInquiries)))), sha: window.iSha };
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json', { method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
             var j = await r.json();
             window.iSha = j.content.sha;
         } catch(e) {}
