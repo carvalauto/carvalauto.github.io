@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>刷新产品数据</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; background: #f5f5f5; }
+        .btn { padding: 20px 40px; font-size: 18px; background: #D62B2B; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
+        .btn:hover { background: #A81F1F; }
+        .result { margin-top: 20px; padding: 20px; background: white; border-radius: 8px; display: none; }
+    </style>
+</head>
+<body>
+    <h1>🔄 刷新产品数据</h1>
+    <p>采集完成后点击按钮，立即刷新 CDN 缓存</p>
+    <button class="btn" onclick="refresh()">刷新产品数据</button>
+    <div id="result" class="result"></div>
+    
+    <script>
+    async function refresh() {
+        var result = document.getElementById('result');
+        result.style.display = 'block';
+        result.innerHTML = '🔄 正在刷新...';
+        
+        try {
+            var resp = await fetch('https://purge.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json');
+            var data = await resp.json();
+            
+            if (data.status === 'finished') {
+                result.innerHTML = '✅ 刷新成功！<br><br><a href="products.html" style="color:#D62B2B">点击查看产品页面</a>';
+            } else {
+                result.innerHTML = '❌ 刷新失败，请稍后重试';
+            }
+        } catch(e) {
+            result.innerHTML = '❌ 错误: ' + e.message;
+        }
+    }
+    </script>
+</body>
+</html>
