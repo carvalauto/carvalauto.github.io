@@ -1,750 +1,531 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carval Auto - Products</title>
-    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/js/all.min.js"></script>
+    <title>Products - Carval Auto Parts | OEM Quality Auto Parts Supplier</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #0f4c81;
-            --accent: #e63946;
-            --text-dark: #1a1a1a;
-            --text-light: #666;
-            --bg-light: #f8f9fa;
-            --border: #e2e8f0;
-            --card-bg: #ffffff;
+            --red: #D62B2B; --red-dark: #A81F1F; --steel: #1C2B3A; --steel-mid: #243447;
+            --chrome-dk: #B0B8C1; --offwhite: #F5F4F0; --text-main: #1A1A1A; --text-soft: #555F6D; --border: #D4D8DE;
         }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--offwhite); color: var(--text-main); }
         
-        /* 顶部导航 */
-        .top-nav { background: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 18px; font-weight: 700; }
-        .logo span { color: var(--accent); }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text-dark); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
-        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        .topbar { background: var(--steel); border-bottom: 2px solid var(--red); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 1000; }
+        .topbar-left { display: flex; align-items: center; gap: 32px; }
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand-text { font-size: 18px; font-weight: 800; color: white; letter-spacing: 1.5px; text-transform: uppercase; }
+        .brand-text span { color: var(--red); }
+        .desktop-nav { display: flex; gap: 4px; }
+        .desktop-nav a { padding: 8px 16px; color: var(--chrome-dk); text-decoration: none; font-size: 13px; font-weight: 600; text-transform: uppercase; border-radius: 4px; }
+        .desktop-nav a:hover, .desktop-nav a.active { color: white; background: rgba(255,255,255,0.1); }
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
+        .lang-select { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: white; padding: 6px 12px; font-size: 12px; cursor: pointer; border-radius: 4px; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
+        .hamburger span { display: block; width: 20px; height: 2px; background: white; border-radius: 1px; }
         
-        /* Hero区域 */
-        .hero { background: linear-gradient(135deg, var(--primary) 0%, #1a3a5c 100%); color: white; text-align: center; padding: 50px 20px 40px; }
-        .hero h1 { font-size: 28px; margin-bottom: 10px; }
-        .hero p { font-size: 14px; opacity: 0.9; }
+        .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 998; }
+        .nav-overlay.show { display: block; }
+        .mobile-nav { position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: var(--steel); z-index: 999; transition: right 0.3s; border-left: 3px solid var(--red); }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav-header { padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; }
+        .mobile-nav-logo { font-size: 18px; font-weight: 800; color: white; }
+        .mobile-nav-logo span { color: var(--red); }
+        .mobile-nav-links a { display: flex; gap: 12px; padding: 14px 20px; color: var(--chrome-dk); text-decoration: none; font-size: 14px; font-weight: 600; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05); }
         
-        /* 搜索和筛选 */
-        .filter-bar { background: white; padding: 15px 20px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .filter-btn { background: white; border: 1px solid var(--border); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: all 0.2s; color: var(--text-dark); }
-        .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
-        .filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
-        .search-box { display: flex; align-items: center; background: white; border: 1px solid var(--border); border-radius: 25px; padding: 0 15px; flex: 1; max-width: 300px; }
-        .search-box input { border: none; outline: none; padding: 8px 0; font-size: 14px; width: 100%; }
-        .search-box i { color: var(--text-light); }
+        .page-hero { background: var(--steel); padding: 60px 24px; text-align: center; border-bottom: 2px solid var(--red); }
+        .page-hero h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 900; color: white; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+        .page-hero h1 span { color: var(--red); }
+        .page-hero p { color: var(--chrome-dk); font-size: 15px; max-width: 600px; margin: 0 auto; }
+        
+        /* 筛选栏 */
+        .filter-bar { background: white; padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; max-width: 1400px; margin: 0 auto; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .filter-bar::-webkit-scrollbar { display: none; }
+        .filter-bar span { font-size: 11px; text-transform: uppercase; color: var(--text-soft); letter-spacing: 1px; flex-shrink: 0; }
+        .filter-btn { padding: 6px 12px; border: 1px solid var(--border); background: white; font-size: 11px; text-transform: uppercase; cursor: pointer; border-radius: 20px; flex-shrink: 0; white-space: nowrap; }
+        .filter-btn:hover, .filter-btn.active { background: var(--steel); border-color: var(--steel); color: white; }
+        .filter-btn.active { background: var(--red); border-color: var(--red); }
+        .search-box { margin-left: auto; display: flex; flex-shrink: 0; }
+        .search-box input { padding: 8px 14px; border: 1px solid var(--border); border-right: none; font-size: 13px; width: 160px; outline: none; border-radius: 20px 0 0 20px; }
+        .search-box button { padding: 8px 14px; background: var(--steel); border: 1px solid var(--steel); color: white; cursor: pointer; font-size: 13px; border-radius: 0 20px 20px 0; }
+        .search-box button:hover { background: var(--red); }
+        
+        .products-section { max-width: 1400px; margin: 0 auto; padding: 24px; }
+        .products-count { font-size: 13px; color: var(--text-soft); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+        .products-count span { color: var(--red); font-weight: 700; }
         
         /* 产品网格 */
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .products-section { margin-top: 20px; }
-        .products-count { font-size: 13px; color: var(--text-light); margin-bottom: 15px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
         
         /* 产品卡片 */
-        .product-card { background: var(--card-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        .product-img-wrap { width: 100%; aspect-ratio: 1; background: #f5f5f5; overflow: hidden; }
-        .product-img-wrap img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.3s; }
+        .product-card { background: white; border-radius: 8px; overflow: hidden; transition: all 0.3s; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
+        .product-img-wrap { position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
+        .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
         .product-card:hover .product-img-wrap img { transform: scale(1.05); }
-        .no-image { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ccc; }
-        .no-image i { font-size: 40px; margin-bottom: 10px; }
-        .no-image span { font-size: 12px; }
-        .product-body { padding: 15px; }
-        .product-category { font-size: 11px; color: var(--primary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 5px; }
-        .product-name { font-size: 15px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; line-height: 1.4; }
-        .product-meta { margin-bottom: 10px; }
-        .meta-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-light); margin-bottom: 4px; }
-        .meta-row i { width: 16px; color: var(--primary); }
-        .product-desc { font-size: 12px; color: var(--text-light); line-height: 1.5; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .inquire-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .inquire-btn:hover { background: #0d3d66; }
+        .no-image { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #adb5bd; gap: 8px; }
+        .no-image i { font-size: 48px; }
+        .no-image span { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* 空状态 */
-        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
-        .empty-state i { font-size: 48px; margin-bottom: 15px; color: #ddd; }
-        .empty-state h3 { font-size: 18px; margin-bottom: 8px; color: var(--text-dark); }
-        .empty-state p { font-size: 14px; }
+        .product-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+        .product-category { font-size: 10px; color: white; background: var(--red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 700; padding: 4px 10px; border-radius: 3px; display: inline-block; align-self: flex-start; }
+        .product-name { font-size: 14px; color: var(--steel); text-transform: uppercase; margin-bottom: 8px; line-height: 1.3; font-weight: 700; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-meta { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+        .meta-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-soft); }
+        .meta-row i { color: var(--steel); font-size: 11px; width: 16px; }
+        .product-oem { display: inline-block; background: #f5f5f5; padding: 4px 10px; font-size: 11px; color: #666; border-left: 3px solid var(--red); margin-bottom: 12px; }
+        .product-desc { color: var(--text-soft); font-size: 12px; line-height: 1.5; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+        .inquire-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 16px; background: var(--steel); color: white; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer; transition: all 0.25s; border-radius: 4px; width: 100%; }
+        .inquire-btn:hover { background: var(--red); }
         
-        /* Modal */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 500; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
-        .modal-overlay.show { display: flex; }
-        .modal-box { background: white; border-radius: 16px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.1); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; color: #666; z-index: 10; display: flex; align-items: center; justify-content: center; }
-        .modal-close:hover { background: rgba(0,0,0,0.2); }
+        /* 分页 */
+        .pagination { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 32px; padding: 20px 0; flex-wrap: wrap; }
+        .page-btn { padding: 10px 16px; border: 1px solid var(--border); background: white; font-size: 13px; cursor: pointer; border-radius: 6px; transition: all 0.2s; min-width: 44px; text-align: center; }
+        .page-btn:hover:not(:disabled) { border-color: var(--steel); color: var(--steel); }
+        .page-btn.active { background: var(--red); border-color: var(--red); color: white; }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .page-info { font-size: 12px; color: var(--text-soft); margin: 0 12px; }
+        
+        .empty-state { text-align: center; padding: 60px 24px; color: #aaa; grid-column: 1 / -1; }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; }
+        .empty-state h3 { font-size: 20px; margin-bottom: 8px; color: #ccc; text-transform: uppercase; }
+        
+        footer { background: var(--steel); color: var(--chrome-dk); padding: 32px 24px; text-align: center; font-size: 13px; border-top: 3px solid var(--red); }
+        .footer-slogan { font-size: 16px; margin-bottom: 10px; color: white; text-transform: uppercase; }
+        .footer-slogan span { color: var(--red); }
+        
+        .social-float { position: fixed; bottom: 24px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 900; }
+        .social-btn { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 16px; transition: all 0.3s; border-radius: 50%; box-shadow: 0 3px 10px rgba(0,0,0,0.25); }
+        .social-btn:hover { transform: scale(1.1); }
+        .social-btn.fb { background: #3b5998; }
+        .social-btn.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .social-btn.wa { background: #25d366; }
+        
+        /* 弹窗 */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; backdrop-filter: blur(3px); overflow-y: auto; padding: 20px; }
+        .modal-overlay.show { display: flex; align-items: flex-start; justify-content: center; }
+        .modal-box { background: white; max-width: 900px; width: 100%; margin: 20px auto; position: relative; animation: modalIn 0.3s; border-radius: 8px; overflow: hidden; }
+        @keyframes modalIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+        .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; z-index: 10; }
+        .modal-close:hover { color: var(--red); }
         .modal-inner { display: grid; grid-template-columns: 1fr 1fr; }
-        
-        /* Modal图片 */
-        .modal-images { background: #f8f8f8; padding: 20px; }
-        .modal-images-container { position: relative; }
-        .modal-carousel { position: relative; overflow: hidden; border-radius: 8px; background: white; }
-        .modal-carousel-inner { display: flex; transition: transform 0.3s ease; }
-        .modal-carousel-item { min-width: 100%; }
-        .modal-main-img { width: 100%; aspect-ratio: 1; object-fit: contain; cursor: zoom-in; }
-        .carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-dark); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .carousel-arrow:hover { background: white; }
-        .carousel-arrow.prev { left: 10px; }
-        .carousel-arrow.next { right: 10px; }
-        .modal-thumbs { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding: 5px 0; }
-        .modal-thumb { width: 60px; height: 60px; object-fit: contain; background: white; border-radius: 4px; cursor: pointer; opacity: 0.6; transition: opacity 0.2s; border: 2px solid transparent; flex-shrink: 0; }
-        .modal-thumb:hover, .modal-thumb.active { opacity: 1; border-color: var(--primary); }
-        
-        /* Modal信息 */
-        .modal-info { padding: 25px; }
-        .modal-category { font-size: 12px; color: var(--primary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 8px; }
-        .modal-title { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; line-height: 1.4; }
-        .modal-specs { margin-bottom: 15px; }
-        .spec-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
-        .spec-row:last-child { border-bottom: none; }
-        .spec-icon { width: 32px; height: 32px; background: rgba(15,76,129,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--primary); flex-shrink: 0; }
-        .spec-content { flex: 1; }
-        .spec-label { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.3px; }
-        .spec-value { font-size: 14px; color: var(--text-dark); font-weight: 500; }
-        .modal-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; margin-bottom: 20px; }
-        .modal-inquire { display: block; background: var(--accent); color: white; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: background 0.2s; }
-        .modal-inquire:hover { background: #c5303c; }
-        
-        /* Modal联系表单 */
-        .modal-contact { padding: 25px; border-top: 1px solid var(--border); }
-        .modal-contact h3 { font-size: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; color: var(--text-dark); }
-        .modal-contact h3 i { color: var(--primary); }
+        .modal-images { background: #f8f9fa; padding: 24px; }
+        .modal-main-img { width: 100%; aspect-ratio: 1; object-fit: contain; background: white; border: 1px solid #eee; padding: 12px; cursor: zoom-in; border-radius: 4px; }
+        .modal-thumbs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px; }
+        .modal-thumb { width: 56px; height: 56px; object-fit: contain; border: 2px solid transparent; cursor: pointer; background: white; padding: 4px; border-radius: 3px; }
+        .modal-thumb.active { border-color: var(--red); }
+        .modal-info { padding: 28px 24px; }
+        .modal-category { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
+        .modal-title { font-size: 22px; font-weight: 800; color: var(--steel); text-transform: uppercase; margin-bottom: 16px; }
+        .modal-specs { display: flex; flex-direction: column; gap: 8px; padding: 16px 0; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; margin-bottom: 16px; }
+        .spec-row { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; }
+        .spec-icon { width: 28px; height: 28px; background: var(--steel); color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; border-radius: 3px; }
+        .spec-label { font-size: 10px; text-transform: uppercase; color: #888; }
+        .spec-value { font-size: 13px; color: var(--text-main); font-weight: 500; }
+        .modal-desc { font-size: 13px; color: var(--text-soft); line-height: 1.7; margin-bottom: 20px; }
+        .modal-fitment { margin-bottom: 16px; }
+        .modal-fitment-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--steel); margin-bottom: 10px; }
+        .modal-fitment-title i { color: var(--red); margin-right: 6px; }
+        .fitment-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .fitment-table th { background: var(--steel); color: white; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; }
+        .fitment-table td { padding: 7px 10px; border-bottom: 1px solid #eee; }
+        .modal-inquire { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; background: var(--red); color: white; border: none; font-size: 14px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.25s; width: 100%; border-radius: 4px; text-decoration: none; }
+        .modal-inquire:hover { background: var(--red-dark); }
+        .modal-contact { padding: 20px 24px; background: #f8f9fa; border-top: 1px solid #eee; grid-column: 1 / -1; }
+        .modal-contact h3 { font-size: 14px; text-transform: uppercase; color: var(--steel); margin-bottom: 14px; }
         .modal-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-        .modal-form-group { display: flex; flex-direction: column; gap: 5px; }
-        .modal-form-group label { font-size: 12px; font-weight: 500; color: var(--text-dark); }
-        .modal-form-group input, .modal-form-group textarea { padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; font-family: inherit; transition: border-color 0.2s; }
-        .modal-form-group input:focus, .modal-form-group textarea:focus { outline: none; border-color: var(--primary); }
-        .modal-form-group textarea { resize: vertical; min-height: 80px; }
-        .modal-send-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
-        .modal-send-btn:hover { background: #0d3d66; }
-        .modal-send-btn:disabled { background: #ccc; cursor: not-allowed; }
+        .modal-form-group { display: flex; flex-direction: column; gap: 4px; }
+        .modal-form-group label { font-size: 10px; text-transform: uppercase; color: #888; }
+        .modal-form-group input, .modal-form-group textarea { padding: 10px 12px; border: 1px solid #ddd; font-size: 13px; outline: none; border-radius: 4px; }
+        .modal-form-group input:focus, .modal-form-group textarea:focus { border-color: var(--steel); }
+        .modal-form-group textarea { min-height: 70px; resize: vertical; }
+        .modal-send-btn { width: 100%; padding: 12px; background: var(--steel); color: white; border: none; font-size: 13px; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
+        .modal-send-btn:hover { background: var(--steel-mid); }
         
-        /* 社交图标 */
-        .social-icons { display: flex; justify-content: center; gap: 15px; padding: 20px; }
-        .social-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: transform 0.2s; }
-        .social-icon:hover { transform: scale(1.1); }
-        .social-icon.facebook { background: #1877f2; }
-        .social-icon.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-        .social-icon.whatsapp { background: #25d366; }
-        
-        /* Footer */
-        footer { background: #1a1a1a; color: white; text-align: center; padding: 30px 20px; }
-        .footer-slogan { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
-        .footer-copyright { font-size: 12px; color: #888; margin-bottom: 5px; }
-        footer p { font-size: 12px; color: #666; }
-        
-        /* Lightbox */
-        .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 600; align-items: center; justify-content: center; }
+        .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; cursor: zoom-out; }
         .lightbox.show { display: flex; }
-        .lightbox img { max-width: 90%; max-height: 90vh; object-fit: contain; }
-        .lightbox-close { position: absolute; top: 20px; right: 20px; font-size: 36px; color: white; cursor: pointer; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; }
-        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; color: white; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-        .lightbox-nav:hover { background: rgba(255,255,255,0.2); }
+        .lightbox img { max-width: 95vw; max-height: 95vh; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 28px; cursor: pointer; }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 24px; cursor: pointer; padding: 16px; background: rgba(0,0,0,0.3); border-radius: 4px; }
         .lightbox-prev { left: 20px; }
         .lightbox-next { right: 20px; }
         
-        /* 响应式 */
+        /* ====== 响应式：手机端 ====== */
         @media (max-width: 768px) {
-            .top-nav { padding: 12px 15px; }
-            .nav-links { gap: 15px; }
-            .nav-links a { font-size: 13px; }
-            .hero { padding: 35px 15px 30px; }
-            .hero h1 { font-size: 22px; }
-            .filter-bar { padding: 12px 15px; }
-            .filter-btn { padding: 6px 12px; font-size: 12px; }
-            .search-box { max-width: 100%; }
+            .desktop-nav { display: none; }
+            .hamburger { display: flex; }
+            .topbar { padding: 0 16px; height: 50px; }
+            .brand-text { font-size: 15px; }
+            .page-hero { padding: 30px 16px; }
+            
+            /* 手机端筛选栏 - 紧凑横向滚动 */
+            .filter-bar { padding: 10px 12px; gap: 6px; }
+            .filter-bar span { font-size: 10px; margin-right: 2px; }
+            .filter-btn { padding: 5px 10px; font-size: 10px; border-radius: 15px; }
+            .search-box input { width: 100px; font-size: 11px; padding: 6px 10px; }
+            .search-box button { padding: 6px 10px; font-size: 11px; }
+            
+            /* 手机端产品网格 - 2列 */
+            .products-section { padding: 12px; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            
+            /* 手机端产品卡片 - 图片铺满 */
+            .product-card { border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+            .product-img-wrap { aspect-ratio: 4/3; }
+            .product-img-wrap img { object-fit: cover; }
+            .product-body { padding: 10px; }
+            .product-category { font-size: 8px; padding: 3px 6px; margin-bottom: 6px; }
+            .product-name { font-size: 11px; line-height: 1.3; margin-bottom: 4px; -webkit-line-clamp: 2; }
+            .product-meta { display: none; }
+            .product-oem { font-size: 9px; padding: 2px 6px; margin-bottom: 6px; }
+            .product-desc { display: none; }
+            .inquire-btn { font-size: 9px; padding: 8px 8px; }
+            
+            /* 手机端分页 - 大按钮 */
+            .pagination { margin-top: 16px; gap: 6px; padding: 16px 0; }
+            .page-btn { padding: 10px 14px; font-size: 12px; min-width: 40px; border-radius: 6px; }
+            .page-info { font-size: 10px; margin: 0 6px; }
+            
+            .empty-state { padding: 40px 16px; }
+            .empty-state i { font-size: 36px; }
+            .empty-state h3 { font-size: 16px; }
+            
             .modal-inner { grid-template-columns: 1fr; }
+            .modal-images { padding: 12px; }
+            .modal-info { padding: 16px 12px; }
+            .modal-contact { padding: 12px; }
             .modal-form-row { grid-template-columns: 1fr; }
-            .modal-close { top: 10px; right: 10px; }
-            .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+            
+            .social-float { right: 10px; bottom: 12px; gap: 6px; }
+            .social-btn { width: 36px; height: 36px; font-size: 14px; }
+        }
+        
+        @media (max-width: 360px) {
+            .products-grid { gap: 8px; }
+            .product-body { padding: 8px; }
+            .product-name { font-size: 10px; }
+            .inquire-btn { font-size: 8px; padding: 6px 6px; }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- 顶部导航 -->
-    <nav class="top-nav">
-        <div class="logo">CARVAL <span>AUTO</span></div>
-        <div class="nav-links">
+<header class="topbar">
+    <div class="topbar-left">
+        <a href="index.html" class="brand">
+            <img src="carval-auto-logo.png" alt="Carval Logo" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none'">
+            <div class="brand-text">CARVAL <span>AUTO</span></div>
+        </a>
+        <nav class="desktop-nav">
             <a href="index.html">Home</a>
+            <a href="index.html#about">Company</a>
             <a href="products.html" class="active">Products</a>
-            <a href="index.html#about">About</a>
             <a href="index.html#contact">Contact</a>
-        </div>
-    </nav>
-    
-    <!-- Hero区域 -->
-    <div class="hero">
-        <h1>Auto Parts Catalog</h1>
-        <p>Quality auto parts for Japanese, Korean, German & Chinese vehicles</p>
+        </nav>
     </div>
-    
-    <!-- 筛选栏 -->
-    <div class="filter-bar">
-        <button class="filter-btn active" data-cat="all" onclick="filterProducts('all', this)">All</button>
-        <button class="filter-btn" data-cat="japanese" onclick="filterProducts('japanese', this)">Japanese</button>
-        <button class="filter-btn" data-cat="korean" onclick="filterProducts('korean', this)">Korean</button>
-        <button class="filter-btn" data-cat="german" onclick="filterProducts('german', this)">German</button>
-        <button class="filter-btn" data-cat="chinese" onclick="filterProducts('chinese', this)">Chinese</button>
-        <button class="filter-btn" data-cat="oil" onclick="filterProducts('oil', this)">Engine Oil</button>
-        <button class="filter-btn" data-cat="other" onclick="filterProducts('other', this)">Other</button>
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Search by name or OEM..." oninput="searchProducts()">
-        </div>
+    <div class="topbar-right">
+        <select class="lang-select"><option>English</option><option>中文</option></select>
+        <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
     </div>
-    
-    <!-- 商品列表 -->
-    <div class="products-section">
-        <div class="products-count">Showing <span id="countDisplay">0</span> products</div>
-        <div class="products-grid" id="productsGrid">
-            <!-- 商品由JS动态生成 -->
-        </div>
+</header>
+<div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+        <div class="mobile-nav-logo">CARVAL <span>AUTO</span></div>
+        <button onclick="closeNav()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer;"><i class="fas fa-times"></i></button>
     </div>
-    
-    <!-- 社交媒体 -->
-    <div class="social-icons">
-        <a href="https://www.facebook.com/share/18W9wuCPT4/?mibextid=wwXIfr" class="social-icon facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://www.instagram.com/carval_auto?igsh=MXd0Nm1wenJyZm96ag%3D%3D&utm_source=qr" class="social-icon instagram" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://wa.me/8619521228657" class="social-icon whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <div class="mobile-nav-links">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="index.html#about"><i class="fas fa-building"></i> Company</a>
+        <a href="products.html"><i class="fas fa-cogs"></i> Products</a>
+        <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
     </div>
-    
-    <!-- 页脚 -->
-    <footer>
-        <div class="footer-slogan">Carvalauto- Given your car a second life</div>
-        <p class="footer-copyright">© 2026 Guangzhou Carval Auto Part Co., Ltd. All Rights Reserved.</p>
-        <p>Professional Auto Parts Manufacturer & Global Supplier</p>
-    </footer>
+</nav>
 
-    <script>
-    // ============================================================
-    // 从 GitHub 加载产品数据 (products.json)
-    // 如果加载失败，使用下面的默认数据
-    // ============================================================
-    var products = [];
-    var productsData = [];
-    var dataLoaded = false;
-    
-    // GitHub 仓库配置
-    var GH_REPO = 'carvalauto/carvalauto.github.io';
-    var GH_FILE = 'products.json';
-    
-    // 缓存配置
-    var CACHE_KEY = 'products_cache';
-    var CACHE_EXPIRY = 5 * 60 * 1000; // 5分钟缓存
-    
-    // 默认示例数据（仅在 GitHub 加载失败时使用）
-    var defaultProducts = [
-        {
-            id: 1,
-            name: "Toyota Camry Brake Pads",
-            category: "japanese",
-            oem: "04465-06110",
-            description: "High-performance brake pads for Toyota Camry 2018-2023. OEM quality, verified by real-vehicle test.",
-            image: ""
-        },
-        {
-            id: 2,
-            name: "Honda Civic Air Filter",
-            category: "japanese",
-            oem: "17220-RNA-A00",
-            description: "Genuine quality air filter for Honda Civic 2016-2021. Improves engine performance and fuel efficiency.",
-            image: ""
-        },
-        {
-            id: 3,
-            name: "BMW 3 Series Oil Filter",
-            category: "german",
-            oem: "11427788454",
-            description: "Premium oil filter for BMW 3 Series (F30/G20). Meets OEM specifications.",
-            image: ""
-        }
-    ];
-    
-    // 从 localStorage 读取缓存
-    function getCachedProducts() {
-        try {
-            var cached = localStorage.getItem(CACHE_KEY);
-            if (cached) {
-                var cacheData = JSON.parse(cached);
-                var now = Date.now();
-                // 检查缓存是否过期
-                if (cacheData.expiry > now) {
-                    return cacheData.products;
-                }
-            }
-        } catch(e) {
-            console.log('Cache read error:', e.message);
-        }
-        return null;
-    }
-    
-    // 保存到 localStorage 缓存
-    function setCachedProducts(products) {
-        try {
-            var cacheData = {
-                products: products,
-                expiry: Date.now() + CACHE_EXPIRY
-            };
-            localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-        } catch(e) {
-            console.log('Cache write error:', e.message);
-        }
-    }
-    
-    // 从 GitHub 加载产品数据
-    async function loadProductsFromGitHub() {
-        try {
-            // 添加时间戳参数绕过 CDN 缓存
-            var timestamp = Date.now();
-            var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FILE + '?t=' + timestamp;
-            
-            var response = await fetch(apiUrl, {
-                headers: { 
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Cache-Control': 'no-cache'
-                }
-            });
-            
-            if (response.ok) {
-                var json = await response.json();
-                var content;
-                
-                // 优先使用 download_url 获取最新数据（绕过 API 缓存）
-                if (json.download_url) {
-                    var rawResponse = await fetch(json.download_url + '?t=' + timestamp, {
-                        headers: { 'Cache-Control': 'no-cache' }
-                    });
-                    if (rawResponse.ok) {
-                        content = await rawResponse.text();
-                    }
-                }
-                
-                // 如果 download_url 失败，回退到 content 字段
-                if (!content && json.content) {
-                    content = atob(json.content.replace(/\n/g, ''));
-                }
-                
-                if (content) {
-                    var data = JSON.parse(content);
-                    if (Array.isArray(data) && data.length > 0) {
-                        products = data;
-                        // 保存到缓存
-                        setCachedProducts(products);
-                        console.log('✓ 从 GitHub 加载了 ' + products.length + ' 个产品');
-                        return true;
-                    }
-                }
-            }
-        } catch(e) {
-            console.log('GitHub 加载失败:', e.message);
-        }
-        return false;
-    }
-    
-    // 静默后台更新缓存
-    async function silentRefreshCache() {
-        try {
-            var timestamp = Date.now();
-            var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FILE + '?t=' + timestamp;
-            
-            var response = await fetch(apiUrl, {
-                headers: { 
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Cache-Control': 'no-cache'
-                }
-            });
-            
-            if (response.ok) {
-                var json = await response.json();
-                var content;
-                
-                // 优先使用 download_url 获取最新数据（绕过 API 缓存）
-                if (json.download_url) {
-                    var rawResponse = await fetch(json.download_url + '?t=' + timestamp, {
-                        headers: { 'Cache-Control': 'no-cache' }
-                    });
-                    if (rawResponse.ok) {
-                        content = await rawResponse.text();
-                    }
-                }
-                
-                // 如果 download_url 失败，回退到 content 字段
-                if (!content && json.content) {
-                    content = atob(json.content.replace(/\n/g, ''));
-                }
-                
-                if (content) {
-                    var data = JSON.parse(content);
-                    if (Array.isArray(data) && data.length > 0) {
-                        // 更新全局数据
-                        products = data;
-                        productsData = products;
-                        // 更新缓存
-                        setCachedProducts(products);
-                        // 重新渲染
-                        renderProducts();
-                        console.log('✓ 后台静默更新了 ' + products.length + ' 个产品');
-                    }
-                }
-            }
-        } catch(e) {
-            // 静默失败，不影响用户体验
-        }
-    }
-    
-    // 初始化函数
-    async function initProducts() {
-        // 显示加载状态
-        var grid = document.getElementById('productsGrid');
-        grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;"><i class="fas fa-spinner fa-spin" style="font-size:32px;"></i><p style="margin-top:15px;">Loading products...</p></div>';
-        
-        // 1. 先尝试从缓存读取（快速显示）
-        var cachedProducts = getCachedProducts();
-        if (cachedProducts && cachedProducts.length > 0) {
-            products = cachedProducts;
-            productsData = products;
-            dataLoaded = true;
-            renderProducts();
-            console.log('✓ 从缓存加载了 ' + products.length + ' 个产品');
-            // 2. 后台静默更新
-            silentRefreshCache();
-            return;
-        }
-        
-        // 3. 如果没有缓存，从 GitHub 加载
-        var loaded = await loadProductsFromGitHub();
-        
-        // 如果失败，使用默认数据
-        if (!loaded || products.length === 0) {
-            products = defaultProducts;
-            console.log('使用默认示例数据');
-        }
-        
-        productsData = products;
-        dataLoaded = true;
-        renderProducts();
-    }
-    
-    // 页面加载完成后初始化
-    document.addEventListener('DOMContentLoaded', initProducts);
-    let currentFilter = 'all';
-    let currentSearch = '';
-    const categoryLabels = {
-        japanese: 'Japanese',
-        korean: 'Korean',
-        german: 'German',
-        chinese: 'Chinese',
-        oil: 'Engine Oil',
-        other: 'Other'
-    };
-    function renderProducts() {
-        const grid = document.getElementById('productsGrid');
-        const countEl = document.getElementById('countDisplay');
-        let filtered = productsData.filter(p => {
-            const matchCat = currentFilter === 'all' || p.category === currentFilter;
-            const matchSearch = currentSearch === '' ||
-                p.name.toLowerCase().includes(currentSearch) ||
-                p.oem.toLowerCase().includes(currentSearch) ||
-                p.description.toLowerCase().includes(currentSearch);
-            return matchCat && matchSearch;
-        });
-        countEl.textContent = filtered.length;
-        if (filtered.length === 0) {
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-box-open"></i>
-                    <h3>No Products Found</h3>
-                    <p>Try adjusting your filter or search keyword.</p>
-                </div>`;
-            return;
-        }
-        grid.innerHTML = filtered.map(p => {
-            // Parse first image for card display
-            var firstImg = p.image ? p.image.split(',')[0].trim() : '';
-            // Parse brand and compatible models from description
-            var desc = p.description || '';
-            var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
-            var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
-            var specsMatch = desc.match(/Specs:\s*([^.]+)/i);
-            var brandInfo = brandMatch ? brandMatch[1].trim() : '';
-            var compatInfo = compatMatch ? compatMatch[1].trim() : '';
-            var specsInfo = specsMatch ? specsMatch[1].trim() : '';
-            // Clean description - remove parsed metadata
-            var cleanDesc = desc
-                .replace(/Brand:\s*[^|.]+[|.]?/gi, '')
-                .replace(/Compatible with:\s*[^.]+\./gi, '')
-                .replace(/Specs:\s*[^.]+\./gi, '')
-                .replace(/\|/g, '')
-                .trim();
-            return `
-            <div class="product-card" data-category="${p.category}" onclick="openProduct(${p.id})" style="cursor:pointer;">
-                <div class="product-img-wrap">
-                    ${firstImg
-                        ? `<img src="${firstImg}" alt="${p.name}" loading="lazy">`
-                        : `<div class="no-image"><i class="fas fa-car"></i><span>Image Coming Soon</span></div>`
-                    }
-                </div>
-                <div class="product-body">
-                    <div class="product-category">${categoryLabels[p.category] || p.category}</div>
-                    <div class="product-name">${p.name}</div>
-                    <div class="product-meta">
-                        ${p.oem ? `<div class="meta-row"><i class="fas fa-barcode"></i><span><strong>OEM:</strong> ${p.oem}</span></div>` : ''}
-                        ${brandInfo ? `<div class="meta-row"><i class="fas fa-car"></i><span><strong>Brand:</strong> ${brandInfo}</span></div>` : ''}
-                        ${compatInfo ? `<div class="meta-row"><i class="fas fa-check-circle"></i><span><strong>Fits:</strong> ${compatInfo}</span></div>` : ''}
-                    </div>
-                    ${cleanDesc ? `<div class="product-desc">${cleanDesc.substring(0,100)}...</div>` : ''}
-                    <button class="inquire-btn" onclick="event.stopPropagation(); openProduct(${p.id})">
-                        <i class="fas fa-info-circle"></i> View Details
-                    </button>
-                </div>
-            </div>`;
-        }).join('');
-    }
-    function filterProducts(cat, btn) {
-        currentFilter = cat;
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderProducts();
-    }
-    function searchProducts() {
-        currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
-        renderProducts();
-    }
-    // 初始化 - 支持URL参数自动筛选
-    (function() {
-        var params = new URLSearchParams(window.location.search);
-        var cat = params.get('cat');
-        if (cat) {
-            var btn = document.querySelector('.filter-btn[data-cat="' + cat + '"]');
-            if (btn) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = cat;
-            }
-        }
-    })();
-    renderProducts();
-    // ===== Product Detail Modal =====
-    var categoryLabelsModal = { japanese:'🇯🇵 Japanese', korean:'🇰🇷 Korean', german:'🇩🇪 German', chinese:'🇨🇳 Chinese', oil:'🛢️ Engine Oil', other:'📦 Other' };
-    // Carousel state
-    var currentCarouselIndex = 0;
-    var carouselImages = [];
-    function updateCarousel() {
-        var carousel = document.getElementById('modalCarouselInner');
-        carousel.style.transform = 'translateX(-' + (currentCarouselIndex * 100) + '%)';
-        
-        // Update thumbs
-        document.querySelectorAll('.modal-thumb').forEach(function(t, i) {
-            t.classList.toggle('active', i === currentCarouselIndex);
-        });
-        
-        // Show/hide arrows
-        document.getElementById('carouselPrev').style.display = carouselImages.length > 1 ? 'flex' : 'none';
-        document.getElementById('carouselNext').style.display = carouselImages.length > 1 ? 'flex' : 'none';
-    }
-    function prevCarouselImg() {
-        currentCarouselIndex = (currentCarouselIndex - 1 + carouselImages.length) % carouselImages.length;
-        updateCarousel();
-    }
-    function nextCarouselImg() {
-        currentCarouselIndex = (currentCarouselIndex + 1) % carouselImages.length;
-        updateCarousel();
-    }
-    function openProduct(id) {
-        var p = productsData.find(function(x) { return x.id === id; });
-        if (!p) return;
-        // Images
-        carouselImages = p.image ? p.image.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
-        currentCarouselIndex = 0;
-        var carousel = document.getElementById('modalCarouselInner');
-        var thumbsEl = document.getElementById('modalThumbs');
-        if (carouselImages.length > 0) {
-            // Build carousel items with click-to-zoom
-            carousel.innerHTML = carouselImages.map(function(img, i) {
-                return '<div class="modal-carousel-item"><img class="modal-main-img" src="' + img + '" alt="" onclick="openLightbox(' + i + ')"></div>';
-            }).join('');
-            
-            // Build thumbnails
-            thumbsEl.innerHTML = carouselImages.map(function(img, i) {
-                return '<img class="modal-thumb' + (i===0?' active':'') + '" src="' + img + '" onclick="switchCarouselImg(' + i + ')" title="Image ' + (i+1) + '">';
-            }).join('');
-            
-            updateCarousel();
-        } else {
-            carousel.innerHTML = '<div class="modal-carousel-item"><div style="width:100%;aspect-ratio:1;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#ccc;flex-direction:column;gap:10px;"><i class="fas fa-car" style="font-size:48px;"></i><span style="font-size:13px;">Image Coming Soon</span></div></div>';
-            thumbsEl.innerHTML = '';
-            document.getElementById('carouselPrev').style.display = 'none';
-            document.getElementById('carouselNext').style.display = 'none';
-        }
-        // Info
-        document.getElementById('modalCategory').textContent = categoryLabelsModal[p.category] || p.category;
-        document.getElementById('modalTitle').textContent = p.name;
-        // Parse description for specs
-        var desc = p.description || '';
-        var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
-        var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
-        var specsMatch = desc.match(/Specs:\s*([^.]+)/i);
-        var brandInfo = brandMatch ? brandMatch[1].trim() : '';
-        var compatInfo = compatMatch ? compatMatch[1].trim() : '';
-        var specsInfo = specsMatch ? specsMatch[1].trim() : '';
-        var cleanDesc = desc.replace(/Brand:\s*[^|.]+[|.]?/gi,'').replace(/Compatible with:\s*[^.]+\./gi,'').replace(/Specs:\s*[^.]+\./gi,'').replace(/\|/g,'').trim();
-        var specsHtml = '';
-        if (p.oem) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-barcode"></i></div><div class="spec-content"><div class="spec-label">OEM Number</div><div class="spec-value">' + p.oem + '</div></div></div>';
-        if (brandInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-car"></i></div><div class="spec-content"><div class="spec-label">Brand</div><div class="spec-value">' + brandInfo + '</div></div></div>';
-        if (compatInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-check-circle"></i></div><div class="spec-content"><div class="spec-label">Compatible With</div><div class="spec-value">' + compatInfo + '</div></div></div>';
-        if (specsInfo) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-cog"></i></div><div class="spec-content"><div class="spec-label">Specifications</div><div class="spec-value">' + specsInfo + '</div></div></div>';
-        document.getElementById('modalSpecs').innerHTML = specsHtml;
-        document.getElementById('modalDesc').textContent = cleanDesc;
-        // Pre-fill message
-        document.getElementById('modalProductRef').value = p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '');
-        document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + p.name + (p.oem ? ' (OEM: ' + p.oem + ')' : '') + '. Please provide price and availability.';
-        // Show modal
-        document.getElementById('productModal').classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-    function switchCarouselImg(index) {
-        currentCarouselIndex = index;
-        updateCarousel();
-    }
-    function closeProductModal() {
-        document.getElementById('productModal').classList.remove('show');
-        document.body.style.overflow = '';
-    }
-    function closeModal(e) {
-        if (e.target === document.getElementById('productModal')) closeProductModal();
-    }
-    // Handle modal form submit
-    document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        var btn = this.querySelector('.modal-send-btn');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        btn.disabled = true;
-        try {
-            var resp = await fetch(this.action, { method:'POST', body:formData, headers:{'Accept':'application/json'} });
-            if (resp.ok) {
-                btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-                btn.style.background = '#2ecc71';
-                this.reset();
-                setTimeout(function(){ closeProductModal(); }, 1500);
-            } else {
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-                btn.disabled = false;
-                alert('Something went wrong. Please try again.');
-            }
-        } catch(err) {
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-            btn.disabled = false;
-        }
-    });
-    // ESC key to close
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeProductModal(); });
-    
-    // Keyboard navigation for carousel
-    document.addEventListener('keydown', function(e) {
-        if (document.getElementById('productModal').classList.contains('show')) {
-            if (e.key === 'ArrowLeft') prevCarouselImg();
-            if (e.key === 'ArrowRight') nextCarouselImg();
-        }
-    });
-    // ===== Lightbox 图片放大功能 =====
-    var lightboxImages = [];
-    var lightboxIndex = 0;
-    function openLightbox(index) {
-        lightboxImages = carouselImages;
-        lightboxIndex = index;
-        document.getElementById('lightboxImg').src = lightboxImages[index];
-        document.getElementById('lightbox').classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-    function closeLightbox() {
-        document.getElementById('lightbox').classList.remove('show');
-        document.body.style.overflow = '';
-    }
-    function prevLightboxImg() {
-        lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
-        document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
-    }
-    function nextLightboxImg() {
-        lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
-        document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
-    }
-    // Lightbox keyboard navigation
-    document.addEventListener('keydown', function(e) {
-        if (document.getElementById('lightbox').classList.contains('show')) {
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowLeft') prevLightboxImg();
-            if (e.key === 'ArrowRight') nextLightboxImg();
-        }
-    });
-    </script>
-    <!-- Product Detail Modal -->
-    <div class="modal-overlay" id="productModal" onclick="closeModal(event)">
-        <div class="modal-box" id="modalBox">
-            <button class="modal-close" onclick="closeProductModal()">&times;</button>
-            <div class="modal-inner">
-                <div class="modal-images">
-                    <div class="modal-images-container">
-                        <div class="modal-carousel">
-                            <div class="modal-carousel-inner" id="modalCarouselInner">
-                                <div class="modal-carousel-item">
-                                    <img id="modalMainImg" class="modal-main-img" src="" alt="">
-                                </div>
-                            </div>
-                            <button class="carousel-arrow prev" id="carouselPrev" onclick="prevCarouselImg()" style="display:none;"><i class="fas fa-chevron-left"></i></button>
-                            <button class="carousel-arrow next" id="carouselNext" onclick="nextCarouselImg()" style="display:none;"><i class="fas fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                    <div class="modal-thumbs" id="modalThumbs"></div>
-                </div>
-                <div class="modal-info">
-                    <div class="modal-category" id="modalCategory"></div>
-                    <div class="modal-title" id="modalTitle"></div>
-                    <div class="modal-specs" id="modalSpecs"></div>
-                    <div class="modal-desc" id="modalDesc"></div>
-                    <a id="modalInquireBtn" class="modal-inquire">
-                        <i class="fas fa-paper-plane"></i> Send Inquiry
-                    </a>
-                </div>
+<div class="page-hero">
+    <h1>Our <span>Product</span> Catalog</h1>
+    <p>Browse our full range of OEM quality auto parts</p>
+</div>
+
+<div class="filter-bar">
+    <span>Filter:</span>
+    <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+    <button class="filter-btn" onclick="filterProducts('japanese', this)">Japanese</button>
+    <button class="filter-btn" onclick="filterProducts('korean', this)">Korean</button>
+    <button class="filter-btn" onclick="filterProducts('german', this)">German</button>
+    <button class="filter-btn" onclick="filterProducts('chinese', this)">Chinese</button>
+    <button class="filter-btn" onclick="filterProducts('oil', this)">Engine Oil</button>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search..." oninput="searchProducts()">
+        <button><i class="fas fa-search"></i></button>
+    </div>
+</div>
+
+<div class="products-section">
+    <div class="products-count">Showing <span id="countDisplay">0</span> products</div>
+    <div class="products-grid" id="productsGrid"></div>
+    <div class="pagination" id="pagination"></div>
+</div>
+
+<footer>
+    <div class="footer-slogan">CARVAL <span>AUTO</span> - Given your car a second life</div>
+    <p>&copy; 2026 Guangzhou Carval Auto Part Co., Ltd.</p>
+</footer>
+
+<div class="social-float">
+    <a href="https://www.facebook.com/share/18W9wuCPT4/" class="social-btn fb" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/carval_auto" class="social-btn ig" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/8619521228657" class="social-btn wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
+</div>
+
+<div class="modal-overlay" id="productModal" onclick="closeModal(event)">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeProductModal()">&times;</button>
+        <div class="modal-inner">
+            <div class="modal-images">
+                <img id="modalMainImg" class="modal-main-img" src="" alt="" onclick="openLightbox(0)">
+                <div class="modal-thumbs" id="modalThumbs"></div>
             </div>
-            <!-- Contact Form -->
+            <div class="modal-info">
+                <div class="modal-category" id="modalCategory"></div>
+                <div class="modal-title" id="modalTitle"></div>
+                <div class="modal-specs" id="modalSpecs"></div>
+                <div class="modal-fitment" id="modalFitment"></div>
+                <div class="modal-desc" id="modalDesc"></div>
+                <a id="modalInquireBtn" class="modal-inquire" href="index.html#contact"><i class="fas fa-paper-plane"></i> Send Inquiry</a>
+            </div>
             <div class="modal-contact">
-                <h3><i class="fas fa-envelope"></i> Send Us a Message</h3>
+                <h3><i class="fas fa-envelope"></i> Quick Contact</h3>
                 <form id="modalContactForm" action="https://formspree.io/f/xyknoyzw" method="POST">
                     <input type="hidden" id="modalProductRef" name="product_ref" value="">
                     <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Your Name</label>
-                            <input type="text" name="name" required placeholder="John Smith">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Your Email</label>
-                            <input type="email" name="email" required placeholder="john@example.com">
-                        </div>
+                        <div class="modal-form-group"><label>Your Name</label><input type="text" id="modalName" name="name" required></div>
+                        <div class="modal-form-group"><label>Your Email</label><input type="email" id="modalEmail" name="email" required></div>
                     </div>
-                    <div class="modal-form-group" style="margin-bottom:12px;">
-                        <label>Message (OEM number & quantity)</label>
-                        <textarea name="message" id="modalMessage" placeholder="Please include OEM number and required quantity..."></textarea>
-                    </div>
-                    <button type="submit" class="modal-send-btn">
-                        <i class="fas fa-paper-plane"></i> Send Message
-                    </button>
+                    <div class="modal-form-group" style="margin-bottom:12px;"><label>Phone</label><input type="tel" id="modalPhone" name="phone"></div>
+                    <div class="modal-form-group" style="margin-bottom:12px;"><label>Message</label><textarea id="modalMessage" name="message"></textarea></div>
+                    <button type="submit" class="modal-send-btn"><i class="fas fa-paper-plane"></i> Send Message</button>
                 </form>
             </div>
         </div>
     </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <span class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); prevLightboxImg()"><i class="fas fa-chevron-left"></i></span>
+    <img id="lightboxImg" src="" alt="">
+    <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); nextLightboxImg()"><i class="fas fa-chevron-right"></i></span>
+</div>
+
+<script>
+var products = [], productsData = [], currentFilter = 'all', currentSearch = '', currentPage = 1, itemsPerPage = 50;
+
+function detectItemsPerPage() {
+    // 电脑端: 50个, 手机端: 10个 (2列×5排)
+    itemsPerPage = window.innerWidth <= 768 ? 10 : 50;
+}
+detectItemsPerPage();
+window.addEventListener('resize', detectItemsPerPage);
+
+var categoryLabels = { japanese: 'Japanese', korean: 'Korean', german: 'German', chinese: 'Chinese', oil: 'Engine Oil', other: 'Other' };
+var defaultProducts = [
+    { id: 1, name: "Toyota Camry Brake Pads", category: "japanese", oem: "04465-06110", description: "High-performance brake pads for Toyota Camry 2018-2023.", image: "" },
+    { id: 2, name: "Honda Civic Air Filter", category: "japanese", oem: "17220-RNA-A00", description: "Genuine quality air filter for Honda Civic 2016-2021.", image: "" }
+];
+
+function toggleNav() { document.getElementById('mobileNav').classList.toggle('open'); document.getElementById('navOverlay').classList.toggle('show'); }
+function closeNav() { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('navOverlay').classList.remove('show'); }
+
+async function loadProducts() {
+    var grid = document.getElementById('productsGrid');
+    try {
+        var cached = localStorage.getItem('carval_products_cache');
+        if (cached) {
+            var cacheData = JSON.parse(cached);
+            if (cacheData.time && (Date.now() - cacheData.time < 3600000)) {
+                products = cacheData.data; productsData = products;
+                renderProducts(); fetchLatestProducts(); return;
+            }
+        }
+    } catch(e) {}
+    grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;grid-column:1/-1;"><i class="fas fa-spinner fa-spin" style="font-size:28px;"></i><p style="margin-top:12px;">Loading products...</p></div>';
+    await fetchLatestProducts();
+    if (products.length === 0) products = defaultProducts;
+    productsData = products; renderProducts();
+}
+
+async function fetchLatestProducts() {
+    try {
+        var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now());
+        if (!resp.ok) resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?t=' + Date.now());
+        if (resp.ok) {
+            var data = await resp.json();
+            if (Array.isArray(data) && data.length > 0) {
+                products = data; productsData = products;
+                localStorage.setItem('carval_products_cache', JSON.stringify({ data: data, time: Date.now() }));
+                if (document.getElementById('productsGrid').children.length > 0) renderProducts();
+            }
+        }
+    } catch(e) {}
+}
+
+function renderProducts() {
+    var grid = document.getElementById('productsGrid');
+    var countEl = document.getElementById('countDisplay');
+    var paginationEl = document.getElementById('pagination');
     
-    <!-- Lightbox 图片放大查看 -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        <span class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); prevLightboxImg()"><i class="fas fa-chevron-left"></i></span>
-        <img id="lightboxImg" src="" alt="">
-        <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); nextLightboxImg()"><i class="fas fa-chevron-right"></i></span>
-    </div>
+    var filtered = productsData.filter(function(p) {
+        var matchCat = currentFilter === 'all' || p.category === currentFilter;
+        var matchSearch = currentSearch === '' || (p.name || '').toLowerCase().includes(currentSearch) || (p.title || '').toLowerCase().includes(currentSearch) || (p.oem || '').toLowerCase().includes(currentSearch) || (p.oemCode || '').toLowerCase().includes(currentSearch);
+        return matchCat && matchSearch;
+    });
+    
+    countEl.textContent = filtered.length;
+    if (filtered.length === 0) { grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><h3>No Products Found</h3><p>Try adjusting your filter.</p></div>'; paginationEl.innerHTML = ''; return; }
+    
+    var totalPages = Math.ceil(filtered.length / itemsPerPage);
+    if (currentPage > totalPages) currentPage = totalPages || 1;
+    if (currentPage < 1) currentPage = 1;
+    
+    var startIndex = (currentPage - 1) * itemsPerPage;
+    var endIndex = startIndex + itemsPerPage;
+    var pageProducts = filtered.slice(startIndex, endIndex);
+    
+    grid.innerHTML = pageProducts.map(function(p) {
+        var firstImg = '';
+        if (p.image) firstImg = p.image.split(',')[0].trim();
+        else if (p.images && Array.isArray(p.images)) firstImg = p.images[0] || '';
+        
+        var desc = p.description || '';
+        var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
+        var brandInfo = brandMatch ? brandMatch[1].trim() : '';
+        var oemCode = p.oem || p.oemCode || '';
+        
+        return '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
+            '<div class="product-img-wrap">' +
+                (firstImg ? '<img src="' + firstImg + '" alt="' + (p.name || p.title || '') + '" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=\\\'no-image\\\'><i class=\\\'fas fa-car\\\'></i><span>No Image</span></div>\'">' : '<div class="no-image"><i class="fas fa-car"></i><span>No Image</span></div>') +
+            '</div>' +
+            '<div class="product-body">' +
+                '<div class="product-category">' + (categoryLabels[p.category] || p.category || 'Other') + '</div>' +
+                '<div class="product-name">' + (p.name || p.title || 'Product') + '</div>' +
+                '<div class="product-oem">' + (oemCode || 'OEM: -') + '</div>' +
+                '<button class="inquire-btn" onclick="event.stopPropagation(); openProduct(' + p.id + ')"><i class="fas fa-info-circle"></i> View Details</button>' +
+            '</div>' +
+        '</div>';
+    }).join('');
+    
+    renderPagination(totalPages, filtered.length);
+}
+
+function renderPagination(totalPages, totalItems) {
+    var paginationEl = document.getElementById('pagination');
+    if (totalPages <= 1) { paginationEl.innerHTML = ''; return; }
+    
+    var html = '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '>&laquo; Prev</button>';
+    
+    var startPage = Math.max(1, currentPage - 2);
+    var endPage = Math.min(totalPages, currentPage + 2);
+    
+    if (startPage > 1) { html += '<button class="page-btn" onclick="goToPage(1)">1</button>'; if (startPage > 2) html += '<span class="page-info">...</span>'; }
+    for (var i = startPage; i <= endPage; i++) { html += '<button class="page-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>'; }
+    if (endPage < totalPages) { if (endPage < totalPages - 1) html += '<span class="page-info">...</span>'; html += '<button class="page-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>'; }
+    
+    html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>Next &raquo;</button>';
+    
+    var startItem = (currentPage - 1) * itemsPerPage + 1;
+    var endItem = Math.min(currentPage * itemsPerPage, totalItems);
+    html += '<span class="page-info">' + startItem + '-' + endItem + ' / ' + totalItems + '</span>';
+    
+    paginationEl.innerHTML = html;
+}
+
+function goToPage(page) { currentPage = page; renderProducts(); document.getElementById('productsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function filterProducts(cat, btn) { currentFilter = cat; currentPage = 1; document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); }); btn.classList.add('active'); renderProducts(); }
+function searchProducts() { currentSearch = document.getElementById('searchInput').value.toLowerCase().trim(); currentPage = 1; renderProducts(); }
+
+var carouselImages = [], currentImgIndex = 0;
+
+function openProduct(id) {
+    var p = productsData.find(function(x) { return x.id == id || x.id === parseInt(id); });
+    if (!p) return;
+    
+    carouselImages = [];
+    if (p.image) carouselImages = p.image.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+    else if (p.images && Array.isArray(p.images)) carouselImages = p.images.filter(Boolean);
+    currentImgIndex = 0;
+    
+    var mainImg = document.getElementById('modalMainImg');
+    var thumbsEl = document.getElementById('modalThumbs');
+    
+    if (carouselImages.length > 0) {
+        mainImg.src = carouselImages[0]; mainImg.style.display = 'block';
+        thumbsEl.innerHTML = carouselImages.map(function(img, i) { return '<img class="modal-thumb' + (i === 0 ? ' active' : '') + '" src="' + img + '" onclick="switchImg(' + i + ')">'; }).join('');
+    } else { mainImg.style.display = 'none'; thumbsEl.innerHTML = ''; }
+    
+    document.getElementById('modalCategory').textContent = categoryLabels[p.category] || p.category || 'Other';
+    document.getElementById('modalTitle').textContent = p.name || p.title || 'Product';
+    
+    var desc = p.description || '';
+    var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
+    var compatMatch = desc.match(/Compatible with:\s*([^.]+)/i);
+    var specsHtml = '';
+    if (p.oem || p.oemCode) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-barcode"></i></div><div><div class="spec-label">OEM Number</div><div class="spec-value">' + (p.oem || p.oemCode) + '</div></div></div>';
+    if (brandMatch) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-car"></i></div><div><div class="spec-label">Brand</div><div class="spec-value">' + brandMatch[1].trim() + '</div></div></div>';
+    if (compatMatch) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-check-circle"></i></div><div><div class="spec-label">Compatible</div><div class="spec-value">' + compatMatch[1].trim() + '</div></div></div>';
+    document.getElementById('modalSpecs').innerHTML = specsHtml;
+    
+    var fitmentHtml = '';
+    if (p.fitmentTable && p.fitmentTable.length > 0) {
+        fitmentHtml = '<div class="modal-fitment-title"><i class="fas fa-car-side"></i> Compatible Vehicles (' + p.fitmentTable.length + ')</div><table class="fitment-table"><thead><tr><th>Make</th><th>Model</th><th>Year</th></tr></thead><tbody>';
+        p.fitmentTable.forEach(function(item) { fitmentHtml += '<tr><td>' + (item.make || '-') + '</td><td>' + (item.model || '-') + '</td><td>' + (item.year || '-') + '</td></tr>'; });
+        fitmentHtml += '</tbody></table>';
+    }
+    document.getElementById('modalFitment').innerHTML = fitmentHtml;
+    document.getElementById('modalDesc').textContent = desc;
+    document.getElementById('modalProductRef').value = (p.name || p.title) + ((p.oem || p.oemCode) ? ' (OEM: ' + (p.oem || p.oemCode) + ')' : '');
+    document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + (p.name || p.title) + ((p.oem || p.oemCode) ? ' (OEM: ' + (p.oem || p.oemCode) + ')' : '') + '. Please provide price and availability.';
+    
+    document.getElementById('productModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function switchImg(index) { currentImgIndex = index; document.getElementById('modalMainImg').src = carouselImages[index]; document.querySelectorAll('.modal-thumb').forEach(function(t, i) { t.classList.toggle('active', i === index); }); }
+function closeProductModal() { document.getElementById('productModal').classList.remove('show'); document.body.style.overflow = ''; }
+function closeModal(e) { if (e.target === document.getElementById('productModal')) closeProductModal(); }
+function openLightbox(index) { if (carouselImages.length === 0) return; document.getElementById('lightboxImg').src = carouselImages[index]; document.getElementById('lightbox').classList.add('show'); document.body.style.overflow = 'hidden'; }
+function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); document.body.style.overflow = ''; }
+function prevLightboxImg() { currentImgIndex = (currentImgIndex - 1 + carouselImages.length) % carouselImages.length; document.getElementById('lightboxImg').src = carouselImages[currentImgIndex]; }
+function nextLightboxImg() { currentImgIndex = (currentImgIndex + 1) % carouselImages.length; document.getElementById('lightboxImg').src = carouselImages[currentImgIndex]; }
+
+document.addEventListener('keydown', function(e) {
+    if (document.getElementById('productModal').classList.contains('show')) {
+        if (e.key === 'Escape') closeProductModal();
+        if (e.key === 'ArrowLeft' && carouselImages.length > 1) switchImg((currentImgIndex - 1 + carouselImages.length) % carouselImages.length);
+        if (e.key === 'ArrowRight' && carouselImages.length > 1) switchImg((currentImgIndex + 1) % carouselImages.length);
+    }
+    if (document.getElementById('lightbox').classList.contains('show')) {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') prevLightboxImg();
+        if (e.key === 'ArrowRight') nextLightboxImg();
+    }
+});
+
+document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var btn = this.querySelector('.modal-send-btn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...'; btn.disabled = true;
+    try {
+        var formData = { id: Date.now(), name: document.getElementById('modalName').value, email: document.getElementById('modalEmail').value, phone: document.getElementById('modalPhone').value || '', message: document.getElementById('modalMessage').value, product: document.getElementById('modalProductRef').value, timestamp: Date.now(), read: false, source: '产品询盘' };
+        try { var geoResp = await fetch('https://ipapi.co/json/'); var geoData = await geoResp.json(); formData.country = geoData.country_name || 'Unknown'; } catch(e) { formData.country = 'Unknown'; }
+        fetch('https://formspree.io/f/xyknoyzw', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
+        btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
+        setTimeout(function() { closeProductModal(); btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message'; btn.disabled = false; document.getElementById('modalName').value = ''; document.getElementById('modalEmail').value = ''; document.getElementById('modalPhone').value = ''; document.getElementById('modalMessage').value = ''; }, 2000);
+    } catch(e) { btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error'; btn.disabled = false; }
+});
+
+loadProducts();
+</script>
 </body>
 </html>
