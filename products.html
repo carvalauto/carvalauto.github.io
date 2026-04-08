@@ -332,7 +332,7 @@ async function loadProducts() {
     localStorage.removeItem('carval_products_cache');
     var grid = document.getElementById('productsGrid');
     try {
-        var cached = localStorage.getItem('carval_products_v2');
+        var cached = localStorage.getItem('carval_products_v3');
         if (cached) {
             var cacheData = JSON.parse(cached);
             if (cacheData.time && (Date.now() - cacheData.time < 3600000)) {
@@ -354,7 +354,7 @@ async function fetchLatestProducts() {
             var data = await resp.json();
             if (Array.isArray(data) && data.length > 0) {
                 products = data; productsData = products;
-                localStorage.setItem('carval_products_v2', JSON.stringify({ data: data, time: Date.now() }));
+                localStorage.setItem('carval_products_v3', JSON.stringify({ data: data, time: Date.now() }));
                 if (document.getElementById('productsGrid').children.length > 0) renderProducts();
             }
         }
