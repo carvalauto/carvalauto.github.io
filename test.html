@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>数据加载测试</title>
+</head>
+<body>
+    <h1>产品数据加载测试</h1>
+    <div id="result">正在加载...</div>
+    <div id="error"></div>
+    
+    <script>
+    async function test() {
+        var resultEl = document.getElementById('result');
+        var errorEl = document.getElementById('error');
+        
+        var urls = [
+            'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json',
+            'https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json'
+        ];
+        
+        for (var url of urls) {
+            try {
+                resultEl.innerHTML += '<br>尝试: ' + url;
+                var resp = await fetch(url + '?t=' + Date.now());
+                resultEl.innerHTML += '<br>状态: ' + resp.status;
+                
+                if (resp.ok) {
+                    var text = await resp.text();
+                    resultEl.innerHTML += '<br>数据大小: ' + text.length + ' bytes';
+                    
+                    var data = JSON.parse(text);
+                    resultEl.innerHTML += '<br><strong style="color:green">✅ 成功！产品数量: ' + data.length + '</strong>';
+                    return;
+                }
+            } catch (e) {
+                errorEl.innerHTML += '<br>❌ ' + url + ' 错误: ' + e.message;
+            }
+        }
+    }
+    test();
+    </script>
+</body>
+</html>
