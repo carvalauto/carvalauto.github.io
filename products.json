@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "id": 1,
+    "name": "All categories",
+    "category": "other",
+    "oem": "97701-1R000",
+    "description": "OTHER BRANDS other vehicles",
+    "image": "https://img.alicdn.com/imgextra/i1/O1CN01c48fIx1OAcZDgzF3a_!!6000000001665-2-tps-174-42.png,https://img.alicdn.com/imgextra/i1/O1CN01FzM0Ag1h5YtKBSj0P_!!6000000004226-2-tps-30-30.png,https://s.alicdn.com/@img/imgextra/i2/O1CN01d18R1Z1H1GuiHHzpS_!!6000000000697-55-tps-212-32.svg,https://s.alicdn.com/@img/imgextra/i4/O1CN010KADAP2638vcOIcv4_!!6000000007605-55-tps-70-70.svg,https://s.alicdn.com/@img/imgextra/i3/O1CN01viHX2926YHrS5jYvf_!!6000000007673-55-tps-70-70.svg,https://s.alicdn.com/@img/imgextra/i2/O1CN01Zsnn5f28yyAQPbYyz_!!6000000008002-55-tps-70-70.svg",
+    "images": [
+      "https://img.alicdn.com/imgextra/i1/O1CN01c48fIx1OAcZDgzF3a_!!6000000001665-2-tps-174-42.png",
+      "https://img.alicdn.com/imgextra/i1/O1CN01FzM0Ag1h5YtKBSj0P_!!6000000004226-2-tps-30-30.png",
+      "https://s.alicdn.com/@img/imgextra/i2/O1CN01d18R1Z1H1GuiHHzpS_!!6000000000697-55-tps-212-32.svg",
+      "https://s.alicdn.com/@img/imgextra/i4/O1CN010KADAP2638vcOIcv4_!!6000000007605-55-tps-70-70.svg",
+      "https://s.alicdn.com/@img/imgextra/i3/O1CN01viHX2926YHrS5jYvf_!!6000000007673-55-tps-70-70.svg",
+      "https://s.alicdn.com/@img/imgextra/i2/O1CN01Zsnn5f28yyAQPbYyz_!!6000000008002-55-tps-70-70.svg"
+    ],
+    "fitmentTable": [
+      {
+        "brand": "OTHER BRANDS",
+        "model": "other vehicles",
+        "year": ""
+      }
+    ],
+    "url": "https://www.alibaba.com/product-detail/Wholesale-Genuine-Quality-Engine-Air-Conditioning_1601637085781.html",
+    "collectedAt": "2026-04-09T17:51:13.568Z"
+  }
+]
