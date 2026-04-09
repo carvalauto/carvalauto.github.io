@@ -337,7 +337,10 @@ async function loadProducts() {
             var cacheData = JSON.parse(cached);
             if (cacheData.time && (Date.now() - cacheData.time < 3600000)) {
                 products = cacheData.data; productsData = products;
-                renderProducts(); fetchLatestProducts(); return;
+                renderProducts(); 
+                // 后台静默检查是否有更新
+                checkForUpdates(cacheData.data.length);
+                return;
             }
         }
     } catch(e) {}
@@ -345,6 +348,26 @@ async function loadProducts() {
     await fetchLatestProducts();
     if (products.length === 0) products = defaultProducts;
     productsData = products; renderProducts();
+}
+// 后台静默检查更新（用 GitHub API 获取最新数量）
+async function checkForUpdates(cachedCount) {
+    try {
+        var resp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/products.json?t=' + Date.now(), {
+            headers: { 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (resp.ok) {
+            var data = await resp.json();
+            var content = JSON.parse(atob(data.content));
+            var latestCount = content.length;
+            // 如果数量不同，强制刷新
+            if (latestCount !== cachedCount) {
+                console.log('[Update] 产品数量变化: ' + cachedCount + ' → ' + latestCount + '，正在刷新...');
+                products = content; productsData = products;
+                localStorage.setItem('carval_products_v2', JSON.stringify({ data: content, time: Date.now() }));
+                renderProducts();
+            }
+        }
+    } catch(e) { console.log('[Update] 检查更新失败:', e); }
 }
 async function fetchLatestProducts() {
     // 优先使用 jsDelivr CDN（更稳定），GitHub API 备用
