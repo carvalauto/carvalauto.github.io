@@ -92,13 +92,14 @@
   {
     "id": 7,
     "name": "Mobil 1 0W-20 6-Pack 1-Liter Premium Automotive Lubricant Optimal Motor Oil Performance for Engines",
-    "oem": "",
-    "description": "High-quality auto parts",
-    "image": "https://s.alicdn.com/@sc04/kf/A4de4c3513077478c9848f0ab46106218I.jpg,https://s.alicdn.com/@img/imgextra/i3/O1CN01cbEaKF1YIzoMkO0fS_!!6000000003037-2-tps-300-300.png,https://s.alicdn.com/@img/imgextra/i4/O1CN017fKWgn1TOQQQtZBdg_!!6000000002372-2-tps-300-300.png,https://s.alicdn.com/@img/imgextra/i3/O1CN01TbQNWM1edxdI2lOFH_!!6000000003895-2-tps-300-300.png,https://s.alicdn.com/@img/imgextra/i2/O1CN01GbklvK23NLezYrFLb_!!6000000007243-2-tps-300-300.png,https://s.alicdn.com/@sc04/kf/A3b04dd3de9164d2b9fb7bd25d9717c532.jpg",
     "category": "oil",
-    "url": "https://www.alibaba.com/product-detail/detail_11000007882710.html",
+    "oem": "10W-20",
+    "description": "",
+    "image": "https://s.alicdn.com/@sc04/kf/A4de4c3513077478c9848f0ab46106218I.jpg,https://s.alicdn.com/@sc04/kf/A3b04dd3de9164d2b9fb7bd25d9717c532.jpg,https://s.alicdn.com/@img/imgextra/i3/O1CN01cbEaKF1YIzoMkO0fS,https://s.alicdn.com/@img/imgextra/i4/O1CN017fKWgn1TOQQQtZBdg,https://s.alicdn.com/@img/imgextra/i3/O1CN01TbQNWM1edxdI2lOFH,https://s.alicdn.com/@img/imgextra/i2/O1CN01GbklvK23NLezYrFLb",
     "fitmentTable": [],
-    "collectedAt": "2026-04-09T07:03:47.388Z"
+    "url": "https://www.alibaba.com/product-detail/detail_11000007882710.html",
+    "oemCode": "10W-20",
+    "title": "Mobil 1 0W-20 6-Pack 1-Liter Premium Automotive Lubricant Optimal Motor Oil Performance for Engines"
   },
   {
     "id": 8,
@@ -17126,5 +17127,16 @@
     "url": "https://www.alibaba.com/product-detail/detail_1601416135180.html",
     "fitmentTable": [],
     "collectedAt": "2026-04-09T06:58:14.949Z"
+  },
+  {
+    "id": 98,
+    "name": "Mobil 1 5W-20 6 Pack 1 Liter US Made Automotive Engine Oil Lubricant",
+    "oem": "",
+    "description": "High-quality auto parts",
+    "image": "https://s.alicdn.com/@sc04/kf/A67df656a9d7f4f3aa0ed205c2abe24e4d.jpg,https://s.alicdn.com/@img/imgextra/i3/O1CN01cbEaKF1YIzoMkO0fS_!!6000000003037-2-tps-300-300.png,https://s.alicdn.com/@img/imgextra/i4/O1CN017fKWgn1TOQQQtZBdg_!!6000000002372-2-tps-300-300.png,https://s.alicdn.com/@img/imgextra/i3/O1CN01TbQNWM1edxdI2lOFH_!!6000000003895-2-tps-300-300.png,https://s.alicdn.com/@img/imgextra/i2/O1CN01GbklvK23NLezYrFLb_!!6000000007243-2-tps-300-300.png,https://s.alicdn.com/@img/imgextra/i1/O1CN01qMtN0X266oEFAuweA_!!6000000007613-2-tps-208-208.png",
+    "category": "oil",
+    "url": "https://www.alibaba.com/product-detail/detail_10000011531601.html",
+    "fitmentTable": [],
+    "collectedAt": "2026-04-09T07:04:10.803Z"
   }
 ]
