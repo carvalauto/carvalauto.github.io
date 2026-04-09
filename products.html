@@ -352,21 +352,21 @@ async function loadProducts() {
 // 后台静默检查更新（用 GitHub API 获取最新数量）
 async function checkForUpdates(cachedCount) {
     try {
-        var resp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/products.json?t=' + Date.now(), {
-            headers: { 'Accept': 'application/vnd.github.v3+json' }
-        });
-        if (resp.ok) {
-            var data = await resp.json();
-            var content = JSON.parse(atob(data.content));
-            var latestCount = content.length;
-            // 如果数量不同，强制刷新
-            if (latestCount !== cachedCount) {
-                console.log('[Update] 产品数量变化: ' + cachedCount + ' → ' + latestCount + '，正在刷新...');
-                products = content; productsData = products;
-                localStorage.setItem('carval_products_v2', JSON.stringify({ data: content, time: Date.now() }));
-                renderProducts();
-            }
-        }
+        // 使用 CDN 获取最新数据（大文件 GitHub API 不返回 content）
+        var cdnUrl = 'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now();
+        fetch(cdnUrl)
+            .then(r => r.json())
+            .then(content => {
+                var latestCount = content.length;
+                // 如果数量不同，强制刷新
+                if (latestCount !== cachedCount) {
+                    console.log('[Update] 产品数量变化: ' + cachedCount + ' → ' + latestCount + '，正在刷新...');
+                    products = content; productsData = products;
+                    localStorage.setItem('carval_products_v2', JSON.stringify({ data: content, time: Date.now() }));
+                    renderProducts();
+                }
+            })
+            .catch(e => console.log('[Update] 检查更新失败:', e));
     } catch(e) { console.log('[Update] 检查更新失败:', e); }
 }
 async function fetchLatestProducts() {
