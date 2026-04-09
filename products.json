@@ -16889,37 +16889,6 @@
     "collectedAt": "2026-04-08T13:50:49.786Z"
   },
   {
-    "id": 80,
-    "name": "Precision Manufacturing DENSO 12v Car Ac air Conditioning Compressor 437100-7870 OEM 94812601103 for Porsche Panamera",
-    "oem": "9481260110",
-    "description": "High-quality auto parts",
-    "image": "https://s.alicdn.com/@sc04/kf/H6166923cac8842a29d5ddc50bdd149509/285723466/H6166923cac8842a29d5ddc50bdd149509.jpg,https://s.alicdn.com/@sc04/kf/H0e16537fbdea412dba6ec2029422d2707.jpg,https://s.alicdn.com/@sc04/kf/H85d57b2c14f44e1eb2823fd94d83e54f8/285723466/H85d57b2c14f44e1eb2823fd94d83e54f8.jpg,https://s.alicdn.com/@sc04/kf/H8b8470ff6aab425db22430a556608378Y/285723466/H8b8470ff6aab425db22430a556608378Y.jpg,https://s.alicdn.com/@sc04/kf/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w/285723466/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w.jpg,https://s.alicdn.com/@sc04/kf/H11a07b55890042789a3e03a09bdb4f50q.jpg",
-    "category": "german",
-    "url": "https://www.alibaba.com/product-detail/detail_1601701103204.html",
-    "fitmentTable": [],
-    "collectedAt": "2026-04-08T15:17:01.091Z"
-  },
-  {
-    "id": 81,
-    "name": "Precision Manufacturing DENSO 12v Car Ac air Conditioning Compressor 437100-7790 for Audi A4 A4L A4 Allroad A5 Q5",
-    "oem": "437100-7790",
-    "description": "High-quality auto parts",
-    "image": "https://s.alicdn.com/@sc04/kf/H6166923cac8842a29d5ddc50bdd149509/285723466/H6166923cac8842a29d5ddc50bdd149509.jpg,https://s.alicdn.com/@sc04/kf/Hdf36ffe6392b4a5f893dd48d330d6561w.jpg,https://s.alicdn.com/@sc04/kf/H85d57b2c14f44e1eb2823fd94d83e54f8/285723466/H85d57b2c14f44e1eb2823fd94d83e54f8.jpg,https://s.alicdn.com/@sc04/kf/H8b8470ff6aab425db22430a556608378Y/285723466/H8b8470ff6aab425db22430a556608378Y.jpg,https://s.alicdn.com/@sc04/kf/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w/285723466/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w.jpg",
-    "category": "german",
-    "url": "https://www.alibaba.com/product-detail/detail_1601700979891.html",
-    "fitmentTable": [],
-    "collectedAt": "2026-04-08T15:30:37.340Z",
-    "title": "Precision Manufacturing DENSO 12v Car Ac air Conditioning Compressor 437100-7790 for Audi A4 A4L A4 Allroad A5 Q5",
-    "oemCode": "437100-7790",
-    "images": [
-      "https://s.alicdn.com/@sc04/kf/H6166923cac8842a29d5ddc50bdd149509/285723466/H6166923cac8842a29d5ddc50bdd149509.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hdf36ffe6392b4a5f893dd48d330d6561w.jpg",
-      "https://s.alicdn.com/@sc04/kf/H85d57b2c14f44e1eb2823fd94d83e54f8/285723466/H85d57b2c14f44e1eb2823fd94d83e54f8.jpg",
-      "https://s.alicdn.com/@sc04/kf/H8b8470ff6aab425db22430a556608378Y/285723466/H8b8470ff6aab425db22430a556608378Y.jpg",
-      "https://s.alicdn.com/@sc04/kf/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w/285723466/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w.jpg"
-    ]
-  },
-  {
     "id": 82,
     "name": "Clearance Sale to Yota DENSO High-density Aluminum Car Radiator DA422176-1710 Honda Radiator 19010 - for Honda RYE-A51",
     "oem": "422176-1710",
@@ -17175,28 +17144,5 @@
     "url": "https://www.alibaba.com/product-detail/detail_1601380698552.html",
     "fitmentTable": [],
     "collectedAt": "2026-04-09T08:05:15.956Z"
-  },
-  {
-    "id": 100,
-    "name": "LHPJ Wholesale Price LR062666 LR002621 Drive Shaft-Front Axle Left for FREELANDER 2 (L359) 3.2 4x4 2006-2014",
-    "oem": "2006-2014",
-    "description": "Compatible with: Land Rover",
-    "image": "https://s.alicdn.com/@sc04/kf/H75873705dfe847df9f340c91ed0bc97am.jpg",
-    "category": "other",
-    "url": "https://www.alibaba.com/product-detail/LHPJ-Wholesale-Price-LR062666-LR002621-Drive_1601111567655.html",
-    "fitmentTable": [
-      {
-        "make": "Land Rover",
-        "model": "FREELANDER 2 (L359)",
-        "year": "2006-2014",
-        "engine": ""
-      }
-    ],
-    "collectedAt": "2026-04-09T16:41:40.897Z",
-    "title": "LHPJ Wholesale Price LR062666 LR002621 Drive Shaft-Front Axle Left for FREELANDER 2 (L359) 3.2 4x4 2006-2014",
-    "oemCode": "2006-2014",
-    "images": [
-      "https://s.alicdn.com/@sc04/kf/H75873705dfe847df9f340c91ed0bc97am.jpg"
-    ]
   }
 ]
