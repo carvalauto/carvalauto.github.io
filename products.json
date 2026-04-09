@@ -16889,6 +16889,37 @@
     "collectedAt": "2026-04-08T13:50:49.786Z"
   },
   {
+    "id": 80,
+    "name": "Precision Manufacturing DENSO 12v Car Ac air Conditioning Compressor 437100-7870 OEM 94812601103 for Porsche Panamera",
+    "oem": "9481260110",
+    "description": "High-quality auto parts",
+    "image": "https://s.alicdn.com/@sc04/kf/H6166923cac8842a29d5ddc50bdd149509/285723466/H6166923cac8842a29d5ddc50bdd149509.jpg,https://s.alicdn.com/@sc04/kf/H0e16537fbdea412dba6ec2029422d2707.jpg,https://s.alicdn.com/@sc04/kf/H85d57b2c14f44e1eb2823fd94d83e54f8/285723466/H85d57b2c14f44e1eb2823fd94d83e54f8.jpg,https://s.alicdn.com/@sc04/kf/H8b8470ff6aab425db22430a556608378Y/285723466/H8b8470ff6aab425db22430a556608378Y.jpg,https://s.alicdn.com/@sc04/kf/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w/285723466/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w.jpg,https://s.alicdn.com/@sc04/kf/H11a07b55890042789a3e03a09bdb4f50q.jpg",
+    "category": "german",
+    "url": "https://www.alibaba.com/product-detail/detail_1601701103204.html",
+    "fitmentTable": [],
+    "collectedAt": "2026-04-08T15:17:01.091Z"
+  },
+  {
+    "id": 81,
+    "name": "Precision Manufacturing DENSO 12v Car Ac air Conditioning Compressor 437100-7790 for Audi A4 A4L A4 Allroad A5 Q5",
+    "oem": "437100-7790",
+    "description": "High-quality auto parts",
+    "image": "https://s.alicdn.com/@sc04/kf/H6166923cac8842a29d5ddc50bdd149509/285723466/H6166923cac8842a29d5ddc50bdd149509.jpg,https://s.alicdn.com/@sc04/kf/Hdf36ffe6392b4a5f893dd48d330d6561w.jpg,https://s.alicdn.com/@sc04/kf/H85d57b2c14f44e1eb2823fd94d83e54f8/285723466/H85d57b2c14f44e1eb2823fd94d83e54f8.jpg,https://s.alicdn.com/@sc04/kf/H8b8470ff6aab425db22430a556608378Y/285723466/H8b8470ff6aab425db22430a556608378Y.jpg,https://s.alicdn.com/@sc04/kf/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w/285723466/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w.jpg",
+    "category": "german",
+    "url": "https://www.alibaba.com/product-detail/detail_1601700979891.html",
+    "fitmentTable": [],
+    "collectedAt": "2026-04-08T15:30:37.340Z",
+    "title": "Precision Manufacturing DENSO 12v Car Ac air Conditioning Compressor 437100-7790 for Audi A4 A4L A4 Allroad A5 Q5",
+    "oemCode": "437100-7790",
+    "images": [
+      "https://s.alicdn.com/@sc04/kf/H6166923cac8842a29d5ddc50bdd149509/285723466/H6166923cac8842a29d5ddc50bdd149509.jpg",
+      "https://s.alicdn.com/@sc04/kf/Hdf36ffe6392b4a5f893dd48d330d6561w.jpg",
+      "https://s.alicdn.com/@sc04/kf/H85d57b2c14f44e1eb2823fd94d83e54f8/285723466/H85d57b2c14f44e1eb2823fd94d83e54f8.jpg",
+      "https://s.alicdn.com/@sc04/kf/H8b8470ff6aab425db22430a556608378Y/285723466/H8b8470ff6aab425db22430a556608378Y.jpg",
+      "https://s.alicdn.com/@sc04/kf/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w/285723466/H2dde3b82d04b4ee1bde8bfbcdf35c1c8w.jpg"
+    ]
+  },
+  {
     "id": 82,
     "name": "Clearance Sale to Yota DENSO High-density Aluminum Car Radiator DA422176-1710 Honda Radiator 19010 - for Honda RYE-A51",
     "oem": "422176-1710",
@@ -17144,5 +17175,29 @@
     "url": "https://www.alibaba.com/product-detail/detail_1601380698552.html",
     "fitmentTable": [],
     "collectedAt": "2026-04-09T08:05:15.956Z"
+  },
+  {
+    "id": 100,
+    "name": "Repair Kit, Differential for MERCEDES-BENZ GLE (W167) A1673305500",
+    "oem": "1673305500",
+    "description": "Compatible with: Mercedes-Benz",
+    "image": "https://s.alicdn.com/@sc04/kf/A996a4622d1d94aa994a28ef43d289f3cq.jpg,https://s.alicdn.com/@sc04/kf/A793e05eaf8764cb88398182d3273c6178.jpg,https://s.alicdn.com/@sc04/kf/Scd4d943773e04464b6741455cd66f9a8d.png,https://s.alicdn.com/@sc04/kf/Ae2c1331546b54aa3bfcffc750dcff0eaB.jpg,https://s.alicdn.com/@sc01/kf/H12035f55d36f485aa872703056d0ee43T.png,https://s.alicdn.com/@img/imgextra/i1/O1CN017IIzE71MpGLv2nxMd_!!6000000001483-2-tps-260-112.png",
+    "category": "german",
+    "url": "https://www.alibaba.com/product-detail/Repair-Kit-Differential-for-MERCEDES-BENZ_1601366209511.html",
+    "fitmentTable": [
+      {
+        "make": "Mercedes-Benz",
+        "model": "GLE Coupe (C167)",
+        "year": "2020-",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "GLE (V167), GLE SUV (V167)",
+        "year": "2019-",
+        "engine": ""
+      }
+    ],
+    "collectedAt": "2026-04-09T16:44:57.772Z"
   }
 ]
