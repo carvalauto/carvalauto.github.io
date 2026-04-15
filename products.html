@@ -244,7 +244,104 @@
     <meta name="twitter:title" content="Products - Carval Auto Parts | OEM Quality Auto Parts Supplier">
     <meta name="twitter:description" content="High quality OEM auto parts for Japanese, Korean, German cars.">
     
-    <script>
+    <script
+    // ====== 0延迟实时更新 - 版本检查机制 ======
+    var currentVersion = 0;
+    var checkInterval = null;
+
+    // 检查版本更新
+    async function checkVersionUpdate() {
+        try {
+            const resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/version.json?_=' + Date.now());
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data.version && data.version > currentVersion) {
+                    console.log('[实时更新] 检测到版本更新:', currentVersion, '→', data.version);
+                    currentVersion = data.version;
+                    
+                    // 清除缓存
+                    localStorage.removeItem('carval_products_v2');
+                    localStorage.removeItem('carval_products_cache');
+                    
+                    // 重新加载产品
+                    await fetchLatestProducts();
+                    renderProducts();
+                    
+                    // 显示通知
+                    showUpdateNotification('产品数据已更新');
+                }
+            }
+        } catch(e) {
+            console.log('[实时更新] 版本检查失败:', e);
+        }
+    }
+
+    // 显示更新通知
+    function showUpdateNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+            font-size: 14px;
+            font-weight: 600;
+            animation: slideDown 0.3s ease;
+        `;
+        notification.textContent = '✅ ' + message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
+    // 添加动画样式
+    const updateStyle = document.createElement('style');
+    updateStyle.textContent = `
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    `;
+    document.head.appendChild(updateStyle);
+
+    // 启动版本检查(每5秒检查一次)
+    function startVersionCheck() {
+        // 先获取当前版本
+        fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/version.json?_=' + Date.now())
+            .then(r => r.json())
+            .then(data => {
+                if (data.version) currentVersion = data.version;
+                console.log('[实时更新] 当前版本:', currentVersion);
+                
+                // 启动定时检查
+                checkInterval = setInterval(checkVersionUpdate, 5000);
+            })
+            .catch(e => {
+                console.log('[实时更新] 获取初始版本失败:', e);
+                checkInterval = setInterval(checkVersionUpdate, 5000);
+            });
+    }
+
+    // 页面卸载时停止检查
+    window.addEventListener('beforeunload', () => {
+        if (checkInterval) clearInterval(checkInterval);
+    });
+    // ====== 0延迟实时更新结束 ======
+
+>
     // 动态 SEO 更新（基于 URL 参数或产品点击）
     (function() {
         // 检查是否有产品 ID 参数
@@ -520,7 +617,14 @@ async function loadProducts() {
         // 完成刷新动画
         var btn = document.getElementById('refreshBtn');
         if (btn) btn.classList.remove('loading');
-    } catch(e) {
+    }
+    // 启动实时更新检查
+    if (products.length > 0) {
+        // 启动实时更新检查
+        startVersionCheck();
+        console.log('[实时更新] 版本检查已启动');
+    }
+ catch(e) {
         console.error('[Products] 加载失败:', e);
         // 使用默认产品
         products = defaultProducts;
