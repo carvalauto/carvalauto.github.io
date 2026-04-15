@@ -513,7 +513,7 @@ async function loadProducts() {
         var cached = localStorage.getItem('carval_products_v2');
         if (cached) {
             var cacheData = JSON.parse(cached);
-            if (cacheData.time && (Date.now() - cacheData.time < 3600000)) {
+            if (cacheData.time && (Date.now() - cacheData.time < 0)) {
                 products = cacheData.data;
                 productsData = products;
                 renderProducts();
