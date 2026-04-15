@@ -2,16 +2,11 @@
   "files": [
     {
       "filename": "products-001.json",
-      "count": 80,
-      "idRange": "1-84"
-    },
-    {
-      "filename": "products-002.json",
-      "count": 32,
-      "idRange": "85-117"
+      "count": 33,
+      "idRange": "1-33"
     }
   ],
-  "totalProducts": 112,
-  "lastUpdated": "2026-04-15T10:00:49.390Z",
+  "totalProducts": 33,
+  "lastUpdated": "2026-04-15T17:23:06.171Z",
   "productsPerFile": 80
 }
