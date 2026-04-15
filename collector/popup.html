@@ -1,31 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<style>
-body { width: 300px; padding: 15px; font-family: Arial, sans-serif; background: #1a1a1a; color: #fff; }
-h3 { margin: 0 0 10px; color: #0f4c81; }
-.status { padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 12px; }
-.success { background: rgba(46,204,113,0.2); color: #7dcea0; }
-.error { background: rgba(230,57,70,0.2); color: #ff6b7a; }
-.info { background: rgba(52,152,219,0.2); color: #5dade2; }
-button { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 5px; cursor: pointer; font-size: 13px; }
-.btn-primary { background: #0f4c81; color: white; }
-.btn-success { background: #27ae60; color: white; }
-.btn-danger { background: #e63946; color: white; }
-input { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #333; border-radius: 5px; background: #2a2a2a; color: #fff; }
-.count { font-size: 24px; font-weight: bold; color: #e63946; }
-.log { max-height: 100px; overflow-y: auto; font-size: 10px; color: #888; margin-top: 10px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carval Collector v20</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; width: 320px; background: #1a1a1a; color: #f5f5f5; }
+    .header { background: linear-gradient(135deg, #0f4c81 0%, #1a3a5c 100%); padding: 16px; text-align: center; }
+    .logo { font-size: 18px; font-weight: 700; color: white; }
+    .logo span { color: #e63946; }
+    .version { font-size: 11px; color: #888; margin-top: 4px; }
+    .content { padding: 16px; }
+    .section { margin-bottom: 16px; }
+    .section-title { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .stat-box { background: #2a2a2a; padding: 12px; border-radius: 6px; text-align: center; }
+    .stat-num { font-size: 24px; font-weight: 700; color: #0f4c81; }
+    .stat-num.pending { color: #e63946; }
+    .stat-label { font-size: 10px; color: #888; text-transform: uppercase; margin-top: 4px; }
+    .sync-status { background: #2a2a2a; padding: 10px; border-radius: 6px; font-size: 11px; text-align: center; margin-bottom: 16px; display: none; }
+    .sync-status.success { color: #2ecc71; }
+    .sync-status.error { color: #e63946; }
+    .sync-status.info { color: #3498db; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 11px; color: #888; margin-bottom: 4px; text-transform: uppercase; }
+    .form-group input { width: 100%; padding: 10px 12px; background: #2a2a2a; border: 1px solid #333; border-radius: 4px; color: #f5f5f5; font-size: 13px; }
+    .form-group input:focus { outline: none; border-color: #0f4c81; }
+    .btn { width: 100%; padding: 12px; background: #0f4c81; color: white; border: none; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .btn:hover { background: #1a3a5c; }
+    .status { padding: 10px; border-radius: 4px; font-size: 12px; text-align: center; margin-top: 12px; display: none; }
+    .status.success { background: rgba(46,204,113,0.2); color: #2ecc71; }
+    .status.error { background: rgba(231,76,60,0.2); color: #e74c3c; }
+    .tips { background: #2a2a2a; padding: 12px; border-radius: 6px; font-size: 11px; color: #888; line-height: 1.5; }
+    .tips h4 { color: #f5f5f5; margin-bottom: 6px; font-size: 12px; }
+    .tips li { margin-bottom: 4px; }
+    .footer { text-align: center; padding: 12px; font-size: 10px; color: #555; border-top: 1px solid #333; }
+  </style>
 </head>
 <body>
-<h3>🚗 Carval Auto 采集器 v1.6</h3>
-<div id="status" class="status info">准备就绪</div>
-<div>已采集: <span class="count" id="count">0</span> 个商品</div>
-<button class="btn-primary" id="collectBtn">📦 采集当前商品</button>
-<button class="btn-success" id="syncBtn">🔄 同步到网站</button>
-<button class="btn-danger" id="clearBtn">🗑️ 清空列表</button>
-<div class="log" id="log"></div>
-<script src="popup.js"></script>
+  <div class="header">
+    <div class="logo">CARVAL <span>AUTO</span></div>
+    <div class="version">Product Collector v20</div>
+  </div>
+  
+  <div class="content">
+    <div class="stats">
+      <div class="stat-box">
+        <div class="stat-num" id="totalCount">-</div>
+        <div class="stat-label">Total Products</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num pending" id="pendingCount">0</div>
+        <div class="stat-label">Pending</div>
+      </div>
+    </div>
+    
+    <div class="sync-status" id="syncStatus"></div>
+    
+    <div class="section">
+      <div class="section-title">GitHub Settings</div>
+      <div class="form-group">
+        <label>Personal Access Token</label>
+        <input type="password" id="token" placeholder="ghp_xxxxxxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label>Repository</label>
+        <input type="text" id="repo" value="carvalauto/carvalauto.github.io">
+      </div>
+      <div class="form-group">
+        <label>File Path</label>
+        <input type="text" id="file" value="products.json">
+      </div>
+      <button class="btn" id="saveBtn">Save Settings</button>
+      <div class="status" id="status"></div>
+    </div>
+    
+    <div class="tips">
+      <h4>💡 使用说明</h4>
+      <ul>
+        <li>1. 打开阿里巴巴产品页面</li>
+        <li>2. 点击页面右侧「采集」按钮</li>
+        <li>3. 数据自动同步到网页和后台</li>
+        <li>4. 无需刷新，前端页面自动更新</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="footer">
+    v20 - 数据同步修复版
+  </div>
+  
+  <script src="popup.js"></script>
 </body>
 </html>
