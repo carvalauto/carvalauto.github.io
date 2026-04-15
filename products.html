@@ -559,9 +559,10 @@ async function checkForUpdates() {
 }
 
 async function fetchLatestProducts() {
+    // 🚨 优先使用 GitHub Raw（无 CDN 缓存），确保获取最新数据
     var urls = [
-        'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?_=' + Date.now(),
-        'https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?_=' + Date.now()
+        'https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?_=' + Date.now(),
+        'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?_=' + Date.now()
     ];
     
     for (var i = 0; i < urls.length; i++) {
