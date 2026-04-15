@@ -339,7 +339,7 @@
             }
             allProducts = JSON.parse(content);
             window.pSha = j.sha;
-            localStorage.setItem('cached_products', JSON.stringify({ data: allProducts, sha: j.sha, time: Date.now() }));
+            
             currentProductPage = 1;
             renderProducts();
         } catch(e) { 
@@ -512,7 +512,7 @@
             if (updateR.ok) {
                 var updateJ = await updateR.json();
                 window.pSha = updateJ.content.sha;
-                localStorage.setItem('cached_products', JSON.stringify({ data: products, sha: updateJ.content.sha, time: Date.now() }));
+                
                 allProducts = products;
                 renderProducts();
                 closeEditModal();
@@ -564,7 +564,7 @@
                 if (updateR.ok) {
                     var updateJ = await updateR.json();
                     window.pSha = updateJ.content.sha;
-                    localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
+                    
                     allProducts = p;
                     renderProducts();
                     
