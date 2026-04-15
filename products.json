@@ -18711,25 +18711,956 @@
   },
   {
     "id": 105,
-    "name": "GB Engine Cooling Fan Clutch TS16949 Certified One Year Warranty Replacement Fit Chevrolet K2500 Express 3500 GMC C1500 C2500",
-    "url": "https://www.alibaba.com/product-detail/GB-Engine-Cooling-Fan-Clutch-TS16949_62134335191.html",
-    "oem": "",
+    "name": "1 Piece 51237008745 Front Hood Lift Supports Shocks for BMW 5 Series E60 E61 520i 523i 530i 550i 51 23 7 008 745",
+    "url": "https://www.alibaba.com/product-detail/1-Piece-51237008745-Front-Hood-Lift_1601185153380.html",
+    "oem": "5123700874",
     "images": [
-      "https://s.alicdn.com/@sc04/kf/HTB1.quxaCWD3KVjSZSgq6ACxVXa7.jpg",
-      "https://s.alicdn.com/@sc04/kf/H804fecc803bf4719b4452e8b9db06660y.jpg",
-      "https://s.alicdn.com/@sc04/kf/HTB1iGmBaBGw3KVjSZFwq6zQ2FXaw.jpg",
-      "https://s.alicdn.com/@sc04/kf/H417e07a9805148eea73918e7fb90d32eY.jpg",
-      "https://s.alicdn.com/@sc04/kf/HTB14aSxaBSD3KVjSZFqq6A4bpXa6.jpg",
-      "https://s.alicdn.com/@img/imgextra/i4/O1CN018KnDNq1JleFgkjLRq_!!6000000001069-2-tps-447-132.png"
+      "https://s.alicdn.com/@sc04/kf/Hf173b3cad7b44599b9067b894eb39dbci.jpg",
+      "https://s.alicdn.com/@sc04/kf/H8fc318d0ac524396836e21670e3d0175D.jpg",
+      "https://s.alicdn.com/@sc04/kf/Hcb494ebc5fea4c82bad51fa63e0b9758b.jpg",
+      "https://s.alicdn.com/@sc04/kf/H782d7f20c8244fe5be5bc86388284077i.jpg",
+      "https://s.alicdn.com/@sc04/kf/H47ac20dbfc6e45339abfff0d4cda5fdcy.jpg",
+      "https://s.alicdn.com/@sc04/kf/H974cadecedb44895ab8614cf485a2100Q.jpg"
     ],
-    "category": "ALL",
-    "fitmentTable": [],
-    "createdAt": "2026-04-15T06:01:54.110Z",
-    "updatedAt": "2026-04-15T06:01:54.111Z",
+    "category": "GERMAN",
+    "fitmentTable": [
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2001.09-2005.02",
+        "engine": "320 d (110KW,150PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.03-2010.05",
+        "engine": "525 d (145KW,197PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.09-2008.09",
+        "engine": "525 xd (145KW,197PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.03-2009.12",
+        "engine": "540 i (225KW,306PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "2004.03-2006.05",
+        "engine": "318 Ci (110KW,150PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2004.09-2007.02",
+        "engine": "530 xi (190KW,258PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Compact",
+        "year": "2002.06-2005.02",
+        "engine": "316 ti (85KW,115PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Compact",
+        "year": "2001.04-2004.12",
+        "engine": "325 ti (141KW,192PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Compact",
+        "year": "2003.03-2005.02",
+        "engine": "318 td (85KW,115PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.03-2009.10",
+        "engine": "530 xi (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2005.03-2010.05",
+        "engine": "525 i (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.03-2010.01",
+        "engine": "523 i (140KW,190PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2005.07-2010.12",
+        "engine": "550 i (270KW,367PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2004.10-2007.02",
+        "engine": "523 i (130KW,177PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "1999.06-2000.05",
+        "engine": "328 i (142KW,193PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "1997.12-2001.09",
+        "engine": "318 i (87KW,118PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.01-2010.12",
+        "engine": "535 d (210KW,286PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "2000.01-2006.05",
+        "engine": "320 Ci (125KW,170PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.03-2010.05",
+        "engine": "530 xi (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.03-2009.12",
+        "engine": "525 i (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2008.09-2010.03",
+        "engine": "525 i xDrive (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "1999.10-2000.09",
+        "engine": "320 i (110KW,150PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2002.09-2005.09",
+        "engine": "530 d (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.09-2010.05",
+        "engine": "530 d xDrive (173KW,235PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.01-2010.12",
+        "engine": "525 i (155KW,211PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2000.09-2005.02",
+        "engine": "320 i (125KW,170PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.01-2010.12",
+        "engine": "523 i (140KW,190PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2008.09-2010.05",
+        "engine": "525 d xDrive (145KW,197PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2001.09-2005.07",
+        "engine": "318 i (105KW,143PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "1999.10-2005.02",
+        "engine": "330 d (135KW,184PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2000.09-2005.02",
+        "engine": "325 xi (141KW,192PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2005.07-2010.12",
+        "engine": "525 xi (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "1998.03-2000.09",
+        "engine": "320 i (110KW,150PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "2000.09-2006.05",
+        "engine": "325 Ci (141KW,192PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.09-2010.05",
+        "engine": "520 d (130KW,177PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2003.03-2005.02",
+        "engine": "318 d (85KW,116PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2002.06-2005.02",
+        "engine": "316 i (85KW,115PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2000.06-2005.02",
+        "engine": "330 i (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.02-2008.08",
+        "engine": "530 xi (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Convertible",
+        "year": "2001.09-2007.12",
+        "engine": "318 Ci (105KW,143PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2001.09-2005.02",
+        "engine": "318 i (105KW,143PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.03-2009.12",
+        "engine": "523 i (140KW,190PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.03-2007.03",
+        "engine": "530 i (190KW,258PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2000.06-2005.02",
+        "engine": "330 xi (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2003.03-2005.02",
+        "engine": "318 d (85KW,116PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Convertible",
+        "year": "2000.09-2007.12",
+        "engine": "320 Ci (125KW,170PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2006.09-2008.09",
+        "engine": "530 xi (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2003.03-2005.02",
+        "engine": "330 d (150KW,204PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2001.12-2005.02",
+        "engine": "530 i (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "1998.03-2000.09",
+        "engine": "323 i (125KW,170PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2000.09-2005.02",
+        "engine": "320 i (125KW,170PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2004.06-2010.12",
+        "engine": "525 i (141KW,192PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2004.10-2007.02",
+        "engine": "523 i (130KW,177PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.03-2009.12",
+        "engine": "525 xi (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "1999.10-2005.02",
+        "engine": "330 d (135KW,184PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2005.04-2010.05",
+        "engine": "520 d (120KW,163PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.03-2007.08",
+        "engine": "530 xd (173KW,235PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2000.04-2005.02",
+        "engine": "316 i (77KW,105PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.02-2009.12",
+        "engine": "530 d (173KW,235PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2004.06-2010.12",
+        "engine": "545 i (245KW,333PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2002.08-2005.05",
+        "engine": "330 xd (150KW,204PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2001.09-2003.03",
+        "engine": "318 d (85KW,116PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Compact",
+        "year": "2001.03-2004.12",
+        "engine": "318 ti (105KW,143PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Convertible",
+        "year": "2000.04-2000.09",
+        "engine": "323 Ci (125KW,170PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2002.09-2009.12",
+        "engine": "530 d (155KW,211PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2005.02-2007.02",
+        "engine": "530 d (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.01-2010.12",
+        "engine": "525 i (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2004.09-2007.02",
+        "engine": "530 i (190KW,258PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.09-2009.12",
+        "engine": "520 d (120KW,163PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.02-2010.05",
+        "engine": "530 d (173KW,235PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.01-2010.03",
+        "engine": "525 d (145KW,197PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.01-2010.03",
+        "engine": "525 i (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.09-2007.02",
+        "engine": "520 d (110KW,150PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2008.09-2010.12",
+        "engine": "525 i xDrive (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.09-2009.12",
+        "engine": "520 d (130KW,177PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.02-2010.12",
+        "engine": "M5 (373KW,507PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2003.09-2005.02",
+        "engine": "525 i (141KW,192PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "2000.04-2006.07",
+        "engine": "316 Ci (77KW,105PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.02-2007.02",
+        "engine": "530 xd (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.09-2009.12",
+        "engine": "550 i (270KW,367PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.01-2010.12",
+        "engine": "525 xi (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.09-2009.12",
+        "engine": "520 i (125KW,170PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2005.02-2007.02",
+        "engine": "530 xd (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2005.03-2010.05",
+        "engine": "525 i (155KW,211PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.09-2010.12",
+        "engine": "520 i (125KW,170PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "1999.02-2001.08",
+        "engine": "320 Ci (110KW,150PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2002.02-2005.02",
+        "engine": "316 i (85KW,115PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.07-2010.08",
+        "engine": "520 i (120KW,163PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.01-2010.03",
+        "engine": "535 d (210KW,286PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "1999.10-2001.09",
+        "engine": "318 i (87KW,118PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "1998.12-2002.02",
+        "engine": "316 i (77KW,105PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2000.06-2005.02",
+        "engine": "330 i (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "2003.03-2006.07",
+        "engine": "330 Cd (150KW,204PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.09-2010.02",
+        "engine": "520 i (115KW,156PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.03-2009.12",
+        "engine": "530 i (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2000.09-2005.02",
+        "engine": "325 i (141KW,192PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2000.01-2003.03",
+        "engine": "330 xd (135KW,184PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2008.09-2009.12",
+        "engine": "525 d xDrive (145KW,197PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.09-2008.08",
+        "engine": "525 xd (145KW,197PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2002.03-2005.02",
+        "engine": "316 i (85KW,115PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "1999.04-2000.09",
+        "engine": "323 Ci (125KW,170PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2002.10-2003.03",
+        "engine": "318 d (85KW,115PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.07-2010.03",
+        "engine": "525 i (155KW,211PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2004.06-2010.03",
+        "engine": "525 d (130KW,177PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "2001.09-2004.02",
+        "engine": "318 Ci (105KW,143PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "1998.04-2001.09",
+        "engine": "320 d (100KW,136PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.03-2007.03",
+        "engine": "525 i (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Compact",
+        "year": "2001.06-2005.02",
+        "engine": "316 ti (85KW,115PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.03-2009.12",
+        "engine": "530 i (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "1998.02-2000.06",
+        "engine": "328 i (142KW,193PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2000.03-2001.09",
+        "engine": "320 d (100KW,136PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2000.06-2005.02",
+        "engine": "330 xi (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2005.09-2007.02",
+        "engine": "520 d (110KW,150PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2003.07-2005.08",
+        "engine": "545 i (245KW,333PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Compact",
+        "year": "2001.09-2005.02",
+        "engine": "320 td (110KW,150PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.01-2010.12",
+        "engine": "530 i (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "2003.11-2006.07",
+        "engine": "320 Cd (110KW,150PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "2000.06-2006.07",
+        "engine": "330 xi (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2001.09-2005.05",
+        "engine": "320 d (110KW,150PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2004.03-2010.05",
+        "engine": "530 d (155KW,211PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2008.09-2009.12",
+        "engine": "530 i xDrive (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2007.03-2007.08",
+        "engine": "530 xd (173KW,235PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2000.09-2005.02",
+        "engine": "325 xi (141KW,192PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2004.09-2010.03",
+        "engine": "535 d (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Convertible",
+        "year": "2005.08-2007.12",
+        "engine": "330 Cd (150KW,204PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2003.03-2005.02",
+        "engine": "330 d (150KW,204PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2006.09-2010.03",
+        "engine": "530 i (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Convertible",
+        "year": "2000.06-2006.08",
+        "engine": "330 Ci (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2003.07-2010.03",
+        "engine": "520 i (125KW,170PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.09-2007.02",
+        "engine": "540 i (220KW,299PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.09-2007.03",
+        "engine": "530 d (170KW,231PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2005.04-2007.02",
+        "engine": "530 xi (190KW,258PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2000.09-2005.02",
+        "engine": "325 i (141KW,192PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2008.09-2010.05",
+        "engine": "530 i xDrive (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2006.12-2010.03",
+        "engine": "520 i (120KW,163PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.09-2009.12",
+        "engine": "530 d xDrive (173KW,235PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "1998.12-2000.05",
+        "engine": "328 Ci (142KW,193PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.03-2009.12",
+        "engine": "523 i (140KW,190PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2004.03-2007.03",
+        "engine": "525 d (130KW,177PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2005.04-2007.02",
+        "engine": "525 xi (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "1999.12-2001.08",
+        "engine": "318 Ci (87KW,118PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2004.03-2007.03",
+        "engine": "525 d (120KW,163PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2004.03-2005.09",
+        "engine": "530 d (160KW,218PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Coupe",
+        "year": "2002.06-2006.07",
+        "engine": "316 Ci (85KW,115PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2002.09-2004.12",
+        "engine": "330 xd (150KW,204PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2000.01-2003.02",
+        "engine": "330 xd (135KW,184PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2004.09-2009.12",
+        "engine": "M5 (373KW,507PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2004.09-2010.12",
+        "engine": "535 d (200KW,272PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2007.01-2010.03",
+        "engine": "525 i (155KW,211PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2004.12-2010.03",
+        "engine": "525 d (120KW,163PS)"
+      },
+      {
+        "make": "BMW",
+        "model": "3 Convertible",
+        "year": "2000.09-2006.08",
+        "engine": "325 Ci (141KW,192PS)"
+      },
+      {
+        "make": "ALPINA",
+        "model": "B5 Estate",
+        "year": "2007.10-2010.03",
+        "engine": "S (390KW,530PS)"
+      },
+      {
+        "make": "ALPINA",
+        "model": "B5 Estate",
+        "year": "2005.03-2010.09",
+        "engine": "4.4 (368KW,500PS)"
+      },
+      {
+        "make": "ALPINA",
+        "model": "B5",
+        "year": "2007.10-2010.03",
+        "engine": "S (390KW,530PS)"
+      },
+      {
+        "make": "ALPINA",
+        "model": "B5",
+        "year": "2005.03-2010.09",
+        "engine": "4.4 (368KW,500PS)"
+      }
+    ],
+    "createdAt": "2026-04-15T06:02:27.626Z",
+    "updatedAt": "2026-04-15T06:02:27.626Z",
     "seo": {
-      "metaTitle": "GB Engine Cooling Fan Clutch TS16949 Certified One Year Warr",
-      "metaDescription": "Buy GB Engine Cooling Fan Clutch TS16949 Certified One Year Warranty Replacement Fit Chevrolet K2500 Express 3500 GMC C1500 C2500. High quality auto parts.",
-      "imageAlt": "GB Engine Cooling Fan Clutch TS16949 Certified One Year Warranty Replacement Fit Chevrolet K2500 Express 3500 GMC C1500 C2500"
+      "metaTitle": "1 Piece 51237008745 Front Hood Lift Supports Shocks for BMW ",
+      "metaDescription": "Buy 1 Piece 51237008745 Front Hood Lift Supports Shocks for BMW 5 Series E60 E61 520i 523i 530i 550i 51 23 7 008 745. High quality auto parts.",
+      "imageAlt": "1 Piece 51237008745 Front Hood Lift Supports Shocks for BMW 5 Series E60 E61 520i 523i 530i 550i 51 23 7 008 745"
     }
   }
 ]
