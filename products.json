@@ -18753,8 +18753,8 @@
   },
   {
     "id": 106,
-    "name": "41612990344 51232990344 Front Hood Lift Support Shocks Gas Spring for BMW X1 E84 18D 4161 2990 344",
-    "url": "https://www.alibaba.com/product-detail/41612990344-51232990344-Front-Hood-Lift-Support_1600982577646.html",
+    "name": "1 Piece 51247204366 Trunk Lid Return Spring Tension Tailgate Boot Strut for BMW F10 528i 535i 550i 51 24 7 204 366",
+    "url": "https://www.alibaba.com/product-detail/1-Piece-51247204366-Trunk-Lid-Return_1600755790794.html",
     "oem": "",
     "images": [
       "https://s.alicdn.com/@img/imgextra/i3/O1CN01XCI6FB1FJTbwfS3Ru_!!6000000000466-55-tps-20-20.svg",
@@ -18768,149 +18768,353 @@
     "fitmentTable": [
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2009.09-2012.06",
+        "model": "5",
+        "year": "2014.07-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2009.12-2015.06",
+        "model": "5",
+        "year": "2013.07-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2009.09-2011.08",
+        "model": "5",
+        "year": "2010.06-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2010.03-2015.06",
+        "model": "5",
+        "year": "2013.07-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2011.09-2015.06",
+        "model": "5",
+        "year": "2013.07-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2013.09-2015.06",
+        "model": "5",
+        "year": "2010.09-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2013.03-2015.06",
+        "model": "5",
+        "year": "2011.03-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2011.03-2015.06",
+        "model": "5",
+        "year": "2013.07-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2012.07-2015.06",
+        "model": "5",
+        "year": "2011.09-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2012.07-2015.06",
+        "model": "5",
+        "year": "2013.09-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2012.04-2015.06",
+        "model": "5",
+        "year": "2011.09-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2009.10-2015.06",
+        "model": "5",
+        "year": "2011.05-2013.06",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
+        "model": "5",
+        "year": "2011.09-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2011.09-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2011.09-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2011.03-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2011.09-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2011.09-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2011.12-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2010.06-2014.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.01-2014.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.01-2014.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.01-2014.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.10-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.10-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2010.01-2011.08",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2010.03-2013.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.10-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2011.09-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2014.07-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2014.07-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2010.01-2011.08",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2009.06-2011.08",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
         "year": "2010.03-2011.08",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2010.03-2015.06",
+        "model": "5",
+        "year": "2010.01-2016.10",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2009.03-2015.06",
+        "model": "5",
+        "year": "2010.03-2013.06",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2009.03-2015.06",
+        "model": "5",
+        "year": "2010.06-2014.06",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2010.03-2015.06",
+        "model": "5",
+        "year": "2010.03-2011.08",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2010.03-2015.06",
+        "model": "5",
+        "year": "2010.01-2011.08",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2009.10-2015.06",
+        "model": "5",
+        "year": "2010.08-2013.06",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2009.10-2015.06",
+        "model": "5",
+        "year": "2010.09-2011.08",
         "engine": ""
       },
       {
         "make": "BMW",
-        "model": "X1",
-        "year": "2009.10-2015.06",
+        "model": "5",
+        "year": "2011.09-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2011.09-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2011.09-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.07-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.07-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.07-2014.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.07-2014.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2012.03-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.02-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2011.03-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2014.07-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2014.07-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2014.07-2016.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2013.07-2016.10",
         "engine": ""
       },
       {
         "make": "Quantity (pieces)",
-        "model": "1 - 50",
-        "year": "51 - 100",
+        "model": "1 - 10",
+        "year": "11 - 100",
         "engine": ""
       },
       {
         "make": "Lead time (days)",
-        "model": "15",
-        "year": "23",
+        "model": "16",
+        "year": "20",
         "engine": ""
       }
     ],
-    "createdAt": "2026-04-15T06:21:49.366Z",
-    "updatedAt": "2026-04-15T06:21:49.366Z",
+    "createdAt": "2026-04-15T06:23:17.538Z",
+    "updatedAt": "2026-04-15T06:23:17.538Z",
     "seo": {
-      "metaTitle": "41612990344 51232990344 Front Hood Lift Support Shocks Gas S",
-      "metaDescription": "Buy 41612990344 51232990344 Front Hood Lift Support Shocks Gas Spring for BMW X1 E84 18D 4161 2990 344.",
-      "imageAlt": "41612990344 51232990344 Front Hood Lift Support Shocks Gas Spring for BMW X1 E84 18D 4161 2990 344"
+      "metaTitle": "1 Piece 51247204366 Trunk Lid Return Spring Tension Tailgate",
+      "metaDescription": "Buy 1 Piece 51247204366 Trunk Lid Return Spring Tension Tailgate Boot Strut for BMW F10 528i 535i 550i 51 24 7 204 366.",
+      "imageAlt": "1 Piece 51247204366 Trunk Lid Return Spring Tension Tailgate Boot Strut for BMW F10 528i 535i 550i 51 24 7 204 366"
     }
   }
 ]
