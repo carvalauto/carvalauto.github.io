@@ -473,7 +473,7 @@
         imagesEditor.appendChild(newItem);
     };
     
-    // ===== 保存编辑 - 修复版：添加数据同步广播 =====
+    // ===== 保存编辑 - 修复版：支持0延迟实时更新 =====
     async function saveProductEdit() {
         if (!editingProductId) return;
         var title = document.getElementById('editTitle').value.trim();
@@ -485,6 +485,7 @@
         
         showToast('正在保存...', false);
         try {
+            // 1. 更新 products.json
             var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
             });
@@ -514,14 +515,37 @@
                 var updateJ = await updateR.json();
                 window.pSha = updateJ.content.sha;
                 
+                // 2. 更新 version.json 触发前端实时更新
+                var newVersion = Date.now();
+                var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_edit' };
+                
+                try {
+                    var vR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
+                        headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
+                    });
+                    var vJ = await vR.json();
+                    var versionBody = { 
+                        message: 'Update version after admin edit - ' + new Date().toISOString(), 
+                        content: btoa(unescape(encodeURIComponent(JSON.stringify(versionData, null, 2)))), 
+                        sha: vJ.sha 
+                    };
+                    await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
+                        method: 'PUT', 
+                        headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify(versionBody) 
+                    });
+                    console.log('[Admin] version.json已更新:', newVersion);
+                } catch(versionError) {
+                    console.warn('[Admin] 更新version.json失败:', versionError);
+                }
+                
                 allProducts = products;
                 renderProducts();
                 closeEditModal();
                 
-                // ===== 关键修复：广播数据变化通知前端 =====
                 broadcastDataChange('edit', editingProductId);
                 
-                showSuccessModal('保存成功！', '商品信息已更新，前端页面将自动刷新');
+                showSuccessModal('保存成功！', '商品信息已更新，前端页面将在5秒内自动刷新');
             } else {
                 var errData = await updateR.json();
                 showToast('保存失败: ' + (errData.message || '错误'), true);
