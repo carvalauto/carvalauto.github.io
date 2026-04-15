@@ -3279,188 +3279,254 @@
   },
   {
     "id": 114,
-    "name": "51717260293 51717260294 Rear Left Right Fender Lower Liner Wheel Arch Mudguard for BMW F30 F31 2011-2015 ActiveHybrid 3 N55 B30A",
-    "url": "https://www.alibaba.com/product-detail/51717260293-51717260294-Rear-Left-Right-Fender_1601727703700.html",
+    "name": "1649005401 Rear Signal Acquisition Module SAM Control Unit for Mercedes Benz A1649005401 GL350 450 550  ML300  ML350 4MATIC X164",
+    "url": "https://www.alibaba.com/product-detail/1649005401-Rear-Signal-Acquisition-Module-SAM_1601051708770.html",
     "oem": "",
     "images": [
-      "https://s.alicdn.com/@sc04/kf/Hceb44cd6efce44be86de9322ae0484a2I.png",
-      "https://s.alicdn.com/@sc04/kf/H25acc57a93eb45abaecac16b1a1148efV.jpg",
-      "https://s.alicdn.com/@sc04/kf/H760a7ef9676c4cb2a918c2a9652bf9b18.jpg",
-      "https://s.alicdn.com/@sc04/kf/H179249bbe0074df8b9b661c4effc0767a.jpg",
-      "https://sc04.alicdn.com/kf/H392145b1c3a94bd899909cd5562b68e9j.png",
-      "https://s.alicdn.com/@img/imgextra/i4/O1CN01dsw9V61Lbh0D1f9JG_!!6000000001318-2-tps-205-112.png"
+      "https://s.alicdn.com/@sc04/kf/H708c6a230ebd41eca42b2c6b65728f193.png",
+      "https://s.alicdn.com/@sc04/kf/H3a2bf7035e7540d48e53c856549bece4m.png",
+      "https://s.alicdn.com/@sc04/kf/He0b0c10a38c64bf0a151a99c6b93fa32o.jpg",
+      "https://s.alicdn.com/@sc04/kf/Hd258a1b1ed2e4094b86acd5c8621d2173.jpg",
+      "https://s.alicdn.com/@sc04/kf/Hb3d5bfb05cb54b08bd27d0d2776b5e37o.png",
+      "https://s.alicdn.com/@sc04/kf/H92434f5be8a642e8aea249bc4fd6cfe3s.jpg"
     ],
     "category": "GERMAN",
     "fitmentTable": [
       {
-        "make": "Quantity (sets)",
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 300 CDI",
+        "year": "2009-2013",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 300 CDI 4MATIC",
+        "year": "2009-2011",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 63 AMG",
+        "year": "2006-2007",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 280 / R 300",
+        "year": "2007-2014",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 450 4MATIC HYBRID",
+        "year": "2008-2010",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class R 350 4MATIC",
+        "year": "2006-2017",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "GL GL 450 4MATIC",
+        "year": "2005-2014",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 280 CDI 4MATIC / ML 300 CDI 4MATIC",
+        "year": "2005-2011",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 500 4MATIC",
+        "year": "2004-2007",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 350 4MATIC",
+        "year": "2000-2011",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 350 CDI 4MATIC",
+        "year": "2009-2013",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "GL GL 350 BlueTEC 4MATIC",
+        "year": "2008-2012",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 400 4MATIC",
+        "year": "2012-2017",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 320 CDI 4MATIC / ML 350 CDI 4MATIC",
+        "year": "2004-2011",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 350",
+        "year": "2007-2011",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 320 CDI 4MATIC / R 350 CDI 4MATIC",
+        "year": "2004-2013",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 420 CDI 4MATIC / ML 450 CDI 4MATIC",
+        "year": "2005-2010",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 63 AMG",
+        "year": "2005-2011",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 350 4MATIC",
+        "year": "2004-2014",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 280 CDI / R 300 CDI",
+        "year": "2007-2010",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "GL GL 320 CDI  / GL 350 BlueTEC 4MATIC",
+        "year": "2007-2012",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 280 CDI 4MATIC / R 300 CDI 4MATIC",
+        "year": "2006-2012",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 280 4MATIC / R 300 4MATIC",
+        "year": "2006-2006",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 320 4MATIC",
+        "year": "2012-2017",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 500 4MATIC",
+        "year": "2004-2007",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 300",
+        "year": "2009-2011",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 500 4MATIC / ML 550 4MATIC USA/JAPAN",
+        "year": "2006-2011",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "GL GL 500 4MATIC / GL 550 4MATIC USA/JAPAN",
+        "year": "2005-2012",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 500 4MATIC / R 550 4MATIC USA",
+        "year": "2006-2013",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "GL GL 420 CDI 4MATIC / GL 450 CDI 4MATIC",
+        "year": "2005-2012",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 350 BlueTEC 4MATIC",
+        "year": "2008-2012",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "R-Class commercial vehicle R 500 4MATIC / R 550 4MATIC JAPAN",
+        "year": "2007-2010",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 350",
+        "year": "2002-2011",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "GL GL 320 CDI 4MATIC / GL 350 CDI 4MATIC",
+        "year": "2005-2012",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "M-class SUV ML 350 BlueTEC 4MATIC",
+        "year": "2008-2011",
+        "engine": ""
+      },
+      {
+        "make": "Mercedes-Benz",
+        "model": "GL GL 350 CDI 4MATIC",
+        "year": "2010-2012",
+        "engine": ""
+      },
+      {
+        "make": "Quantity (pieces)",
         "model": "1 - 10",
         "year": "11 - 100",
         "engine": ""
       },
       {
         "make": "Lead time (days)",
-        "model": "7",
-        "year": "15",
+        "model": "16",
+        "year": "17",
         "engine": ""
       }
     ],
-    "createdAt": "2026-04-15T09:01:23.057Z",
-    "updatedAt": "2026-04-15T09:01:23.058Z",
+    "createdAt": "2026-04-15T09:01:54.152Z",
+    "updatedAt": "2026-04-15T09:01:54.152Z",
     "seo": {
-      "metaTitle": "51717260293 51717260294 Rear Left Right Fender Lower Liner W",
-      "metaDescription": "Buy 51717260293 51717260294 Rear Left Right Fender Lower Liner Wheel Arch Mudguard for BMW F30 F31 2011-2015 ActiveHybrid 3 N55 B30A.",
-      "imageAlt": "51717260293 51717260294 Rear Left Right Fender Lower Liner Wheel Arch Mudguard for BMW F30 F31 2011-2015 ActiveHybrid 3 N55 B30A"
-    }
-  },
-  {
-    "id": 115,
-    "name": "51227149448 51215A36F26 Auto Parts Door Lock Latch Aactuator for BMW F07 528i 535i 550i 5 Series 5122 7149 448",
-    "url": "https://www.alibaba.com/product-detail/51227149448-51215A36F26-Auto-Parts-Door-Lock_1600966679353.html",
-    "oem": "",
-    "images": [
-      "https://s.alicdn.com/@sc04/kf/H15c166172d8f447584a1a353e171a5cbt.jpg",
-      "https://s.alicdn.com/@sc04/kf/H45a4cd5f9c9847b889bd4c755663870dg.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hb77d9f7fefe742a4b4a27af494923755n.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hbfcf195b058140ed9e5e2bcc2ffe2128x.jpg",
-      "https://s.alicdn.com/@sc04/kf/H3b9fba8b30ae4ba0962d9171eedd9396N.jpg",
-      "https://s.alicdn.com/@sc04/kf/H70d0ad87bd724d1192be8dd98c53bb29U.jpg"
-    ],
-    "category": "GERMAN",
-    "fitmentTable": [
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2013.07-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2010.06-2012.06",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2009.08-2012.06",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2009.08-2012.06",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2012.07-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2010.06-2012.06",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2010.03-2012.06",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2012.07-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2012.07-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2012.07-2013.06",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2009.01-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2012.07-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2012.07-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2010.09-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2010.03-2012.06",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2012.07-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2011.04-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2013.07-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "BMW",
-        "model": "5 Gran Turismo",
-        "year": "2010.09-2017.02",
-        "engine": ""
-      },
-      {
-        "make": "Quantity (pieces)",
-        "model": "1 - 50",
-        "year": "51 - 100",
-        "engine": ""
-      },
-      {
-        "make": "Lead time (days)",
-        "model": "15",
-        "year": "23",
-        "engine": ""
-      }
-    ],
-    "createdAt": "2026-04-15T09:01:23.058Z",
-    "updatedAt": "2026-04-15T09:01:23.058Z",
-    "seo": {
-      "metaTitle": "51227149448 51215A36F26 Auto Parts Door Lock Latch Aactuator",
-      "metaDescription": "Buy 51227149448 51215A36F26 Auto Parts Door Lock Latch Aactuator for BMW F07 528i 535i 550i 5 Series 5122 7149 448.",
-      "imageAlt": "51227149448 51215A36F26 Auto Parts Door Lock Latch Aactuator for BMW F07 528i 535i 550i 5 Series 5122 7149 448"
+      "metaTitle": "1649005401 Rear Signal Acquisition Module SAM Control Unit f",
+      "metaDescription": "Buy 1649005401 Rear Signal Acquisition Module SAM Control Unit for Mercedes Benz A1649005401 GL350 450 550  ML300  ML350 4MATIC X164.",
+      "imageAlt": "1649005401 Rear Signal Acquisition Module SAM Control Unit for Mercedes Benz A1649005401 GL350 450 550  ML300  ML350 4MATIC X164"
     }
   }
 ]
