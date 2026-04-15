@@ -509,19 +509,24 @@ function closeNav() { document.getElementById('mobileNav').classList.remove('ope
 async function loadProducts() {
     var grid = document.getElementById('productsGrid');
     try {
-        // 检查是否有本地缓存（用于快速显示）
-    // 缓存已禁用 - 实时加载
-    // 后台静默检查更新
-    await fetchLatestProducts();
-    
-    if (products.length === 0) products = defaultProducts;
-    productsData = products;
-    renderProducts();
-    updateLastUpdateTime();
-    
-    // 完成刷新动画
-    var btn = document.getElementById('refreshBtn');
-    if (btn) btn.classList.remove('loading');
+        // 缓存已禁用 - 实时加载
+        await fetchLatestProducts();
+        
+        if (products.length === 0) products = defaultProducts;
+        productsData = products;
+        renderProducts();
+        updateLastUpdateTime();
+        
+        // 完成刷新动画
+        var btn = document.getElementById('refreshBtn');
+        if (btn) btn.classList.remove('loading');
+    } catch(e) {
+        console.error('[Products] 加载失败:', e);
+        // 使用默认产品
+        products = defaultProducts;
+        productsData = products;
+        renderProducts();
+    }
 }
 
 // 定期检查更新（每30秒）
