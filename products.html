@@ -226,6 +226,68 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Carval Auto Parts - High quality OEM auto parts for Japanese, Korean, German cars. AC compressors, engine oil, filters and more.">
+    <meta name="keywords" content="auto parts, OEM parts, AC compressor, engine oil, Toyota, Honda, BMW, Mercedes, car parts, Carval Auto">
+    <meta name="author" content="Carval Auto Parts">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Products - Carval Auto Parts | OEM Quality Auto Parts Supplier">
+    <meta property="og:description" content="High quality OEM auto parts for Japanese, Korean, German cars. AC compressors, engine oil, filters and more.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carvalautopart.com/products.html">
+    <meta property="og:site_name" content="Carval Auto Parts">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Products - Carval Auto Parts | OEM Quality Auto Parts Supplier">
+    <meta name="twitter:description" content="High quality OEM auto parts for Japanese, Korean, German cars.">
+    
+    <script>
+    // 动态 SEO 更新（基于 URL 参数或产品点击）
+    (function() {
+        // 检查是否有产品 ID 参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id') || urlParams.get('product');
+        
+        if (productId) {
+            // 如果有产品 ID，加载产品数据并更新 SEO
+            fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now())
+                .then(r => r.json())
+                .then(products => {
+                    const product = products.find(p => p.id == productId || p.id === parseInt(productId));
+                    if (product && product.seo) {
+                        // 更新页面标题
+                        document.title = product.seo.metaTitle;
+                        
+                        // 更新 meta description
+                        let metaDesc = document.querySelector('meta[name="description"]');
+                        if (metaDesc) {
+                            metaDesc.setAttribute('content', product.seo.metaDescription);
+                        }
+                        
+                        // 更新 meta keywords
+                        let metaKeywords = document.querySelector('meta[name="keywords"]');
+                        if (metaKeywords && product.seo.keywords) {
+                            metaKeywords.setAttribute('content', product.seo.keywords.join(', '));
+                        }
+                        
+                        // 更新 Open Graph 标签
+                        let ogTitle = document.querySelector('meta[property="og:title"]');
+                        if (ogTitle) ogTitle.setAttribute('content', product.seo.metaTitle);
+                        
+                        let ogDesc = document.querySelector('meta[property="og:description"]');
+                        if (ogDesc) ogDesc.setAttribute('content', product.seo.metaDescription);
+                        
+                        console.log('[SEO] 已更新产品 SEO:', product.name);
+                    }
+                })
+                .catch(e => console.log('[SEO] 加载产品数据失败:', e));
+        }
+    })();
+    </script>
+
 </head>
 <body>
 <header class="topbar">
