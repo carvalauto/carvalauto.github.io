@@ -51,9 +51,22 @@
         .search-box button { padding: 8px 14px; background: var(--steel); border: 1px solid var(--steel); color: white; cursor: pointer; font-size: 13px; border-radius: 0 20px 20px 0; }
         .search-box button:hover { background: var(--red); }
         
+        /* 刷新按钮 */
+        .refresh-btn { display: flex; align-items: center; gap: 4px; padding: 6px 12px; border: 1px solid var(--border); background: white; font-size: 11px; text-transform: uppercase; cursor: pointer; border-radius: 20px; flex-shrink: 0; white-space: nowrap; transition: all 0.2s; }
+        .refresh-btn:hover { background: var(--steel); border-color: var(--steel); color: white; }
+        .refresh-btn.loading { opacity: 0.7; pointer-events: none; }
+        .refresh-btn.loading i { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        /* 更新提示条 */
+        .update-banner { display: none; background: var(--red); color: white; padding: 8px 16px; text-align: center; font-size: 12px; position: sticky; top: 56px; z-index: 999; cursor: pointer; }
+        .update-banner.show { display: block; }
+        .update-banner:hover { background: var(--red-dark); }
+        
         .products-section { max-width: 1400px; margin: 0 auto; padding: 24px; }
-        .products-count { font-size: 13px; color: var(--text-soft); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+        .products-count { font-size: 13px; color: var(--text-soft); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .products-count span { color: var(--red); font-weight: 700; }
+        .last-update { font-size: 10px; color: #999; font-weight: normal; text-transform: none; }
         
         /* 产品网格 */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
@@ -166,9 +179,12 @@
             .search-box input { width: 100px; font-size: 11px; padding: 6px 10px; }
             .search-box button { padding: 6px 10px; font-size: 11px; }
             
+            /* 手机端刷新按钮 */
+            .refresh-btn { padding: 5px 8px; font-size: 10px; }
+            .refresh-btn i { font-size: 10px; }
+            
             /* 手机端产品网格 - 2列 */
             .products-section { padding: 12px; }
-
             .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             
             /* 手机端产品卡片 - 图片铺满 */
@@ -247,6 +263,10 @@
     <h1>Our <span>Product</span> Catalog</h1>
     <p>Browse our full range of OEM quality auto parts</p>
 </div>
+<!-- 更新提示条 -->
+<div class="update-banner" id="updateBanner" onclick="handleBannerClick()">
+    <i class="fas fa-sync-alt"></i> New products available! Click to refresh.
+</div>
 <div class="filter-bar">
     <span>Filter:</span>
     <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
@@ -255,13 +275,19 @@
     <button class="filter-btn" onclick="filterProducts('german', this)">German</button>
     <button class="filter-btn" onclick="filterProducts('chinese', this)">Chinese</button>
     <button class="filter-btn" onclick="filterProducts('oil', this)">Engine Oil</button>
+    <button class="refresh-btn" id="refreshBtn" onclick="forceRefresh()">
+        <i class="fas fa-sync-alt"></i> Refresh
+    </button>
     <div class="search-box">
         <input type="text" id="searchInput" placeholder="Search..." oninput="searchProducts()">
         <button><i class="fas fa-search"></i></button>
     </div>
 </div>
 <div class="products-section">
-    <div class="products-count">Showing <span id="countDisplay">0</span> products</div>
+    <div class="products-count">
+        Showing <span id="countDisplay">0</span> products
+        <span class="last-update" id="lastUpdate"></span>
+    </div>
     <div class="products-grid" id="productsGrid"></div>
     <div class="pagination" id="pagination"></div>
 </div>
@@ -313,64 +339,164 @@
     <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); nextLightboxImg()"><i class="fas fa-chevron-right"></i></span>
 </div>
 <script>
+// ===== 数据同步监听系统 v2 =====
+// 监听来自 admin 或插件的数据变化通知
+
 var products = [], productsData = [], currentFilter = 'all', currentSearch = '', currentPage = 1, itemsPerPage = 50;
+var hasPendingUpdate = false;
+var pendingUpdateData = null;
+var dataSyncChannel = null;
+
+// 初始化 BroadcastChannel
+try {
+    dataSyncChannel = new BroadcastChannel('carval_products_sync');
+    dataSyncChannel.onmessage = function(event) {
+        console.log('[Sync] 收到数据变化通知:', event.data);
+        if (event.data && event.data.type === 'products_updated') {
+            handleDataChange(event.data);
+        }
+    };
+    console.log('[Sync] BroadcastChannel 已初始化');
+} catch(e) {
+    console.log('[Sync] BroadcastChannel 不支持，使用 storage 事件');
+}
+
+// 处理数据变化
+function handleDataChange(data) {
+    console.log('[Sync] 处理数据变化:', data);
+    if (data.source === 'admin' || data.source === 'plugin') {
+        // 来自 admin 或插件的更新，强制刷新
+        console.log('[Sync] 检测到外部数据更新，强制刷新...');
+        forceRefresh();
+    }
+}
+
+// 监听 localStorage 变化（备用机制）
+window.addEventListener('storage', function(e) {
+    if (e.key === 'carval_data_change' && e.newValue) {
+        try {
+            var data = JSON.parse(e.newValue);
+            console.log('[Sync] Storage 事件收到:', data);
+            if (data.type === 'products_updated') {
+                handleDataChange(data);
+            }
+        } catch(err) {}
+    }
+});
+
+// 强制刷新
+function forceRefresh() {
+    var btn = document.getElementById('refreshBtn');
+    if (btn) btn.classList.add('loading');
+    hideUpdateBanner();
+    
+    // 清除缓存
+    localStorage.removeItem('carval_products_v2');
+    localStorage.removeItem('carval_products_cache');
+    
+    // 重新加载
+    loadProducts();
+}
+
+// 显示更新提示
+function showUpdateBanner() {
+    var banner = document.getElementById('updateBanner');
+    if (banner) {
+        banner.classList.add('show');
+        hasPendingUpdate = true;
+    }
+}
+
+function hideUpdateBanner() {
+    var banner = document.getElementById('updateBanner');
+    if (banner) {
+        banner.classList.remove('show');
+        hasPendingUpdate = false;
+    }
+}
+
+function handleBannerClick() {
+    forceRefresh();
+}
+
+// 更新最后更新时间
+function updateLastUpdateTime() {
+    var el = document.getElementById('lastUpdate');
+    if (el) {
+        var now = new Date();
+        var timeStr = now.toLocaleTimeString();
+        el.textContent = '| Updated: ' + timeStr;
+    }
+}
+
 function detectItemsPerPage() {
-    // 电脑端: 50个, 手机端: 10个 (2列×5排)
     itemsPerPage = window.innerWidth <= 768 ? 10 : 50;
 }
 detectItemsPerPage();
 window.addEventListener('resize', detectItemsPerPage);
+
 var categoryLabels = { japanese: 'Japanese', korean: 'Korean', german: 'German', chinese: 'Chinese', oil: 'Engine Oil', other: 'Other' };
 var defaultProducts = [
     { id: 1, name: "Toyota Camry Brake Pads", category: "japanese", oem: "04465-06110", description: "High-performance brake pads for Toyota Camry 2018-2023.", image: "" },
     { id: 2, name: "Honda Civic Air Filter", category: "japanese", oem: "17220-RNA-A00", description: "Genuine quality air filter for Honda Civic 2016-2021.", image: "" }
 ];
+
 function toggleNav() { document.getElementById('mobileNav').classList.toggle('open'); document.getElementById('navOverlay').classList.toggle('show'); }
 function closeNav() { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('navOverlay').classList.remove('show'); }
+
 async function loadProducts() {
-    // 强制清除旧版本缓存
-    localStorage.removeItem('carval_products_cache');
     var grid = document.getElementById('productsGrid');
     try {
+        // 检查是否有本地缓存（用于快速显示）
         var cached = localStorage.getItem('carval_products_v2');
         if (cached) {
             var cacheData = JSON.parse(cached);
             if (cacheData.time && (Date.now() - cacheData.time < 3600000)) {
-                products = cacheData.data; productsData = products;
-                renderProducts(); 
-                // 后台静默检查是否有更新
-                checkForUpdates(cacheData.data.length);
-                return;
+                products = cacheData.data;
+                productsData = products;
+                renderProducts();
+                updateLastUpdateTime();
+                console.log('[Products] 使用缓存加载，数量:', products.length);
             }
         }
     } catch(e) {}
-    grid.innerHTML = '<div style="text-align:center;padding:60px;color:#888;grid-column:1/-1;"><i class="fas fa-spinner fa-spin" style="font-size:28px;"></i><p style="margin-top:12px;">Loading products...</p></div>';
+    
+    // 后台静默检查更新
     await fetchLatestProducts();
+    
     if (products.length === 0) products = defaultProducts;
-    productsData = products; renderProducts();
+    productsData = products;
+    renderProducts();
+    updateLastUpdateTime();
+    
+    // 完成刷新动画
+    var btn = document.getElementById('refreshBtn');
+    if (btn) btn.classList.remove('loading');
 }
-// 后台静默检查更新（用 GitHub API 获取最新数量）
-async function checkForUpdates(cachedCount) {
+
+// 定期检查更新（每30秒）
+setInterval(async function() {
+    if (!hasPendingUpdate) {
+        await checkForUpdates();
+    }
+}, 30000);
+
+async function checkForUpdates() {
     try {
-        var resp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/products.json?t=' + Date.now(), {
-            headers: { 'Accept': 'application/vnd.github.v3+json' }
-        });
+        var cachedCount = productsData.length;
+        var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now());
         if (resp.ok) {
             var data = await resp.json();
-            var content = JSON.parse(atob(data.content));
-            var latestCount = content.length;
-            // 如果数量不同，强制刷新
-            if (latestCount !== cachedCount) {
-                console.log('[Update] 产品数量变化: ' + cachedCount + ' → ' + latestCount + '，正在刷新...');
-                products = content; productsData = products;
-                localStorage.setItem('carval_products_v2', JSON.stringify({ data: content, time: Date.now() }));
-                renderProducts();
+            if (Array.isArray(data) && data.length !== cachedCount) {
+                console.log('[Update] 检测到数量变化:', cachedCount, '->', data.length);
+                showUpdateBanner();
+                pendingUpdateData = data;
             }
         }
-    } catch(e) { console.log('[Update] 检查更新失败:', e); }
+    } catch(e) {}
 }
+
 async function fetchLatestProducts() {
-    // 优先使用 jsDelivr CDN（更稳定），GitHub API 备用
     var urls = [
         'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?_=' + Date.now(),
         'https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?_=' + Date.now()
@@ -382,27 +508,17 @@ async function fetchLatestProducts() {
             if (resp.ok) {
                 var data = await resp.json();
                 if (Array.isArray(data) && data.length > 0) {
-                    products = data; productsData = products;
+                    products = data;
+                    productsData = products;
                     localStorage.setItem('carval_products_v2', JSON.stringify({ data: data, time: Date.now() }));
-                    if (document.getElementById('productsGrid').children.length > 0) renderProducts();
+                    console.log('[Products] 从 CDN 加载成功，数量:', data.length);
                     return;
                 }
             }
         } catch(e) { continue; }
     }
-    // 原有备用逻辑
-    try {
-        var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now());
-        if (resp.ok) {
-            var data = await resp.json();
-            if (Array.isArray(data) && data.length > 0) {
-                products = data; productsData = products;
-                localStorage.setItem('carval_products_v2', JSON.stringify({ data: data, time: Date.now() }));
-                if (document.getElementById('productsGrid').children.length > 0) renderProducts();
-            }
-        }
-    } catch(e) {}
 }
+
 function renderProducts() {
     var grid = document.getElementById('productsGrid');
     var countEl = document.getElementById('countDisplay');
@@ -450,6 +566,7 @@ function renderProducts() {
     
     renderPagination(totalPages, filtered.length);
 }
+
 function renderPagination(totalPages, totalItems) {
     var paginationEl = document.getElementById('pagination');
     if (totalPages <= 1) { paginationEl.innerHTML = ''; return; }
@@ -471,10 +588,13 @@ function renderPagination(totalPages, totalItems) {
     
     paginationEl.innerHTML = html;
 }
+
 function goToPage(page) { currentPage = page; renderProducts(); document.getElementById('productsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 function filterProducts(cat, btn) { currentFilter = cat; currentPage = 1; document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); }); btn.classList.add('active'); renderProducts(); }
 function searchProducts() { currentSearch = document.getElementById('searchInput').value.toLowerCase().trim(); currentPage = 1; renderProducts(); }
+
 var carouselImages = [], currentImgIndex = 0;
+
 function openProduct(id) {
     var p = productsData.find(function(x) { return x.id == id || x.id === parseInt(id); });
     if (!p) return;
@@ -484,7 +604,6 @@ function openProduct(id) {
     else if (p.images && Array.isArray(p.images)) carouselImages = p.images.filter(Boolean);
     currentImgIndex = 0;
     
-
     var mainImg = document.getElementById('modalMainImg');
     var thumbsEl = document.getElementById('modalThumbs');
     
@@ -519,13 +638,16 @@ function openProduct(id) {
     document.getElementById('productModal').classList.add('show');
     document.body.style.overflow = 'hidden';
 }
+
 function switchImg(index) { currentImgIndex = index; document.getElementById('modalMainImg').src = carouselImages[index]; document.querySelectorAll('.modal-thumb').forEach(function(t, i) { t.classList.toggle('active', i === index); }); }
 function closeProductModal() { document.getElementById('productModal').classList.remove('show'); document.body.style.overflow = ''; }
 function closeModal(e) { if (e.target === document.getElementById('productModal')) closeProductModal(); }
+
 function openLightbox(index) { if (carouselImages.length === 0) return; document.getElementById('lightboxImg').src = carouselImages[index]; document.getElementById('lightbox').classList.add('show'); document.body.style.overflow = 'hidden'; }
 function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); document.body.style.overflow = ''; }
 function prevLightboxImg() { currentImgIndex = (currentImgIndex - 1 + carouselImages.length) % carouselImages.length; document.getElementById('lightboxImg').src = carouselImages[currentImgIndex]; }
 function nextLightboxImg() { currentImgIndex = (currentImgIndex + 1) % carouselImages.length; document.getElementById('lightboxImg').src = carouselImages[currentImgIndex]; }
+
 document.addEventListener('keydown', function(e) {
     if (document.getElementById('productModal').classList.contains('show')) {
         if (e.key === 'Escape') closeProductModal();
@@ -538,6 +660,7 @@ document.addEventListener('keydown', function(e) {
         if (e.key === 'ArrowRight') nextLightboxImg();
     }
 });
+
 document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     var btn = this.querySelector('.modal-send-btn');
@@ -550,7 +673,9 @@ document.getElementById('modalContactForm').addEventListener('submit', async fun
         setTimeout(function() { closeProductModal(); btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message'; btn.disabled = false; document.getElementById('modalName').value = ''; document.getElementById('modalEmail').value = ''; document.getElementById('modalPhone').value = ''; document.getElementById('modalMessage').value = ''; }, 2000);
     } catch(e) { btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error'; btn.disabled = false; }
 });
+
 loadProducts();
+console.log('[Products] 页面加载完成，数据同步监听已启动');
 </script>
 </body>
 </html>
