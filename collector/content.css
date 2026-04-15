@@ -1,0 +1,13 @@
+/* content.css - 采集按钮样式 */
+#alibaba-collect-btn {
+  transition: all 0.3s ease !important;
+}
+
+#alibaba-collect-btn:hover {
+  transform: translateY(-50%) scale(1.05) !important;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5) !important;
+}
+
+#alibaba-collect-btn:active {
+  transform: translateY(-50%) scale(0.98) !important;
+}
