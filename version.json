@@ -1,5 +1,7 @@
 {
-  "version": 1776244482462,
-  "timestamp": "2026-04-15T09:14:42.462Z",
-  "source": "admin_edit"
+  "version": 1776246331821,
+  "message": "批量更新1个产品 (新增1,更新0) with SEO优化 at 2026/4/15 17:45:31",
+  "totalProducts": 111,
+  "lastUpdate": "2026-04-15T09:45:31.842Z",
+  "source": "batch_upload_v30"
 }
