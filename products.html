@@ -510,19 +510,7 @@ async function loadProducts() {
     var grid = document.getElementById('productsGrid');
     try {
         // 检查是否有本地缓存（用于快速显示）
-        var cached = localStorage.getItem('carval_products_v2');
-        if (cached) {
-            var cacheData = JSON.parse(cached);
-            if (cacheData.time && (Date.now() - cacheData.time < 0)) {
-                products = cacheData.data;
-                productsData = products;
-                renderProducts();
-                updateLastUpdateTime();
-                console.log('[Products] 使用缓存加载，数量:', products.length);
-            }
-        }
-    } catch(e) {}
-    
+    // 缓存已禁用 - 实时加载
     // 后台静默检查更新
     await fetchLatestProducts();
     
@@ -573,7 +561,7 @@ async function fetchLatestProducts() {
                 if (Array.isArray(data) && data.length > 0) {
                     products = data;
                     productsData = products;
-                    localStorage.setItem('carval_products_v2', JSON.stringify({ data: data, time: Date.now() }));
+                    
                     console.log('[Products] 从 CDN 加载成功，数量:', data.length);
                     return;
                 }
