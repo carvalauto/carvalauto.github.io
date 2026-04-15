@@ -260,7 +260,52 @@
     </div>
     
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script>
+    <script
+    // ====== 后台0延迟更新 ======
+    var adminCurrentVersion = 0;
+    var adminCheckInterval = null;
+
+    async function adminCheckVersion() {
+        try {
+            const resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/version.json?_=' + Date.now());
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data.version && data.version > adminCurrentVersion) {
+                    console.log('[后台更新] 检测到更新:', adminCurrentVersion, '→', data.version);
+                    adminCurrentVersion = data.version;
+                    
+                    // 重新加载商品
+                    loadProducts();
+                    
+                    // 显示通知
+                    showToast('数据已更新,正在刷新...');
+                }
+            }
+        } catch(e) {
+            console.log('[后台更新] 检查失败:', e);
+        }
+    }
+
+    function startAdminVersionCheck() {
+        fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/version.json?_=' + Date.now())
+            .then(r => r.json())
+            .then(data => {
+                if (data.version) adminCurrentVersion = data.version;
+                console.log('[后台更新] 当前版本:', adminCurrentVersion);
+                adminCheckInterval = setInterval(adminCheckVersion, 5000);
+            })
+            .catch(e => {
+                console.log('[后台更新] 获取初始版本失败:', e);
+                adminCheckInterval = setInterval(adminCheckVersion, 5000);
+            });
+    }
+
+    window.addEventListener('beforeunload', () => {
+        if (adminCheckInterval) clearInterval(adminCheckInterval);
+    });
+    // ====== 后台0延迟更新结束 ======
+
+>
     // ===== 数据同步通知系统 v2 =====
     // 使用 BroadcastChannel 通知同源页面数据变化
     var dataSyncChannel = null;
@@ -328,7 +373,12 @@
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         try {
             var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
+                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+    // 启动后台实时更新
+    if (!adminCheckInterval && allProducts && allProducts.length > 0) {
+        startAdminVersionCheck();
+    }
+ 
             });
             var j = await r.json();
             var content;
