@@ -1,7 +1,5 @@
 {
-  "version": 1776243762446,
-  "message": "批量更新2个产品 (新增2,更新0) at 2026/4/15 17:02:42",
-  "totalProducts": 110,
-  "lastUpdate": "2026-04-15T09:02:42.447Z",
-  "source": "batch_upload"
+  "version": 1776244246055,
+  "timestamp": "2026-04-15T09:10:46.055Z",
+  "source": "admin_edit"
 }
