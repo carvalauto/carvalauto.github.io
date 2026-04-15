@@ -69,11 +69,18 @@
     "name": "51450-S84-A01 51450-SDA-A01 51460-SDA-A01 51460-S84-A01 New Condition OEM Front Upper Control Arm  for Honda Accord CG 1997-2003",
     "oem": "1997-2003",
     "description": "High-quality auto parts",
-    "image": "https://s.alicdn.com/@sc04/kf/H4b1946ad7b6e4a18819b349593881670q.jpg,https://s.alicdn.com/@sc04/kf/Ha0a74b85850b4c95b05840e4f01872924.jpg,https://s.alicdn.com/@sc04/kf/H171f22a4648d480fa9a0fe2cb3e26166J.jpg,https://s.alicdn.com/@img/imgextra/i3/O1CN01cbEaKF1YIzoMkO0fS_!!6000000003037-2-tps-300-300.png,https://s.alicdn.com/@img/imgextra/i4/O1CN017fKWgn1TOQQQtZBdg_!!6000000002372-2-tps-300-300.png,https://s.alicdn.com/@img/imgextra/i3/O1CN01TbQNWM1edxdI2lOFH_!!6000000003895-2-tps-300-300.png",
+    "image": "https://s.alicdn.com/@sc04/kf/H4b1946ad7b6e4a18819b349593881670q.jpg,https://s.alicdn.com/@sc04/kf/Ha0a74b85850b4c95b05840e4f01872924.jpg,https://s.alicdn.com/@sc04/kf/H171f22a4648d480fa9a0fe2cb3e26166J.jpg",
     "category": "japanese",
     "url": "https://www.alibaba.com/product-detail/detail_1601563120414.html",
     "fitmentTable": [],
-    "collectedAt": "2026-04-08T18:15:37.221Z"
+    "collectedAt": "2026-04-08T18:15:37.221Z",
+    "title": "51450-S84-A01 51450-SDA-A01 51460-SDA-A01 51460-S84-A01 New Condition OEM Front Upper Control Arm  for Honda Accord CG 1997-2003",
+    "oemCode": "1997-2003",
+    "images": [
+      "https://s.alicdn.com/@sc04/kf/H4b1946ad7b6e4a18819b349593881670q.jpg",
+      "https://s.alicdn.com/@sc04/kf/Ha0a74b85850b4c95b05840e4f01872924.jpg",
+      "https://s.alicdn.com/@sc04/kf/H171f22a4648d480fa9a0fe2cb3e26166J.jpg"
+    ]
   },
   {
     "id": 90,
@@ -1951,68 +1958,1022 @@
   },
   {
     "id": 106,
-    "name": "51238240596 Front Hood Lift Support Shocks Gas Spring for BMW E65 E66 E67 745i 750i 7 Series 5123 8240 596",
-    "url": "https://www.alibaba.com/product-detail/51238240596-Front-Hood-Lift-Support-Shocks_1600982557683.html",
+    "name": "34356870353 Auto Car Parts Front Brake Pad Wear Sensor for BMW X5 G05 X6 G06 F96 X7 G07 34 35 6 870 353",
+    "url": "https://www.alibaba.com/product-detail/34356870353-Auto-Car-Parts-Front-Brake_1600960742064.html",
     "oem": "",
     "images": [
-      "https://s.alicdn.com/@sc04/kf/H78f1ce1525d84d71a5e2f6d06875ff43B.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hfe4ed3950ab84d23aea3f182a140733fL.jpg",
-      "https://s.alicdn.com/@sc04/kf/H6e26b9da7548470691b2bd9d2848b69cS.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hc0d885c0c87348c29cab80fa2feb5d64N.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hd12cb559acaf46d9bd19901be96c15ebz.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hd50fbbbf481241eaa3baf30bfb3274f9R.jpg"
+      "https://s.alicdn.com/@sc04/kf/Hd0cef492ebf24d19a435f4637dd80039k.jpg",
+      "https://s.alicdn.com/@sc04/kf/He9c0634e438c4150be5644c6eec6f47ed.jpg",
+      "https://s.alicdn.com/@sc04/kf/H4c5531adb594445d8fe9e738804d097dR.jpg",
+      "https://s.alicdn.com/@sc04/kf/H66917a3e539e4569bd699049d4bd44f1J.jpg",
+      "https://s.alicdn.com/@sc04/kf/Hd3ed96ee37884caea2799b2ea780c415j.jpg",
+      "https://s.alicdn.com/@sc04/kf/H681edbd46934428895cb568e26fb312fQ.jpg"
     ],
     "category": "GERMAN",
     "fitmentTable": [
       {
-        "make": "bmw",
-        "model": "7' series 750Li",
-        "year": "2004-2019",
+        "make": "BMW",
+        "model": "4 Convertible",
+        "year": "2020.11-",
         "engine": ""
       },
       {
-        "make": "bmw",
-        "model": "7 (E65, E66, E67)",
-        "year": "2001-2009",
+        "make": "BMW",
+        "model": "X5",
+        "year": "2018.08-2023.03",
         "engine": ""
       },
       {
-        "make": "bmw",
-        "model": "7' series 745Li",
-        "year": "2000-2005",
+        "make": "BMW",
+        "model": "X4",
+        "year": "2018.09-2020.06",
         "engine": ""
       },
       {
-        "make": "bmw",
-        "model": "7' series 740Li",
-        "year": "2004-2022",
+        "make": "BMW",
+        "model": "8 Coupe",
+        "year": "2018.07-2020.10",
         "engine": ""
       },
       {
-        "make": "bmw",
-        "model": "7' series 730Li",
-        "year": "2002-2022",
+        "make": "BMW",
+        "model": "8 Gran Coupe",
+        "year": "2019.07-2020.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Gran Coupe",
+        "year": "2021.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring Van",
+        "year": "2019.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "8 Convertible",
+        "year": "2020.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2018.07-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2017.08-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2017.08-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X4",
+        "year": "2018.04-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Gran Coupe",
+        "year": "2022.05-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2017.08-2020.03",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2017.03-2023.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X5",
+        "year": "2020.12-2023.03",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2019.12-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2019.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "iX (I20)",
+        "year": "2025.03-...",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X4",
+        "year": "2021.08-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2015.09-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2018.04-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2021.03-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "6 Gran Turismo",
+        "year": "2018.07-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2020.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X7",
+        "year": "2022.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2017.07-2019.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X5 Van",
+        "year": "2019.11-2023.03",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2017.07-2019.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X5",
+        "year": "2018.08-2020.07",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2018.09-2019.08",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2019.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2015.11-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2020.04-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "8 Convertible",
+        "year": "2018.11-2020.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2019.09-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2020.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2017.12-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2020.08-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2020.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2020.07-2023.05",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X7",
+        "year": "2020.12-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2015.07-2019.02",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X6",
+        "year": "2019.08-2020.07",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2018.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2020.07-2022.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2018.07-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2020.03-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2019.03-2020.03",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X5",
+        "year": "2023.04-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X6",
+        "year": "2023.04-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X6",
+        "year": "2020.05-2023.03",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "iX (I20)",
+        "year": "2022.01-...",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2019.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X6",
+        "year": "2020.08-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2019.03-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2017.07-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Gran Coupe",
+        "year": "2022.09-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "8 Gran Coupe",
+        "year": "2020.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "i4",
+        "year": "2022.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X4",
+        "year": "2018.04-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "Z4 Roadster",
+        "year": "2018.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "6 Gran Turismo",
+        "year": "2019.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X4",
+        "year": "2018.04-2020.03",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2017.03-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X6",
+        "year": "2020.12-2023.03",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2017.03-2019.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Convertible",
+        "year": "2021.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2022.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X4",
+        "year": "2020.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "2 Coupe",
+        "year": "2022.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "iX",
+        "year": "2021.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2016.07-2019.02",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2022.05-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "i4",
+        "year": "2024.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3 Van",
+        "year": "2019.09-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "8 Coupe",
+        "year": "2019.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "i4",
+        "year": "2021.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X5",
+        "year": "2019.06-2023.03",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "8 Convertible",
+        "year": "2019.07-2020.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2016.07-2020.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2017.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X5",
+        "year": "2023.06-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2016.03-2019.02",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2021.03-2022.05",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring Van",
+        "year": "2020.03-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2017.03-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X7",
+        "year": "2020.08-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X7",
+        "year": "2019.03-2020.08",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2020.07-2023.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2017.03-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2020.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2022.05-2023.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2015.11-2019.02",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2020.11-2023.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Gran Coupe",
+        "year": "2022.03-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2019.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2016.09-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2023.01-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "2 Coupe",
+        "year": "2022.04-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2019.11-2023.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2021.03-2022.05",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2020.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Convertible",
+        "year": "2021.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2020.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring",
+        "year": "2017.07-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring Van",
+        "year": "2019.11-2022.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Coupe",
+        "year": "2021.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "8 Convertible",
+        "year": "2019.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "6 Gran Turismo",
+        "year": "2020.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2018.11-2020.02",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2019.07-2023.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2018.08-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2020.04-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring Van",
+        "year": "2019.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X6",
+        "year": "2020.08-2023.03",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring Van",
+        "year": "2017.03-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2019.03-2022.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2016.09-2023.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2020.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5 Touring Van",
+        "year": "2017.07-2019.11",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2022.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Gran Coupe",
+        "year": "2024.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2019.07-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2020.04-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Coupe",
+        "year": "2020.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X4",
+        "year": "2021.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring Van",
+        "year": "2019.07-2020.02",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Coupe",
+        "year": "2021.03-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "8 Coupe",
+        "year": "2019.07-2020.10",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3 Van",
+        "year": "2017.08-2019.08",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X6",
+        "year": "2019.08-2023.03",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X4",
+        "year": "2020.04-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "6 Gran Turismo",
+        "year": "2017.06-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2019.11-2020.07",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "6 Gran Turismo",
+        "year": "2017.07-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "8 Gran Coupe",
+        "year": "2019.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X5",
+        "year": "2020.05-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2020.07-2022.05",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X5",
+        "year": "2020.08-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3 Van",
+        "year": "2018.04-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2017.07-2023.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X7",
+        "year": "2019.03-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2021.08-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "4 Coupe",
+        "year": "2020.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X4",
+        "year": "2018.04-2019.08",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X6",
+        "year": "2023.06-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2020.08-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "6 Gran Turismo",
+        "year": "2017.11-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "i4 (G26)",
+        "year": "2025.07-...",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3 Touring",
+        "year": "2019.07-2020.02",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "7",
+        "year": "2015.07-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X4",
+        "year": "2019.09-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "3",
+        "year": "2020.03-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2017.12-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2017.06-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "5",
+        "year": "2017.07-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "8 Coupe",
+        "year": "2020.11-",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "X3",
+        "year": "2018.04-2020.06",
+        "engine": ""
+      },
+      {
+        "make": "BMW",
+        "model": "2 Coupe",
+        "year": "2021.08-",
+        "engine": ""
+      },
+      {
+        "make": "ALPINA",
+        "model": "XD3",
+        "year": "2022.04-",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA",
+        "model": "SUPRA (DB_)",
+        "year": "2025.01-...",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA",
+        "model": "SUPRA",
+        "year": "2019.06-",
+        "engine": ""
+      },
+      {
+        "make": "TOYOTA",
+        "model": "SUPRA",
+        "year": "2019.03-",
         "engine": ""
       },
       {
         "make": "Quantity (pieces)",
-        "model": "1 - 50",
-        "year": "51 - 100",
+        "model": "1 - 10",
+        "year": "11 - 100",
         "engine": ""
       },
       {
         "make": "Lead time (days)",
-        "model": "15",
-        "year": "23",
+        "model": "7",
+        "year": "15",
         "engine": ""
       }
     ],
-    "createdAt": "2026-04-15T06:33:22.012Z",
-    "updatedAt": "2026-04-15T06:33:22.012Z",
+    "createdAt": "2026-04-15T06:39:28.009Z",
+    "updatedAt": "2026-04-15T06:39:28.009Z",
     "seo": {
-      "metaTitle": "51238240596 Front Hood Lift Support Shocks Gas Spring for BM",
-      "metaDescription": "Buy 51238240596 Front Hood Lift Support Shocks Gas Spring for BMW E65 E66 E67 745i 750i 7 Series 5123 8240 596.",
-      "imageAlt": "51238240596 Front Hood Lift Support Shocks Gas Spring for BMW E65 E66 E67 745i 750i 7 Series 5123 8240 596"
+      "metaTitle": "34356870353 Auto Car Parts Front Brake Pad Wear Sensor for B",
+      "metaDescription": "Buy 34356870353 Auto Car Parts Front Brake Pad Wear Sensor for BMW X5 G05 X6 G06 F96 X7 G07 34 35 6 870 353.",
+      "imageAlt": "34356870353 Auto Car Parts Front Brake Pad Wear Sensor for BMW X5 G05 X6 G06 F96 X7 G07 34 35 6 870 353"
     }
   }
 ]
