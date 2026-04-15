@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "filename": "products-001.json",
+      "count": 1,
+      "idRange": "1-1"
+    }
+  ],
+  "totalProducts": 1,
+  "lastUpdated": "2026-04-15T03:25:58.804Z",
+  "productsPerFile": 80
+}
