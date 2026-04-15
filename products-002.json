@@ -896,12 +896,9 @@
     "images": [
       "https://s.alicdn.com/@sc04/kf/H586dd831a59441629b1f0f9ba2c43b69K.jpg",
       "https://s.alicdn.com/@sc04/kf/H7f85eca995844212a58e8260d784d009u.jpg",
-      "https://s.alicdn.com/@sc04/kf/H8916bcd820d446d587bd28d66b631844F.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hb13f72f065824825b5f2625baf1e82471.jpg",
-      "https://s.alicdn.com/@sc04/kf/Ha0701075e4d04f49987f43eea28da249t.jpg",
-      "https://s.alicdn.com/@sc04/kf/Hf2063a4096ea4a2c8b846b9915472c407.jpg"
+      "https://s.alicdn.com/@sc04/kf/H8916bcd820d446d587bd28d66b631844F.jpg"
     ],
-    "category": "ALL",
+    "category": "japanese",
     "fitment": [
       {
         "make": "Subaru",
@@ -1300,7 +1297,10 @@
       "metaTitle": "No Noise Good Brake Auto Parts Car Brake Discs Automotive BR",
       "metaDescription": "Buy No Noise Good Brake Auto Parts Car Brake Discs Automotive BRAKE ROTOR for Subaru Mpreza Exiga STi/tS STi Lmpreza WRX Rex. High quality auto parts.",
       "imageAlt": "No Noise Good Brake Auto Parts Car Brake Discs Automotive BRAKE ROTOR for Subaru Mpreza Exiga STi/tS STi Lmpreza WRX Rex"
-    }
+    },
+    "title": "No Noise Good Brake Auto Parts Car Brake Discs Automotive BRAKE ROTOR for Subaru Mpreza Exiga STi/tS STi Lmpreza WRX Rex",
+    "oemCode": "",
+    "image": "https://s.alicdn.com/@sc04/kf/H586dd831a59441629b1f0f9ba2c43b69K.jpg,https://s.alicdn.com/@sc04/kf/H7f85eca995844212a58e8260d784d009u.jpg,https://s.alicdn.com/@sc04/kf/H8916bcd820d446d587bd28d66b631844F.jpg"
   },
   {
     "id": 104,
@@ -4379,6 +4379,55 @@
       "metaTitle": "51757185113 51757184990 51757184992 Engine Underbody Cover S",
       "metaDescription": "Buy 51757185113 51757184990 51757184992 Engine Underbody Cover Shield for BMW F01 F02 F07 F10 F11 5 Series 5175 7185 113 Aluminum.",
       "imageAlt": "51757185113 51757184990 51757184992 Engine Underbody Cover Shield for BMW F01 F02 F07 F10 F11 5 Series 5175 7185 113 Aluminum"
+    }
+  },
+  {
+    "id": 116,
+    "name": "Auto Turbo Timer Device with  LED Display for HKS",
+    "title": "Auto Turbo Timer Device with  LED Display for HKS",
+    "url": "https://www.alibaba.com/product-detail/Auto-Turbo-Timer-Device-with-LED_1601240392559.html",
+    "oem": "",
+    "oemCode": "",
+    "images": [
+      "https://s.alicdn.com/@sc04/kf/H6eeccd7a7d8e4828b5d9afb55bac16cbQ.jpg",
+      "https://s.alicdn.com/@sc04/kf/H561a72bad3974d5ab86deb5e453af7475.jpg",
+      "https://s.alicdn.com/@sc04/kf/H1b7b2845f8ea4bd7860f3734b91d3d5fd.jpg",
+      "https://s.alicdn.com/@sc04/kf/H6613d5a8cadf496a9725a850f7dd7ff1j.jpg",
+      "https://s.alicdn.com/@sc04/kf/H39df88f85e35456eb430c35b984ab22cr.jpg",
+      "https://s.alicdn.com/@sc04/kf/Hf0b65a9f828b4a348bf3ba3f691ec92cY.jpg"
+    ],
+    "category": "ALL",
+    "fitmentTable": [
+      {
+        "make": "Universal",
+        "model": "Universal",
+        "year": "Universal",
+        "engine": ""
+      },
+      {
+        "make": "Quantity (pieces)",
+        "model": "1 - 1",
+        "year": "2 - 100",
+        "engine": ""
+      },
+      {
+        "make": "Lead time (days)",
+        "model": "15",
+        "year": "30",
+        "engine": ""
+      }
+    ],
+    "createdAt": "2026-04-15T09:45:20.123Z",
+    "updatedAt": "2026-04-15T09:45:20.129Z",
+    "seo": {
+      "metaTitle": "Auto Turbo Timer Device with  LED Display for HKS for Uni...",
+      "metaDescription": "High quality Auto Turbo Timer Device with  LED Display for HKS  for Universal Universal, Quantity (pieces) 1 - 1, Lead time (days) 15. Professional auto...",
+      "metaKeywords": "Auto Turbo Timer Device with  LED Display for HKS, auto parts, car parts, automotive parts, Universal Universal, Quantity (pieces) 1 - 1, Lead time (days) 15, Carval Auto",
+      "urlTitle": "auto-turbo-timer-device-with-led-display-for-hks",
+      "imageAlt": "Auto Turbo Timer Device with  LED Display for HKS  - Universal Universal, Quantity (pieces) 1 - 1, Lead time (days) 15",
+      "h1Title": "Auto Turbo Timer Device with  LED Display for HKS",
+      "h2Title": "Auto Turbo Timer Device with  LED Display for HKS  for Universal Universal, Quantity (pieces) 1 - 1, Lead time (days) 15",
+      "shortTitle": "Auto Turbo Timer Device with  LED Displa"
     }
   }
 ]
