@@ -261,6 +261,36 @@
     
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
+    // ===== 数据同步通知系统 v2 =====
+    // 使用 BroadcastChannel 通知同源页面数据变化
+    var dataSyncChannel = null;
+    try {
+        dataSyncChannel = new BroadcastChannel('carval_products_sync');
+    } catch(e) {
+        console.log('BroadcastChannel 不支持，使用 localStorage 事件');
+    }
+    
+    // 广播数据变化
+    function broadcastDataChange(action, productId) {
+        var payload = {
+            type: 'products_updated',
+            action: action, // 'edit' or 'delete'
+            productId: productId,
+            timestamp: Date.now(),
+            source: 'admin'
+        };
+        
+        if (dataSyncChannel) {
+            dataSyncChannel.postMessage(payload);
+            console.log('[Sync] 已广播数据变化:', action, productId);
+        }
+        
+        // 同时更新 localStorage 作为备用机制
+        localStorage.setItem('carval_data_change', JSON.stringify(payload));
+        localStorage.removeItem('carval_data_change'); // 触发其他页面的 storage 事件
+        localStorage.setItem('carval_data_change', JSON.stringify(payload));
+    }
+    
     var GH_TOKEN = ['ghp_9gxuv4t','qZ0FL1AviV7hG','Y2Mw2uQrK81gqjjm'].join('');
     var GH_REPO = 'carvalauto/carvalauto.github.io';
     var GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
@@ -442,6 +472,7 @@
         imagesEditor.appendChild(newItem);
     };
     
+    // ===== 保存编辑 - 修复版：添加数据同步广播 =====
     async function saveProductEdit() {
         if (!editingProductId) return;
         var title = document.getElementById('editTitle').value.trim();
@@ -450,6 +481,7 @@
         var imageInputs = document.querySelectorAll('.image-item .image-url');
         var images = Array.prototype.slice.call(imageInputs).map(function(i) { return i.value.trim(); }).filter(Boolean);
         var imageStr = images.join(',');
+        
         showToast('正在保存...', false);
         try {
             var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
@@ -472,7 +504,8 @@
                 products[index].image = imageStr;
                 products[index].images = images;
             }
-            var body = { message: 'Update product: ' + editingProductId, content: btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2)))), sha: j.sha };
+            
+            var body = { message: 'Update product: ' + editingProductId + ' via admin - ' + new Date().toISOString(), content: btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2)))), sha: j.sha };
             var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
                 method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) 
             });
@@ -483,7 +516,11 @@
                 allProducts = products;
                 renderProducts();
                 closeEditModal();
-                showSuccessModal('保存成功！', '商品信息已更新');
+                
+                // ===== 关键修复：广播数据变化通知前端 =====
+                broadcastDataChange('edit', editingProductId);
+                
+                showSuccessModal('保存成功！', '商品信息已更新，前端页面将自动刷新');
             } else {
                 var errData = await updateR.json();
                 showToast('保存失败: ' + (errData.message || '错误'), true);
@@ -491,6 +528,7 @@
         } catch(e) { showToast('保存失败: ' + e.message, true); }
     }
     
+    // ===== 删除商品 - 修复版：添加数据同步广播 =====
     async function executeDelete() {
         if (!deleteTarget) return;
         var targetType = deleteTarget.type;
@@ -518,7 +556,8 @@
                 var beforeCount = p.length;
                 p = p.filter(function(x) { return x.id != targetId && x.id !== parseInt(targetId); });
                 if (beforeCount === p.length) { showToast('未找到该商品', true); return; }
-                var body = { message: 'Delete product: ' + targetId, content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
+                
+                var body = { message: 'Delete product: ' + targetId + ' via admin - ' + new Date().toISOString(), content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
                 var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
                     method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) 
                 });
@@ -528,7 +567,11 @@
                     localStorage.setItem('cached_products', JSON.stringify({ data: p, sha: updateJ.content.sha, time: Date.now() }));
                     allProducts = p;
                     renderProducts();
-                    showSuccessModal('删除成功！', '商品已删除');
+                    
+                    // ===== 关键修复：广播数据变化通知前端 =====
+                    broadcastDataChange('delete', targetId);
+                    
+                    showSuccessModal('删除成功！', '商品已删除，前端页面将自动刷新');
                 } else {
                     var errData = await updateR.json();
                     showToast('删除失败: ' + (errData.message || '错误'), true);
@@ -613,6 +656,21 @@
     
     function closeSuccessModal() { document.getElementById('successModal').classList.remove('show'); }
     
+    // ===== 事件绑定 =====
+    document.getElementById('confirmDeleteBtn').onclick = executeDelete;
+    document.getElementById('cancelDeleteBtn').onclick = closeDeleteModal;
+    document.getElementById('saveEditBtn').onclick = saveProductEdit;
+    document.getElementById('cancelEditBtn').onclick = closeEditModal;
+    document.getElementById('closeSuccessBtn').onclick = closeSuccessModal;
+    
+    // 页面加载时自动获取产品列表
+    if (checkToken()) {
+        loadProducts();
+    }
+    
+    // ===== Google Analytics 部分 =====
+    var trendChart, countryChart, deviceChart;
+    
     function initAnalytics() {
         var saved = localStorage.getItem('ga_token'); 
         var expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0'); 
@@ -654,105 +712,163 @@
         document.getElementById('dashboardSection').style.display = 'none'; 
     }
     
-    var startDate = '7daysAgo', endDate = 'yesterday';
-    function setDateRange(s, btnId) { 
-        startDate = s; 
-        document.querySelectorAll('.date-btn').forEach(function(b) { b.classList.remove('active'); }); 
-        document.getElementById(btnId).classList.add('active'); 
-        loadAllData(); 
+    document.getElementById('googleLoginBtn').onclick = handleLogin;
+    document.getElementById('logoutBtn').onclick = handleLogout;
+    
+    var currentDateRange = '7daysAgo';
+    
+    function setDateRange(range, btnId) {
+        currentDateRange = range;
+        document.querySelectorAll('.date-btn').forEach(function(b) { b.classList.remove('active'); });
+        document.getElementById(btnId).classList.add('active');
+        loadAllData();
     }
     
-    function loadAllData() { if (!accessToken) return; loadRealtime(); loadMetrics(); loadTrend(); loadCountries(); loadDevices(); }
-    
-    async function loadRealtime() {
-        try { 
-            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runRealtimeReport', { 
-                method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({ metrics: [{ name: 'activeUsers' }] }) 
-            }); 
-            var d = await r.json(); 
-            document.getElementById('statRealtime').textContent = (d.rows && d.rows[0] && d.rows[0].metricValues && d.rows[0].metricValues[0]) ? d.rows[0].metricValues[0].value : '0'; 
-        } catch(e) { document.getElementById('statRealtime').textContent = '-'; }
+    async function loadAllData() {
+        if (!accessToken) return;
+        await Promise.all([
+            fetchRealtimeData(),
+            fetchOverviewData(),
+            fetchTrafficData()
+        ]);
     }
     
-    async function loadMetrics() {
-        try { 
-            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', { 
-                method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({ dateRanges: [{ startDate: startDate, endDate: endDate }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }, { name: 'sessions' }, { name: 'averageSessionDuration' }] }) 
-            }); 
-            var d = await r.json(); 
-            var v = (d.rows && d.rows[0] && d.rows[0].metricValues) ? d.rows[0].metricValues : []; 
-            document.getElementById('statPageviews').textContent = parseInt((v[0] && v[0].value) ? v[0].value : 0).toLocaleString(); 
-            document.getElementById('statUsers').textContent = parseInt((v[1] && v[1].value) ? v[1].value : 0).toLocaleString(); 
-            document.getElementById('statSessions').textContent = parseInt((v[2] && v[2].value) ? v[2].value : 0).toLocaleString(); 
-            var dur = parseFloat((v[3] && v[3].value) ? v[3].value : 0); 
-            document.getElementById('statDuration').textContent = dur > 60 ? Math.floor(dur/60) + '分' : Math.round(dur) + '秒'; 
-        } catch(e) {}
+    async function fetchRealtimeData() {
+        try {
+            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runRealtimeReport', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ metrics: [{ name: 'activeUsers' }] })
+            });
+            var d = await r.json();
+            var count = d.rows ? d.rows[0].metricValues[0].value : '0';
+            document.getElementById('statRealtime').textContent = count;
+        } catch(e) { console.error('Realtime error:', e); }
     }
     
-    var trendChart, countryChart, deviceChart;
-    async function loadTrend() {
-        try { 
-            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', { 
-                method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({ dateRanges: [{ startDate: startDate, endDate: endDate }], dimensions: [{ name: 'date' }], metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }], orderBys: [{ dimension: { dimensionName: 'date' } }] }) 
-            }); 
-            var d = await r.json(); 
-            var labels = d.rows ? d.rows.map(function(x) { return x.dimensionValues[0].value.slice(-4); }) : []; 
-            var views = d.rows ? d.rows.map(function(x) { return parseInt(x.metricValues[0].value); }) : []; 
-            var users = d.rows ? d.rows.map(function(x) { return parseInt(x.metricValues[1].value); }) : []; 
-            if (trendChart) trendChart.destroy(); 
-            trendChart = new Chart(document.getElementById('trendChart'), { type: 'line', data: { labels: labels, datasets: [{ label: '浏览', data: views, borderColor: '#0f4c81', backgroundColor: 'rgba(15,76,129,0.1)', fill: true, tension: 0.4, pointRadius: 0 }, { label: '访客', data: users, borderColor: '#e63946', backgroundColor: 'rgba(230,57,70,0.1)', fill: true, tension: 0.4, pointRadius: 0 }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#888' } } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); 
-        } catch(e) {}
-    }
-    async function loadCountries() {
-        try { 
-            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', { 
-                method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({ dateRanges: [{ startDate: startDate, endDate: endDate }], dimensions: [{ name: 'country' }], metrics: [{ name: 'totalUsers' }], orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }], limit: 10 }) 
-            }); 
-            var d = await r.json(); 
-            var labels = d.rows ? d.rows.map(function(x) { return x.dimensionValues[0].value; }) : []; 
-            var values = d.rows ? d.rows.map(function(x) { return parseInt(x.metricValues[0].value); }) : []; 
-            if (countryChart) countryChart.destroy(); 
-            countryChart = new Chart(document.getElementById('countryChart'), { type: 'bar', data: { labels: labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#3498db', '#95a5a6', '#d35400'] }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#666' }, grid: { color: '#333' } }, y: { ticks: { color: '#666' }, grid: { color: '#333' } } } } }); 
-        } catch(e) {}
-    }
-    async function loadDevices() {
-        try { 
-            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', { 
-                method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({ dateRanges: [{ startDate: startDate, endDate: endDate }], dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'totalUsers' }] }) 
-            }); 
-            var d = await r.json(); 
-            var labels = d.rows ? d.rows.map(function(x) { return x.dimensionValues[0].value; }) : []; 
-            var values = d.rows ? d.rows.map(function(x) { return parseInt(x.metricValues[0].value); }) : []; 
-            if (deviceChart) deviceChart.destroy(); 
-            deviceChart = new Chart(document.getElementById('deviceChart'), { type: 'doughnut', data: { labels: labels, datasets: [{ data: values, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#888' } } } } }); 
-        } catch(e) {}
+    async function fetchOverviewData() {
+        try {
+            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
+                    metrics: [
+                        { name: 'screenPageViews' },
+                        { name: 'totalUsers' },
+                        { name: 'sessions' },
+                        { name: 'averageSessionDuration' }
+                    ]
+                })
+            });
+            var d = await r.json();
+            if (d.rows) {
+                var row = d.rows[0];
+                document.getElementById('statPageviews').textContent = row.metricValues[0].value;
+                document.getElementById('statUsers').textContent = row.metricValues[1].value;
+                document.getElementById('statSessions').textContent = row.metricValues[2].value;
+                var avgDur = parseFloat(row.metricValues[3].value) || 0;
+                var mins = Math.floor(avgDur / 60);
+                var secs = Math.floor(avgDur % 60);
+                document.getElementById('statDuration').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+            }
+        } catch(e) { console.error('Overview error:', e); }
     }
     
-    window.onload = function() {
-        document.getElementById('confirmDeleteBtn').onclick = executeDelete;
-        document.getElementById('cancelDeleteBtn').onclick = closeDeleteModal;
-        document.getElementById('saveEditBtn').onclick = saveProductEdit;
-        document.getElementById('cancelEditBtn').onclick = closeEditModal;
-        document.getElementById('googleLoginBtn').onclick = handleLogin;
-        document.getElementById('logoutBtn').onclick = handleLogout;
-        document.getElementById('closeSuccessBtn').onclick = closeSuccessModal;
-        
-        var cached = localStorage.getItem('cached_products');
-        if (cached) {
-            try {
-                var cachedData = JSON.parse(cached);
-                allProducts = cachedData.data;
-                window.pSha = cachedData.sha;
-                renderProducts();
-            } catch(e) {}
-        }
-        loadProducts();
-    };
+    async function fetchTrafficData() {
+        try {
+            var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
+                    dimensions: [{ name: 'date' }],
+                    metrics: [{ name: 'screenPageViews' }],
+                    orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }]
+                })
+            });
+            var d = await r.json();
+            if (d.rows) {
+                var labels = d.rows.map(function(row) { 
+                    var date = row.dimensionValues[0].value;
+                    return date.substring(4,6) + '/' + date.substring(6,8);
+                });
+                var values = d.rows.map(function(row) { return parseInt(row.metricValues[0].value); });
+                if (trendChart) trendChart.destroy();
+                var ctx = document.getElementById('trendChart').getContext('2d');
+                trendChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '浏览量',
+                            data: values,
+                            borderColor: '#0f4c81',
+                            backgroundColor: 'rgba(15,76,129,0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+                });
+            }
+            
+            // 国家分布
+            var r2 = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
+                    dimensions: [{ name: 'country' }],
+                    metrics: [{ name: 'sessions' }],
+                    orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+                    limit: 5
+                })
+            });
+            var d2 = await r2.json();
+            if (d2.rows) {
+                var cLabels = d2.rows.map(function(row) { return row.dimensionValues[0].value; });
+                var cValues = d2.rows.map(function(row) { return parseInt(row.metricValues[0].value); });
+                if (countryChart) countryChart.destroy();
+                var ctx2 = document.getElementById('countryChart').getContext('2d');
+                countryChart = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: cLabels,
+                        datasets: [{ data: cValues, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71', '#f39c12', '#9b59b6'] }]
+                    },
+                    options: { responsive: true }
+                });
+            }
+            
+            // 设备分布
+            var r3 = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
+                    dimensions: [{ name: 'deviceCategory' }],
+                    metrics: [{ name: 'sessions' }],
+                    orderBys: [{ metric: { metricName: 'sessions' }, desc: true }]
+                })
+            });
+            var d3 = await r3.json();
+            if (d3.rows) {
+                var devLabels = d3.rows.map(function(row) { return row.dimensionValues[0].value === 'desktop' ? '电脑' : row.dimensionValues[0].value === 'mobile' ? '手机' : '平板'; });
+                var devValues = d3.rows.map(function(row) { return parseInt(row.metricValues[0].value); });
+                if (deviceChart) deviceChart.destroy();
+                var ctx3 = document.getElementById('deviceChart').getContext('2d');
+                deviceChart = new Chart(ctx3, {
+                    type: 'pie',
+                    data: {
+                        labels: devLabels,
+                        datasets: [{ data: devValues, backgroundColor: ['#0f4c81', '#e63946', '#f39c12'] }]
+                    },
+                    options: { responsive: true }
+                });
+            }
+        } catch(e) { console.error('Traffic error:', e); }
+    }
     </script>
 </body>
 </html>
