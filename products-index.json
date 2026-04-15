@@ -2,11 +2,11 @@
   "files": [
     {
       "filename": "products-001.json",
-      "count": 33,
-      "idRange": "1-33"
+      "count": 1,
+      "idRange": "1-1"
     }
   ],
-  "totalProducts": 33,
-  "lastUpdated": "2026-04-15T17:23:06.171Z",
+  "totalProducts": 1,
+  "lastUpdated": "2026-04-15T17:23:15.449Z",
   "productsPerFile": 80
 }
