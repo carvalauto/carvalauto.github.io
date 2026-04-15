@@ -3,15 +3,15 @@
     {
       "filename": "products-001.json",
       "count": 80,
-      "idRange": "1-82"
+      "idRange": "1-84"
     },
     {
       "filename": "products-002.json",
       "count": 19,
-      "idRange": "84-102"
+      "idRange": "85-103"
     }
   ],
   "totalProducts": 99,
-  "lastUpdated": "2026-04-15T05:17:09.047Z",
+  "lastUpdated": "2026-04-15T05:37:53.622Z",
   "productsPerFile": 80
 }
