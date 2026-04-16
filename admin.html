@@ -525,8 +525,7 @@
 
     function closeEditModal() { document.getElementById('editModal').classList.remove('show'); editingProductId = null; }
     function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
-
-    document.getElementById('addImageBtn').onclick = function() {
+    function addNewImage() {
         var imagesEditor = document.getElementById('imagesEditor');
         var emptyTip = imagesEditor.querySelector('div[style]');
         if (emptyTip) emptyTip.remove();
@@ -534,43 +533,69 @@
         newItem.className = 'image-item';
         newItem.innerHTML = '<img src="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 60 60\'><rect fill=\'%232a2a2a\' width=\'60\' height=\'60\'/><text x=\'30\' y=\'35\' text-anchor=\'middle\' fill=\'%23666\' font-size=\'8\'>New</text></svg>"><input type="text" value="" class="image-url" placeholder="输入图片URL..."><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
         imagesEditor.appendChild(newItem);
-    };
+    }
 
-    // ===== 保存编辑 - 修复版：支持0延迟实时更新 =====
+    // ===== 保存编辑 - 完全重写版 =====
     function saveProductEdit() {
-        if (!editingProductId) return;
+        console.log('[Admin] saveProductEdit 被调用');
+        
+        if (!editingProductId) {
+            console.log('[Admin] 编辑产品ID为空，无法保存');
+            showToast('无法保存：编辑产品ID为空', true);
+            return;
+        }
+        
+        console.log('[Admin] 当前编辑产品ID:', editingProductId);
+        
         var title = document.getElementById('editTitle').value.trim();
         var category = document.getElementById('editCategory').value;
         var oem = document.getElementById('editOem').value.trim();
         var imageInputs = document.querySelectorAll('.image-item .image-url');
         var images = Array.prototype.slice.call(imageInputs).map(function(i) { return i.value.trim(); }).filter(Boolean);
         var imageStr = images.join(',');
-
+        
+        console.log('[Admin] 获取到的数据:', { title: title, category: category, oem: oem, images: images.length });
+        
         showToast('正在保存...', false);
 
-        // 1. 🚀 从 OSS 快速加载数据
-        fetch(OSS_URL + '?t=' + Date.now()).then(function(r) {
+        // 1. 从 OSS 快速加载数据
+        console.log('[Admin] 开始从OSS加载数据...');
+        fetch(OSS_URL + '?t=' + Date.now())
+        .then(function(r) {
             if (!r.ok) throw new Error('OSS加载失败');
             return r.text();
-        }).then(function(content) {
+        })
+        .then(function(content) {
             var products = JSON.parse(content);
-            console.log('[Admin] 从OSS加载产品用于编辑，数量:', products.length);
+            console.log('[Admin] 从OSS加载产品数量:', products.length);
 
             var index = products.findIndex(function(x) { return x.id == editingProductId || x.id === parseInt(editingProductId); });
+            console.log('[Admin] 找到产品索引:', index);
+            
             if (index !== -1) {
-                if (title) { products[index].name = title; products[index].title = title; }
+                if (title) { 
+                    products[index].name = title; 
+                    products[index].title = title; 
+                }
                 products[index].category = category;
                 products[index].oem = oem;
                 products[index].oemCode = oem;
                 products[index].image = imageStr;
                 products[index].images = images;
                 products[index].updatedAt = new Date().toISOString();
+                console.log('[Admin] 产品信息已更新');
+            } else {
+                throw new Error('未找到要编辑的产品');
             }
 
-            // 2. 📤 上传到 OSS
+            // 2. 上传到 OSS
+            console.log('[Admin] 开始上传到OSS...');
             return uploadToOSS('products.json', products);
-        }).then(function() {
-            // 3. 🔄 更新 version.json 触发前端实时更新
+        })
+        .then(function() {
+            console.log('[Admin] products.json 上传成功');
+            
+            // 3. 更新 version.json 触发前端实时更新
             var newVersion = Date.now();
             return uploadToOSS('version.json', {
                 version: newVersion,
@@ -579,9 +604,14 @@
                 lastUpdate: new Date().toISOString(),
                 source: 'admin_edit'
             });
-        }).then(function() {
+        })
+        .then(function() {
+            console.log('[Admin] version.json 上传成功');
+            
             return fetch(OSS_URL + '?t=' + Date.now()).then(function(r) { return r.text(); });
-        }).then(function(content) {
+        })
+        .then(function(content) {
+            console.log('[Admin] 从OSS重新加载成功');
             allProducts = JSON.parse(content);
             renderProducts();
             closeEditModal();
@@ -589,7 +619,9 @@
             broadcastDataChange('edit', editingProductId);
 
             showSuccessModal('保存成功！', '商品信息已更新，前端页面将在5秒内自动刷新');
-        }).catch(function(e) {
+        })
+        .catch(function(e) {
+            console.error('[Admin] 保存失败:', e);
             showToast('保存失败: ' + e.message, true);
         });
     }
@@ -962,13 +994,80 @@
     document.addEventListener('DOMContentLoaded', function() {
         console.log('[Admin] DOM 加载完成，开始绑定事件...');
 
-        document.getElementById('confirmDeleteBtn').onclick = executeDelete;
-        document.getElementById('cancelDeleteBtn').onclick = closeDeleteModal;
-        document.getElementById('saveEditBtn').onclick = saveProductEdit;
-        document.getElementById('cancelEditBtn').onclick = closeEditModal;
-        document.getElementById('closeSuccessBtn').onclick = closeSuccessModal;
-        document.getElementById('googleLoginBtn').onclick = handleLogin;
-        document.getElementById('logoutBtn').onclick = handleLogout;
+        var saveEditBtn = document.getElementById('saveEditBtn');
+        var cancelEditBtn = document.getElementById('cancelEditBtn');
+        var addImageBtn = document.getElementById('addImageBtn');
+        var confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        var cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        var closeSuccessBtn = document.getElementById('closeSuccessBtn');
+        var googleLoginBtn = document.getElementById('googleLoginBtn');
+        var logoutBtn = document.getElementById('logoutBtn');
+
+        if (saveEditBtn) {
+            saveEditBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('[Admin] 保存按钮被点击');
+                saveProductEdit();
+            });
+            console.log('[Admin] saveEditBtn 绑定成功');
+        }
+
+        if (cancelEditBtn) {
+            cancelEditBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeEditModal();
+            });
+            console.log('[Admin] cancelEditBtn 绑定成功');
+        }
+
+        if (addImageBtn) {
+            addImageBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('[Admin] 添加图片按钮被点击');
+                addNewImage();
+            });
+            console.log('[Admin] addImageBtn 绑定成功');
+        }
+
+        if (confirmDeleteBtn) {
+            confirmDeleteBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                executeDelete();
+            });
+            console.log('[Admin] confirmDeleteBtn 绑定成功');
+        }
+
+        if (cancelDeleteBtn) {
+            cancelDeleteBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeDeleteModal();
+            });
+            console.log('[Admin] cancelDeleteBtn 绑定成功');
+        }
+
+        if (closeSuccessBtn) {
+            closeSuccessBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeSuccessModal();
+            });
+            console.log('[Admin] closeSuccessBtn 绑定成功');
+        }
+
+        if (googleLoginBtn) {
+            googleLoginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleLogin();
+            });
+            console.log('[Admin] googleLoginBtn 绑定成功');
+        }
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleLogout();
+            });
+            console.log('[Admin] logoutBtn 绑定成功');
+        }
 
         console.log('[Admin] 事件绑定完成');
     });
