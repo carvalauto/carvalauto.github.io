@@ -649,7 +649,31 @@
                     allProducts = p;
                     renderProducts();
                     
-                    // ===== 关键修复：广播数据变化通知前端 =====
+                    // ===== 关键修复：更新 version.json 触发前端实时刷新 =====
+                    var newVersion = Date.now();
+                    var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_delete' };
+                    
+                    try {
+                        var vR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
+                            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
+                        });
+                        var vJ = await vR.json();
+                        var versionBody = { 
+                            message: 'Update version after admin delete - ' + new Date().toISOString(), 
+                            content: btoa(unescape(encodeURIComponent(JSON.stringify(versionData, null, 2)))), 
+                            sha: vJ.sha 
+                        };
+                        await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
+                            method: 'PUT', 
+                            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
+                            body: JSON.stringify(versionBody) 
+                        });
+                        console.log('[Admin] version.json已更新:', newVersion);
+                    } catch(versionError) {
+                        console.warn('[Admin] 更新version.json失败:', versionError);
+                    }
+                    
+                    // ===== 广播数据变化通知前端 =====
                     broadcastDataChange('delete', targetId);
                     
                     showSuccessModal('删除成功！', '商品已删除，前端页面将自动刷新');
@@ -991,3 +1015,4 @@
 
 </body>
 </html>
+
