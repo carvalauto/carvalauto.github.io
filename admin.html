@@ -313,11 +313,20 @@
     function generateOSSSignature(method, resource, contentType, date) {
       var stringToSign = [method, '', contentType || '', date, resource].join('\n');
       console.log('[Admin] StringToSign:', stringToSign);
+      console.log('[Admin] Method:', method, 'Resource:', resource, 'ContentType:', contentType, 'Date:', date);
 
       return new Promise(function(resolve, reject) {
+        // 检查 crypto.subtle 是否支持
+        if (!window.crypto || !window.crypto.subtle) {
+          reject(new Error('浏览器不支持 Web Crypto API，无法生成 OSS 签名'));
+          return;
+        }
+
         var encoder = new TextEncoder();
         var keyData = encoder.encode(ALIBABA_ACCESS_KEY_SECRET);
         var messageData = encoder.encode(stringToSign);
+
+        console.log('[Admin] 开始生成签名...');
 
         crypto.subtle.importKey(
           'raw',
@@ -326,12 +335,16 @@
           false,
           ['sign']
         ).then(function(key) {
+          console.log('[Admin] 密钥导入成功');
           return crypto.subtle.sign('HMAC', key, messageData);
         }).then(function(signature) {
+          console.log('[Admin] 签名生成成功');
           var signatureBase64 = btoa(String.fromCharCode.apply(null, new Uint8Array(signature)));
+          console.log('[Admin] Signature:', signatureBase64.substring(0, 20) + '...');
           resolve(signatureBase64);
         }).catch(function(e) {
-          reject(e);
+          console.error('[Admin] 签名生成失败:', e);
+          reject(new Error('OSS 签名生成失败: ' + e.message));
         });
       });
     }
@@ -343,6 +356,7 @@
       var resource = '/' + OSS_BUCKET + '/' + filename;
 
       console.log('[Admin] 上传到OSS: ' + filename + ', 大小: ' + (JSON.stringify(content).length / 1024).toFixed(1) + 'KB');
+      console.log('[Admin] URL:', OSS_ENDPOINT + '/' + filename);
 
       return new Promise(function(resolve, reject) {
         generateOSSSignature('PUT', resource, contentType, date).then(function(signature) {
@@ -356,22 +370,30 @@
 
           var body = typeof content === 'string' ? content : JSON.stringify(content, null, 2);
 
+          console.log('[Admin] 开始fetch请求...');
+          console.log('[Admin] Headers:', JSON.stringify(headers).substring(0, 200) + '...');
+
           return fetch(url, {
             method: 'PUT',
             headers: headers,
             body: body
           }).then(function(response) {
+            console.log('[Admin] Fetch响应状态:', response.status, response.statusText);
+            
             if (!response.ok) {
               return response.text().then(function(errorText) {
+                console.error('[Admin] OSS上传失败:', response.status, errorText);
                 reject(new Error('OSS上传失败 (' + response.status + '): ' + errorText));
               });
             }
             console.log('[Admin] ✅ OSS上传成功: ' + filename);
             resolve({ success: true });
           }).catch(function(e) {
-            reject(e);
+            console.error('[Admin] Fetch请求失败:', e);
+            reject(new Error('OSS网络请求失败: ' + e.message));
           });
         }).catch(function(e) {
+          console.error('[Admin] OSS签名或上传失败:', e);
           reject(e);
         });
       });
@@ -608,7 +630,11 @@
         .then(function() {
             console.log('[Admin] version.json 上传成功');
             
-            return fetch(OSS_URL + '?t=' + Date.now()).then(function(r) { return r.text(); });
+            return fetch(OSS_URL + '?t=' + Date.now()).then(function(r) { 
+                console.log('[Admin] 重新加载OSS数据，状态:', r.status);
+                if (!r.ok) throw new Error('OSS重新加载失败');
+                return r.text(); 
+            });
         })
         .then(function(content) {
             console.log('[Admin] 从OSS重新加载成功');
@@ -622,7 +648,20 @@
         })
         .catch(function(e) {
             console.error('[Admin] 保存失败:', e);
-            showToast('保存失败: ' + e.message, true);
+            console.error('[Admin] 错误堆栈:', e.stack);
+            
+            var errorMsg = '保存失败: ' + e.message;
+            
+            // 根据错误类型提供更具体的提示
+            if (e.message.indexOf('Web Crypto API') !== -1) {
+                errorMsg = '浏览器不支持加密功能，请使用现代浏览器（Chrome、Firefox、Edge）';
+            } else if (e.message.indexOf('网络请求失败') !== -1) {
+                errorMsg = '网络请求失败，请检查网络连接';
+            } else if (e.message.indexOf('OSS上传失败') !== -1) {
+                errorMsg = 'OSS上传失败，请检查OSS配置';
+            }
+            
+            showToast(errorMsg, true);
         });
     }
 
@@ -990,9 +1029,56 @@
         }).catch(function(e) { console.error('Traffic error:', e); });
     }
 
+    // ===== 诊断函数 =====
+    function checkBrowserSupport() {
+        console.log('[Admin] ===== 浏览器支持检查 =====');
+        
+        // 检查 Fetch API
+        if (window.fetch) {
+            console.log('[Admin] ✅ Fetch API 支持');
+        } else {
+            console.error('[Admin] ❌ Fetch API 不支持');
+        }
+        
+        // 检查 Crypto API
+        if (window.crypto && window.crypto.subtle) {
+            console.log('[Admin] ✅ Web Crypto API 支持');
+        } else {
+            console.error('[Admin] ❌ Web Crypto API 不支持 - 这是问题所在！');
+        }
+        
+        // 检查 TextEncoder
+        if (window.TextEncoder) {
+            console.log('[Admin] ✅ TextEncoder 支持');
+        } else {
+            console.error('[Admin] ❌ TextEncoder 不支持');
+        }
+        
+        // 检查 Promise
+        if (window.Promise) {
+            console.log('[Admin] ✅ Promise 支持');
+        } else {
+            console.error('[Admin] ❌ Promise 不支持');
+        }
+        
+        // 检查 Blob
+        if (window.Blob) {
+            console.log('[Admin] ✅ Blob 支持');
+        } else {
+            console.error('[Admin] ❌ Blob 不支持');
+        }
+        
+        console.log('[Admin] ===== 浏览器支持检查完成 =====');
+        console.log('[Admin] User Agent:', navigator.userAgent);
+        console.log('[Admin] Platform:', navigator.platform);
+    }
+
     // ===== 事件绑定（包装在 DOMContentLoaded 中） =====
     document.addEventListener('DOMContentLoaded', function() {
         console.log('[Admin] DOM 加载完成，开始绑定事件...');
+        
+        // 检查浏览器支持
+        checkBrowserSupport();
 
         var saveEditBtn = document.getElementById('saveEditBtn');
         var cancelEditBtn = document.getElementById('cancelEditBtn');
