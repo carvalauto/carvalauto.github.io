@@ -765,7 +765,19 @@ document.getElementById('modalContactForm').addEventListener('submit', async fun
     try {
         var formData = { id: Date.now(), name: document.getElementById('modalName').value, email: document.getElementById('modalEmail').value, phone: document.getElementById('modalPhone').value || '', message: document.getElementById('modalMessage').value, product: document.getElementById('modalProductRef').value, timestamp: Date.now(), read: false, source: '产品询盘' };
         try { var geoResp = await fetch('https://ipapi.co/json/'); var geoData = await geoResp.json(); formData.country = geoData.country_name || 'Unknown'; } catch(e) { formData.country = 'Unknown'; }
-        // Formspree 提交已禁用，改用 GitHub 存储// fetch('https://formspree.io/f/xyknoyzw', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
+        // 发送到 Formspree（邮件通知）
+        var emailBody = "产品询盘\n\n姓名: " + formData.name + "\n邮箱: " + formData.email + "\n电话: " + formData.phone + "\n国家: " + formData.country + "\n\n产品: " + formData.product + "\n\n留言:\n" + formData.message;
+        var mailtoLink = "mailto:carvalxie@foxmail.com?subject=【产品询盘】" + encodeURIComponent(formData.name) + " - " + encodeURIComponent(formData.product) + "&body=" + encodeURIComponent(emailBody);
+
+        // 尝试通过 Formspree 发送邮件通知（后台接收）
+        try {
+            await fetch("https://formspree.io/f/xyknoyzw", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData) });
+            console.log("[Products] Formspree 邮件发送成功");
+        } catch(emailErr) {
+            console.log("[Products] Formspree 发送失败，使用 mailto:", emailErr);
+            // Formspree 失败时，打开邮件客户端
+            window.location.href = mailtoLink;
+        }
 
         // 同步到 GitHub 用于后台查看
         try {
