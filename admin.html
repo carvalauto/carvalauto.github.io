@@ -639,53 +639,6 @@
         } catch(e) { showToast('保存失败: ' + e.message, true); }
     }
 
-            
-            var body = { message: 'Update product: ' + editingProductId + ' via admin - ' + new Date().toISOString(), content: btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2)))), sha: j.sha };
-            var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) 
-            });
-            if (updateR.ok) {
-                var updateJ = await updateR.json();
-                window.pSha = updateJ.content.sha;
-                
-                // 2. 更新 version.json 触发前端实时更新
-                var newVersion = Date.now();
-                var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_edit' };
-                
-                try {
-                    var vR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
-                        headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-                    });
-                    var vJ = await vR.json();
-                    var versionBody = { 
-                        message: 'Update version after admin edit - ' + new Date().toISOString(), 
-                        content: btoa(unescape(encodeURIComponent(JSON.stringify(versionData, null, 2)))), 
-                        sha: vJ.sha 
-                    };
-                    await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
-                        method: 'PUT', 
-                        headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
-                        body: JSON.stringify(versionBody) 
-                    });
-                    console.log('[Admin] version.json已更新:', newVersion);
-                } catch(versionError) {
-                    console.warn('[Admin] 更新version.json失败:', versionError);
-                }
-                
-                allProducts = products;
-                renderProducts();
-                closeEditModal();
-                
-                broadcastDataChange('edit', editingProductId);
-                
-                showSuccessModal('保存成功！', '商品信息已更新，前端页面将在5秒内自动刷新');
-            } else {
-                var errData = await updateR.json();
-                showToast('保存失败: ' + (errData.message || '错误'), true);
-            }
-        } catch(e) { showToast('保存失败: ' + e.message, true); }
-    }
-    
     // ===== 删除商品 - 修复版：添加数据同步广播 =====
     // ===== 删除商品 - 修复版：添加提交确认和验证机制 =====
     async function executeDelete() {
@@ -785,58 +738,6 @@
         }
     }
 
-                var p = JSON.parse(content);
-                var beforeCount = p.length;
-                p = p.filter(function(x) { return x.id != targetId && x.id !== parseInt(targetId); });
-                if (beforeCount === p.length) { showToast('未找到该商品', true); return; }
-                
-                var body = { message: 'Delete product: ' + targetId + ' via admin - ' + new Date().toISOString(), content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
-                var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                    method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) 
-                });
-                if (updateR.ok) {
-                    var updateJ = await updateR.json();
-                    window.pSha = updateJ.content.sha;
-                    
-                    allProducts = p;
-                    renderProducts();
-                    
-                    // ===== 关键修复：更新 version.json 触发前端实时刷新 =====
-                    var newVersion = Date.now();
-                    var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_delete' };
-                    
-                    try {
-                        var vR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
-                            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-                        });
-                        var vJ = await vR.json();
-                        var versionBody = { 
-                            message: 'Update version after admin delete - ' + new Date().toISOString(), 
-                            content: btoa(unescape(encodeURIComponent(JSON.stringify(versionData, null, 2)))), 
-                            sha: vJ.sha 
-                        };
-                        await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
-                            method: 'PUT', 
-                            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
-                            body: JSON.stringify(versionBody) 
-                        });
-                        console.log('[Admin] version.json已更新:', newVersion);
-                    } catch(versionError) {
-                        console.warn('[Admin] 更新version.json失败:', versionError);
-                    }
-                    
-                    // ===== 广播数据变化通知前端 =====
-                    broadcastDataChange('delete', targetId);
-                    
-                    showSuccessModal('删除成功！', '商品已删除，前端页面将自动刷新');
-                } else {
-                    var errData = await updateR.json();
-                    showToast('删除失败: ' + (errData.message || '错误'), true);
-                }
-            } catch(e) { showToast('删除失败: ' + e.message, true); }
-        }
-    }
-    
     async function loadInquiries() {
         if (!checkToken()) return;
         var c = document.getElementById('inquiryList');
