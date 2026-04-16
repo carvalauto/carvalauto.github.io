@@ -300,7 +300,7 @@
     var ALIBABA_ACCESS_KEY_SECRET = 'vDdWLEKBnnmFFZwOeLzX73vRo8k0WW';
     var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json';
     var GH_REPO = 'carvalauto/carvalauto.github.io';
-    var GH_TOKEN = 'ghp_9gxuv4t' + 'qZ0FL1AviV7hG' + 'Y2Mw2uQrK81gqjjm';
+    var GH_TOKEN = 'ghp_Yj1Bqk' + 'gtdDNBcOG7fVF' + 'Br16ENdXnlk4FBhMH';
     var GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
     var GA_PROPERTY_ID = '529242507';
 
@@ -669,7 +669,15 @@
         fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), {
             headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
         }).then(function(r) {
-            if (!r.ok) throw new Error('GitHub加载失败');
+            if (!r.ok) {
+                if (r.status === 401 || r.status === 403) {
+                    throw new Error('GitHub Token已过期，请更新Token');
+                } else if (r.status === 404) {
+                    throw new Error('询盘文件不存在');
+                } else {
+                    throw new Error('GitHub加载失败: ' + r.status);
+                }
+            }
             return r.json();
         }).then(function(j) {
             var d = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
@@ -678,7 +686,11 @@
             renderInquiries(allInquiries);
         }).catch(function(e) {
             console.error('Load inquiries error:', e);
-            showNetworkError(c, '无法连接到GitHub', false);
+            var errorMsg = e.message || '无法连接到GitHub';
+            if (errorMsg.indexOf('Token已过期') !== -1) {
+                errorMsg = 'GitHub Token已过期，请更新Token';
+            }
+            showNetworkError(c, errorMsg, false);
         });
     }
 
