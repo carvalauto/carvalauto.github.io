@@ -289,6 +289,62 @@
     </script>
 
     <script src="realtime-update.js"></script>
+
+    <script>
+    // ===== 实时刷新系统 - version.json 监控 =====
+    var currentVersion = null;
+    var realtimeInterval = null;
+    
+    // 初始化时获取当前版本号
+    async function initVersion() {
+        try {
+            var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/version.json?t=' + Date.now());
+            if (resp.ok) {
+                var data = await resp.json();
+                currentVersion = data.version;
+                console.log('[Realtime] 当前版本:', currentVersion);
+            }
+        } catch(e) {
+            console.log('[Realtime] 初始化版本检查失败:', e);
+        }
+    }
+    
+    // 检查版本变化
+    async function checkVersion() {
+        try {
+            var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/version.json?t=' + Date.now());
+            if (resp.ok) {
+                var data = await resp.json();
+                if (currentVersion && data.version && data.version !== currentVersion) {
+                    console.log('[Realtime] 检测到版本变化:', currentVersion, '->', data.version);
+                    // 触发强制刷新
+                    if (typeof forceRefresh === 'function') {
+                        showUpdateBanner();
+                    }
+                    currentVersion = data.version;
+                }
+            }
+        } catch(e) {
+            // 静默处理错误
+        }
+    }
+    
+    // 启动实时监控（每5秒）
+    function startRealtimeMonitor() {
+        initVersion();
+        if (realtimeInterval) clearInterval(realtimeInterval);
+        realtimeInterval = setInterval(checkVersion, 5000);
+        console.log('[Realtime] 实时监控已启动（5秒间隔）');
+    }
+    
+    // 页面加载完成后启动监控
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startRealtimeMonitor);
+    } else {
+        startRealtimeMonitor();
+    }
+    </script>
+
 </head>
 <body>
 <header class="topbar">
