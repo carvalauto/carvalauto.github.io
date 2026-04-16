@@ -958,14 +958,20 @@
         }).catch(function(e) { console.error('Traffic error:', e); });
     }
 
-    // ===== 事件绑定 =====
-    document.getElementById('confirmDeleteBtn').onclick = executeDelete;
-    document.getElementById('cancelDeleteBtn').onclick = closeDeleteModal;
-    document.getElementById('saveEditBtn').onclick = saveProductEdit;
-    document.getElementById('cancelEditBtn').onclick = closeEditModal;
-    document.getElementById('closeSuccessBtn').onclick = closeSuccessModal;
-    document.getElementById('googleLoginBtn').onclick = handleLogin;
-    document.getElementById('logoutBtn').onclick = handleLogout;
+    // ===== 事件绑定（包装在 DOMContentLoaded 中） =====
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('[Admin] DOM 加载完成，开始绑定事件...');
+
+        document.getElementById('confirmDeleteBtn').onclick = executeDelete;
+        document.getElementById('cancelDeleteBtn').onclick = closeDeleteModal;
+        document.getElementById('saveEditBtn').onclick = saveProductEdit;
+        document.getElementById('cancelEditBtn').onclick = closeEditModal;
+        document.getElementById('closeSuccessBtn').onclick = closeSuccessModal;
+        document.getElementById('googleLoginBtn').onclick = handleLogin;
+        document.getElementById('logoutBtn').onclick = handleLogout;
+
+        console.log('[Admin] 事件绑定完成');
+    });
 
     // 页面加载时自动获取产品列表
     if (checkToken()) {
