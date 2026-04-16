@@ -260,7 +260,7 @@
         </div>
     </div>
 
-    <script src="https://accounts.google.com/gsi/client"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
     // ===== 数据同步通知系统 v2 =====
     // 使用 BroadcastChannel 通知同源页面数据变化
@@ -299,8 +299,6 @@
     var ALIBABA_ACCESS_KEY_ID = 'LTAI5tKCovsg5dJWKxoXwDr2';
     var ALIBABA_ACCESS_KEY_SECRET = 'vDdWLEKBnnmFFZwOeLzX73vRo8k0WW';
     var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json';
-    var GH_REPO = 'carvalauto/carvalauto.github.io';
-    var GH_TOKEN = 'ghp_Yj1Bqk' + 'gtdDNBcOG7fVF' + 'Br16ENdXnlk4FBhMH';
     var GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
     var GA_PROPERTY_ID = '529242507';
 
@@ -313,20 +311,11 @@
     function generateOSSSignature(method, resource, contentType, date) {
       var stringToSign = [method, '', contentType || '', date, resource].join('\n');
       console.log('[Admin] StringToSign:', stringToSign);
-      console.log('[Admin] Method:', method, 'Resource:', resource, 'ContentType:', contentType, 'Date:', date);
 
       return new Promise(function(resolve, reject) {
-        // 检查 crypto.subtle 是否支持
-        if (!window.crypto || !window.crypto.subtle) {
-          reject(new Error('浏览器不支持 Web Crypto API，无法生成 OSS 签名'));
-          return;
-        }
-
         var encoder = new TextEncoder();
         var keyData = encoder.encode(ALIBABA_ACCESS_KEY_SECRET);
         var messageData = encoder.encode(stringToSign);
-
-        console.log('[Admin] 开始生成签名...');
 
         crypto.subtle.importKey(
           'raw',
@@ -335,16 +324,12 @@
           false,
           ['sign']
         ).then(function(key) {
-          console.log('[Admin] 密钥导入成功');
           return crypto.subtle.sign('HMAC', key, messageData);
         }).then(function(signature) {
-          console.log('[Admin] 签名生成成功');
           var signatureBase64 = btoa(String.fromCharCode.apply(null, new Uint8Array(signature)));
-          console.log('[Admin] Signature:', signatureBase64.substring(0, 20) + '...');
           resolve(signatureBase64);
         }).catch(function(e) {
-          console.error('[Admin] 签名生成失败:', e);
-          reject(new Error('OSS 签名生成失败: ' + e.message));
+          reject(e);
         });
       });
     }
@@ -356,7 +341,6 @@
       var resource = '/' + OSS_BUCKET + '/' + filename;
 
       console.log('[Admin] 上传到OSS: ' + filename + ', 大小: ' + (JSON.stringify(content).length / 1024).toFixed(1) + 'KB');
-      console.log('[Admin] URL:', OSS_ENDPOINT + '/' + filename);
 
       return new Promise(function(resolve, reject) {
         generateOSSSignature('PUT', resource, contentType, date).then(function(signature) {
@@ -370,30 +354,22 @@
 
           var body = typeof content === 'string' ? content : JSON.stringify(content, null, 2);
 
-          console.log('[Admin] 开始fetch请求...');
-          console.log('[Admin] Headers:', JSON.stringify(headers).substring(0, 200) + '...');
-
           return fetch(url, {
             method: 'PUT',
             headers: headers,
             body: body
           }).then(function(response) {
-            console.log('[Admin] Fetch响应状态:', response.status, response.statusText);
-            
             if (!response.ok) {
               return response.text().then(function(errorText) {
-                console.error('[Admin] OSS上传失败:', response.status, errorText);
                 reject(new Error('OSS上传失败 (' + response.status + '): ' + errorText));
               });
             }
             console.log('[Admin] ✅ OSS上传成功: ' + filename);
             resolve({ success: true });
           }).catch(function(e) {
-            console.error('[Admin] Fetch请求失败:', e);
-            reject(new Error('OSS网络请求失败: ' + e.message));
+            reject(e);
           });
         }).catch(function(e) {
-          console.error('[Admin] OSS签名或上传失败:', e);
           reject(e);
         });
       });
@@ -547,77 +523,70 @@
 
     function closeEditModal() { document.getElementById('editModal').classList.remove('show'); editingProductId = null; }
     function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
-    function addNewImage() {
-        var imagesEditor = document.getElementById('imagesEditor');
-        var emptyTip = imagesEditor.querySelector('div[style]');
-        if (emptyTip) emptyTip.remove();
-        var newItem = document.createElement('div');
-        newItem.className = 'image-item';
-        newItem.innerHTML = '<img src="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 60 60\'><rect fill=\'%232a2a2a\' width=\'60\' height=\'60\'/><text x=\'30\' y=\'35\' text-anchor=\'middle\' fill=\'%23666\' font-size=\'8\'>New</text></svg>"><input type="text" value="" class="image-url" placeholder="输入图片URL..."><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
-        imagesEditor.appendChild(newItem);
-    }
 
-    // ===== 保存编辑 - 完全重写版 =====
-    function saveProductEdit() {
-        console.log('[Admin] saveProductEdit 被调用');
-        
-        if (!editingProductId) {
-            console.log('[Admin] 编辑产品ID为空，无法保存');
-            showToast('无法保存：编辑产品ID为空', true);
-            return;
+    // ===== 等待 DOM 加载完成后执行初始化 =====
+    document.addEventListener('DOMContentLoaded', function() {
+        // 添加图片按钮事件
+        document.getElementById('addImageBtn').onclick = function() {
+            var imagesEditor = document.getElementById('imagesEditor');
+            var emptyTip = imagesEditor.querySelector('div[style]');
+            if (emptyTip) emptyTip.remove();
+            var newItem = document.createElement('div');
+            newItem.className = 'image-item';
+            newItem.innerHTML = '<img src="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 60 60\'><rect fill=\'%232a2a2a\' width=\'60\' height=\'60\'/><text x=\'30\' y=\'35\' text-anchor=\'middle\' fill=\'%23666\' font-size=\'8\'>New</text></svg>"><input type="text" value="" class="image-url" placeholder="输入图片URL..."><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
+            imagesEditor.appendChild(newItem);
+        };
+
+        // ===== 事件绑定 =====
+        document.getElementById('confirmDeleteBtn').onclick = executeDelete;
+        document.getElementById('cancelDeleteBtn').onclick = closeDeleteModal;
+        document.getElementById('saveEditBtn').onclick = saveProductEdit;
+        document.getElementById('cancelEditBtn').onclick = closeEditModal;
+        document.getElementById('closeSuccessBtn').onclick = closeSuccessModal;
+        document.getElementById('googleLoginBtn').onclick = handleLogin;
+        document.getElementById('logoutBtn').onclick = handleLogout;
+
+        // 页面加载时自动获取产品列表
+        if (checkToken()) {
+            loadProducts();
         }
-        
-        console.log('[Admin] 当前编辑产品ID:', editingProductId);
-        
+    });
+
+    // ===== 保存编辑 - 修复版：支持0延迟实时更新 =====
+    function saveProductEdit() {
+        if (!editingProductId) return;
         var title = document.getElementById('editTitle').value.trim();
         var category = document.getElementById('editCategory').value;
         var oem = document.getElementById('editOem').value.trim();
         var imageInputs = document.querySelectorAll('.image-item .image-url');
         var images = Array.prototype.slice.call(imageInputs).map(function(i) { return i.value.trim(); }).filter(Boolean);
         var imageStr = images.join(',');
-        
-        console.log('[Admin] 获取到的数据:', { title: title, category: category, oem: oem, images: images.length });
-        
+
         showToast('正在保存...', false);
 
-        // 1. 从 OSS 快速加载数据
-        console.log('[Admin] 开始从OSS加载数据...');
-        fetch(OSS_URL + '?t=' + Date.now())
-        .then(function(r) {
+        // 1. 🚀 从 OSS 快速加载数据
+        fetch(OSS_URL + '?t=' + Date.now()).then(function(r) {
             if (!r.ok) throw new Error('OSS加载失败');
             return r.text();
-        })
-        .then(function(content) {
+        }).then(function(content) {
             var products = JSON.parse(content);
-            console.log('[Admin] 从OSS加载产品数量:', products.length);
+            console.log('[Admin] 从OSS加载产品用于编辑，数量:', products.length);
 
             var index = products.findIndex(function(x) { return x.id == editingProductId || x.id === parseInt(editingProductId); });
-            console.log('[Admin] 找到产品索引:', index);
-            
             if (index !== -1) {
-                if (title) { 
-                    products[index].name = title; 
-                    products[index].title = title; 
-                }
+                if (title) { products[index].name = title; products[index].title = title; }
                 products[index].category = category;
                 products[index].oem = oem;
                 products[index].oemCode = oem;
                 products[index].image = imageStr;
                 products[index].images = images;
                 products[index].updatedAt = new Date().toISOString();
-                console.log('[Admin] 产品信息已更新');
-            } else {
-                throw new Error('未找到要编辑的产品');
             }
 
-            // 2. 上传到 OSS
-            console.log('[Admin] 开始上传到OSS...');
+            // 2. 📤 上传到 OSS
             return uploadToOSS('products.json', products);
-        })
-        .then(function() {
-            console.log('[Admin] products.json 上传成功');
-            
-            // 3. 更新 version.json 触发前端实时更新
+        }).then(function() {
+            // 3. 🔄 更新 version.json 触发前端实时更新
             var newVersion = Date.now();
             return uploadToOSS('version.json', {
                 version: newVersion,
@@ -626,18 +595,9 @@
                 lastUpdate: new Date().toISOString(),
                 source: 'admin_edit'
             });
-        })
-        .then(function() {
-            console.log('[Admin] version.json 上传成功');
-            
-            return fetch(OSS_URL + '?t=' + Date.now()).then(function(r) { 
-                console.log('[Admin] 重新加载OSS数据，状态:', r.status);
-                if (!r.ok) throw new Error('OSS重新加载失败');
-                return r.text(); 
-            });
-        })
-        .then(function(content) {
-            console.log('[Admin] 从OSS重新加载成功');
+        }).then(function() {
+            return fetch(OSS_URL + '?t=' + Date.now()).then(function(r) { return r.text(); });
+        }).then(function(content) {
             allProducts = JSON.parse(content);
             renderProducts();
             closeEditModal();
@@ -645,23 +605,8 @@
             broadcastDataChange('edit', editingProductId);
 
             showSuccessModal('保存成功！', '商品信息已更新，前端页面将在5秒内自动刷新');
-        })
-        .catch(function(e) {
-            console.error('[Admin] 保存失败:', e);
-            console.error('[Admin] 错误堆栈:', e.stack);
-            
-            var errorMsg = '保存失败: ' + e.message;
-            
-            // 根据错误类型提供更具体的提示
-            if (e.message.indexOf('Web Crypto API') !== -1) {
-                errorMsg = '浏览器不支持加密功能，请使用现代浏览器（Chrome、Firefox、Edge）';
-            } else if (e.message.indexOf('网络请求失败') !== -1) {
-                errorMsg = '网络请求失败，请检查网络连接';
-            } else if (e.message.indexOf('OSS上传失败') !== -1) {
-                errorMsg = 'OSS上传失败，请检查OSS配置';
-            }
-            
-            showToast(errorMsg, true);
+        }).catch(function(e) {
+            showToast('保存失败: ' + e.message, true);
         });
     }
 
@@ -719,100 +664,16 @@
         if (!checkToken()) return;
         var c = document.getElementById('inquiryList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-        fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), {
-            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
-        }).then(function(r) {
-            if (!r.ok) {
-                if (r.status === 401 || r.status === 403) {
-                    throw new Error('GitHub Token已过期，请更新Token');
-                } else if (r.status === 404) {
-                    throw new Error('询盘文件不存在');
-                } else {
-                    throw new Error('GitHub加载失败: ' + r.status);
-                }
-            }
-            return r.json();
-        }).then(function(j) {
-            var d = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
-            allInquiries = JSON.parse(d);
-            window.iSha = j.sha;
-            renderInquiries(allInquiries);
-        }).catch(function(e) {
-            console.error('Load inquiries error:', e);
-            var errorMsg = e.message || '无法连接到GitHub';
-            if (errorMsg.indexOf('Token已过期') !== -1) {
-                errorMsg = 'GitHub Token已过期，请更新Token';
-            }
-            showNetworkError(c, errorMsg, false);
-        });
+        c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>';
     }
 
     function renderInquiries(list) {
         var c = document.getElementById('inquiryList');
-        list = list.filter(function(i) { return i && (i.name || i.email || i.message); });
-        var unread = list.filter(function(i) { return !i.read; }).length;
-        var today = new Date().toDateString();
-        var todayCount = list.filter(function(i) { try { return new Date(i.timestamp).toDateString() === today; } catch(e) { return false; } }).length;
-        var countries = list.map(function(i) { return i.country; }).filter(function(x) { return x; });
-        document.getElementById('inq_total').textContent = list.length;
-        document.getElementById('inq_unread').textContent = unread;
-        document.getElementById('inq_today').textContent = todayCount;
-        document.getElementById('inq_countries').textContent = new Set(countries).size;
-        var badge = document.getElementById('inquiryBadge');
-        if (unread > 0) {
-            badge.style.cssText = 'background:var(--accent);color:white;border-radius:50%;width:14px;height:14px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;margin-left:3px;';
-            badge.textContent = unread;
-        } else {
-            badge.style.display = 'none';
-        }
-        if (!list.length) {
-            c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>';
-            return;
-        }
-        c.innerHTML = list.map(function(i) {
-            var timeAgo = function(ts) {
-                if (!ts) return '-';
-                var diff = Date.now() - ts;
-                var m = Math.floor(diff/60000);
-                if (m < 1) return '刚刚';
-                if (m < 60) return m + '分前';
-                var h = Math.floor(m/60);
-                if (h < 24) return h + '时前';
-                return Math.floor(h/24) + '天前';
-            }(i.timestamp);
-            var msg = (i.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
-            return '<div class="inquiry-card ' + (i.read ? '' : 'unread') + '">' +
-                '<div class="inquiry-header"><div class="inquiry-avatar">' + ((i.name || 'U').charAt(0).toUpperCase()) + '</div><div class="inquiry-info"><div class="inquiry-name">' + (i.name || 'Unknown') + ' ' + (!i.read ? '<span class="inquiry-badge">NEW</span>' : '') + '</div><div class="inquiry-email">' + (i.email || '') + '</div></div></div>' +
-                '<div class="inquiry-meta"><span><i class="fas fa-map-marker-alt"></i> ' + (i.country || '-') + '</span><span><i class="fas fa-clock"></i> ' + timeAgo + '</span></div>' +
-                '<div class="inquiry-message">' + msg + '</div>' +
-                '<div class="inquiry-actions">' +
-                    '<button class="btn btn-primary btn-sm" onclick="window.open(\'mailto:' + (i.email || '') + '\')"><i class="fas fa-reply"></i></button>' +
-                    '<button class="btn btn-danger btn-sm" onclick="deleteInquiry(' + i.id + ')"><i class="fas fa-trash"></i></button>' +
-                '</div></div>';
-        }).join('');
+        c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>';
     }
 
-    async function deleteInquiry(id) {
-        if (!confirm('删除这条询盘？')) return;
-        allInquiries = allInquiries.filter(function(x) { return x.id !== id; });
-        try {
-            var body = {
-                message: 'Delete inquiry',
-                content: btoa(unescape(encodeURIComponent(JSON.stringify(allInquiries)))),
-                sha: window.iSha
-            };
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), {
-                method: 'PUT',
-                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            var j = await r.json();
-            window.iSha = j.content.sha;
-        } catch(e) {
-            console.error('Delete inquiry error:', e);
-        }
-        renderInquiries(allInquiries);
-        showToast('已删除');
+    function deleteInquiry(id) {
+        showToast('询盘功能暂不可用', true);
     }
 
     function showToast(m, err) {
@@ -1027,140 +888,6 @@
                 });
             }
         }).catch(function(e) { console.error('Traffic error:', e); });
-    }
-
-    // ===== 诊断函数 =====
-    function checkBrowserSupport() {
-        console.log('[Admin] ===== 浏览器支持检查 =====');
-        
-        // 检查 Fetch API
-        if (window.fetch) {
-            console.log('[Admin] ✅ Fetch API 支持');
-        } else {
-            console.error('[Admin] ❌ Fetch API 不支持');
-        }
-        
-        // 检查 Crypto API
-        if (window.crypto && window.crypto.subtle) {
-            console.log('[Admin] ✅ Web Crypto API 支持');
-        } else {
-            console.error('[Admin] ❌ Web Crypto API 不支持 - 这是问题所在！');
-        }
-        
-        // 检查 TextEncoder
-        if (window.TextEncoder) {
-            console.log('[Admin] ✅ TextEncoder 支持');
-        } else {
-            console.error('[Admin] ❌ TextEncoder 不支持');
-        }
-        
-        // 检查 Promise
-        if (window.Promise) {
-            console.log('[Admin] ✅ Promise 支持');
-        } else {
-            console.error('[Admin] ❌ Promise 不支持');
-        }
-        
-        // 检查 Blob
-        if (window.Blob) {
-            console.log('[Admin] ✅ Blob 支持');
-        } else {
-            console.error('[Admin] ❌ Blob 不支持');
-        }
-        
-        console.log('[Admin] ===== 浏览器支持检查完成 =====');
-        console.log('[Admin] User Agent:', navigator.userAgent);
-        console.log('[Admin] Platform:', navigator.platform);
-    }
-
-    // ===== 事件绑定（包装在 DOMContentLoaded 中） =====
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('[Admin] DOM 加载完成，开始绑定事件...');
-        
-        // 检查浏览器支持
-        checkBrowserSupport();
-
-        var saveEditBtn = document.getElementById('saveEditBtn');
-        var cancelEditBtn = document.getElementById('cancelEditBtn');
-        var addImageBtn = document.getElementById('addImageBtn');
-        var confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-        var cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-        var closeSuccessBtn = document.getElementById('closeSuccessBtn');
-        var googleLoginBtn = document.getElementById('googleLoginBtn');
-        var logoutBtn = document.getElementById('logoutBtn');
-
-        if (saveEditBtn) {
-            saveEditBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log('[Admin] 保存按钮被点击');
-                saveProductEdit();
-            });
-            console.log('[Admin] saveEditBtn 绑定成功');
-        }
-
-        if (cancelEditBtn) {
-            cancelEditBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                closeEditModal();
-            });
-            console.log('[Admin] cancelEditBtn 绑定成功');
-        }
-
-        if (addImageBtn) {
-            addImageBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log('[Admin] 添加图片按钮被点击');
-                addNewImage();
-            });
-            console.log('[Admin] addImageBtn 绑定成功');
-        }
-
-        if (confirmDeleteBtn) {
-            confirmDeleteBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                executeDelete();
-            });
-            console.log('[Admin] confirmDeleteBtn 绑定成功');
-        }
-
-        if (cancelDeleteBtn) {
-            cancelDeleteBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                closeDeleteModal();
-            });
-            console.log('[Admin] cancelDeleteBtn 绑定成功');
-        }
-
-        if (closeSuccessBtn) {
-            closeSuccessBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                closeSuccessModal();
-            });
-            console.log('[Admin] closeSuccessBtn 绑定成功');
-        }
-
-        if (googleLoginBtn) {
-            googleLoginBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                handleLogin();
-            });
-            console.log('[Admin] googleLoginBtn 绑定成功');
-        }
-
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                handleLogout();
-            });
-            console.log('[Admin] logoutBtn 绑定成功');
-        }
-
-        console.log('[Admin] 事件绑定完成');
-    });
-
-    // 页面加载时自动获取产品列表
-    if (checkToken()) {
-        loadProducts();
     }
     </script>
 </body>

@@ -765,56 +765,7 @@ document.getElementById('modalContactForm').addEventListener('submit', async fun
     try {
         var formData = { id: Date.now(), name: document.getElementById('modalName').value, email: document.getElementById('modalEmail').value, phone: document.getElementById('modalPhone').value || '', message: document.getElementById('modalMessage').value, product: document.getElementById('modalProductRef').value, timestamp: Date.now(), read: false, source: '产品询盘' };
         try { var geoResp = await fetch('https://ipapi.co/json/'); var geoData = await geoResp.json(); formData.country = geoData.country_name || 'Unknown'; } catch(e) { formData.country = 'Unknown'; }
-        // 发送到 Formspree（邮件通知）
-        var emailBody = "产品询盘\n\n姓名: " + formData.name + "\n邮箱: " + formData.email + "\n电话: " + formData.phone + "\n国家: " + formData.country + "\n\n产品: " + formData.product + "\n\n留言:\n" + formData.message;
-        var mailtoLink = "mailto:carvalxie@foxmail.com?subject=【产品询盘】" + encodeURIComponent(formData.name) + " - " + encodeURIComponent(formData.product) + "&body=" + encodeURIComponent(emailBody);
-
-        // 尝试通过 Formspree 发送邮件通知（后台接收）
-        try {
-            await fetch("https://formspree.io/f/xyknoyzw", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData) });
-            console.log("[Products] Formspree 邮件发送成功");
-        } catch(emailErr) {
-            console.log("[Products] Formspree 发送失败，使用 mailto:", emailErr);
-            // Formspree 失败时，打开邮件客户端
-            window.location.href = mailtoLink;
-        }
-
-        // 同步到 GitHub 用于后台查看
-        try {
-            var ghToken = ['ghp_Yj1Bqk','gtdDNBcOG7fVF','Br16ENdXnlk4FBhMH'].join('');
-            var ghRepo = 'carvalauto/carvalauto.github.io';
-            var ghFile = 'inquiries.json';
-            var ghResp = await fetch('https://api.github.com/repos/' + ghRepo + '/contents/' + ghFile, {
-                headers: { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github.v3+json' }
-            });
-            var ghSha = null;
-            var ghData = [];
-            if (ghResp.ok) {
-                var ghJson = await ghResp.json();
-                ghSha = ghJson.sha;
-                ghData = JSON.parse(atob(ghJson.content.replace(/\n/g, '')));
-            }
-            ghData.unshift(formData);
-            if (ghData.length > 500) ghData = ghData.slice(0, 500);
-            var putBody = {
-                message: 'New inquiry from products page',
-                content: btoa(unescape(encodeURIComponent(JSON.stringify(ghData)))),
-                committer: { name: 'Carval Website', email: 'admin@carvalautopart.com' }
-            };
-            if (ghSha) putBody.sha = ghSha;
-            var putResp = await fetch('https://api.github.com/repos/' + ghRepo + '/contents/' + ghFile, {
-                method: 'PUT',
-                headers: { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-                body: JSON.stringify(putBody)
-            });
-            if (!putResp.ok) {
-                var errData = await putResp.json();
-                console.log('GH PUT failed:', putResp.status, JSON.stringify(errData));
-            } else {
-                console.log('GH save success!');
-            }
-        } catch(ghErr) { console.log('GH save failed:', ghErr.message || ghErr); }
-
+        fetch('https://formspree.io/f/xyknoyzw', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
         btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
         setTimeout(function() { closeProductModal(); btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message'; btn.disabled = false; document.getElementById('modalName').value = ''; document.getElementById('modalEmail').value = ''; document.getElementById('modalPhone').value = ''; document.getElementById('modalMessage').value = ''; }, 2000);
     } catch(e) { btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error'; btn.disabled = false; }
