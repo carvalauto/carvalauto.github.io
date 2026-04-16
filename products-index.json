@@ -7,11 +7,11 @@
     },
     {
       "filename": "products-002.json",
-      "count": 36,
-      "idRange": "85-121"
+      "count": 37,
+      "idRange": "85-122"
     }
   ],
-  "totalProducts": 116,
-  "lastUpdated": "2026-04-16T08:20:04.126Z",
+  "totalProducts": 117,
+  "lastUpdated": "2026-04-16T08:29:55.924Z",
   "productsPerFile": 80
 }
