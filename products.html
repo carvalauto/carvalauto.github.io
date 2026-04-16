@@ -253,7 +253,7 @@
         
         if (productId) {
             // 如果有产品 ID，加载产品数据并更新 SEO
-            fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now())
+            fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now())
                 .then(r => r.json())
                 .then(products => {
                     const product = products.find(p => p.id == productId || p.id === parseInt(productId));
@@ -453,6 +453,10 @@ function forceRefresh() {
     if (btn) btn.classList.add('loading');
     hideUpdateBanner();
     
+    // 清除网络错误提示
+    var networkError = document.getElementById('networkErrorBanner');
+    if (networkError) networkError.remove();
+    
     // 清除缓存
     localStorage.removeItem('carval_products_v2');
     localStorage.removeItem('carval_products_cache');
@@ -498,6 +502,40 @@ function detectItemsPerPage() {
 detectItemsPerPage();
 window.addEventListener('resize', detectItemsPerPage);
 
+// 网络错误友好提示函数
+function showNetworkError() {
+    var grid = document.getElementById('productsGrid');
+    if (!grid) return;
+    
+    // 检查是否已经显示了错误提示
+    var existingError = document.getElementById('networkErrorBanner');
+    if (existingError) return; // 已经显示了，不再重复
+    
+    // 创建网络错误提示元素
+    var errorMsg = document.createElement('div');
+    errorMsg.id = 'networkErrorBanner';
+    errorMsg.style.cssText = 'text-align: center; padding: 40px 20px; background: #fff3e0; border-radius: 8px; margin: 20px;';
+    errorMsg.innerHTML = `
+        <div style="font-size: 48px; margin-bottom: 15px;">🌐</div>
+        <h3 style="color: #e65100; margin: 0 0 15px 0; font-size: 18px;">无法连接到产品数据</h3>
+        <p style="color: #666; line-height: 1.6; margin: 0 0 20px 0; font-size: 14px;">
+            <strong>可能的原因：</strong><br>
+            • 网络连接问题<br>
+            • GitHub服务暂时不可用<br>
+            • 防火墙阻止访问<br><br>
+            <strong>解决方案：</strong><br>
+            • 请检查网络连接<br>
+            • 尝试使用VPN或更换网络<br>
+            • 点击刷新按钮重试<br><br>
+            <span style="color: #2e7d32;">✅ 正在使用备用数据，功能正常</span>
+        </p>
+        <button onclick="forceRefresh()" style="background: #e63946; color: white; border: none; padding: 10px 25px; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600;">🔄 立即刷新</button>
+    `;
+    
+    // 将错误提示插入到产品网格之前
+    grid.parentNode.insertBefore(errorMsg, grid);
+}
+
 var categoryLabels = { japanese: 'Japanese', korean: 'Korean', german: 'German', chinese: 'Chinese', oil: 'Engine Oil', other: 'Other' };
 var defaultProducts = [
     { id: 1, name: "Toyota Camry Brake Pads", category: "japanese", oem: "04465-06110", description: "High-performance brake pads for Toyota Camry 2018-2023.", image: "" },
@@ -523,7 +561,9 @@ async function loadProducts() {
         if (btn) btn.classList.remove('loading');
     } catch(e) {
         console.error('[Products] 加载失败:', e);
-        // 使用默认产品
+        // 显示网络错误友好提示
+        showNetworkError();
+        // 使用默认产品作为后备
         products = defaultProducts;
         productsData = products;
         renderProducts();
@@ -540,7 +580,7 @@ setInterval(async function() {
 async function checkForUpdates() {
     try {
         var cachedCount = productsData.length;
-        var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now());
+        var resp = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
         if (resp.ok) {
             var data = await resp.json();
             if (Array.isArray(data) && data.length !== cachedCount) {
@@ -555,8 +595,8 @@ async function checkForUpdates() {
 async function fetchLatestProducts() {
     // 🚨 优先使用 GitHub Raw（无 CDN 缓存），确保获取最新数据
     var urls = [
-        'https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?_=' + Date.now(),
-        'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?_=' + Date.now()
+        'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?_=' + Date.now(),
+        'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?_=' + Date.now()
     ];
     
     for (var i = 0; i < urls.length; i++) {
