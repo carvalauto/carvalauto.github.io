@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Carval Auto Product Collector v21",
-  "version": "21.0",
-  "description": "采集阿里巴巴产品信息并推送到GitHub - v21版本（采集所有主图，支持前端实时刷新）",
+  "name": "Carval Auto Product Collector v22",
+  "version": "22.0",
+  "description": "采集阿里巴巴产品信息并推送到GitHub - v22版本（精准采集主图区域，排除缩略图）",
   "permissions": ["storage", "activeTab"],
   "host_permissions": [
     "https://www.alibaba.com/*",
