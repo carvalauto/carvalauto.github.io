@@ -253,7 +253,7 @@
         
         if (productId) {
             // 如果有产品 ID，加载产品数据并更新 SEO
-            fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now())
+            fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now())
                 .then(r => r.json())
                 .then(products => {
                     const product = products.find(p => p.id == productId || p.id === parseInt(productId));
@@ -289,141 +289,73 @@
     </script>
 
     <script src="realtime-update.js"></script>
-
-    <script>
-    // ===== 实时刷新系统 - version.json 监控 =====
-    var currentVersion = null;
-    var realtimeInterval = null;
-    
-    // 初始化时获取当前版本号
-    async function initVersion() {
-        try {
-            var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/version.json?t=' + Date.now());
-            if (resp.ok) {
-                var data = await resp.json();
-                currentVersion = data.version;
-                console.log('[Realtime] 当前版本:', currentVersion);
-            }
-        } catch(e) {
-            console.log('[Realtime] 初始化版本检查失败:', e);
-        }
-    }
-    
-    // 检查版本变化
-    async function checkVersion() {
-        try {
-            var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/version.json?t=' + Date.now());
-            if (resp.ok) {
-                var data = await resp.json();
-                if (currentVersion && data.version && data.version !== currentVersion) {
-                    console.log('[Realtime] 检测到版本变化:', currentVersion, '->', data.version);
-                    // 触发强制刷新
-                    if (typeof forceRefresh === 'function') {
-                        showUpdateBanner();
-                    }
-                    currentVersion = data.version;
-                }
-            }
-        } catch(e) {
-            // 静默处理错误
-        }
-    }
-    
-    // 启动实时监控（每5秒）
-    function startRealtimeMonitor() {
-        initVersion();
-        if (realtimeInterval) clearInterval(realtimeInterval);
-        realtimeInterval = setInterval(checkVersion, 5000);
-        console.log('[Realtime] 实时监控已启动（5秒间隔）');
-    }
-    
-    // 页面加载完成后启动监控
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', startRealtimeMonitor);
-    } else {
-        startRealtimeMonitor();
-    }
-    </script>
-
 </head>
 <body>
 <header class="topbar">
     <div class="topbar-left">
         <a href="index.html" class="brand">
             <img src="carval-auto-logo.png" alt="Carval Logo" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none'">
-            <div class="brand-text"data-lang="header_logo">CARVAL <span>AUTO</span></div>
+            <div class="brand-text">CARVAL <span>AUTO</span></div>
         </a>
         <nav class="desktop-nav">
-            <a href="index.html" data-lang="nav_home">Home</a>
-            <a href="index.html#about" data-lang="nav_company">Company</a>
-            <a href="products.html" class="active" data-lang="nav_products">Products</a>
-            <a href="index.html#contact" data-lang="nav_contact">Contact</a>
+            <a href="index.html">Home</a>
+            <a href="index.html#about">Company</a>
+            <a href="products.html" class="active">Products</a>
+            <a href="index.html#contact">Contact</a>
         </nav>
     </div>
     <div class="topbar-right">
-        <select id="language-select" class="lang-select">
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="fr">Français</option>
-                <option value="ar">العربية</option>
-                <option value="vi">Tiếng Việt</option>
-                <option value="zh">中文</option>
-                <option value="ru">Русский</option>
-                <option value="pt">Português</option>
-                <option value="de">Deutsch</option>
-                <option value="it">Italiano</option>
-                <option value="tr">Türkçe</option>
-            </select>
+        <select class="lang-select"><option>English</option><option>中文</option></select>
         <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
     </div>
 </header>
 <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
 <nav class="mobile-nav" id="mobileNav">
     <div class="mobile-nav-header">
-        <div class="mobile-nav-logo"data-lang="header_logo">CARVAL <span>AUTO</span></div>
+        <div class="mobile-nav-logo">CARVAL <span>AUTO</span></div>
         <button onclick="closeNav()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer;"><i class="fas fa-times"></i></button>
     </div>
     <div class="mobile-nav-links">
-        <a href="index.html" data-lang="nav_home"><i class="fas fa-home"></i> Home</a>
-        <a href="index.html#about" data-lang="nav_company"><i class="fas fa-building"></i> Company</a>
-        <a href="products.html" data-lang="nav_products"><i class="fas fa-cogs"></i> Products</a>
-        <a href="index.html#contact" data-lang="nav_contact"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="index.html#about"><i class="fas fa-building"></i> Company</a>
+        <a href="products.html"><i class="fas fa-cogs"></i> Products</a>
+        <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
     </div>
 </nav>
 <div class="page-hero">
-    <h1 data-lang="products_title">Our <span>Product</span> Catalog</h1>
-    <p data-lang="products_subtitle">Browse our full range of OEM quality auto parts</p>
+    <h1>Our <span>Product</span> Catalog</h1>
+    <p>Browse our full range of OEM quality auto parts</p>
 </div>
 <!-- 更新提示条 -->
 <div class="update-banner" id="updateBanner" onclick="handleBannerClick()">
     <i class="fas fa-sync-alt"></i> New products available! Click to refresh.
 </div>
 <div class="filter-bar">
-    <span data-lang="filter_label">Filter:</span>
-    <button class="filter-btn active" onclick="filterProducts('all', this)" data-lang="filter_all">All</button>
-    <button class="filter-btn" onclick="filterProducts('japanese', this)" data-lang="filter_japanese">Japanese</button>
-    <button class="filter-btn" onclick="filterProducts('korean', this)" data-lang="filter_korean">Korean</button>
-    <button class="filter-btn" onclick="filterProducts('german', this)" data-lang="filter_german">German</button>
-    <button class="filter-btn" onclick="filterProducts('chinese', this)" data-lang="filter_chinese">Chinese</button>
-    <button class="filter-btn" onclick="filterProducts('oil', this)" data-lang="filter_oil">Engine Oil</button>
+    <span>Filter:</span>
+    <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+    <button class="filter-btn" onclick="filterProducts('japanese', this)">Japanese</button>
+    <button class="filter-btn" onclick="filterProducts('korean', this)">Korean</button>
+    <button class="filter-btn" onclick="filterProducts('german', this)">German</button>
+    <button class="filter-btn" onclick="filterProducts('chinese', this)">Chinese</button>
+    <button class="filter-btn" onclick="filterProducts('oil', this)">Engine Oil</button>
     <button class="refresh-btn" id="refreshBtn" onclick="forceRefresh()">
         <i class="fas fa-sync-alt"></i> Refresh
     </button>
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search..." data-lang="search_placeholder" oninput="searchProducts()">
+        <input type="text" id="searchInput" placeholder="Search..." oninput="searchProducts()">
         <button><i class="fas fa-search"></i></button>
     </div>
 </div>
 <div class="products-section">
     <div class="products-count">
-        Showing <span id="countDisplay" data-lang="count_display">0</span> products
+        Showing <span id="countDisplay">0</span> products
         <span class="last-update" id="lastUpdate"></span>
     </div>
     <div class="products-grid" id="productsGrid"></div>
     <div class="pagination" id="pagination"></div>
 </div>
 <footer>
-    <div class="footer-slogan">CARVAL <span data-lang="footer_brand">AUTO</span> - <span data-lang="footer_slogan">Given your car a second life</span></div>
+    <div class="footer-slogan">CARVAL <span>AUTO</span> - Given your car a second life</div>
     <p>&copy; 2026 Guangzhou Carval Auto Part Co., Ltd.</p>
 </footer>
 <div class="social-float">
@@ -521,6 +453,10 @@ function forceRefresh() {
     if (btn) btn.classList.add('loading');
     hideUpdateBanner();
     
+    // 清除网络错误提示
+    var networkError = document.getElementById('networkErrorBanner');
+    if (networkError) networkError.remove();
+    
     // 清除缓存
     localStorage.removeItem('carval_products_v2');
     localStorage.removeItem('carval_products_cache');
@@ -566,6 +502,40 @@ function detectItemsPerPage() {
 detectItemsPerPage();
 window.addEventListener('resize', detectItemsPerPage);
 
+// 网络错误友好提示函数
+function showNetworkError() {
+    var grid = document.getElementById('productsGrid');
+    if (!grid) return;
+    
+    // 检查是否已经显示了错误提示
+    var existingError = document.getElementById('networkErrorBanner');
+    if (existingError) return; // 已经显示了，不再重复
+    
+    // 创建网络错误提示元素
+    var errorMsg = document.createElement('div');
+    errorMsg.id = 'networkErrorBanner';
+    errorMsg.style.cssText = 'text-align: center; padding: 40px 20px; background: #fff3e0; border-radius: 8px; margin: 20px;';
+    errorMsg.innerHTML = `
+        <div style="font-size: 48px; margin-bottom: 15px;">🌐</div>
+        <h3 style="color: #e65100; margin: 0 0 15px 0; font-size: 18px;">无法连接到产品数据</h3>
+        <p style="color: #666; line-height: 1.6; margin: 0 0 20px 0; font-size: 14px;">
+            <strong>可能的原因：</strong><br>
+            • 网络连接问题<br>
+            • GitHub服务暂时不可用<br>
+            • 防火墙阻止访问<br><br>
+            <strong>解决方案：</strong><br>
+            • 请检查网络连接<br>
+            • 尝试使用VPN或更换网络<br>
+            • 点击刷新按钮重试<br><br>
+            <span style="color: #2e7d32;">✅ 正在使用备用数据，功能正常</span>
+        </p>
+        <button onclick="forceRefresh()" style="background: #e63946; color: white; border: none; padding: 10px 25px; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600;">🔄 立即刷新</button>
+    `;
+    
+    // 将错误提示插入到产品网格之前
+    grid.parentNode.insertBefore(errorMsg, grid);
+}
+
 var categoryLabels = { japanese: 'Japanese', korean: 'Korean', german: 'German', chinese: 'Chinese', oil: 'Engine Oil', other: 'Other' };
 var defaultProducts = [
     { id: 1, name: "Toyota Camry Brake Pads", category: "japanese", oem: "04465-06110", description: "High-performance brake pads for Toyota Camry 2018-2023.", image: "" },
@@ -591,7 +561,9 @@ async function loadProducts() {
         if (btn) btn.classList.remove('loading');
     } catch(e) {
         console.error('[Products] 加载失败:', e);
-        // 使用默认产品
+        // 显示网络错误友好提示
+        showNetworkError();
+        // 使用默认产品作为后备
         products = defaultProducts;
         productsData = products;
         renderProducts();
@@ -608,7 +580,7 @@ setInterval(async function() {
 async function checkForUpdates() {
     try {
         var cachedCount = productsData.length;
-        var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?t=' + Date.now());
+        var resp = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
         if (resp.ok) {
             var data = await resp.json();
             if (Array.isArray(data) && data.length !== cachedCount) {
@@ -623,8 +595,8 @@ async function checkForUpdates() {
 async function fetchLatestProducts() {
     // 🚨 优先使用 GitHub Raw（无 CDN 缓存），确保获取最新数据
     var urls = [
-        'https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?_=' + Date.now(),
-        'https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/products.json?_=' + Date.now()
+        'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?_=' + Date.now(),
+        'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?_=' + Date.now()
     ];
     
     for (var i = 0; i < urls.length; i++) {
@@ -786,367 +758,17 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// GitHub配置（分段存储，保护Token）
-var GH_REPO = 'carvalauto/carvalauto.github.io';
-var GH_TOKEN = ['ghp_9gxuv4t','qZ0FL1AviV7hG','Y2Mw2uQrK81gqjjm'].join('');
-
-// 保存询盘到GitHub（后台显示）
-async function saveInquiryToGitHub(inquiryData) {
-    try {
-        // 1. 获取现有的inquiries.json
-        var r1 = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), {
-            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
-        });
-        var j1 = await r1.json();
-        
-        // 2. 解码并添加新询盘
-        var existing = JSON.parse(decodeURIComponent(escape(atob(j1.content.replace(/\n/g, '')))));
-        existing.unshift(inquiryData); // 新询盘放到最前面
-        
-        // 3. 上传更新后的文件
-        var body = {
-            message: 'New inquiry from ' + inquiryData.name,
-            content: btoa(unescape(encodeURIComponent(JSON.stringify(existing)))),
-            sha: j1.sha
-        };
-        var r2 = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json', {
-            method: 'PUT',
-            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        });
-        
-        if (r2.ok) {
-            console.log('[Inquiry] 保存到GitHub成功');
-        }
-    } catch(e) {
-        console.error('[Inquiry] 保存到GitHub失败:', e);
-    }
-}
-
 document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     var btn = this.querySelector('.modal-send-btn');
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...'; btn.disabled = true;
     try {
         var formData = { id: Date.now(), name: document.getElementById('modalName').value, email: document.getElementById('modalEmail').value, phone: document.getElementById('modalPhone').value || '', message: document.getElementById('modalMessage').value, product: document.getElementById('modalProductRef').value, timestamp: Date.now(), read: false, source: '产品询盘' };
-        
-        // 获取地理位置信息
-        try {
-            var geoResp = await fetch('https://ipapi.co/json/');
-            var geoData = await geoResp.json();
-            formData.country = geoData.country_name || 'Unknown';
-        } catch(e) { formData.country = 'Unknown'; }
-        
-        // 1. 发送到Formspree（邮件通知）
-        fetch('https://formspree.io/f/xyknoyzw', { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify(formData) 
-        });
-        
-        // 2. 保存到GitHub（后台显示）
-        await saveInquiryToGitHub(formData);
-        
+        try { var geoResp = await fetch('https://ipapi.co/json/'); var geoData = await geoResp.json(); formData.country = geoData.country_name || 'Unknown'; } catch(e) { formData.country = 'Unknown'; }
+        fetch('https://formspree.io/f/xyknoyzw', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
         btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
         setTimeout(function() { closeProductModal(); btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message'; btn.disabled = false; document.getElementById('modalName').value = ''; document.getElementById('modalEmail').value = ''; document.getElementById('modalPhone').value = ''; document.getElementById('modalMessage').value = ''; }, 2000);
-    } catch(e) { 
-        console.error('[Inquiry] 提交失败:', e);
-        btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error'; btn.disabled = false; 
-    }
-});
-
-
-// ===== Language Translations =====
-const translations = {
-    en: {
-        nav_home: 'Home',
-        nav_company: 'Company',
-        nav_products: 'Products',
-        nav_contact: 'Contact',
-        header_logo: 'CARVAL <span>AUTO</span>',
-        products_title: 'Our <span>Product</span> Catalog',
-        products_subtitle: 'Browse our full range of OEM quality auto parts',
-        filter_label: 'Filter:',
-        filter_all: 'All',
-        filter_japanese: 'Japanese',
-        filter_korean: 'Korean',
-        filter_german: 'German',
-        filter_chinese: 'Chinese',
-        filter_oil: 'Engine Oil',
-        search_placeholder: 'Search...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: 'Given your car a second life',
-        modal_category: 'Category',
-        modal_title: 'Product',
-        modal_oem: 'OEM Number',
-        modal_brand: 'Brand',
-        modal_compatible: 'Compatible',
-        modal_description: 'Description',
-        modal_send: 'Send Message',
-        modal_name: 'Your Name',
-        modal_email: 'Your Email',
-        modal_phone: 'Phone (Optional)',
-        modal_message: 'Your Message'
-    },
-    zh: {
-        nav_home: '首页',
-        nav_company: '关于我们',
-        nav_products: '产品中心',
-        nav_contact: '联系我们',
-        header_logo: '卡沃尔 <span>AUTO</span>',
-        products_title: '我们的<span>产品</span>目录',
-        products_subtitle: '浏览我们的全系列OEM品质汽车配件',
-        filter_label: '筛选：',
-        filter_all: '全部',
-        filter_japanese: '日系',
-        filter_korean: '韩系',
-        filter_german: '德系',
-        filter_chinese: '国产',
-        filter_oil: '机油',
-        search_placeholder: '搜索...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: '给您的爱车第二次生命',
-        modal_category: '类别',
-        modal_title: '产品',
-        modal_oem: 'OEM编号',
-        modal_brand: '品牌',
-        modal_compatible: '适用车型',
-        modal_description: '描述',
-        modal_send: '发送消息',
-        modal_name: '您的姓名',
-        modal_email: '您的邮箱',
-        modal_phone: '电话（选填）',
-        modal_message: '您的留言'
-    },
-    es: {
-        nav_home: 'Inicio',
-        nav_company: 'Empresa',
-        nav_products: 'Productos',
-        nav_contact: 'Contacto',
-        header_logo: 'CARVAL <span>AUTO</span>',
-        products_title: 'Nuestro <span>Producto</span> Catálogo',
-        products_subtitle: 'Explore nuestra gama completa de piezas de automóviles OEM',
-        filter_label: 'Filtrar:',
-        filter_all: 'Todo',
-        filter_japanese: 'Japonés',
-        filter_korean: 'Coreano',
-        filter_german: 'Alemán',
-        filter_chinese: 'Chino',
-        filter_oil: 'Aceite de Motor',
-        search_placeholder: 'Buscar...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: 'Dale a tu coche una segunda vida'
-    },
-    fr: {
-        nav_home: 'Accueil',
-        nav_company: 'Entreprise',
-        nav_products: 'Produits',
-        nav_contact: 'Contact',
-        header_logo: 'CARVAL <span>AUTO</span>',
-        products_title: 'Notre <span>Produit</span> Catalogue',
-        products_subtitle: 'Parcourez notre gamme complète de pièces automobiles OEM',
-        filter_label: 'Filtrer:',
-        filter_all: 'Tout',
-        filter_japanese: 'Japonais',
-        filter_korean: 'Coréen',
-        filter_german: 'Allemand',
-        filter_chinese: 'Chinois',
-        filter_oil: 'Huile Moteur',
-        search_placeholder: 'Rechercher...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: 'Donnez une seconde vie à votre voiture'
-    },
-    ar: {
-        nav_home: 'الرئيسية',
-        nav_company: 'الشركة',
-        nav_products: 'المنتجات',
-        nav_contact: 'اتصل بنا',
-        header_logo: 'CARVAL <span>AUTO</span>',
-        products_title: 'منتجاتنا <span>الكتالوج</span>',
-        products_subtitle: 'تصفح مجموعتنا الكاملة من قطع غيار السيارات OEM',
-        filter_label: 'تصفية:',
-        filter_all: 'الكل',
-        filter_japanese: 'ياباني',
-        filter_korean: 'كوري',
-        filter_german: 'ألماني',
-        filter_chinese: 'صيني',
-        filter_oil: 'زيت المحرك',
-        search_placeholder: 'بحث...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: 'امنح سيارتك حياة ثانية'
-    },
-    vi: {
-        nav_home: 'Trang chủ',
-        nav_company: 'Công ty',
-        nav_products: 'Sản phẩm',
-        nav_contact: 'Liên hệ',
-        header_logo: 'CARVAL <span>AUTO</span>',
-        products_title: 'Sản phẩm <span>của chúng tôi</span> Danh mục',
-        products_subtitle: 'Duyệt toàn bộ phụ tùng ô tô OEM chất lượng cao',
-        filter_label: 'Lọc:',
-        filter_all: 'Tất cả',
-        filter_japanese: 'Nhật Bản',
-        filter_korean: 'Hàn Quốc',
-        filter_german: 'Đức',
-        filter_chinese: 'Trung Quốc',
-        filter_oil: 'Dầu động cơ',
-        search_placeholder: 'Tìm kiếm...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: 'Cho xe của bạn cuộc sống thứ hai'
-    },
-    ru: {
-        nav_home: 'Главная',
-        nav_company: 'Компания',
-        nav_products: 'Продукты',
-        nav_contact: 'Контакты',
-        header_logo: 'CARVAL <span>AUTO</span>',
-        products_title: 'Наш <span>Продукт</span> Каталог',
-        products_subtitle: 'Просмотрите наш полный ассортимент OEM автозапчастей',
-        filter_label: 'Фильтр:',
-        filter_all: 'Все',
-        filter_japanese: 'Японские',
-        filter_korean: 'Корейские',
-        filter_german: 'Немецкие',
-        filter_chinese: 'Китайские',
-        filter_oil: 'Моторное масло',
-        search_placeholder: 'Поиск...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: 'Дайте вашему автомобилю вторую жизнь'
-    },
-    pt: {
-        nav_home: 'Início',
-        nav_company: 'Empresa',
-        nav_products: 'Produtos',
-        nav_contact: 'Contato',
-        header_logo: 'CARVAL <span>AUTO</span>',
-        products_title: 'Nosso <span>Produto</span> Catálogo',
-        products_subtitle: 'Navegue pela nossa linha completa de peças automotivas OEM',
-        filter_label: 'Filtrar:',
-        filter_all: 'Todos',
-        filter_japanese: 'Japonês',
-        filter_korean: 'Coreano',
-        filter_german: 'Alemão',
-        filter_chinese: 'Chinês',
-        filter_oil: 'Óleo de Motor',
-        search_placeholder: 'Pesquisar...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: 'Dê ao seu carro uma segunda vida'
-    },
-    de: {
-        nav_home: 'Startseite',
-        nav_company: 'Unternehmen',
-        nav_products: 'Produkte',
-        nav_contact: 'Kontakt',
-        header_logo: 'CARVAL <span>AUTO</span>',
-        products_title: 'Unser <span>Produkt</span> Katalog',
-        products_subtitle: 'Durchsuchen Sie unsere vollständige Palette an OEM-Autoteilen',
-        filter_label: 'Filter:',
-        filter_all: 'Alle',
-        filter_japanese: 'Japanisch',
-        filter_korean: 'Koreanisch',
-        filter_german: 'Deutsch',
-        filter_chinese: 'Chinesisch',
-        filter_oil: 'Motoröl',
-        search_placeholder: 'Suchen...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: 'Geben Sie Ihrem Auto ein zweites Leben'
-    },
-    it: {
-        nav_home: 'Home',
-        nav_company: 'Azienda',
-        nav_products: 'Prodotti',
-        nav_contact: 'Contatti',
-        header_logo: 'CARVAL <span>AUTO</span>',
-        products_title: 'Il nostro <span>Prodotto</span> Catalogo',
-        products_subtitle: 'Sfoglia la nostra gamma completa di ricambi auto OEM',
-        filter_label: 'Filtra:',
-        filter_all: 'Tutti',
-        filter_japanese: 'Giapponese',
-        filter_korean: 'Coreano',
-        filter_german: 'Tedesco',
-        filter_chinese: 'Cinese',
-        filter_oil: 'Olio Motore',
-        search_placeholder: 'Cerca...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: 'Dai alla tua auto una seconda vita'
-    },
-    tr: {
-        nav_home: 'Ana Sayfa',
-        nav_company: 'Şirket',
-        nav_products: 'Ürünler',
-        nav_contact: 'İletişim',
-        header_logo: 'CARVAL <span>AUTO</span>',
-        products_title: 'Ürün <span>Kataloğumuz</span>',
-        products_subtitle: 'OEM kalitesinde auto parçaları ürün yelpazemize göz atın',
-        filter_label: 'Filtrele:',
-        filter_all: 'Tümü',
-        filter_japanese: 'Japon',
-        filter_korean: 'Kore',
-        filter_german: 'Alman',
-        filter_chinese: 'Çin',
-        filter_oil: 'Motor Yağı',
-        search_placeholder: 'Ara...',
-        count_display: '0',
-        footer_brand: 'AUTO',
-        footer_slogan: 'Arabanıza ikinci bir hayat verin'
-    }
-};
-
-// ===== Language Switch Function =====
-function changeLanguage(lang) {
-    const targetLang = translations[lang] ? lang : 'en';
-    const langData = translations[targetLang];
-    
-    if (!langData) return;
-
-    document.querySelectorAll('[data-lang]').forEach(function(element) {
-        const key = element.getAttribute('data-lang');
-        if (langData[key] !== undefined) {
-            if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
-                element.setAttribute('placeholder', langData[key]);
-            } else if (element.tagName === 'IMG') {
-                element.setAttribute('alt', langData[key]);
-            } else {
-                element.innerHTML = langData[key];
-            }
-        }
-    });
-
-    // RTL support for Arabic
-    if (targetLang === 'ar') {
-        document.body.setAttribute('dir', 'rtl');
-    } else {
-        document.body.setAttribute('dir', 'ltr');
-    }
-
-    localStorage.setItem('selectedLang', targetLang);
-    document.documentElement.lang = targetLang;
-}
-
-// ===== Language Initialization =====
-document.addEventListener('DOMContentLoaded', function() {
-    const langSelect = document.getElementById('language-select');
-    
-    if (langSelect) {
-        langSelect.addEventListener('change', function(e) {
-            changeLanguage(e.target.value);
-        });
-        
-        // Restore saved language preference
-        const savedLang = localStorage.getItem('selectedLang') || 'en';
-        langSelect.value = savedLang;
-        changeLanguage(savedLang);
-    }
+    } catch(e) { btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error'; btn.disabled = false; }
 });
 
 loadProducts();
