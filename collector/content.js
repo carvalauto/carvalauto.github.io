@@ -1,5 +1,6 @@
-// content.js - 阿里巴巴产品采集器 v17
-// 精准采集：标题、左侧缩略图主图、OEM编码、Compatible vehicles车型表格
+// content.js - 阿里巴巴产品采集器 v22
+// 精准采集：标题、主图区域（不是缩略图）、OEM编码、Compatible vehicles车型表格
+// v22: 精准采集主图区域的所有产品主图，排除缩略图
 
 (function() {
   'use strict';
@@ -7,7 +8,7 @@
   if (window.__alibabaCollectorInjected) return;
   window.__alibabaCollectorInjected = true;
   
-  console.log('[采集器 v17] 已加载');
+  console.log('[采集器 v22] 已加载');
   
   // 创建按钮
   function createButton() {
@@ -85,68 +86,123 @@
     }
     console.log('[v11] 标题:', product.title);
     
-    // ========== 2. 左侧缩略图主图采集（精准定位）==========
+    // ========== 2. 产品主图采集（精准定位主图区域）==========
+    // 主图是指PC端"公司信息下方"和手机端"页面顶部"可点击/悬停放大的图片
+    // 不是左侧的缩略图列表
     const imageSet = new Set();
     
-    console.log('[v11] ===== 开始采集图片 =====');
+    console.log('[v22] ===== 开始采集主图 =====');
     
-    // 方法1: 直接查找所有产品图片（最直接）
-    // 阿里巴巴产品图片通常在画廊区域
-    const gallerySelectors = [
-      // 缩略图列表
-      '.detail-gallery-preview .items img',
-      '.detail-gallery-preview img',
-      '.thumb-list img', 
-      '.thumb-item img',
-      '.pics-item img',
-      // 主图区域
+    // 主图区域选择器 - 优先查找主图容器
+    const mainImageSelectors = [
+      // 主图展示区域
       '.detail-gallery-img img',
       '.main-pic img',
       '.main-image img',
-      // 画廊容器
-      '[class*="gallery"] img',
-      '[class*="thumb"] img',
-      // 通用产品图片
-      '.product-img img',
-      '.product-image img'
+      '.detail-gallery .main-img img',
+      '.pdp-gallery-img img',
+      // 阿里巴巴常见主图容器
+      '[class*="gallery"] [class*="main"] img',
+      '[class*="gallery-main"] img',
+      // 放大镜区域的主图
+      '[class*="magnifier"] img',
+      '[class*="zoom"] img',
+      // 产品图片画廊
+      '.product-detail-gallery img',
+      '[data-class="gallery"] img'
     ];
     
-    for (const sel of gallerySelectors) {
-      const imgs = document.querySelectorAll(sel);
-      console.log(`[v11] 选择器 ${sel}: 找到 ${imgs.length} 张图片`);
-      
-      imgs.forEach((img, idx) => {
-        let src = img.src || img.dataset.src || img.dataset.original || '';
-        const width = img.naturalWidth || img.width || 0;
-        const height = img.naturalHeight || img.height || 0;
-        
-        console.log(`[v11]   图片${idx}: src=${src.substring(0, 60)}... size=${width}x${height}`);
-        
-        if (src && (src.includes('alicdn.com') || src.includes('alibaba.com') || src.includes('1688.com'))) {
-          // 过滤太小的图片（logo、图标等）
-          if (width >= 40 && height >= 40) {
-            src = cleanImageUrl(src);
-            if (src && src.length > 30 && !imageSet.has(src)) {
-              imageSet.add(src);
-              console.log(`[v11]   ✅ 已采集: ${src.substring(0, 50)}...`);
-            }
-          } else {
-            console.log(`[v11]   ❌ 尺寸太小，跳过`);
-          }
-        }
+    // 缩略图选择器 - 需要排除
+    const thumbnailSelectors = [
+      '.thumb-list img',
+      '.thumb-item img',
+      '.pics-item img',
+      '.thumb-nav img',
+      '[class*="thumb"] img',
+      '[class*="preview"] img'
+    ];
+    
+    // 获取所有缩略图URL（排除列表）
+    const thumbnailUrls = new Set();
+    for (const sel of thumbnailSelectors) {
+      document.querySelectorAll(sel).forEach(img => {
+        const src = img.src || img.dataset.src || '';
+        if (src) thumbnailUrls.add(cleanImageUrl(src));
       });
-      
-      if (imageSet.size >= 6) {
-        console.log(`[v11] 已采集 ${imageSet.size} 张，停止`);
-        break;
+    }
+    console.log('[v22] 缩略图数量:', thumbnailUrls.size);
+    
+    // 方法1: 优先从主图容器采集
+    let foundMainImages = false;
+    for (const sel of mainImageSelectors) {
+      const imgs = document.querySelectorAll(sel);
+      if (imgs.length > 0) {
+        console.log(`[v22] 主图区域选择器 ${sel}: 找到 ${imgs.length} 张图片`);
+        
+        imgs.forEach((img, idx) => {
+          let src = img.src || img.dataset.src || img.dataset.original || '';
+          const width = img.naturalWidth || img.width || 0;
+          const height = img.naturalHeight || img.height || 0;
+          
+          // 过滤非产品图片
+          if (src && (src.includes('alicdn.com') || src.includes('alibaba.com') || src.includes('1688.com'))) {
+            // 过滤太小的图片
+            if (width >= 100 && height >= 100) {
+              src = cleanImageUrl(src);
+              // 排除缩略图
+              if (src && !thumbnailUrls.has(src) && src.length > 30 && !imageSet.has(src)) {
+                imageSet.add(src);
+                console.log(`[v22] ✅ 主图${idx + 1}: ${src.substring(0, 50)}... (${width}x${height})`);
+                foundMainImages = true;
+              }
+            }
+          }
+        });
       }
     }
     
-    // 方法2: 如果上面没找到，尝试通过图片尺寸判断
+    // 方法2: 如果主图区域没找到，尝试查找可切换的图片
     if (imageSet.size === 0) {
-      console.log('[v11] 缩略图列表未找到，尝试按尺寸筛选');
+      console.log('[v22] 主图区域未找到，尝试其他方式...');
+      
+      // 查找包含多张图片切换功能的容器
+      const switchableContainers = document.querySelectorAll(
+        '[class*="gallery"]',
+        '[class*="swiper"]',
+        '[class*="slider"]',
+        '.product-image',
+        '.product-img'
+      );
+      
+      switchableContainers.forEach((container, idx) => {
+        const imgs = container.querySelectorAll('img');
+        imgs.forEach((img, imgIdx) => {
+          let src = img.src || img.dataset.src || '';
+          const width = img.naturalWidth || img.width || 0;
+          const height = img.naturalHeight || img.height || 0;
+          
+          if (src && (src.includes('alicdn.com') || src.includes('alibaba.com'))) {
+            // 主图通常尺寸较大(400-1000px)且为正方形
+            if (width >= 200 && height >= 200 && width <= 2000 && height <= 2000) {
+              const ratio = Math.min(width, height) / Math.max(width, height);
+              // 正方形或接近正方形的是产品主图
+              if (ratio >= 0.7) {
+                src = cleanImageUrl(src);
+                if (src && !thumbnailUrls.has(src) && !imageSet.has(src)) {
+                  imageSet.add(src);
+                  console.log(`[v22] ✅ 切换区图片${imgIdx + 1}: ${src.substring(0, 50)}...`);
+                }
+              }
+            }
+          }
+        });
+      });
+    }
+    
+    // 方法3: 最后兜底 - 通过图片尺寸特征筛选
+    if (imageSet.size === 0) {
+      console.log('[v22] 最后兜底 - 按尺寸筛选高质量图片');
       const allImages = document.querySelectorAll('img');
-      let candidateImages = [];
       
       allImages.forEach(img => {
         let src = img.src || img.dataset.src || '';
@@ -154,29 +210,25 @@
         const h = img.naturalHeight || img.height || 0;
         
         if (src && (src.includes('alicdn.com') || src.includes('alibaba.com'))) {
-          // 产品图片通常是正方形或接近正方形
-          if (w >= 100 && h >= 100 && w <= 1000 && h <= 1000) {
-            candidateImages.push({
-              src: cleanImageUrl(src),
-              size: w * h,
-              ratio: Math.min(w, h) / Math.max(w, h)
-            });
+          // 主图特征：尺寸在300-2000之间，正方形或接近正方形
+          if (w >= 300 && h >= 300 && w <= 2000 && h <= 2000) {
+            const ratio = Math.min(w, h) / Math.max(w, h);
+            if (ratio >= 0.8) { // 接近正方形
+              src = cleanImageUrl(src);
+              if (src && !thumbnailUrls.has(src) && !imageSet.has(src)) {
+                imageSet.add(src);
+                console.log(`[v22] ✅ 尺寸筛选: ${src.substring(0, 50)}... (${w}x${h})`);
+              }
+            }
           }
-        }
-      });
-      
-      // 按尺寸排序，取最大的几张
-      candidateImages.sort((a, b) => b.size - a.size);
-      candidateImages.slice(0, 6).forEach(item => {
-        if (item.src && !imageSet.has(item.src)) {
-          imageSet.add(item.src);
-          console.log(`[v11] 尺寸筛选: ${item.src.substring(0, 50)}...`);
         }
       });
     }
     
-    product.images = Array.from(imageSet).slice(0, 6);
-    console.log('[v11] 共采集到', product.images.length, '张主图');
+    // 采集所有找到的主图，不限制数量
+    product.images = Array.from(imageSet);
+    console.log('[v22] 共采集到', product.images.length, '张主图');
+    console.log('[v22] 主图列表:', product.images);
     
     // ========== 3. Compatible vehicles 车型表格 ==========
     // 先查找 "Compatible vehicles" 标题
@@ -352,12 +404,12 @@ ${warnings.length > 0 ? '⚠️ ' + warnings.join(', ') : ''}
           notify('❌ 推送失败: ' + (response?.error || '未知错误'), 'error');
         }
       } catch (err) {
-        console.error('[v17] 消息发送失败:', err);
+        console.error('[v22] 消息发送失败:', err);
         notify('❌ 消息传递失败: ' + err.message, 'error');
       }
     } catch (e) {
       notify('❌ 采集错误: ' + e.message, 'error');
-      console.error('[v17] 错误:', e);
+      console.error('[v22] 错误:', e);
     }
   }
   
@@ -382,3 +434,4 @@ ${warnings.length > 0 ? '⚠️ ' + warnings.join(', ') : ''}
     }
   }).observe(document, { subtree: true, childList: true });
 })();
+
