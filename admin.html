@@ -292,8 +292,13 @@
         localStorage.setItem('carval_data_change', JSON.stringify(payload));
     }
     
-    var GH_TOKEN = ['ghp_9gxuv4t','qZ0FL1AviV7hG','Y2Mw2uQrK81gqjjm'].join('');
-    var GH_REPO = 'carvalauto/carvalauto.github.io';
+    // 🚀 阿里云 OSS 配置
+    var OSS_BUCKET = 'carvalauto-products';
+    var OSS_REGION = 'oss-cn-hangzhou';
+    var OSS_ENDPOINT = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com';
+    var ALIBABA_ACCESS_KEY_ID = 'LTAI5tKCovsg5dJWKxoXwDr2';
+    var ALIBABA_ACCESS_KEY_SECRET = 'vDdWLEKBnnmFFZwOeLzX73vRo8k0WW';
+    var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json';
     var GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
     var GA_PROPERTY_ID = '529242507';
     
@@ -301,14 +306,67 @@
     var editingProductId = null;
     var currentProductPage = 1;
     var productsPerPage = 20;
-    
-    function checkToken() {
-        if (!GH_TOKEN) {
-            var t = prompt('请输入GitHub Token：');
-            if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); return true; }
-            return false;
+
+    // 🔐 生成 OSS 签名
+    async function generateOSSSignature(method, resource, contentType, date) {
+      const stringToSign = [method, '', contentType || '', date, resource].join('\n');
+      console.log('[Admin] StringToSign:', stringToSign);
+
+      const encoder = new TextEncoder();
+      const keyData = encoder.encode(ALIBABA_ACCESS_KEY_SECRET);
+      const messageData = encoder.encode(stringToSign);
+
+      const key = await crypto.subtle.importKey(
+        'raw',
+        keyData,
+        { name: 'HMAC', hash: 'SHA-1' },
+        false,
+        ['sign']
+      );
+
+      const signature = await crypto.subtle.sign('HMAC', key, messageData);
+      const signatureBase64 = btoa(String.fromCharCode.apply(null, new Uint8Array(signature)));
+
+      return signatureBase64;
+    }
+
+    // 📤 上传文件到 OSS
+    async function uploadToOSS(filename, content, contentType = 'application/json') {
+      const date = new Date().toUTCString();
+      const resource = `/${OSS_BUCKET}/${filename}`;
+
+      console.log(`[Admin] 上传到OSS: ${filename}, 大小: ${(JSON.stringify(content).length / 1024).toFixed(1)}KB`);
+
+      try {
+        const signature = await generateOSSSignature('PUT', resource, contentType, date);
+        const url = `${OSS_ENDPOINT}/${filename}`;
+
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `OSS ${ALIBABA_ACCESS_KEY_ID}:${signature}`,
+            'Date': date,
+            'Content-Type': contentType
+          },
+          body: typeof content === 'string' ? content : JSON.stringify(content, null, 2)
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`OSS上传失败 (${response.status}): ${errorText}`);
         }
-        return true;
+
+        console.log(`[Admin] ✅ OSS上传成功: ${filename}`);
+        return { success: true };
+      } catch (e) {
+        console.error(`[Admin] ❌ OSS上传失败:`, e);
+        throw e;
+      }
+    }
+
+    // ✅ 不再需要 Token 检查（直接使用 OSS）
+    function checkToken() {
+      return true;
     }
     
     function switchTab(tab) {
@@ -328,36 +386,30 @@
         var c = document.getElementById('productList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         try {
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-            });
-            var j = await r.json();
-            var content;
-            if (j.content) { content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))); }
-            else {
-                var rawR = await fetch(j.download_url + '?t=' + Date.now());
-                content = await rawR.text();
-            }
+            // 🚀 从 OSS 快速加载数据
+            var r = await fetch(OSS_URL + '?t=' + Date.now());
+            if (!r.ok) throw new Error('OSS加载失败');
+            var content = await r.text();
             allProducts = JSON.parse(content);
-            window.pSha = j.sha;
-            
+            console.log('[Admin] 从OSS加载产品，数量:', allProducts.length);
+
             currentProductPage = 1;
             renderProducts();
-        } catch(e) { 
-            console.error('Load error:', e);
+            localStorage.setItem('cached_products', JSON.stringify({ data: allProducts }));
+        } catch(e) {
+            console.error('[Admin] Load error:', e);
             var cached = localStorage.getItem('cached_products');
             if (cached) {
                 try {
                     var cachedData = JSON.parse(cached);
                     allProducts = cachedData.data;
-                    window.pSha = cachedData.sha;
                     renderProducts();
                     showToast('使用缓存数据', false);
                 } catch(e2) {
-                    c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
+                    showNetworkError(c, '无法连接到OSS，可能网络问题', true);
                 }
             } else {
-                c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
+                showNetworkError(c, '无法连接到OSS，可能网络问题', false);
             }
         }
     }
@@ -485,18 +537,15 @@
         
         showToast('正在保存...', false);
         try {
-            // 1. 更新 products.json
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-            });
-            var j = await r.json();
-            var content;
-            if (j.content) { content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))); }
-            else {
-                var rawR = await fetch(j.download_url + '?t=' + Date.now());
-                content = await rawR.text();
-            }
+            // 1. 🚀 从 OSS 快速加载数据
+            var r = await fetch(OSS_URL + '?t=' + Date.now());
+            if (!r.ok) throw new Error('OSS加载失败');
+            var content = await r.text();
             var products = JSON.parse(content);
+            console.log('[Admin] 从OSS加载产品用于编辑，数量:', products.length);
+            
+
+            
             var index = products.findIndex(function(x) { return x.id == editingProductId || x.id === parseInt(editingProductId); });
             if (index !== -1) {
                 if (title) { products[index].name = title; products[index].title = title; }
@@ -505,53 +554,31 @@
                 products[index].oemCode = oem;
                 products[index].image = imageStr;
                 products[index].images = images;
+                products[index].updatedAt = new Date().toISOString();
             }
             
-            var body = { message: 'Update product: ' + editingProductId + ' via admin - ' + new Date().toISOString(), content: btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2)))), sha: j.sha };
-            var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) 
+           
+            // 2. 📤 上传到 OSS
+            await uploadToOSS('products.json', products);
+
+            // 3. 🔄 更新 version.json 触发前端实时更新
+            var newVersion = Date.now();
+            await uploadToOSS('version.json', {
+                version: newVersion,
+                message: '编辑产品: ' + editingProductId + ' via admin - ' + new Date().toISOString(),
+                totalProducts: products.length,
+                lastUpdate: new Date().toISOString(),
+                source: 'admin_edit'
             });
-            if (updateR.ok) {
-                var updateJ = await updateR.json();
-                window.pSha = updateJ.content.sha;
-                
-                // 2. 更新 version.json 触发前端实时更新
-                var newVersion = Date.now();
-                var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_edit' };
-                
-                try {
-                    var vR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
-                        headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-                    });
-                    var vJ = await vR.json();
-                    var versionBody = { 
-                        message: 'Update version after admin edit - ' + new Date().toISOString(), 
-                        content: btoa(unescape(encodeURIComponent(JSON.stringify(versionData, null, 2)))), 
-                        sha: vJ.sha 
-                    };
-                    await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
-                        method: 'PUT', 
-                        headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
-                        body: JSON.stringify(versionBody) 
-                    });
-                    console.log('[Admin] version.json已更新:', newVersion);
-                } catch(versionError) {
-                    console.warn('[Admin] 更新version.json失败:', versionError);
-                }
-                
-                allProducts = products;
-                renderProducts();
-                closeEditModal();
-                
-                broadcastDataChange('edit', editingProductId);
-                
-                showSuccessModal('保存成功！', '商品信息已更新，前端页面将在5秒内自动刷新');
-            } else {
-                var errData = await updateR.json();
-                showToast('保存失败: ' + (errData.message || '错误'), true);
-            }
+
+            allProducts = products;
+            renderProducts();
+            closeEditModal();
+
+            broadcastDataChange('edit', editingProductId);
+
+            showSuccessModal('保存成功！', '商品信息已更新，前端页面将在5秒内自动刷新');
         } catch(e) { showToast('保存失败: ' + e.message, true); }
-    }
     
     // ===== 删除商品 - 修复版：添加数据同步广播 =====
     async function executeDelete() {
@@ -560,47 +587,39 @@
         var targetId = deleteTarget.id;
         closeDeleteModal();
         if (targetType === 'product') {
-            if (!GH_TOKEN) {
-                var t = prompt('请输入GitHub Token：');
-                if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); }
-                else { showToast('需要Token', true); return; }
-            }
             showToast('正在删除...', false);
             try {
-                var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                    headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-                });
-                var j = await r.json();
-                var content;
-                if (j.content) { content = decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))); }
-                else {
-                    var rawR = await fetch(j.download_url + '?t=' + Date.now());
-                    content = await rawR.text();
-                }
+                // 1. 🚀 从 OSS 快速加载数据
+                var r = await fetch(OSS_URL + '?t=' + Date.now());
+                if (!r.ok) throw new Error('OSS加载失败');
+                var content = await r.text();
                 var p = JSON.parse(content);
+                console.log('[Admin] 从OSS加载产品用于删除，数量:', p.length);
+
                 var beforeCount = p.length;
                 p = p.filter(function(x) { return x.id != targetId && x.id !== parseInt(targetId); });
                 if (beforeCount === p.length) { showToast('未找到该商品', true); return; }
-                
-                var body = { message: 'Delete product: ' + targetId + ' via admin - ' + new Date().toISOString(), content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), sha: j.sha };
-                var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                    method: 'PUT', headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) 
+
+                // 2. 📤 上传到 OSS
+                await uploadToOSS('products.json', p);
+
+                // 3. 🔄 更新 version.json 触发前端实时更新
+                var newVersion = Date.now();
+                await uploadToOSS('version.json', {
+                    version: newVersion,
+                    message: '删除产品: ' + targetId + ' via admin - ' + new Date().toISOString(),
+                    totalProducts: p.length,
+                    lastUpdate: new Date().toISOString(),
+                    source: 'admin_delete'
                 });
-                if (updateR.ok) {
-                    var updateJ = await updateR.json();
-                    window.pSha = updateJ.content.sha;
-                    
-                    allProducts = p;
-                    renderProducts();
-                    
+
+                allProducts = p;
+                renderProducts();
+
                     // ===== 关键修复：广播数据变化通知前端 =====
                     broadcastDataChange('delete', targetId);
-                    
+
                     showSuccessModal('删除成功！', '商品已删除，前端页面将自动刷新');
-                } else {
-                    var errData = await updateR.json();
-                    showToast('删除失败: ' + (errData.message || '错误'), true);
-                }
             } catch(e) { showToast('删除失败: ' + e.message, true); }
         }
     }
@@ -620,7 +639,7 @@
             renderInquiries(allInquiries);
         } catch(e) { 
             console.error('Load inquiries error:', e);
-            c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败</p></div>'; 
+            showNetworkError(c, '无法连接到GitHub', false);
         }
     }
     
