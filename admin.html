@@ -320,11 +320,11 @@
         crypto.subtle.importKey(
           'raw',
           keyData,
-          { name: 'HMAC', hash: 'SHA-1' },
+          { name: 'HMAC', hash: { name: 'SHA-1' } },
           false,
           ['sign']
         ).then(function(key) {
-          return crypto.subtle.sign('HMAC', key, messageData);
+          return crypto.subtle.sign({ name: 'HMAC' }, key, messageData);
         }).then(function(signature) {
           var signatureBase64 = btoa(String.fromCharCode.apply(null, new Uint8Array(signature)));
           resolve(signatureBase64);
