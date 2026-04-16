@@ -1,5 +1,7 @@
 {
-  "version": 1700000000000,
-  "timestamp": "2026-04-16T17:34:54.565373",
-  "source": "system_init"
+  "version": 1776332745651,
+  "message": "立即上传更新产品: OE:37140-60540 Drive... at 2026/4/16 17:45:45",
+  "totalProducts": 117,
+  "lastUpdate": "2026-04-16T09:45:45.704Z",
+  "source": "instant_upload_v31"
 }
