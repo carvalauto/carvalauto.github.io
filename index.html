@@ -2627,7 +2627,7 @@
                         if (ghData.length > 500) ghData = ghData.slice(0, 500);
                         var putBody = {
                             message: 'New inquiry',
-                            content: btoa(unescape(encodeURIComponent(JSON.stringify(ghData))),
+                            content: btoa(unescape(encodeURIComponent(JSON.stringify(ghData)))),
                             committer: { name: 'Carval Website', email: 'admin@carvalautopart.com' }
                         };
                         if (ghSha) putBody.sha = ghSha;
