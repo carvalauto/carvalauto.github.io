@@ -596,7 +596,7 @@ async function fetchLatestProducts() {
     // 🚨 优先使用 GitHub Raw（无 CDN 缓存），确保获取最新数据
     var urls = [
         'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?_=' + Date.now(),
-        'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?_=' + Date.now()
+        'https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?_=' + Date.now()
     ];
     
     for (var i = 0; i < urls.length; i++) {
@@ -608,11 +608,11 @@ async function fetchLatestProducts() {
                     products = data;
                     productsData = products;
                     
-                    console.log('[Products] 从 CDN 加载成功，数量:', data.length);
+                    console.log('[Products] ✅ 加载成功，来源:', urls[i], '数量:', data.length);
                     return;
                 }
             }
-        } catch(e) { continue; }
+        } catch(e) { console.log('[Products] ❌ 加载失败:', urls[i], e.message); continue; }
     }
 }
 
