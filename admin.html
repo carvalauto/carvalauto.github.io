@@ -617,7 +617,7 @@
     
     // ===== 保存编辑 - 优化版 =====
     async function saveProductEdit() {
-        if (!editingProductId) return;
+        if (!editingProductId) { showToast('未选择要编辑的商品', true); return; }
         if (isSubmitting) { showToast('正在处理中，请稍候...', true); return; }
         
         isSubmitting = true;
@@ -634,15 +634,22 @@
         showToast('正在保存...', false);
         
         try {
+            // 步骤1: 获取当前 products.json
             var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
             });
             
             if (!r.ok) {
-                throw new Error('获取产品数据失败: ' + r.status);
+                throw new Error('获取产品数据失败: ' + r.status + ' ' + r.statusText);
             }
             
             var j = await r.json();
+            
+            // 检查文件大小
+            if (j.size && j.size > 1500000) {
+                showToast('警告：文件较大，可能保存较慢', false);
+            }
+            
             var content = decodeGitHubContent(j);
             if (!content) {
                 var rawR = await fetch(j.download_url + '?t=' + Date.now());
@@ -650,22 +657,36 @@
             }
             
             var products = JSON.parse(content);
-            var index = products.findIndex(function(x) { return x.id == editingProductId || x.id === parseInt(editingProductId); });
+            var index = products.findIndex(function(x) { 
+                return String(x.id) === String(editingProductId) || x.id === parseInt(editingProductId); 
+            });
             
             if (index === -1) {
-                throw new Error('未找到该商品');
+                throw new Error('未找到该商品 (ID: ' + editingProductId + ')');
             }
             
-            if (title) { products[index].name = title; products[index].title = title; }
+            // 更新商品数据
+            if (title) { 
+                products[index].name = title; 
+                products[index].title = title; 
+            }
             products[index].category = category;
             products[index].oem = oem;
             products[index].oemCode = oem;
             products[index].image = imageStr;
             products[index].images = images;
+            products[index].updatedAt = new Date().toISOString();
             
+            // 编码内容
+            var newContent = JSON.stringify(products, null, 2);
+            var encodedContent = btoa(unescape(encodeURIComponent(newContent)));
+            
+            showToast('正在上传...', false);
+            
+            // 步骤2: 提交到 GitHub
             var body = { 
-                message: 'Update product: ' + editingProductId + ' via admin - ' + new Date().toISOString(), 
-                content: btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2)))), 
+                message: 'Update product: ' + editingProductId + ' - ' + (title || 'untitled').substring(0, 50), 
+                content: encodedContent, 
                 sha: j.sha 
             };
             
@@ -677,78 +698,53 @@
             
             if (!updateR.ok) {
                 var errData = await updateR.json();
-                throw new Error(errData.message || '保存失败');
+                throw new Error(errData.message || '保存失败: ' + updateR.status);
             }
             
             var updateJ = await updateR.json();
-            window.pSha = updateJ.content.sha;
+            console.log('[Admin] 保存成功，SHA:', updateJ.content.sha);
             
-            showToast('正在同步...', false);
-            
-            // 等待GitHub处理（优化：缩短等待时间）
-            await new Promise(function(resolve) { setTimeout(resolve, 2000); });
-            
-            // 快速验证
-            var verifyR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-            });
-            
-            if (verifyR.ok) {
-                var verifyJ = await verifyR.json();
-                var verifyContent = decodeGitHubContent(verifyJ);
-                if (!verifyContent) {
-                    var verifyRawR = await fetch(verifyJ.download_url + '?t=' + Date.now());
-                    verifyContent = await verifyRawR.text();
-                }
-                var verifyProducts = JSON.parse(verifyContent);
-                var editIdNum = parseInt(editingProductId);
-                var editedProduct = verifyProducts.find(function(x) { 
-                    return String(x.id) === String(editingProductId) || (editIdNum && x.id === editIdNum); 
-                });
-                
-                if (!editedProduct) {
-                    showToast('编辑验证失败', true);
-                    isSubmitting = false;
-                    if (saveBtn) saveBtn.disabled = false;
-                    return;
-                }
-                
-                allProducts = verifyProducts;
-            }
-            
-            // 更新version.json
-            var newVersion = Date.now();
-            var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_edit' };
-            
+            // 步骤3: 更新版本文件
             try {
-                var vR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
+                var versionR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + Date.now(), { 
                     headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
                 });
                 
-                if (vR.ok) {
-                    var vJ = await vR.json();
+                if (versionR.ok) {
+                    var versionJ = await versionR.json();
+                    var newVersion = Date.now();
                     var versionBody = { 
-                        message: 'Update version after admin edit - ' + new Date().toISOString(), 
-                        content: btoa(unescape(encodeURIComponent(JSON.stringify(versionData, null, 2)))), 
-                        sha: vJ.sha 
+                        message: 'Update version after edit - ' + editingProductId, 
+                        content: btoa(unescape(encodeURIComponent(JSON.stringify({
+                            version: newVersion,
+                            timestamp: new Date().toISOString(),
+                            source: 'admin_edit',
+                            productId: editingProductId
+                        }, null, 2)))), 
+                        sha: versionJ.sha 
                     };
+                    
                     await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
                         method: 'PUT', 
                         headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
                         body: JSON.stringify(versionBody) 
                     });
-                    console.log('[Admin] version.json已更新:', newVersion);
                 }
-            } catch(versionError) {
-                console.warn('[Admin] 更新version.json失败:', versionError);
+            } catch(versionErr) {
+                console.warn('[Admin] 更新版本文件失败:', versionErr);
             }
+            
+            // 更新本地缓存
+            allProducts = products;
+            window.pSha = updateJ.content.sha;
             
             renderProducts();
             closeEditModal();
             broadcastDataChange('edit', editingProductId);
-            showSuccessModal('保存成功！', '商品信息已更新');
+            showSuccessModal('保存成功！', '商品信息已更新到网站');
             
         } catch(e) { 
+            console.error('[Admin] 保存失败:', e);
             showToast('保存失败: ' + e.message, true); 
         } finally {
             isSubmitting = false;
