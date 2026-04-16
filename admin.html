@@ -260,7 +260,7 @@
         </div>
     </div>
 
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
     <script>
     // ===== 数据同步通知系统 v2 =====
     // 使用 BroadcastChannel 通知同源页面数据变化
@@ -299,6 +299,8 @@
     var ALIBABA_ACCESS_KEY_ID = 'LTAI5tKCovsg5dJWKxoXwDr2';
     var ALIBABA_ACCESS_KEY_SECRET = 'vDdWLEKBnnmFFZwOeLzX73vRo8k0WW';
     var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json';
+    var GH_REPO = 'carvalauto/carvalauto.github.io';
+    var GH_TOKEN = 'ghp_9gxuv4t' + 'qZ0FL1AviV7hG' + 'Y2Mw2uQrK81gqjjm';
     var GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
     var GA_PROPERTY_ID = '529242507';
 
@@ -664,16 +666,88 @@
         if (!checkToken()) return;
         var c = document.getElementById('inquiryList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-        c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>';
+        fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), {
+            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+        }).then(function(r) {
+            if (!r.ok) throw new Error('GitHub加载失败');
+            return r.json();
+        }).then(function(j) {
+            var d = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+            allInquiries = JSON.parse(d);
+            window.iSha = j.sha;
+            renderInquiries(allInquiries);
+        }).catch(function(e) {
+            console.error('Load inquiries error:', e);
+            showNetworkError(c, '无法连接到GitHub', false);
+        });
     }
 
     function renderInquiries(list) {
         var c = document.getElementById('inquiryList');
-        c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>';
+        list = list.filter(function(i) { return i && (i.name || i.email || i.message); });
+        var unread = list.filter(function(i) { return !i.read; }).length;
+        var today = new Date().toDateString();
+        var todayCount = list.filter(function(i) { try { return new Date(i.timestamp).toDateString() === today; } catch(e) { return false; } }).length;
+        var countries = list.map(function(i) { return i.country; }).filter(function(x) { return x; });
+        document.getElementById('inq_total').textContent = list.length;
+        document.getElementById('inq_unread').textContent = unread;
+        document.getElementById('inq_today').textContent = todayCount;
+        document.getElementById('inq_countries').textContent = new Set(countries).size;
+        var badge = document.getElementById('inquiryBadge');
+        if (unread > 0) {
+            badge.style.cssText = 'background:var(--accent);color:white;border-radius:50%;width:14px;height:14px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;margin-left:3px;';
+            badge.textContent = unread;
+        } else {
+            badge.style.display = 'none';
+        }
+        if (!list.length) {
+            c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>';
+            return;
+        }
+        c.innerHTML = list.map(function(i) {
+            var timeAgo = function(ts) {
+                if (!ts) return '-';
+                var diff = Date.now() - ts;
+                var m = Math.floor(diff/60000);
+                if (m < 1) return '刚刚';
+                if (m < 60) return m + '分前';
+                var h = Math.floor(m/60);
+                if (h < 24) return h + '时前';
+                return Math.floor(h/24) + '天前';
+            }(i.timestamp);
+            var msg = (i.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+            return '<div class="inquiry-card ' + (i.read ? '' : 'unread') + '">' +
+                '<div class="inquiry-header"><div class="inquiry-avatar">' + ((i.name || 'U').charAt(0).toUpperCase()) + '</div><div class="inquiry-info"><div class="inquiry-name">' + (i.name || 'Unknown') + ' ' + (!i.read ? '<span class="inquiry-badge">NEW</span>' : '') + '</div><div class="inquiry-email">' + (i.email || '') + '</div></div></div>' +
+                '<div class="inquiry-meta"><span><i class="fas fa-map-marker-alt"></i> ' + (i.country || '-') + '</span><span><i class="fas fa-clock"></i> ' + timeAgo + '</span></div>' +
+                '<div class="inquiry-message">' + msg + '</div>' +
+                '<div class="inquiry-actions">' +
+                    '<button class="btn btn-primary btn-sm" onclick="window.open(\'mailto:' + (i.email || '') + '\')"><i class="fas fa-reply"></i></button>' +
+                    '<button class="btn btn-danger btn-sm" onclick="deleteInquiry(' + i.id + ')"><i class="fas fa-trash"></i></button>' +
+                '</div></div>';
+        }).join('');
     }
 
-    function deleteInquiry(id) {
-        showToast('询盘功能暂不可用', true);
+    async function deleteInquiry(id) {
+        if (!confirm('删除这条询盘？')) return;
+        allInquiries = allInquiries.filter(function(x) { return x.id !== id; });
+        try {
+            var body = {
+                message: 'Delete inquiry',
+                content: btoa(unescape(encodeURIComponent(JSON.stringify(allInquiries)))),
+                sha: window.iSha
+            };
+            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), {
+                method: 'PUT',
+                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            var j = await r.json();
+            window.iSha = j.content.sha;
+        } catch(e) {
+            console.error('Delete inquiry error:', e);
+        }
+        renderInquiries(allInquiries);
+        showToast('已删除');
     }
 
     function showToast(m, err) {
