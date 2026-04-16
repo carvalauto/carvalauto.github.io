@@ -1,5 +1,6 @@
-// content.js - 阿里巴巴产品采集器 v17
+// content.js - 阿里巴巴产品采集器 v21
 // 精准采集：标题、左侧缩略图主图、OEM编码、Compatible vehicles车型表格
+// v21: 采集所有主图，不再限制为6张
 
 (function() {
   'use strict';
@@ -7,7 +8,7 @@
   if (window.__alibabaCollectorInjected) return;
   window.__alibabaCollectorInjected = true;
   
-  console.log('[采集器 v17] 已加载');
+  console.log('[采集器 v21] 已加载');
   
   // 创建按钮
   function createButton() {
@@ -136,9 +137,9 @@
         }
       });
       
-      if (imageSet.size >= 6) {
-        console.log(`[v11] 已采集 ${imageSet.size} 张，停止`);
-        break;
+      // 采集所有符合条件的图片，不限制数量
+      if (imageSet.size > 0) {
+        console.log(`[v17] 已采集 ${imageSet.size} 张主图`);
       }
     }
     
@@ -175,8 +176,8 @@
       });
     }
     
-    product.images = Array.from(imageSet).slice(0, 6);
-    console.log('[v11] 共采集到', product.images.length, '张主图');
+    product.images = Array.from(imageSet);
+    console.log('[v17] 共采集到', product.images.length, '张主图（全部采集）');
     
     // ========== 3. Compatible vehicles 车型表格 ==========
     // 先查找 "Compatible vehicles" 标题
@@ -352,12 +353,12 @@ ${warnings.length > 0 ? '⚠️ ' + warnings.join(', ') : ''}
           notify('❌ 推送失败: ' + (response?.error || '未知错误'), 'error');
         }
       } catch (err) {
-        console.error('[v17] 消息发送失败:', err);
+        console.error('[v21] 消息发送失败:', err);
         notify('❌ 消息传递失败: ' + err.message, 'error');
       }
     } catch (e) {
       notify('❌ 采集错误: ' + e.message, 'error');
-      console.error('[v17] 错误:', e);
+      console.error('[v21] 错误:', e);
     }
   }
   
@@ -382,3 +383,4 @@ ${warnings.length > 0 ? '⚠️ ' + warnings.join(', ') : ''}
     }
   }).observe(document, { subtree: true, childList: true });
 })();
+
