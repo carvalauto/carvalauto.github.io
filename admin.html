@@ -18,6 +18,12 @@
         .tab-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 7px 10px; cursor: pointer; font-size: 11px; font-weight: 500; border-radius: 5px; display: flex; align-items: center; gap: 4px; }
         .tab-btn.active { background: var(--accent); }
         .header-right a { color: white; text-decoration: none; font-size: 11px; padding: 6px 10px; background: rgba(255,255,255,0.1); border-radius: 5px; }
+        .sync-btn { background: rgba(46,204,113,0.3); border: none; color: white; padding: 6px 10px; cursor: pointer; font-size: 11px; font-weight: 500; border-radius: 5px; display: flex; align-items: center; gap: 4px; transition: all 0.2s; }
+        .sync-btn:hover { background: rgba(46,204,113,0.5); }
+        .sync-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .sync-btn i { transition: transform 0.5s; }
+        .sync-btn.syncing i { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
         .page { display: none; padding: 12px; max-width: 1400px; margin: 0 auto; }
         .page.active { display: block; }
@@ -194,6 +200,46 @@
         window.location.reload();
     }
     
+    // 手动同步到 OSS
+    async function manualSync() {
+        var syncBtn = document.getElementById('syncBtn');
+        if (!syncBtn) return;
+        
+        syncBtn.disabled = true;
+        syncBtn.classList.add('syncing');
+        syncBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 同步中...';
+        
+        showToast('正在同步数据到 OSS，请稍候...', false);
+        
+        try {
+            // 获取 GitHub 的最新数据
+            var productsResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/products.json?t=' + Date.now(), { 
+                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
+            });
+            
+            var inquiriesResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json?t=' + Date.now(), { 
+                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
+            });
+            
+            if (productsResp.ok && inquiriesResp.ok) {
+                showToast('✅ 已获取最新数据！', false);
+                showToast('⏰ 自动同步脚本将在 10 分钟内同步到 OSS', false);
+                
+                // 刷新本地数据
+                loadProducts();
+                loadInquiries();
+            } else {
+                throw new Error('获取数据失败');
+            }
+        } catch(e) {
+            showToast('❌ 同步失败: ' + e.message, true);
+        } finally {
+            syncBtn.disabled = false;
+            syncBtn.classList.remove('syncing');
+            syncBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 立即同步';
+        }
+    }
+
     // 启动实时监控（每5秒）
     function startRealtimeMonitor() {
         initVersion();
@@ -225,6 +271,7 @@
         </div>
         <div class="header-right">
             <a href="https://carvalautopart.com" target="_blank"><i class="fas fa-external-link-alt"></i> 网站</a>
+            <button class="sync-btn" id="syncBtn" onclick="manualSync()"><i class="fas fa-sync-alt"></i> 立即同步</button>
         </div>
     </div>
     
