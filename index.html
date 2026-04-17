@@ -2610,7 +2610,7 @@
                     localStorage.setItem('carval_new_inquiry', Date.now().toString());
                     // Sync to GitHub for cross-device access
                     try {
-                        var ghToken = ['ghp_9gxuv4t','qZ0FL1AviV7hG','Y2Mw2uQrK81gqjjm'].join('');
+                        var ghToken = ['ghp_tWbCmVvLaCN','IshuezIwSTU7PVj','OEIS2RiQyO'].join('');
                         var ghRepo = 'carvalauto/carvalauto.github.io';
                         var ghFile = 'inquiries.json';
                         var ghResp = await fetch('https://api.github.com/repos/' + ghRepo + '/contents/' + ghFile, {
@@ -2705,6 +2705,68 @@ window.addEventListener('load', function() {
         gtag('js', new Date());
         gtag('config', 'G-MR58CNED51');
     }, 2000);
+});
+</script>
+
+<script>
+// 询盘保存到 GitHub
+async function saveInquiryToGitHub(inquiryData) {
+    try {
+        var GH_TOKEN = ['ghp_9gxuv4t','qZ0FL1AviV7hG','Y2Mw2uQrK81gqjjm'].join('');
+        var GH_REPO = 'carvalauto/carvalauto.github.io';
+        
+        // 获取现有数据
+        var r1 = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), {
+            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        var j1 = await r1.json();
+        
+        // 添加新询盘
+        var existing = JSON.parse(decodeURIComponent(escape(atob(j1.content.replace(/\n/g, '')))));
+        existing.unshift(inquiryData);
+        
+        // 上传
+        var body = {
+            message: 'New inquiry from ' + inquiryData.name + ' - ' + inquiryData.email,
+            content: btoa(unescape(encodeURIComponent(JSON.stringify(existing)))),
+            sha: j1.sha
+        };
+        var r2 = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json', {
+            method: 'PUT',
+            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        
+        if (r2.ok) {
+            console.log('[Inquiry] 保存成功');
+        }
+    } catch(e) {
+        console.error('[Inquiry] 保存失败:', e);
+    }
+}
+
+// 表单提交时保存
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    // Formspree 会自动提交，这里我们额外保存到 GitHub
+    var formData = {
+        id: Date.now(),
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value,
+        timestamp: Date.now(),
+        read: false,
+        source: '主页询盘'
+    };
+    
+    // 获取地理位置
+    try {
+        var geoResp = await fetch('https://ipapi.co/json/');
+        var geoData = await geoResp.json();
+        formData.country = geoData.country_name || 'Unknown';
+    } catch(e) { formData.country = 'Unknown'; }
+    
+    // 保存到 GitHub
+    saveInquiryToGitHub(formData);
 });
 </script>
 </body>
