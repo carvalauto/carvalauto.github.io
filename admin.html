@@ -354,6 +354,7 @@
     </div>
     
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
     <script>
     // ===== 数据同步通知系统 v2 =====
     var dataSyncChannel = null;
@@ -963,6 +964,13 @@
     function initAnalytics() {
         var loginSection = document.getElementById('loginSection');
         var dashboardSection = document.getElementById('dashboardSection');
+        
+        // 检查 gapi 是否已加载
+        if (typeof gapi === 'undefined') {
+            console.warn('Google API SDK 还在加载中，等待 2 秒后重试...');
+            setTimeout(initAnalytics, 2000);
+            return;
+        }
         
         gapi.load('client', function() {
             var token = localStorage.getItem('ga_token');
