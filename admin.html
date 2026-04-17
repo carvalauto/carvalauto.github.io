@@ -921,6 +921,42 @@
         var savedToken = localStorage.getItem('gh_token');
         if (savedToken) GH_TOKEN = savedToken;
         loadProducts();
+        
+        // 绑定 Google 登录按钮
+        var loginBtn = document.getElementById('googleLoginBtn');
+        var logoutBtn = document.getElementById('logoutBtn');
+        
+        if (loginBtn) {
+            loginBtn.onclick = function() {
+                if (typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2) {
+                    alert('Google SDK 加载中，请稍候...');
+                    setTimeout(function() { location.reload(); }, 1000);
+                    return;
+                }
+                
+                var client = google.accounts.oauth2.initTokenClient({
+                    client_id: GA_CLIENT_ID,
+                    scope: 'https://www.googleapis.com/auth/analytics.readonly',
+                    callback: function(tokenResponse) {
+                        if (tokenResponse.access_token) {
+                            localStorage.setItem('ga_token', tokenResponse.access_token);
+                            document.getElementById('loginSection').style.display = 'none';
+                            document.getElementById('dashboardSection').style.display = 'block';
+                            loadAnalyticsData();
+                        }
+                    }
+                });
+                client.requestAccessToken();
+            };
+        }
+        
+        if (logoutBtn) {
+            logoutBtn.onclick = function() {
+                localStorage.removeItem('ga_token');
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('dashboardSection').style.display = 'none';
+            };
+        }
     });
     
     // ===== Google Analytics 集成 =====
@@ -941,27 +977,11 @@
         });
     }
     
-    document.getElementById('googleLoginBtn').onclick = function() {
-        var client = google.accounts.oauth2.initTokenClient({
-            client_id: GA_CLIENT_ID,
-            scope: 'https://www.googleapis.com/auth/analytics.readonly',
-            callback: function(tokenResponse) {
-                if (tokenResponse.access_token) {
-                    localStorage.setItem('ga_token', tokenResponse.access_token);
-                    document.getElementById('loginSection').style.display = 'none';
-                    document.getElementById('dashboardSection').style.display = 'block';
-                    loadAnalyticsData();
-                }
-            }
-        });
-        client.requestAccessToken();
-    };
+    // Google SDK 按钮绑定已在 window.onload 中完成
     
-    document.getElementById('logoutBtn').onclick = function() {
-        localStorage.removeItem('ga_token');
-        document.getElementById('loginSection').style.display = 'block';
-        document.getElementById('dashboardSection').style.display = 'none';
-    };
+    // 旧的绑定代码（已废弃）
+    // document.getElementById('googleLoginBtn').onclick = function() { ... };
+    // document.getElementById('logoutBtn').onclick = function() { ... };
     
     async function loadAnalyticsData(startDate, endDate) {
         startDate = startDate || '7daysAgo';
