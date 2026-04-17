@@ -47,16 +47,14 @@
         .btn-sm { padding: 5px 8px; font-size: 9px; }
 
         .inquiry-list { display: flex; flex-direction: column; gap: 8px; }
-        .inquiry-card { background: var(--bg-card); border-radius: 8px; padding: 10px; border-left: 3px solid var(--primary); transition: all 0.2s; }
-        .inquiry-card.unread { border-left-color: var(--accent); background: rgba(230,57,70,0.05); }
-        .inquiry-card:hover { background: rgba(255,255,255,0.05); }
+        .inquiry-card { background: var(--bg-card); border-radius: 8px; padding: 10px; border-left: 3px solid var(--primary); }
+        .inquiry-card.unread { border-left-color: var(--accent); }
         .inquiry-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
         .inquiry-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
         .inquiry-info { flex: 1; min-width: 0; }
         .inquiry-name { font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
         .inquiry-email { font-size: 10px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .inquiry-badge { font-size: 8px; padding: 1px 4px; border-radius: 2px; background: var(--accent); color: white; }
-        .inquiry-badge.read { background: #2ecc71; }
         .inquiry-meta { display: flex; flex-wrap: wrap; gap: 5px; font-size: 9px; color: var(--text-muted); margin-bottom: 6px; }
         .inquiry-message { font-size: 11px; color: var(--text); line-height: 1.4; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 8px; word-break: break-word; }
         .inquiry-actions { display: flex; flex-wrap: wrap; gap: 5px; }
@@ -94,110 +92,130 @@
         .modal-text { color: var(--text-muted); font-size: 12px; margin-bottom: 12px; }
         .modal-actions { display: flex; gap: 6px; justify-content: center; }
 
-        .edit-modal { max-width: 350px; text-align: left; }
-        .edit-form { margin-bottom: 12px; }
-        .form-group { margin-bottom: 10px; }
-        .form-group label { display: block; font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 6px 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-size: 11px; }
-        .images-editor { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
-        .image-item { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 4px; }
-        .image-item img { width: 40px; height: 40px; object-fit: cover; border-radius: 3px; }
-        .image-item input { flex: 1; min-width: 0; font-size: 9px; }
-        .btn-remove { background: rgba(230,57,70,0.2); border: none; padding: 4px 6px; border-radius: 3px; cursor: pointer; color: #ff6b7a; }
-        .btn-add-image { width: 100%; background: rgba(15,76,129,0.3); border: 1px dashed var(--primary); color: #6db3f2; padding: 6px; border-radius: 4px; cursor: pointer; font-size: 10px; }
-        .edit-actions { display: flex; gap: 6px; justify-content: flex-end; }
+        .edit-modal { max-width: 500px; text-align: left; }
+        .edit-form { display: flex; flex-direction: column; gap: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+        .form-group input, .form-group select { padding: 10px 12px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 5px; color: var(--text); font-size: 13px; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
+        .images-editor { display: flex; flex-direction: column; gap: 8px; }
+        .image-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 5px; }
+        .image-item img { width: 60px; height: 60px; object-fit: contain; background: #2a2a2a; border-radius: 4px; }
+        .image-item input { flex: 1; padding: 6px 8px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-size: 10px; }
+        .btn-remove { padding: 4px 8px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
+        .btn-add-image { padding: 8px; background: rgba(46,204,113,0.1); color: #7dcea0; border: 1px dashed #7dcea0; border-radius: 5px; cursor: pointer; font-size: 11px; text-align: center; }
+        .edit-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .edit-actions .btn { flex: 1; justify-content: center; padding: 10px; }
 
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
-        .empty-state i { font-size: 48px; margin-bottom: 10px; opacity: 0.3; }
-        .empty-state p { font-size: 12px; }
+        .pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 16px; flex-wrap: wrap; }
+        .page-btn { padding: 6px 10px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text); cursor: pointer; font-size: 11px; border-radius: 4px; min-width: 36px; }
+        .page-btn:hover { background: var(--primary); }
+        .page-btn.active { background: var(--accent); }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .page-info { font-size: 11px; color: var(--text-muted); padding: 0 8px; }
+
+        @media (min-width: 600px) {
+            .header { padding: 12px 18px; }
+            .header-logo { font-size: 18px; }
+            .tab-btn { padding: 9px 14px; font-size: 12px; }
+            .page { padding: 18px; }
+            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+            .stat-num { font-size: 24px; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .product-card-img { width: 100px; height: 100px; }
+            .charts-grid { grid-template-columns: repeat(2, 1fr); }
+            .edit-modal { max-width: 550px; }
+        }
+        @media (min-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(7, 1fr); }
+            .product-grid { grid-template-columns: repeat(3, 1fr); }
+            .charts-grid { grid-template-columns: repeat(3, 1fr); }
+        }
     </style>
+    <script src="realtime-update.js"></script>
 </head>
 <body>
-    <!-- 登录页 -->
-    <div id="loginSection" class="login-card">
-        <div class="logo">CARVAL <span>AUTO</span></div>
-        <p style="margin-bottom:15px;color:var(--text-muted);font-size:12px;">后台管理系统</p>
-        <button class="btn-google" onclick="handleLogin()">
-            <i class="fab fa-google"></i> 使用 Google 账号登录
-        </button>
+    <div class="header">
+        <div class="header-logo">CARVAL <span>AUTO</span></div>
+        <div class="tab-nav">
+            <button class="tab-btn active" id="tab-products" onclick="switchTab('products')"><i class="fas fa-box"></i> 商品</button>
+            <button class="tab-btn" id="tab-inquiries" onclick="switchTab('inquiries')"><i class="fas fa-envelope"></i> 询盘<span id="inquiryBadge" style="display:none;"></span></button>
+            <button class="tab-btn" id="tab-analytics" onclick="switchTab('analytics')"><i class="fas fa-chart-line"></i> 流量</button>
+        </div>
+        <div class="header-right">
+            <a href="https://carvalautopart.com" target="_blank"><i class="fas fa-external-link-alt"></i> 网站</a>
+        </div>
     </div>
 
-    <!-- 主界面 -->
-    <div id="dashboardSection" style="display:none;">
-        <div class="header">
-            <div class="header-logo">CARVAL <span>AUTO</span> <span style="font-size:11px;color:rgba(255,255,255,0.5);">后台管理</span></div>
-            <div class="tab-nav">
-                <button class="tab-btn active" id="tab-products" onclick="switchTab('products')"><i class="fas fa-box"></i> 商品</button>
-                <button class="tab-btn" id="tab-inquiries" onclick="switchTab('inquiries')"><i class="fas fa-envelope"></i> 询盘<span id="inquiryBadge" style="display:none;"></span></button>
-                <button class="tab-btn" id="tab-analytics" onclick="switchTab('analytics')"><i class="fas fa-chart-line"></i> 分析</button>
-            </div>
-            <div class="header-right">
-                <a href="https://carvalautopart.com" target="_blank"><i class="fas fa-external-link-alt"></i> 前端</a>
+    <div class="page active" id="page-products">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-num" id="totalCount">-</div><div class="stat-label">总商品</div></div>
+            <div class="stat-card accent"><div class="stat-num" id="cat_japanese">-</div><div class="stat-label">日系</div></div>
+            <div class="stat-card"><div class="stat-num" id="cat_korean">-</div><div class="stat-label">韩系</div></div>
+            <div class="stat-card success"><div class="stat-num" id="cat_german">-</div><div class="stat-label">德系</div></div>
+            <div class="stat-card warning"><div class="stat-num" id="cat_chinese">-</div><div class="stat-label">国产</div></div>
+            <div class="stat-card"><div class="stat-num" id="cat_oil">-</div><div class="stat-label">机油</div></div>
+            <div class="stat-card accent"><div class="stat-num" id="cat_other">-</div><div class="stat-label">其他</div></div>
+        </div>
+        <div class="search-bar"><input type="text" class="search-input" id="productSearch" placeholder="搜索商品名称、OEM..." oninput="searchProducts()"></div>
+        <div class="product-grid" id="productList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
+        <div class="pagination" id="productPagination"></div>
+    </div>
+
+    <div class="page" id="page-inquiries">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-num" id="inq_total">-</div><div class="stat-label">总询盘</div></div>
+            <div class="stat-card accent"><div class="stat-num" id="inq_unread">-</div><div class="stat-label">未读</div></div>
+            <div class="stat-card success"><div class="stat-num" id="inq_today">-</div><div class="stat-label">今日</div></div>
+            <div class="stat-card warning"><div class="stat-num" id="inq_countries">-</div><div class="stat-label">国家</div></div>
+        </div>
+        <div class="inquiry-list" id="inquiryList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
+    </div>
+
+    <div class="page" id="page-analytics">
+        <div id="loginSection">
+            <div class="login-card">
+                <div class="logo">CARVAL <span>AUTO</span></div>
+                <p>连接 Google Analytics<br>查看网站流量数据</p>
+                <button class="btn-google" id="googleLoginBtn"><i class="fab fa-google"></i> Google 登录</button>
             </div>
         </div>
-
-        <!-- 商品管理页 -->
-        <div id="productsPage" class="page active">
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-num" id="statTotal">-</div><div class="stat-label">总商品</div></div>
-                <div class="stat-card accent"><div class="stat-num" id="statToday">-</div><div class="stat-label">今日新增</div></div>
-            </div>
-            <div class="search-bar">
-                <input type="text" class="search-input" id="productSearch" placeholder="搜索商品名称、OEM编码..." oninput="filterProducts()">
-            </div>
-            <div class="product-grid" id="productList"></div>
-        </div>
-
-        <!-- 询盘管理页 -->
-        <div id="inquiriesPage" class="page">
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-num" id="inq_total">-</div><div class="stat-label">总询盘</div></div>
-                <div class="stat-card accent"><div class="stat-num" id="inq_unread">-</div><div class="stat-label">未读</div></div>
-                <div class="stat-card success"><div class="stat-num" id="inq_today">-</div><div class="stat-label">今日</div></div>
-            </div>
-            <div class="search-bar">
-                <input type="text" class="search-input" id="inquirySearch" placeholder="搜索询盘..." oninput="filterInquiries()">
-            </div>
-            <div class="inquiry-list" id="inquiryList">
-                <div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>
-            </div>
-        </div>
-
-        <!-- 数据分析页 -->
-        <div id="analyticsPage" class="page">
+        <div id="dashboardSection" style="display:none;">
             <div class="date-bar">
-                <button class="date-btn active" onclick="setDateRange('7daysAgo', this)">7天</button>
-                <button class="date-btn" onclick="setDateRange('30daysAgo', this)">30天</button>
-                <button class="date-btn" onclick="setDateRange('90daysAgo', this)">90天</button>
+                <span style="font-size:11px;color:var(--text-muted);">时间：</span>
+                <button class="date-btn active" id="date7" onclick="setDateRange('7daysAgo', 'date7')">7天</button>
+                <button class="date-btn" id="date30" onclick="setDateRange('30daysAgo', 'date30')">30天</button>
+                <button class="date-btn" id="date90" onclick="setDateRange('90daysAgo', 'date90')">90天</button>
                 <div class="ga-user-info">
-                    <span id="gaUserInfo"></span>
-                    <button class="btn-logout" onclick="handleLogout()">退出</button>
+                    <button class="btn-logout" id="logoutBtn">退出</button>
                 </div>
             </div>
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-num" id="statRealtime">-</div><div class="stat-label">实时在线</div></div>
+            <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);">
                 <div class="stat-card"><div class="stat-num" id="statPageviews">-</div><div class="stat-label">浏览量</div></div>
-                <div class="stat-card"><div class="stat-num" id="statUsers">-</div><div class="stat-label">访客数</div></div>
-                <div class="stat-card"><div class="stat-num" id="statSessions">-</div><div class="stat-label">会话数</div></div>
+                <div class="stat-card accent"><div class="stat-num" id="statUsers">-</div><div class="stat-label">访客</div></div>
+                <div class="stat-card success"><div class="stat-num" id="statSessions">-</div><div class="stat-label">会话</div></div>
+                <div class="stat-card warning"><div class="stat-num" id="statDuration">-</div><div class="stat-label">停留</div></div>
+                <div class="stat-card"><div class="stat-num" id="statRealtime">-</div><div class="stat-label">在线</div></div>
             </div>
             <div class="charts-grid">
-                <div class="chart-card">
-                    <div class="chart-title"><i class="fas fa-chart-line"></i> 流量趋势</div>
-                    <canvas id="trendChart"></canvas>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title"><i class="fas fa-globe"></i> 国家分布</div>
-                    <canvas id="countryChart"></canvas>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title"><i class="fas fa-desktop"></i> 设备分布</div>
-                    <canvas id="deviceChart"></canvas>
-                </div>
+                <div class="chart-card"><div class="chart-title"><i class="fas fa-chart-line"></i> 流量趋势</div><canvas id="trendChart"></canvas></div>
+                <div class="chart-card"><div class="chart-title"><i class="fas fa-globe"></i> 国家分布</div><canvas id="countryChart"></canvas></div>
+                <div class="chart-card"><div class="chart-title"><i class="fas fa-mobile-alt"></i> 设备分布</div><canvas id="deviceChart"></canvas></div>
             </div>
         </div>
     </div>
 
-    <!-- 编辑商品弹窗 -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-title">确认删除</div>
+            <div class="modal-text" id="deleteModalText">确定要删除吗？</div>
+            <div class="modal-actions">
+                <button class="btn" id="cancelDeleteBtn" style="background:var(--border);">取消</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">删除</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="editModal">
         <div class="modal-content edit-modal">
             <div class="modal-title"><i class="fas fa-edit"></i> 编辑商品</div>
@@ -228,615 +246,678 @@
         </div>
     </div>
 
-    <!-- 确认删除弹窗 -->
-    <div class="modal" id="deleteModal">
-        <div class="modal-content">
-            <div class="modal-title"><i class="fas fa-exclamation-triangle"></i> 确认删除</div>
-            <div class="modal-text" id="deleteModalText"></div>
-            <div class="modal-actions">
-                <button class="btn" onclick="closeDeleteModal()" style="background:var(--border);">取消</button>
-                <button class="btn btn-danger" onclick="executeDelete()"><i class="fas fa-trash"></i> 确认删除</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 成功提示弹窗 -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <div class="modal-title" style="color:#2ecc71;"><i class="fas fa-check-circle"></i> 操作成功</div>
-            <div class="modal-text" id="successModalText"></div>
-            <div class="modal-actions">
-                <button class="btn btn-primary" id="closeSuccessBtn">确定</button>
-            </div>
-        </div>
-    </div>
-
     <div class="toast" id="toast"></div>
 
+    <div class="modal" id="successModal">
+        <div class="modal-content" style="max-width:320px;">
+            <div style="font-size:48px;color:#2ecc71;margin-bottom:10px;"><i class="fas fa-check-circle"></i></div>
+            <div class="modal-title" id="successModalTitle">操作成功</div>
+            <div class="modal-text" id="successModalText">网站已同步更新</div>
+            <div class="modal-actions" style="flex-direction:column;gap:8px;">
+                <a href="https://carvalautopart.com/products.html" target="_blank" class="btn btn-primary" style="text-decoration:none;width:100%;justify-content:center;"><i class="fas fa-external-link-alt"></i> 查看网站</a>
+                <button class="btn" id="closeSuccessBtn" style="background:var(--border);width:100%;">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-        // ===== 配置常量 =====
-        var API_BASE = 'https://carvalauto-api.vercel.app/api';
-        var API_KEY = 'carvalauto-secure-api-key-2026';
-        var GITHUB_API = 'https://api.github.com/repos/carvalauto/carvalauto.github.io';
-        var GITHUB_TOKEN = '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';
-        var GA_PROPERTY_ID = '529242507';
-        var GA_CLIENT_ID = 'YOUR_GA_CLIENT_ID';
+    // ===== 数据同步通知系统 v2 =====
+    // 使用 BroadcastChannel 通知同源页面数据变化
+    var dataSyncChannel = null;
+    try {
+        dataSyncChannel = new BroadcastChannel('carval_products_sync');
+    } catch(e) {
+        console.log('BroadcastChannel 不支持，使用 localStorage 事件');
+    }
 
-        // ===== 全局变量 =====
-        var allProducts = [];
-        var allInquiries = [];
-        var editingProductId = null;
-        var deleteTarget = null;
-        var accessToken = null;
+    // 广播数据变化
+    function broadcastDataChange(action, productId) {
+        var payload = {
+            type: 'products_updated',
+            action: action, // 'edit' or 'delete'
+            productId: productId,
+            timestamp: Date.now(),
+            source: 'admin'
+        };
 
-        // ===== API 请求封装 =====
-        function apiRequest(endpoint, method, body) {
-            var options = {
-                method: method || 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-API-Key': API_KEY
-                }
-            };
-            if (body) {
-                options.body = JSON.stringify(body);
+        if (dataSyncChannel) {
+            dataSyncChannel.postMessage(payload);
+            console.log('[Sync] 已广播数据变化:', action, productId);
+        }
+
+        // 同时更新 localStorage 作为备用机制
+        localStorage.setItem('carval_data_change', JSON.stringify(payload));
+        localStorage.removeItem('carval_data_change'); // 触发其他页面的 storage 事件
+        localStorage.setItem('carval_data_change', JSON.stringify(payload));
+    }
+
+    // 🚀 阿里云 OSS 配置
+    var OSS_BUCKET = 'carvalauto-products';
+    var OSS_REGION = 'oss-cn-hangzhou';
+    var OSS_ENDPOINT = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com';
+    // OSS密钥已移至后端，不再在前端暴露
+    // OSS密钥已移至后端，不再在前端暴露
+    // API 配置
+    var API_BASE = 'https://carvalauto-api.vercel.app/api';
+    var API_KEY = 'carvalauto-secure-api-key-2026';
+    var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json';
+    var GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
+    var GA_PROPERTY_ID = '529242507';
+
+    var allProducts = [], allInquiries = [], accessToken = null, deleteTarget = null;
+    var editingProductId = null;
+    var currentProductPage = 1;
+    var productsPerPage = 20;
+
+    // 🔐 生成 OSS 签名 (ES5 兼容)
+    function generateOSSSignature(method, resource, contentType, date) {
+      var stringToSign = [method, '', contentType || '', date, resource].join('\n');
+      console.log('[Admin] StringToSign:', stringToSign);
+
+      return new Promise(function(resolve, reject) {
+        var encoder = new TextEncoder();
+        var keyData = encoder.encode(ALIBABA_ACCESS_KEY_SECRET);
+        var messageData = encoder.encode(stringToSign);
+
+        crypto.subtle.importKey(
+          'raw',
+          keyData,
+          { name: 'HMAC', hash: 'SHA-1' },
+          false,
+          ['sign']
+        ).then(function(key) {
+          return crypto.subtle.sign('HMAC', key, messageData);
+        }).then(function(signature) {
+          var signatureBase64 = btoa(String.fromCharCode.apply(null, new Uint8Array(signature)));
+          resolve(signatureBase64);
+        }).catch(function(e) {
+          reject(e);
+        });
+      });
+    }
+
+    // 📤 上传文件到 OSS (ES5 兼容)
+    function uploadToOSS(filename, content, contentType) {
+      contentType = contentType || 'application/json';
+      var date = new Date().toUTCString();
+      var resource = '/' + OSS_BUCKET + '/' + filename;
+
+      console.log('[Admin] 上传到OSS: ' + filename + ', 大小: ' + (JSON.stringify(content).length / 1024).toFixed(1) + 'KB');
+
+      return new Promise(function(resolve, reject) {
+        generateOSSSignature('PUT', resource, contentType, date).then(function(signature) {
+          var url = OSS_ENDPOINT + '/' + filename;
+
+          var headers = {
+            'Authorization': 'OSS ' + ALIBABA_ACCESS_KEY_ID + ':' + signature,
+            'Date': date,
+            'Content-Type': contentType
+          };
+
+          var body = typeof content === 'string' ? content : JSON.stringify(content, null, 2);
+
+          return fetch(url, {
+            method: 'PUT',
+            headers: headers,
+            body: body
+          }).then(function(response) {
+            if (!response.ok) {
+              return response.text().then(function(errorText) {
+                reject(new Error('OSS上传失败 (' + response.status + '): ' + errorText));
+              });
             }
-            return fetch(API_BASE + endpoint, options)
-                .then(function(r) {
-                    if (!r.ok) {
-                        return r.json().then(function(err) {
-                            throw new Error(err.error || 'API 请求失败: ' + r.status);
-                        }).catch(function() {
-                            throw new Error('API 请求失败: ' + r.status);
-                        });
-                    }
-                    return r.json();
-                });
-        }
+            console.log('[Admin] ✅ OSS上传成功: ' + filename);
+            resolve({ success: true });
+          }).catch(function(e) {
+            reject(e);
+          });
+        }).catch(function(e) {
+          reject(e);
+        });
+      });
+    }
 
-        // ===== 工具函数 =====
-        function showToast(msg, isError) {
-            var t = document.getElementById('toast');
-            t.textContent = msg;
-            t.className = 'toast show' + (isError ? ' error' : '');
-            setTimeout(function() { t.classList.remove('show'); }, 3000);
-        }
+    // ✅ 不再需要 Token 检查（直接使用 OSS）
+    function checkToken() {
+      return true;
+    }
 
-        function showSuccessModal(title, text) {
-            document.getElementById('successModalTitle').textContent = title || '操作成功';
-            document.getElementById('successModalText').textContent = text || '网站已同步更新';
-            document.getElementById('successModal').classList.add('show');
-        }
+    function switchTab(tab) {
+        document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+        document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+        var targetPage = document.getElementById('page-' + tab);
+        if (targetPage) { targetPage.classList.add('active'); }
+        var targetBtn = document.getElementById('tab-' + tab);
+        if (targetBtn) { targetBtn.classList.add('active'); }
+        if (tab === 'products') { loadProducts(); }
+        else if (tab === 'inquiries') { loadInquiries(); }
+        else if (tab === 'analytics') { initAnalytics(); }
+    }
 
-        function closeSuccessModal() { document.getElementById('successModal').classList.remove('show'); }
-
-        // ===== 页面切换 =====
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-            document.getElementById('tab-' + tab).classList.add('active');
-            document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-            document.getElementById(tab + 'Page').classList.add('active');
-            if (tab === 'inquiries') loadInquiries();
-        }
-
-        // ===== 商品管理 (通过 API) =====
-        function loadProducts() {
-            var c = document.getElementById('productList');
-            c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-            
-            apiRequest('/products', 'GET')
-                .then(function(data) {
-                    allProducts = data.products || data || [];
+    function loadProducts() {
+        if (!checkToken()) return;
+        var c = document.getElementById('productList');
+        c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
+        fetch(OSS_URL + '?t=' + Date.now()).then(function(r) {
+            if (!r.ok) throw new Error('OSS加载失败');
+            return r.text();
+        }).then(function(content) {
+            allProducts = JSON.parse(content);
+            console.log('[Admin] 从OSS加载产品，数量:', allProducts.length);
+            currentProductPage = 1;
+            renderProducts();
+            localStorage.setItem('cached_products', JSON.stringify({ data: allProducts }));
+        }).catch(function(e) {
+            console.error('[Admin] Load error:', e);
+            var cached = localStorage.getItem('cached_products');
+            if (cached) {
+                try {
+                    var cachedData = JSON.parse(cached);
+                    allProducts = cachedData.data;
                     renderProducts();
-                    updateProductStats();
-                })
-                .catch(function(e) {
-                    c.innerHTML = '<div class="loading" style="color:var(--accent);"><i class="fas fa-exclamation-triangle"></i><p>加载失败: ' + e.message + '</p></div>';
-                    showToast('加载商品失败: ' + e.message, true);
-                });
-        }
-
-        function updateProductStats() {
-            document.getElementById('statTotal').textContent = allProducts.length;
-            var today = new Date().toISOString().split('T')[0];
-            var todayCount = allProducts.filter(function(p) {
-                var created = p.createdAt || p.updatedAt || '';
-                return created.startsWith(today);
-            }).length;
-            document.getElementById('statToday').textContent = todayCount;
-        }
-
-        function renderProducts(products) {
-            var list = products || allProducts;
-            var c = document.getElementById('productList');
-            if (!list.length) {
-                c.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>暂无商品</p></div>';
-                return;
+                    showToast('使用缓存数据', false);
+                } catch(e2) {
+                    showNetworkError(c, '无法连接到OSS，可能网络问题', true);
+                }
+            } else {
+                showNetworkError(c, '无法连接到OSS，可能网络问题', false);
             }
-            c.innerHTML = list.map(function(p) {
-                var img = (p.image || p.images || '').toString().split(',')[0].trim();
-                var cat = (p.category || 'other').toLowerCase();
-                var catNames = { japanese: '日系', korean: '韩系', german: '德系', chinese: '国产', oil: '机油', other: '其他' };
-                return '<div class="product-card"><img src="' + img + '" class="product-card-img" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>No Img</text></svg>\'"><div class="product-info"><div class="product-title">' + (p.name || p.title || '未命名') + '</div><div class="product-meta"><span class="product-tag">' + catNames[cat] + '</span>' + (p.oem || p.oemCode ? '<span class="product-tag oem">OEM: ' + (p.oem || p.oemCode) + '</span>' : '') + '</div><div class="product-actions"><button class="btn btn-edit btn-sm" onclick="openEditModalById(' + p.id + ')"><i class="fas fa-edit"></i> 编辑</button><button class="btn btn-danger btn-sm" onclick="confirmDeleteProduct(' + p.id + ', \'' + (p.name || p.title || '该商品').replace(/'/g, "\\'") + '\')"><i class="fas fa-trash"></i> 删除</button></div></div></div>';
-            }).join('');
-        }
+        });
+    }
 
-        function filterProducts() {
-            var q = document.getElementById('productSearch').value.toLowerCase();
-            var filtered = allProducts.filter(function(p) {
-                return (p.name || p.title || '').toLowerCase().includes(q) ||
-                       (p.oem || p.oemCode || '').toLowerCase().includes(q) ||
-                       (p.category || '').toLowerCase().includes(q);
+    function renderProducts() {
+        var c = document.getElementById('productList');
+        var searchTerm = document.getElementById('productSearch').value.toLowerCase();
+        var filtered = allProducts;
+        if (searchTerm) {
+            filtered = allProducts.filter(function(p) {
+                return (p.name || p.title || '').toLowerCase().indexOf(searchTerm) !== -1 ||
+                       (p.oem || p.oemCode || '').toLowerCase().indexOf(searchTerm) !== -1;
             });
-            renderProducts(filtered);
         }
-
-        function openEditModalById(id) {
-            var product = allProducts.find(function(x) { return x.id == id || x.id === parseInt(id); });
-            if (product) openEditModal(product);
+        document.getElementById('totalCount').textContent = filtered.length;
+        var cats = { japanese: 0, korean: 0, german: 0, chinese: 0, oil: 0, other: 0 };
+        filtered.forEach(function(x) {
+            var cat = (x.category || 'other').toLowerCase();
+            if (cats[cat] !== undefined) cats[cat]++; else cats.other++;
+        });
+        Object.keys(cats).forEach(function(k) {
+            var el = document.getElementById('cat_' + k);
+            if (el) el.textContent = cats[k];
+        });
+        var totalPages = Math.ceil(filtered.length / productsPerPage);
+        if (currentProductPage > totalPages) currentProductPage = totalPages || 1;
+        var startIndex = (currentProductPage - 1) * productsPerPage;
+        var endIndex = startIndex + productsPerPage;
+        var pageProducts = filtered.slice(startIndex, endIndex);
+        if (!filtered.length) {
+            c.innerHTML = '<div class="loading"><i class="fas fa-box-open"></i><p>暂无商品</p></div>';
+            document.getElementById('productPagination').innerHTML = '';
+            return;
         }
+        c.innerHTML = pageProducts.map(function(x) {
+            var img = (x.image || x.images || '').toString().split(',')[0] || '';
+            var cat = (x.category || 'other').toUpperCase();
+            var name = (x.name || x.title || '未命名').toString();
+            var oem = x.oem || x.oemCode || '';
+            return '<div class="product-card">' +
+                (img ? '<img src="' + img + '" class="product-card-img" alt="" onerror="this.style.display=\'none\'">' : '<div class="product-card-img" style="display:flex;align-items:center;justify-content:center;color:#555;font-size:24px;"><i class="fas fa-image"></i></div>') +
+                '<div class="product-info">' +
+                    '<div class="product-title" title="' + name.replace(/"/g, '&quot;') + '">' + name.substring(0, 40) + (name.length > 40 ? '...' : '') + '</div>' +
+                    '<div class="product-meta"><span class="product-tag">' + cat + '</span>' + (oem ? '<span class="product-tag oem">OEM: ' + oem.substring(0, 15) + '</span>' : '') + '</div>' +
+                    '<div class="product-actions">' +
+                        '<button class="btn btn-edit" onclick="openEditModalById(' + x.id + ')"><i class="fas fa-edit"></i> 编辑</button>' +
+                        '<button class="btn btn-danger" onclick="confirmDeleteProduct(' + x.id + ', \'' + name.replace(/'/g, "\\'") + '\')"><i class="fas fa-trash"></i></button>' +
+                    '</div>' +
+                '</div></div>';
+        }).join('');
+        renderProductPagination(totalPages, filtered.length);
+    }
 
-        function confirmDeleteProduct(id, name) {
-            deleteTarget = { type: 'product', id: id };
-            document.getElementById('deleteModalText').textContent = '删除 "' + (name || '该商品') + '"？此操作不可撤销。';
-            document.getElementById('deleteModal').classList.add('show');
+    function renderProductPagination(totalPages, totalItems) {
+        var pEl = document.getElementById('productPagination');
+        if (totalPages <= 1) { pEl.innerHTML = ''; return; }
+        var html = '<button class="page-btn" onclick="goToProductPage(' + (currentProductPage - 1) + ')" ' + (currentProductPage === 1 ? 'disabled' : '') + '>&laquo; 上一页</button>';
+        for (var i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || (i >= currentProductPage - 2 && i <= currentProductPage + 2)) {
+                html += '<button class="page-btn ' + (i === currentProductPage ? 'active' : '') + '" onclick="goToProductPage(' + i + ')">' + i + '</button>';
+            } else if (i === currentProductPage - 3 || i === currentProductPage + 3) {
+                html += '<span class="page-info">...</span>';
+            }
         }
+        html += '<button class="page-btn" onclick="goToProductPage(' + (currentProductPage + 1) + ')" ' + (currentProductPage === totalPages ? 'disabled' : '') + '>下一页 &raquo;</button>';
+        var startItem = (currentProductPage - 1) * productsPerPage + 1;
+        var endItem = Math.min(currentProductPage * productsPerPage, totalItems);
+        html += '<span class="page-info">' + startItem + '-' + endItem + ' / ' + totalItems + '</span>';
+        pEl.innerHTML = html;
+    }
 
-        function openEditModal(product) {
-            editingProductId = product.id;
-            document.getElementById('editTitle').value = product.name || product.title || '';
-            document.getElementById('editCategory').value = (product.category || 'other').toLowerCase();
-            document.getElementById('editOem').value = product.oem || product.oemCode || '';
+    function goToProductPage(page) { currentProductPage = page; renderProducts(); document.getElementById('productList').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    function searchProducts() { currentProductPage = 1; renderProducts(); }
+
+    function openEditModalById(id) {
+        var product = allProducts.find(function(x) { return x.id == id || x.id === parseInt(id); });
+        if (product) openEditModal(product);
+    }
+
+    function confirmDeleteProduct(id, name) {
+        deleteTarget = { type: 'product', id: id };
+        document.getElementById('deleteModalText').textContent = '删除"' + (name || '该商品') + '"？网站将同步删除。';
+        document.getElementById('deleteModal').classList.add('show');
+    }
+
+    function openEditModal(product) {
+        editingProductId = product.id;
+        document.getElementById('editTitle').value = product.name || product.title || '';
+        document.getElementById('editCategory').value = (product.category || 'other').toLowerCase();
+        document.getElementById('editOem').value = product.oem || product.oemCode || '';
+        var imagesEditor = document.getElementById('imagesEditor');
+        var images = (product.image || product.images || '').toString().split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+        if (images.length) {
+            imagesEditor.innerHTML = images.map(function(url, i) {
+                return '<div class="image-item"><img src="' + url + '" alt="" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>\'"><input type="text" value="' + url + '" class="image-url"><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button></div>';
+            }).join('');
+        } else {
+            imagesEditor.innerHTML = '<div style="color:var(--text-muted);font-size:11px;padding:8px;text-align:center;">暂无图片，点击下方添加</div>';
+        }
+        document.getElementById('editModal').classList.add('show');
+    }
+
+    function closeEditModal() { document.getElementById('editModal').classList.remove('show'); editingProductId = null; }
+    function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
+
+    // ===== 等待 DOM 加载完成后执行初始化 =====
+    document.addEventListener('DOMContentLoaded', function() {
+        // 添加图片按钮事件
+        document.getElementById('addImageBtn').onclick = function() {
             var imagesEditor = document.getElementById('imagesEditor');
-            var images = (product.image || product.images || '').toString().split(',').map(function(s) { return s.trim(); }).filter(Boolean);
-            if (images.length) {
-                imagesEditor.innerHTML = images.map(function(url) {
-                    return '<div class="image-item"><img src="' + url + '" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>\'"><input type="text" value="' + url + '" class="image-url"><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button></div>';
-                }).join('');
-            } else {
-                imagesEditor.innerHTML = '<div style="color:var(--text-muted);font-size:11px;padding:8px;text-align:center;">暂无图片，点击下方添加</div>';
+            var emptyTip = imagesEditor.querySelector('div[style]');
+            if (emptyTip) emptyTip.remove();
+            var newItem = document.createElement('div');
+            newItem.className = 'image-item';
+            newItem.innerHTML = '<img src="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 60 60\'><rect fill=\'%232a2a2a\' width=\'60\' height=\'60\'/><text x=\'30\' y=\'35\' text-anchor=\'middle\' fill=\'%23666\' font-size=\'8\'>New</text></svg>"><input type="text" value="" class="image-url" placeholder="输入图片URL..."><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
+            imagesEditor.appendChild(newItem);
+        };
+
+        // ===== 事件绑定 =====
+        document.getElementById('confirmDeleteBtn').onclick = executeDelete;
+        document.getElementById('cancelDeleteBtn').onclick = closeDeleteModal;
+        document.getElementById('saveEditBtn').onclick = saveProductEdit;
+        document.getElementById('cancelEditBtn').onclick = closeEditModal;
+        document.getElementById('closeSuccessBtn').onclick = closeSuccessModal;
+        document.getElementById('googleLoginBtn').onclick = handleLogin;
+        document.getElementById('logoutBtn').onclick = handleLogout;
+
+        // 页面加载时自动获取产品列表
+        if (checkToken()) {
+            loadProducts();
+        }
+    });
+
+    // ===== 保存编辑 - 修复版：支持0延迟实时更新 =====
+    function saveProductEdit() {
+        if (!editingProductId) return;
+        var title = document.getElementById('editTitle').value.trim();
+        var category = document.getElementById('editCategory').value;
+        var oem = document.getElementById('editOem').value.trim();
+        var imageInputs = document.querySelectorAll('.image-item .image-url');
+        var images = Array.prototype.slice.call(imageInputs).map(function(i) { return i.value.trim(); }).filter(Boolean);
+        var imageStr = images.join(',');
+
+        showToast('正在保存...', false);
+
+        // 1. 🚀 从 OSS 快速加载数据
+        fetch(OSS_URL + '?t=' + Date.now()).then(function(r) {
+            if (!r.ok) throw new Error('OSS加载失败');
+            return r.text();
+        }).then(function(content) {
+            var products = JSON.parse(content);
+            console.log('[Admin] 从OSS加载产品用于编辑，数量:', products.length);
+
+            var index = products.findIndex(function(x) { return x.id == editingProductId || x.id === parseInt(editingProductId); });
+            if (index !== -1) {
+                if (title) { products[index].name = title; products[index].title = title; }
+                products[index].category = category;
+                products[index].oem = oem;
+                products[index].oemCode = oem;
+                products[index].image = imageStr;
+                products[index].images = images;
+                products[index].updatedAt = new Date().toISOString();
             }
-            document.getElementById('editModal').classList.add('show');
-        }
 
-        function closeEditModal() { document.getElementById('editModal').classList.remove('show'); editingProductId = null; }
-        function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); deleteTarget = null; }
-
-        function saveProductEdit() {
-            if (!editingProductId) return;
-            var title = document.getElementById('editTitle').value.trim();
-            var category = document.getElementById('editCategory').value;
-            var oem = document.getElementById('editOem').value.trim();
-            var imageInputs = document.querySelectorAll('.image-item .image-url');
-            var images = Array.prototype.slice.call(imageInputs).map(function(i) { return i.value.trim(); }).filter(Boolean);
-            var imageStr = images.join(',');
-
-            showToast('正在保存...', false);
-
-            var updateData = {
-                name: title,
-                title: title,
-                category: category,
-                oem: oem,
-                oemCode: oem,
-                image: imageStr,
-                images: images,
-                updatedAt: new Date().toISOString()
-            };
-
-            apiRequest('/products/' + editingProductId, 'PUT', updateData)
-                .then(function(result) {
-                    closeEditModal();
-                    showToast('保存成功！', false);
-                    loadProducts();
-                })
-                .catch(function(e) {
-                    showToast('保存失败: ' + e.message, true);
-                });
-        }
-
-        function executeDelete() {
-            if (!deleteTarget) return;
-            var targetType = deleteTarget.type;
-            var targetId = deleteTarget.id;
-            closeDeleteModal();
-
-            if (targetType === 'product') {
-                showToast('正在删除...', false);
-                apiRequest('/products/' + targetId, 'DELETE')
-                    .then(function(result) {
-                        showToast('删除成功！', false);
-                        loadProducts();
-                    })
-                    .catch(function(e) {
-                        showToast('删除失败: ' + e.message, true);
-                    });
-            }
-        }
-
-        // ===== 询盘管理 (保持 GitHub 逻辑) =====
-        function loadInquiries() {
-            var c = document.getElementById('inquiryList');
-            c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-            fetch(GITHUB_API + '/contents/inquiries.json?ref=main', {
-                headers: { 'Authorization': 'token ' + GITHUB_TOKEN }
-            })
-            .then(function(r) {
-                if (r.status === 404) {
-                    return createInitialInquiriesFile();
-                }
-                if (!r.ok) throw new Error('加载失败');
-                return r.json();
-            })
-            .then(function(data) {
-                if (data.content) {
-                    var content = atob(data.content);
-                    allInquiries = JSON.parse(content);
-                    updateInquiryStats();
-                    renderInquiries();
-                } else {
-                    allInquiries = [];
-                    updateInquiryStats();
-                    renderInquiries();
-                }
-            })
-            .catch(function(e) {
-                c.innerHTML = '<div class="loading" style="color:var(--accent);"><i class="fas fa-exclamation-triangle"></i><p>加载失败: ' + e.message + '</p></div>';
+            // 2. 📤 上传到 OSS
+            return uploadToOSS('products.json', products);
+        }).then(function() {
+            // 3. 🔄 更新 version.json 触发前端实时更新
+            var newVersion = Date.now();
+            return uploadToOSS('version.json', {
+                version: newVersion,
+                message: '编辑产品: ' + editingProductId + ' via admin - ' + new Date().toISOString(),
+                totalProducts: allProducts.length,
+                lastUpdate: new Date().toISOString(),
+                source: 'admin_edit'
             });
-        }
+        }).then(function() {
+            return fetch(OSS_URL + '?t=' + Date.now()).then(function(r) { return r.text(); });
+        }).then(function(content) {
+            allProducts = JSON.parse(content);
+            renderProducts();
+            closeEditModal();
 
-        function createInitialInquiriesFile() {
-            var initialData = [];
-            var content = JSON.stringify(initialData, null, 2);
-            var encoded = btoa(unescape(encodeURIComponent(content)));
+            broadcastDataChange('edit', editingProductId);
 
-            return fetch(GITHUB_API + '/contents/inquiries.json', {
-                method: 'PUT',
-                headers: { 
-                    'Authorization': 'token ' + GITHUB_TOKEN,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Create inquiries.json',
-                    content: encoded,
-                    branch: 'main'
-                })
-            }).then(function(r) { return r.json(); })
-              .then(function() { return {}; });
-        }
+            showSuccessModal('保存成功！', '商品信息已更新，前端页面将在5秒内自动刷新');
+        }).catch(function(e) {
+            showToast('保存失败: ' + e.message, true);
+        });
+    }
 
-        function updateInquiryStats() {
-            var total = allInquiries.length;
-            var unread = allInquiries.filter(function(i) { return i.status === 'unread'; }).length;
-            var today = new Date().toISOString().split('T')[0];
-            var todayCount = allInquiries.filter(function(i) { return i.createdAt.startsWith(today); }).length;
+    // ===== 删除商品 - 修复版：添加数据同步广播 =====
+    function executeDelete() {
+        if (!deleteTarget) return;
+        var targetType = deleteTarget.type;
+        var targetId = deleteTarget.id;
+        closeDeleteModal();
+        if (targetType === 'product') {
+            showToast('正在删除...', false);
+            // 1. 🚀 从 OSS 快速加载数据
+            fetch(OSS_URL + '?t=' + Date.now()).then(function(r) {
+                if (!r.ok) throw new Error('OSS加载失败');
+                return r.text();
+            }).then(function(content) {
+                var p = JSON.parse(content);
+                console.log('[Admin] 从OSS加载产品用于删除，数量:', p.length);
 
-            document.getElementById('inq_total').textContent = total;
-            document.getElementById('inq_unread').textContent = unread;
-            document.getElementById('inq_today').textContent = todayCount;
+                var beforeCount = p.length;
+                p = p.filter(function(x) { return x.id != targetId && x.id !== parseInt(targetId); });
+                if (beforeCount === p.length) { showToast('未找到该商品', true); return Promise.reject('未找到该商品'); }
 
-            var badge = document.getElementById('inquiryBadge');
-            if (unread > 0) {
-                badge.textContent = unread;
-                badge.style.display = 'inline';
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-
-        function renderInquiries(inquiries) {
-            var list = inquiries || allInquiries;
-            var c = document.getElementById('inquiryList');
-            if (!list.length) {
-                c.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>';
-                return;
-            }
-            c.innerHTML = list.map(function(i) {
-                var date = new Date(i.createdAt).toLocaleDateString('zh-CN');
-                var initial = (i.name || '?')[0].toUpperCase();
-                return '<div class="inquiry-card' + (i.status === 'unread' ? ' unread' : '') + '">' +
-                    '<div class="inquiry-header">' +
-                        '<div class="inquiry-avatar">' + initial + '</div>' +
-                        '<div class="inquiry-info">' +
-                            '<div class="inquiry-name">' + (i.name || '匿名') + (i.status === 'unread' ? '<span class="inquiry-badge">未读</span>' : '<span class="inquiry-badge read">已读</span>') + '</div>' +
-                            '<div class="inquiry-email">' + (i.email || '') + (i.country ? ' • ' + i.country : '') + '</div>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="inquiry-meta">' +
-                        '<span><i class="fas fa-calendar"></i> ' + date + '</span>' +
-                        (i.phone ? '<span><i class="fas fa-phone"></i> ' + i.phone + '</span>' : '') +
-                    '</div>' +
-                    '<div class="inquiry-message">' + (i.message || '') + '</div>' +
-                    '<div class="inquiry-actions">' +
-                        (i.status === 'unread' ? '<button class="btn btn-success btn-sm" onclick="markAsRead(\'' + i.id + '\')"><i class="fas fa-check"></i> 标记已读</button>' : '') +
-                        '<button class="btn btn-danger btn-sm" onclick="deleteInquiry(\'' + i.id + '\')"><i class="fas fa-trash"></i> 删除</button>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
-        }
-
-        function filterInquiries() {
-            var q = document.getElementById('inquirySearch').value.toLowerCase();
-            var filtered = allInquiries.filter(function(i) {
-                return (i.name || '').toLowerCase().includes(q) ||
-                       (i.email || '').toLowerCase().includes(q) ||
-                       (i.message || '').toLowerCase().includes(q) ||
-                       (i.country || '').toLowerCase().includes(q);
-            });
-            renderInquiries(filtered);
-        }
-
-        function markAsRead(id) {
-            var index = allInquiries.findIndex(function(i) { return i.id === id; });
-            if (index === -1) return;
-
-            allInquiries[index].status = 'read';
-            allInquiries[index].readAt = new Date().toISOString();
-
-            saveInquiriesToGitHub()
-                .then(function() {
-                    updateInquiryStats();
-                    renderInquiries();
-                    showToast('已标记为已读', false);
-                })
-                .catch(function(e) {
-                    showToast('操作失败: ' + e.message, true);
+                // 2. 📤 上传到 OSS
+                return uploadToOSS('products.json', p);
+            }).then(function() {
+                // 3. 🔄 更新 version.json 触发前端实时更新
+                var newVersion = Date.now();
+                return uploadToOSS('version.json', {
+                    version: newVersion,
+                    message: '删除产品: ' + targetId + ' via admin - ' + new Date().toISOString(),
+                    totalProducts: allProducts.length - 1,
+                    lastUpdate: new Date().toISOString(),
+                    source: 'admin_delete'
                 });
-        }
+            }).then(function() {
+                return fetch(OSS_URL + '?t=' + Date.now()).then(function(r) { return r.text(); });
+            }).then(function(content) {
+                allProducts = JSON.parse(content);
+                renderProducts();
 
-        function deleteInquiry(id) {
-            if (!confirm('确定要删除这个询盘吗？')) return;
+                // ===== 关键修复：广播数据变化通知前端 =====
+                broadcastDataChange('delete', targetId);
 
-            allInquiries = allInquiries.filter(function(i) { return i.id !== id; });
-
-            saveInquiriesToGitHub()
-                .then(function() {
-                    updateInquiryStats();
-                    renderInquiries();
-                    showToast('删除成功', false);
-                })
-                .catch(function(e) {
+                showSuccessModal('删除成功！', '商品已删除，前端页面将自动刷新');
+            }).catch(function(e) {
+                if (e !== '未找到该商品') {
                     showToast('删除失败: ' + e.message, true);
-                });
-        }
-
-        function saveInquiriesToGitHub() {
-            var content = JSON.stringify(allInquiries, null, 2);
-            var encoded = btoa(unescape(encodeURIComponent(content)));
-
-            return fetch(GITHUB_API + '/contents/inquiries.json?ref=main', {
-                headers: { 'Authorization': 'token ' + GITHUB_TOKEN }
-            })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                return fetch(GITHUB_API + '/contents/inquiries.json', {
-                    method: 'PUT',
-                    headers: { 
-                        'Authorization': 'token ' + GITHUB_TOKEN,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: 'Update inquiries.json',
-                        content: encoded,
-                        sha: data.sha,
-                        branch: 'main'
-                    })
-                });
-            })
-            .then(function(r) { 
-                if (!r.ok) throw new Error('保存失败');
-                return r.json(); 
-            });
-        }
-
-        // ===== Google Analytics =====
-        function initAnalytics() {
-            var saved = localStorage.getItem('ga_token');
-            var expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0');
-            if (saved && Date.now() < expiry) {
-                accessToken = saved;
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('dashboardSection').style.display = 'block';
-                loadAllData();
-            } else {
-                document.getElementById('loginSection').style.display = 'block';
-                document.getElementById('dashboardSection').style.display = 'none';
-            }
-        }
-
-        function handleLogin() {
-            if (typeof google === 'undefined') { showToast('Google API 未加载', true); return; }
-            var client = google.accounts.oauth2.initTokenClient({
-                client_id: GA_CLIENT_ID,
-                scope: 'https://www.googleapis.com/auth/analytics.readonly',
-                callback: function(r) {
-                    if (r.access_token) {
-                        accessToken = r.access_token;
-                        localStorage.setItem('ga_token', accessToken);
-                        localStorage.setItem('ga_token_expiry', Date.now() + 3600000);
-                        document.getElementById('loginSection').style.display = 'none';
-                        document.getElementById('dashboardSection').style.display = 'block';
-                        loadAllData();
-                    }
                 }
             });
-            client.requestAccessToken();
         }
+    }
 
-        function handleLogout() {
-            accessToken = null;
-            localStorage.removeItem('ga_token');
-            localStorage.removeItem('ga_token_expiry');
+    function loadInquiries() {
+        if (!checkToken()) return;
+        var c = document.getElementById('inquiryList');
+        c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
+        c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>';
+    }
+
+    function renderInquiries(list) {
+        var c = document.getElementById('inquiryList');
+        c.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无询盘</p></div>';
+    }
+
+    function deleteInquiry(id) {
+        showToast('询盘功能暂不可用', true);
+    }
+
+
+    // ===== API 请求封装 =====
+    function apiRequest(endpoint, method, body) {
+        var options = {
+            method: method || 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-API-Key': API_KEY
+            }
+        };
+        if (body) {
+            options.body = JSON.stringify(body);
+        }
+        return fetch(API_BASE + endpoint, options)
+            .then(function(r) {
+                if (!r.ok) {
+                    return r.json().then(function(err) {
+                        throw new Error(err.error || 'API 请求失败: ' + r.status);
+                    }).catch(function() {
+                        throw new Error('API 请求失败: ' + r.status);
+                    });
+                }
+                return r.json();
+            });
+    }
+
+    function showToast(m, err) {
+        var t = document.getElementById('toast');
+        t.textContent = m;
+        t.className = 'toast show' + (err ? ' error' : '');
+        setTimeout(function() { t.classList.remove('show'); }, 3000);
+    }
+
+    function showSuccessModal(title, text) {
+        document.getElementById('successModalTitle').textContent = title || '操作成功';
+        document.getElementById('successModalText').textContent = text || '网站已同步更新';
+        document.getElementById('successModal').classList.add('show');
+    }
+
+    function closeSuccessModal() { document.getElementById('successModal').classList.remove('show'); }
+
+    function showNetworkError(container, message, hasCache) {
+        container.innerHTML = '<div class="loading" style="color:var(--accent);"><i class="fas fa-exclamation-triangle"></i><p>' + message + '</p>' + (hasCache ? '<p style="font-size:10px;color:var(--text-muted);margin-top:8px;">正在使用缓存数据</p>' : '') + '</div>';
+    }
+
+    // ===== Google Analytics 部分 =====
+    var trendChart, countryChart, deviceChart;
+
+    function initAnalytics() {
+        var saved = localStorage.getItem('ga_token');
+        var expiry = parseInt(localStorage.getItem('ga_token_expiry') || '0');
+        if (saved && Date.now() < expiry) {
+            accessToken = saved;
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'block';
+            loadAllData();
+        } else {
             document.getElementById('loginSection').style.display = 'block';
             document.getElementById('dashboardSection').style.display = 'none';
         }
+    }
 
-        var currentDateRange = '7daysAgo';
-
-        function setDateRange(range, btn) {
-            currentDateRange = range;
-            document.querySelectorAll('.date-btn').forEach(function(b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-            loadAllData();
-        }
-
-        function loadAllData() {
-            if (!accessToken) return;
-            loadProducts();
-            fetchRealtimeData();
-            fetchOverviewData();
-            fetchTrafficData();
-        }
-
-        function fetchRealtimeData() {
-            fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runRealtimeReport', {
-                method: 'POST',
-                headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ metrics: [{ name: 'activeUsers' }] })
-            }).then(function(r) { return r.json(); }).then(function(d) {
-                var count = d.rows ? d.rows[0].metricValues[0].value : '0';
-                document.getElementById('statRealtime').textContent = count;
-            }).catch(function(e) { console.error('Realtime error:', e); });
-        }
-
-        function fetchOverviewData() {
-            fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
-                method: 'POST',
-                headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
-                    metrics: [
-                        { name: 'screenPageViews' },
-                        { name: 'totalUsers' },
-                        { name: 'sessions' },
-                        { name: 'averageSessionDuration' }
-                    ]
-                })
-            }).then(function(r) { return r.json(); }).then(function(d) {
-                if (d.rows) {
-                    var row = d.rows[0];
-                    document.getElementById('statPageviews').textContent = row.metricValues[0].value;
-                    document.getElementById('statUsers').textContent = row.metricValues[1].value;
-                    document.getElementById('statSessions').textContent = row.metricValues[2].value;
-                    var avgDur = parseFloat(row.metricValues[3].value) || 0;
-                    var mins = Math.floor(avgDur / 60);
-                    var secs = Math.floor(avgDur % 60);
-                    document.getElementById('statDuration').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+    function handleLogin() {
+        if (typeof google === 'undefined') { showToast('Google API未加载', true); return; }
+        var client = google.accounts.oauth2.initTokenClient({
+            client_id: GA_CLIENT_ID,
+            scope: 'https://www.googleapis.com/auth/analytics.readonly',
+            callback: function(r) {
+                if (r.access_token) {
+                    accessToken = r.access_token;
+                    localStorage.setItem('ga_token', accessToken);
+                    localStorage.setItem('ga_token_expiry', Date.now() + 3600000);
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('dashboardSection').style.display = 'block';
+                    loadAllData();
                 }
-            }).catch(function(e) { console.error('Overview error:', e); });
-        }
-
-        function fetchTrafficData() {
-            fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
-                method: 'POST',
-                headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
-                    dimensions: [{ name: 'date' }],
-                    metrics: [{ name: 'screenPageViews' }],
-                    orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }]
-                })
-            }).then(function(r) { return r.json(); }).then(function(d) {
-                if (d.rows) {
-                    var labels = d.rows.map(function(row) {
-                        var date = row.dimensionValues[0].value;
-                        return date.substring(4,6) + '/' + date.substring(6,8);
-                    });
-                    var values = d.rows.map(function(row) { return parseInt(row.metricValues[0].value); });
-                    if (trendChart) trendChart.destroy();
-                    var ctx = document.getElementById('trendChart').getContext('2d');
-                    trendChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: '浏览量',
-                                data: values,
-                                borderColor: '#0f4c81',
-                                backgroundColor: 'rgba(15,76,129,0.1)',
-                                fill: true,
-                                tension: 0.4
-                            }]
-                        },
-                        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
-                    });
-                }
-                return fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
-                        dimensions: [{ name: 'country' }],
-                        metrics: [{ name: 'sessions' }],
-                        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
-                        limit: 5
-                    })
-                });
-            }).then(function(r) { return r.json(); }).then(function(d2) {
-                if (d2.rows) {
-                    var cLabels = d2.rows.map(function(row) { return row.dimensionValues[0].value; });
-                    var cValues = d2.rows.map(function(row) { return parseInt(row.metricValues[0].value); });
-                    if (countryChart) countryChart.destroy();
-                    var ctx2 = document.getElementById('countryChart').getContext('2d');
-                    countryChart = new Chart(ctx2, {
-                        type: 'doughnut',
-                        data: {
-                            labels: cLabels,
-                            datasets: [{ data: cValues, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71', '#f39c12', '#9b59b6'] }]
-                        },
-                        options: { responsive: true }
-                    });
-                }
-                return fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
-                        dimensions: [{ name: 'deviceCategory' }],
-                        metrics: [{ name: 'sessions' }],
-                        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }]
-                    })
-                });
-            }).then(function(r) { return r.json(); }).then(function(d3) {
-                if (d3.rows) {
-                    var devLabels = d3.rows.map(function(row) { 
-                        return row.dimensionValues[0].value === 'desktop' ? '电脑' : 
-                               row.dimensionValues[0].value === 'mobile' ? '手机' : '平板'; 
-                    });
-                    var devValues = d3.rows.map(function(row) { return parseInt(row.metricValues[0].value); });
-                    if (deviceChart) deviceChart.destroy();
-                    var ctx3 = document.getElementById('deviceChart').getContext('2d');
-                    deviceChart = new Chart(ctx3, {
-                        type: 'pie',
-                        data: {
-                            labels: devLabels,
-                            datasets: [{ data: devValues, backgroundColor: ['#0f4c81', '#e63946', '#f39c12'] }]
-                        },
-                        options: { responsive: true }
-                    });
-                }
-            }).catch(function(e) { console.error('Traffic error:', e); });
-        }
-
-        var trendChart, countryChart, deviceChart;
-
-        // ===== 初始化 =====
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('addImageBtn').onclick = function() {
-                var imagesEditor = document.getElementById('imagesEditor');
-                var emptyTip = imagesEditor.querySelector('div[style]');
-                if (emptyTip) emptyTip.remove();
-                var newItem = document.createElement('div');
-                newItem.className = 'image-item';
-                newItem.innerHTML = '<img src="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 60 60\'><rect fill=\'%232a2a2a\' width=\'60\' height=\'60\'/><text x=\'30\' y=\'35\' text-anchor=\'middle\' fill=\'%23666\' font-size=\'8\'>New</text></svg>"><input type="text" value="" class="image-url" placeholder="输入图片URL..."><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
-                imagesEditor.appendChild(newItem);
-            };
-            document.getElementById('saveEditBtn').onclick = saveProductEdit;
-            document.getElementById('cancelEditBtn').onclick = closeEditModal;
-            document.getElementById('closeSuccessBtn').onclick = closeSuccessModal;
-            
-            initAnalytics();
+            }
         });
+        client.requestAccessToken();
+    }
+
+    function handleLogout() {
+        accessToken = null;
+        localStorage.removeItem('ga_token');
+        localStorage.removeItem('ga_token_expiry');
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('dashboardSection').style.display = 'none';
+    }
+
+    document.getElementById('googleLoginBtn').onclick = handleLogin;
+    document.getElementById('logoutBtn').onclick = handleLogout;
+
+    var currentDateRange = '7daysAgo';
+
+    function setDateRange(range, btnId) {
+        currentDateRange = range;
+        document.querySelectorAll('.date-btn').forEach(function(b) { b.classList.remove('active'); });
+        document.getElementById(btnId).classList.add('active');
+        loadAllData();
+    }
+
+    function loadAllData() {
+        if (!accessToken) return;
+        fetchRealtimeData();
+        fetchOverviewData();
+        fetchTrafficData();
+    }
+
+    function fetchRealtimeData() {
+        fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runRealtimeReport', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ metrics: [{ name: 'activeUsers' }] })
+        }).then(function(r) { return r.json(); }).then(function(d) {
+            var count = d.rows ? d.rows[0].metricValues[0].value : '0';
+            document.getElementById('statRealtime').textContent = count;
+        }).catch(function(e) { console.error('Realtime error:', e); });
+    }
+
+    function fetchOverviewData() {
+        fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
+                metrics: [
+                    { name: 'screenPageViews' },
+                    { name: 'totalUsers' },
+                    { name: 'sessions' },
+                    { name: 'averageSessionDuration' }
+                ]
+            })
+        }).then(function(r) { return r.json(); }).then(function(d) {
+            if (d.rows) {
+                var row = d.rows[0];
+                document.getElementById('statPageviews').textContent = row.metricValues[0].value;
+                document.getElementById('statUsers').textContent = row.metricValues[1].value;
+                document.getElementById('statSessions').textContent = row.metricValues[2].value;
+                var avgDur = parseFloat(row.metricValues[3].value) || 0;
+                var mins = Math.floor(avgDur / 60);
+                var secs = Math.floor(avgDur % 60);
+                document.getElementById('statDuration').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+            }
+        }).catch(function(e) { console.error('Overview error:', e); });
+    }
+
+    function fetchTrafficData() {
+        // 流量趋势
+        fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
+                dimensions: [{ name: 'date' }],
+                metrics: [{ name: 'screenPageViews' }],
+                orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }]
+            })
+        }).then(function(r) { return r.json(); }).then(function(d) {
+            if (d.rows) {
+                var labels = d.rows.map(function(row) {
+                    var date = row.dimensionValues[0].value;
+                    return date.substring(4,6) + '/' + date.substring(6,8);
+                });
+                var values = d.rows.map(function(row) { return parseInt(row.metricValues[0].value); });
+                if (trendChart) trendChart.destroy();
+                var ctx = document.getElementById('trendChart').getContext('2d');
+                trendChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '浏览量',
+                            data: values,
+                            borderColor: '#0f4c81',
+                            backgroundColor: 'rgba(15,76,129,0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            // 国家分布
+            return fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
+                    dimensions: [{ name: 'country' }],
+                    metrics: [{ name: 'sessions' }],
+                    orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+                    limit: 5
+                })
+            });
+        }).then(function(r) { return r.json(); }).then(function(d2) {
+            if (d2.rows) {
+                var cLabels = d2.rows.map(function(row) { return row.dimensionValues[0].value; });
+                var cValues = d2.rows.map(function(row) { return parseInt(row.metricValues[0].value); });
+                if (countryChart) countryChart.destroy();
+                var ctx2 = document.getElementById('countryChart').getContext('2d');
+                countryChart = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: cLabels,
+                        datasets: [{ data: cValues, backgroundColor: ['#0f4c81', '#e63946', '#2ecc71', '#f39c12', '#9b59b6'] }]
+                    },
+                    options: { responsive: true }
+                });
+            }
+
+            // 设备分布
+            return fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dateRanges: [{ startDate: currentDateRange, endDate: 'today' }],
+                    dimensions: [{ name: 'deviceCategory' }],
+                    metrics: [{ name: 'sessions' }],
+                    orderBys: [{ metric: { metricName: 'sessions' }, desc: true }]
+                })
+            });
+        }).then(function(r) { return r.json(); }).then(function(d3) {
+            if (d3.rows) {
+                var devLabels = d3.rows.map(function(row) { return row.dimensionValues[0].value === 'desktop' ? '电脑' : row.dimensionValues[0].value === 'mobile' ? '手机' : '平板'; });
+                var devValues = d3.rows.map(function(row) { return parseInt(row.metricValues[0].value); });
+                if (deviceChart) deviceChart.destroy();
+                var ctx3 = document.getElementById('deviceChart').getContext('2d');
+                deviceChart = new Chart(ctx3, {
+                    type: 'pie',
+                    data: {
+                        labels: devLabels,
+                        datasets: [{ data: devValues, backgroundColor: ['#0f4c81', '#e63946', '#f39c12'] }]
+                    },
+                    options: { responsive: true }
+                });
+            }
+        }).catch(function(e) { console.error('Traffic error:', e); });
+    }
     </script>
 </body>
 </html>
