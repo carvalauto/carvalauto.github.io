@@ -397,11 +397,11 @@
 
     function loadProducts() {
         if (!checkToken()) return;
-        var c = document.getElementById('productList');
+        var c = document.getElementById("productList");
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>从 OSS 加载中...</p></div>';
         
         // 直接从 OSS 加载产品数据（修复：不再使用 API）
-        fetch(OSS_URL + '?t=' + Date.now())
+        fetch(OSS_URL + "?t=" + Date.now())
             .then(function(r) {
                 if (!r.ok) throw new Error('OSS加载失败: ' + r.status);
                 return r.text();
@@ -431,13 +431,6 @@
                 }
             });
     }
-                    showNetworkError(c, '无法加载产品: ' + e.message, false);
-                }
-            });
-    }
-
-    function renderProducts() {
-        var c = document.getElementById('productList');
         var searchTerm = document.getElementById('productSearch').value.toLowerCase();
         var filtered = allProducts;
         if (searchTerm) {
