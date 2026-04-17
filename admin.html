@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carval Auto - 后台管理</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.18.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -209,7 +210,7 @@
         syncBtn.classList.add('syncing');
         syncBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 同步中...';
         
-        showToast('正在同步数据到 OSS，请稍候...', false);
+        showToast('正在从 GitHub 获取数据...', false);
         
         try {
             // 获取 GitHub 的最新数据
@@ -221,17 +222,55 @@
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
             });
             
-            if (productsResp.ok && inquiriesResp.ok) {
-                showToast('✅ 已获取最新数据！', false);
-                showToast('⏰ 自动同步脚本将在 10 分钟内同步到 OSS', false);
-                
-                // 刷新本地数据
-                loadProducts();
-                loadInquiries();
-            } else {
-                throw new Error('获取数据失败');
+            if (!productsResp.ok || !inquiriesResp.ok) {
+                throw new Error('获取 GitHub 数据失败');
             }
+            
+            var productsData = await productsResp.json();
+            var inquiriesData = await inquiriesResp.json();
+            
+            // 解码 Base64 数据
+            var productsContent = atob(productsData.content);
+            var inquiriesContent = atob(inquiriesData.content);
+            
+            showToast('✅ 已从 GitHub 获取数据！', false);
+            showToast('正在同步到 OSS...', false);
+            
+            // 上传到 OSS
+            var OSS_ACCESS_KEY_ID = 'LTAI5tKCovsg5dJWKxoXwDr2';
+            var OSS_ACCESS_KEY_SECRET = 'vDdWLEKBnnmFFZwOeLzX73vRo8k0WW';
+            var OSS_BUCKET = 'carvalauto-products';
+            var OSS_REGION = 'oss-cn-hangzhou';
+            
+            var client = new OSS({
+                region: OSS_REGION,
+                accessKeyId: OSS_ACCESS_KEY_ID,
+                accessKeySecret: OSS_ACCESS_KEY_SECRET,
+                bucket: OSS_BUCKET
+            });
+            
+            // 上传 products.json
+            await client.put('products.json', new Blob([productsContent], { type: 'application/json' }));
+            
+            // 上传 inquiries.json
+            await client.put('inquiries.json', new Blob([inquiriesContent], { type: 'application/json' }));
+            
+            // 更新 version.json
+            var versionData = {
+                version: Date.now(),
+                timestamp: new Date().toISOString(),
+                source: 'manual_sync'
+            };
+            await client.put('version.json', new Blob([JSON.stringify(versionData, null, 2)], { type: 'application/json' }));
+            
+            showToast('✅ 已同步到 OSS！', false);
+            
+            // 刷新本地数据
+            loadProducts();
+            loadInquiries();
+            
         } catch(e) {
+            console.error('同步失败:', e);
             showToast('❌ 同步失败: ' + e.message, true);
         } finally {
             syncBtn.disabled = false;
