@@ -1031,26 +1031,18 @@
     
     // ===== 询盘功能 =====
     async function loadInquiries() {
-        if (!checkToken()) return;
         var c = document.getElementById('inquiryList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         
         try {
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
-                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-            });
+            var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/inquiries.json?t=' + Date.now();
+            var r = await fetch(OSS_URL);
             
             if (!r.ok) {
-                throw new Error('获取询盘数据失败: ' + r.status);
+                throw new Error('OSS请求失败: ' + r.status);
             }
             
-            var j = await r.json();
-            var content = decodeGitHubContent(j);
-            if (!content) {
-                var rawR = await fetch(j.download_url + '?t=' + Date.now());
-                content = await rawR.text();
-            }
-            
+            var content = await r.text();
             allInquiries = JSON.parse(content);
             
             var today = new Date().toISOString().split('T')[0];
