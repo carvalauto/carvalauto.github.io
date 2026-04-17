@@ -937,13 +937,12 @@
     
     // ===== 询盘功能 =====
     async function loadInquiries() {
-        if (!checkToken()) return;
         var c = document.getElementById('inquiryList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         
         try {
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
-                headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
+            var r = await fetch('https://carvalauto-api.vercel.app/api/inquiries?t=' + Date.now(), {
+                headers: { 'Content-Type': 'application/json' }
             });
             
             if (!r.ok) {
@@ -951,13 +950,7 @@
             }
             
             var j = await r.json();
-            var content = decodeGitHubContent(j);
-            if (!content) {
-                var rawR = await fetch(j.download_url + '?t=' + Date.now());
-                content = await rawR.text();
-            }
-            
-            allInquiries = JSON.parse(content);
+            allInquiries = j.data || [];
             
             var today = new Date().toISOString().split('T')[0];
             var countries = new Set();
@@ -984,30 +977,11 @@
             }
             
             renderInquiries();
-        } catch(e) { 
+        } catch(e) {
             console.error('Load inquiries error:', e);
-            c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
+            c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>';
         }
     }
-    
-    function renderInquiries() {
-        var c = document.getElementById('inquiryList');
-        if (!allInquiries.length) {
-            c.innerHTML = '<div class="loading"><i class="fas fa-envelope-open"></i><p>暂无询盘</p></div>';
-            return;
-        }
-        
-        var sorted = allInquiries.slice().sort(function(a, b) {
-            return new Date(b.date || 0) - new Date(a.date || 0);
-        });
-        
-        c.innerHTML = sorted.map(function(inq) {
-            var readClass = inq.read ? '' : 'unread';
-            var initials = (inq.name || 'U').substring(0, 2).toUpperCase();
-            var date = inq.date ? new Date(inq.date).toLocaleDateString('zh-CN') : '';
-            var country = inq.country || '';
-            
-            return '<div class="inquiry-card ' + readClass + '" id="inq-' + inq.id + '">' +
                 '<div class="inquiry-header">' +
                     '<div class="inquiry-avatar">' + initials + '</div>' +
                     '<div class="inquiry-info">' +
