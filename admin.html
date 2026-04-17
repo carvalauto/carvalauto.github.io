@@ -406,7 +406,7 @@
     function checkToken() {
         if (!GH_TOKEN) {
             var t = prompt('请输入GitHub Token：');
-            if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); return true; }
+            if (t) { GH_TOKEN = t; /* 不再保存到 localStorage，避免覆盖代码中的 Token */ return true; }
             return false;
         }
         return true;
@@ -759,7 +759,7 @@
         if (targetType === 'product') {
             if (!GH_TOKEN) {
                 var t = prompt('请输入GitHub Token：');
-                if (t) { GH_TOKEN = t; localStorage.setItem('gh_token', t); }
+                if (t) { GH_TOKEN = t; /* 不再保存到 localStorage */ }
                 else { showToast('需要Token', true); return; }
             }
             
@@ -919,8 +919,9 @@
     }
     
     window.addEventListener('load', function() {
-        var savedToken = localStorage.getItem('gh_token');
-        if (savedToken) GH_TOKEN = savedToken;
+        // 不再使用 localStorage 中的 Token，直接使用代码中定义的 Token
+        // var savedToken = localStorage.getItem('gh_token');
+        // if (savedToken) GH_TOKEN = savedToken;
         loadProducts();
         
         // 绑定 Google 登录按钮
