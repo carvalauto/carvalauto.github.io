@@ -159,7 +159,7 @@
     // 初始化时获取当前版本号
     async function initVersion() {
         try {
-            var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/version.json?t=' + Date.now());
+            var resp = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/version.json?t=' + Date.now());
             if (resp.ok) {
                 var data = await resp.json();
                 currentVersion = data.version;
@@ -173,7 +173,7 @@
     // 检查版本变化
     async function checkVersion() {
         try {
-            var resp = await fetch('https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/version.json?t=' + Date.now());
+            var resp = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/version.json?t=' + Date.now());
             if (resp.ok) {
                 var data = await resp.json();
                 if (currentVersion && data.version && data.version !== currentVersion) {
