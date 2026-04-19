@@ -949,6 +949,38 @@
                 broadcastDataChange('delete', targetId);
                 showSuccessModal('删除成功！', '商品已从网站移除');
                 
+                // 同步到 OSS
+                (async function() {
+                    try {
+                        var deleteJsonData = JSON.stringify(p);
+                        var OSS_ACCESS_KEY_ID = 'LTAI5tKCovsg5dJWKxoXwDr2';
+                        var OSS_ACCESS_KEY_SECRET = 'vDdWLEKBnnmFFZwOeLzX73vRo8k0WW';
+                        var OSS_BUCKET = 'carvalauto-products';
+                        var OSS_REGION = 'oss-cn-hangzhou';
+                        
+                        var ossClient = new OSS({
+                            region: OSS_REGION,
+                            accessKeyId: OSS_ACCESS_KEY_ID,
+                            accessKeySecret: OSS_ACCESS_KEY_SECRET,
+                            bucket: OSS_BUCKET,
+                            secure: true
+                        });
+                        
+                        await ossClient.put('products.json', new Blob([deleteJsonData], { type: 'application/json' }));
+                        
+                        var versionData = {
+                            version: newVersion,
+                            timestamp: new Date(newVersion).toISOString(),
+                            source: 'admin_delete'
+                        };
+                        await ossClient.put('version.json', new Blob([JSON.stringify(versionData, null, 2)], { type: 'application/json' }));
+                        
+                        console.log('[Admin] OSS 同步成功');
+                    } catch(ossError) {
+                        console.warn('[Admin] OSS 同步异常:', ossError);
+                    }
+                })();
+                
             } catch(e) { 
                 showToast('删除失败: ' + e.message, true); 
             } finally {
