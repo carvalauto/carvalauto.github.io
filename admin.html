@@ -856,7 +856,8 @@
                 
                 var p = JSON.parse(content);
                 var beforeCount = p.length;
-                p = p.filter(function(x) { return x.id != targetId && x.id !== parseInt(targetId); });
+                var targetIdStr = String(targetId);
+                p = p.filter(function(x) { return String(x.id) !== targetIdStr; });
                 
                 if (beforeCount === p.length) { 
                     showToast('未找到该商品', true); 
@@ -903,9 +904,9 @@
                         verifyContent = await verifyRawR.text();
                     }
                     var verifyProducts = JSON.parse(verifyContent);
-                    var targetIdNum = parseInt(targetId);
+                    var targetIdStr = String(targetId);
                     var productStillExists = verifyProducts.some(function(x) { 
-                        return String(x.id) === String(targetId) || (targetIdNum && x.id === targetIdNum); 
+                        return String(x.id) === targetIdStr; 
                     });
                     
                     if (productStillExists) {
