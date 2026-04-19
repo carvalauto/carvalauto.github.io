@@ -838,21 +838,13 @@
             showToast('正在删除...', false);
             
             try {
-                var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                    headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-                });
+                var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
                 
                 if (!r.ok) {
                     throw new Error('获取产品数据失败: ' + r.status);
                 }
                 
-                var j = await r.json();
-                var content = decodeGitHubContent(j);
-                if (!content) {
-                    var rawR = await fetch(j.download_url + '?t=' + Date.now());
-                    content = await rawR.text();
-                }
-                
+                var content = await r.text();
                 var p = JSON.parse(content);
                 var beforeCount = p.length;
                 var targetIdStr = String(targetId);
@@ -865,86 +857,7 @@
                     return; 
                 }
                 
-                var body = { 
-                    message: 'Delete product: ' + targetId + ' via admin - ' + new Date().toISOString(), 
-                    content: btoa(unescape(encodeURIComponent(JSON.stringify(p)))), 
-                    sha: j.sha 
-                };
-                
-                var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                    method: 'PUT', 
-                    headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify(body) 
-                });
-                
-                if (!updateR.ok) {
-                    var errData = await updateR.json();
-                    throw new Error(errData.message || '删除失败');
-                }
-                
-                var updateJ = await updateR.json();
-                window.pSha = updateJ.content.sha;
-                
-                showToast('正在同步...', false);
-                
-                // 等待GitHub处理（优化：缩短等待时间）
-                await new Promise(function(resolve) { setTimeout(resolve, 2000); });
-                
-                // 快速验证
-                var verifyR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/products.json?t=' + Date.now(), { 
-                    headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-                });
-                
-                if (verifyR.ok) {
-                    var verifyJ = await verifyR.json();
-                    var verifyContent = decodeGitHubContent(verifyJ);
-                    if (!verifyContent) {
-                        var verifyRawR = await fetch(verifyJ.download_url + '?t=' + Date.now());
-                        verifyContent = await verifyRawR.text();
-                    }
-                    var verifyProducts = JSON.parse(verifyContent);
-                    var targetIdStr = String(targetId);
-                    var productStillExists = verifyProducts.some(function(x) { 
-                        return String(x.id) === targetIdStr; 
-                    });
-                    
-                    if (productStillExists) {
-                        showToast('删除验证失败，商品仍存在', true);
-                        isSubmitting = false;
-                        if (deleteBtn) deleteBtn.disabled = false;
-                        return;
-                    }
-                    
-                    allProducts = verifyProducts;
-                }
-                
-                // 更新version.json
-                var newVersion = Date.now();
-                var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_delete' };
-                
-                try {
-                    var vR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
-                        headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
-                    });
-                    
-                    if (vR.ok) {
-                        var vJ = await vR.json();
-                        var versionBody = { 
-                            message: 'Update version after admin delete - ' + new Date().toISOString(), 
-                            content: btoa(unescape(encodeURIComponent(JSON.stringify(versionData, null, 2)))), 
-                            sha: vJ.sha 
-                        };
-                        await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/version.json?t=' + newVersion, { 
-                            method: 'PUT', 
-                            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
-                            body: JSON.stringify(versionBody) 
-                        });
-                        console.log('[Admin] version.json已更新:', newVersion);
-                    }
-                } catch(versionError) {
-                    console.warn('[Admin] 更新version.json失败:', versionError);
-                }
-                
+                allProducts = p;
                 renderProducts();
                 broadcastDataChange('delete', targetId);
                 showSuccessModal('删除成功！', '商品已从网站移除');
@@ -968,6 +881,7 @@
                         
                         await ossClient.put('products.json', new Blob([deleteJsonData], { type: 'application/json' }));
                         
+                        var newVersion = Date.now();
                         var versionData = {
                             version: newVersion,
                             timestamp: new Date(newVersion).toISOString(),
