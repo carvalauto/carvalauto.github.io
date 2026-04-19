@@ -693,28 +693,140 @@ function openProduct(id) {
     
     document.getElementById('productModal').classList.add('show');
     document.body.style.overflow = 'hidden';
+    
+    // 添加历史记录状态，支持浏览器返回
+    window.history.pushState({modal: true}, '');
 }
 
 function switchImg(index) { currentImgIndex = index; document.getElementById('modalMainImg').src = carouselImages[index]; document.querySelectorAll('.modal-thumb').forEach(function(t, i) { t.classList.toggle('active', i === index); }); }
-function closeProductModal() { document.getElementById('productModal').classList.remove('show'); document.body.style.overflow = ''; }
+function closeProductModal() { 
+    document.getElementById('productModal').classList.remove('show'); 
+    document.body.style.overflow = ''; 
+    // 移除历史记录状态
+    if (window.history.state && window.history.state.modal) {
+        window.history.back();
+    }
+}
 function closeModal(e) { if (e.target === document.getElementById('productModal')) closeProductModal(); }
 
-function openLightbox(index) { if (carouselImages.length === 0) return; document.getElementById('lightboxImg').src = carouselImages[index]; document.getElementById('lightbox').classList.add('show'); document.body.style.overflow = 'hidden'; }
-function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); document.body.style.overflow = ''; }
+function openLightbox(index) { 
+    if (carouselImages.length === 0) return; 
+    document.getElementById('lightboxImg').src = carouselImages[index]; 
+    document.getElementById('lightbox').classList.add('show'); 
+    document.body.style.overflow = 'hidden';
+    
+    // 添加历史记录状态，支持浏览器返回
+    window.history.pushState({lightbox: true}, '');
+}
+function closeLightbox() { 
+    document.getElementById('lightbox').classList.remove('show'); 
+    document.body.style.overflow = '';
+    
+    // 移除历史记录状态
+    if (window.history.state && window.history.state.lightbox) {
+        window.history.back();
+    }
+}
 function prevLightboxImg() { currentImgIndex = (currentImgIndex - 1 + carouselImages.length) % carouselImages.length; document.getElementById('lightboxImg').src = carouselImages[currentImgIndex]; }
 function nextLightboxImg() { currentImgIndex = (currentImgIndex + 1) % carouselImages.length; document.getElementById('lightboxImg').src = carouselImages[currentImgIndex]; }
 
+// ===== 触摸滑动功能 =====
+var touchStartX = 0, touchEndX = 0;
+
+// 弹窗内图片滑动
+var modalMainImg = null;
+document.addEventListener('DOMContentLoaded', function() {
+    modalMainImg = document.getElementById('modalMainImg');
+    if (modalMainImg) {
+        modalMainImg.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        modalMainImg.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe('modal');
+        }, { passive: true });
+    }
+    
+    // Lightbox 图片滑动
+    var lightboxImg = document.getElementById('lightboxImg');
+    if (lightboxImg) {
+        lightboxImg.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        lightboxImg.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe('lightbox');
+        }, { passive: true });
+    }
+});
+
+function handleSwipe(type) {
+    var diff = touchStartX - touchEndX;
+    var threshold = 50; // 滑动阈值
+    
+    if (Math.abs(diff) > threshold) {
+        if (diff > 0) {
+            // 向左滑动，下一张
+            if (type === 'modal' && carouselImages.length > 1) {
+                var newIndex = (currentImgIndex + 1) % carouselImages.length;
+                switchImg(newIndex);
+            } else if (type === 'lightbox') {
+                nextLightboxImg();
+            }
+        } else {
+            // 向右滑动，上一张
+            if (type === 'modal' && carouselImages.length > 1) {
+                var newIndex = (currentImgIndex - 1 + carouselImages.length) % carouselImages.length;
+                switchImg(newIndex);
+            } else if (type === 'lightbox') {
+                prevLightboxImg();
+            }
+        }
+    }
+}
+
+// ===== 修改返回键逻辑，一层一层返回 =====
 document.addEventListener('keydown', function(e) {
-    if (document.getElementById('productModal').classList.contains('show')) {
-        if (e.key === 'Escape') closeProductModal();
-        if (e.key === 'ArrowLeft' && carouselImages.length > 1) switchImg((currentImgIndex - 1 + carouselImages.length) % carouselImages.length);
-        if (e.key === 'ArrowRight' && carouselImages.length > 1) switchImg((currentImgIndex + 1) % carouselImages.length);
-    }
     if (document.getElementById('lightbox').classList.contains('show')) {
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') prevLightboxImg();
-        if (e.key === 'ArrowRight') nextLightboxImg();
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closeLightbox();
+        }
+    } else if (document.getElementById('productModal').classList.contains('show')) {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closeProductModal();
+        }
+        if (e.key === 'ArrowLeft' && carouselImages.length > 1) {
+            var newIndex = (currentImgIndex - 1 + carouselImages.length) % carouselImages.length;
+            switchImg(newIndex);
+        }
+        if (e.key === 'ArrowRight' && carouselImages.length > 1) {
+            var newIndex = (currentImgIndex + 1) % carouselImages.length;
+            switchImg(newIndex);
+        }
     }
+});
+
+// 浏览器返回按钮处理
+window.addEventListener('popstate', function(e) {
+    var lightbox = document.getElementById('lightbox');
+    var productModal = document.getElementById('productModal');
+    
+    if (lightbox.classList.contains('show')) {
+        // 如果在 lightbox 中，关闭 lightbox
+        e.preventDefault();
+        closeLightbox();
+        window.history.pushState({lightbox: false}, '');
+    } else if (productModal.classList.contains('show')) {
+        // 如果在弹窗中，关闭弹窗
+        e.preventDefault();
+        closeProductModal();
+        window.history.pushState({modal: false}, '');
+    }
+    // 否则，允许正常返回
 });
 
 // GitHub配置（分段存储，保护Token）
