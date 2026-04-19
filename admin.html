@@ -614,8 +614,8 @@
                     '<div class="product-title" title="' + name.replace(/"/g, '&quot;') + '">' + name.substring(0, 40) + (name.length > 40 ? '...' : '') + '</div>' +
                     '<div class="product-meta"><span class="product-tag">' + cat + '</span>' + (oem ? '<span class="product-tag oem">OEM: ' + oem.substring(0, 15) + '</span>' : '') + '</div>' +
                     '<div class="product-actions">' +
-                        '<button class="btn btn-edit" onclick="openEditModalById(' + x.id + ')"><i class="fas fa-edit"></i> 编辑</button>' +
-                        '<button class="btn btn-danger" onclick="confirmDeleteProduct(' + x.id + ', \'' + name.replace(/'/g, "\\'") + '\')"><i class="fas fa-trash"></i></button>' +
+                        '<button class="btn btn-edit" onclick="openEditModalById(' + String(x.id) + ')"><i class="fas fa-edit"></i> 编辑</button>' +
+                        '<button class="btn btn-danger" onclick="confirmDeleteProduct(' + String(x.id) + ', \'' + name.replace(/'/g, "\\'") + '\')"><i class="fas fa-trash"></i></button>' +
                     '</div>' +
                 '</div></div>';
         }).join('');
