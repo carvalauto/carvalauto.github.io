@@ -771,7 +771,7 @@
             
             showToast('保存成功！', false);
             closeEditModal();
-            loadProducts(); // 重新加载产品列表
+            renderProducts(); // 直接渲染，不需要重新加载
             
         } catch (error) {
             showToast('保存失败: ' + error.message, true);
