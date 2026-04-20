@@ -659,8 +659,7 @@
     function searchProducts() { currentProductPage = 1; renderProducts(); }
     
     function openEditModalById(id) {
-        var product = allProducts.find(function(x) { return x.id == id || x.id === parseInt(id); });
-        if (product) openEditModal(product);
+        window.location.href = 'edit-product.html?id=' + id;
     }
     
     function confirmDeleteProduct(id, name) {
