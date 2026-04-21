@@ -307,6 +307,8 @@
         <div class="tab-nav">
             <button class="tab-btn active" id="tab-products" onclick="switchTab('products')"><i class="fas fa-box"></i> 商品</button>
             <button class="tab-btn" id="tab-inquiries" onclick="switchTab('inquiries')"><i class="fas fa-envelope"></i> 询盘<span id="inquiryBadge" style="display:none;"></span></button>
+            <button class="tab-btn" id="tab-blog" onclick="switchTab('blog')"><i class="fas fa-blog"></i> 博客</button>
+            <button class="tab-btn" id="tab-faq" onclick="switchTab('faq')"><i class="fas fa-question-circle"></i> FAQ</button>
             <button class="tab-btn" id="tab-analytics" onclick="switchTab('analytics')"><i class="fas fa-chart-line"></i> 流量</button>
         </div>
         <div class="header-right">
@@ -382,6 +384,46 @@
                 <div class="chart-card"><div class="chart-title"><i class="fas fa-mobile-alt"></i> 设备分布</div><canvas id="deviceChart"></canvas></div>
             </div>
         </div>
+    </div>
+    
+    <!-- Blog Management Page -->
+    <div class="page" id="page-blog">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-num" id="blog_total">-</div><div class="stat-label">总文章</div></div>
+            <div class="stat-card accent"><div class="stat-num" id="blog_published">-</div><div class="stat-label">已发布</div></div>
+            <div class="stat-card success"><div class="stat-num" id="blog_draft">-</div><div class="stat-label">草稿</div></div>
+            <div class="stat-card warning"><div class="stat-num" id="blog_views">-</div><div class="stat-label">总浏览</div></div>
+        </div>
+        <div class="filter-bar">
+            <input type="text" class="search-input" id="blogSearch" placeholder="搜索文章标题..." oninput="searchBlogs()">
+            <select class="filter-select" id="blogCategoryFilter" onchange="filterBlogsByCategory(this.value)">
+                <option value="all">全部分类</option>
+            </select>
+            <select class="filter-select" id="blogStatusFilter" onchange="filterBlogsByStatus(this.value)">
+                <option value="all">全部状态</option>
+                <option value="published">已发布</option>
+                <option value="draft">草稿</option>
+            </select>
+            <button class="btn btn-success" onclick="openBlogModal()"><i class="fas fa-plus"></i> 新建文章</button>
+        </div>
+        <div class="product-grid" id="blogList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
+    </div>
+    
+    <!-- FAQ Management Page -->
+    <div class="page" id="page-faq">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-num" id="faq_total">-</div><div class="stat-label">总问题</div></div>
+            <div class="stat-card accent"><div class="stat-num" id="faq_categories">-</div><div class="stat-label">分类</div></div>
+        </div>
+        <div class="filter-bar">
+            <input type="text" class="search-input" id="faqSearch" placeholder="搜索问题或答案..." oninput="searchFAQs()">
+            <select class="filter-select" id="faqCategoryFilter" onchange="filterFAQsByCategory(this.value)">
+                <option value="all">全部分类</option>
+            </select>
+            <button class="btn btn-primary" onclick="openCategoryModal()"><i class="fas fa-folder"></i> 分类管理</button>
+            <button class="btn btn-success" onclick="openFAQModal()"><i class="fas fa-plus"></i> 新建问题</button>
+        </div>
+        <div class="inquiry-list" id="faqList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
     </div>
     
     <div class="modal" id="deleteModal">
@@ -514,7 +556,407 @@
         if (targetBtn) { targetBtn.classList.add('active'); }
         if (tab === 'products') { loadProducts(); }
         else if (tab === 'inquiries') { loadInquiries(); }
+        else if (tab === 'blog') { loadBlogData(); }
+        else if (tab === 'faq') { loadFAQData(); }
         else if (tab === 'analytics') { initAnalytics(); }
+    }
+    
+    // ===== 博客管理 =====
+    var allBlogs = [];
+    var filteredBlogs = [];
+    var blogCategories = [];
+    
+    async function loadBlogData() {
+        try {
+            var r = await fetch('data/blogs.json?t=' + Date.now());
+            if (r.ok) {
+                var data = await r.json();
+                allBlogs = data.blogs || [];
+                blogCategories = data.categories || [];
+                filteredBlogs = [...allBlogs];
+                updateBlogStats();
+                populateBlogCategoryFilters();
+                renderBlogList();
+            }
+        } catch(e) {
+            console.error('Load blog error:', e);
+        }
+    }
+    
+    function updateBlogStats() {
+        var published = allBlogs.filter(function(b) { return b.status === 'published'; }).length;
+        var draft = allBlogs.filter(function(b) { return b.status === 'draft'; }).length;
+        var totalViews = allBlogs.reduce(function(sum, b) { return sum + (b.views || 0); }, 0);
+        document.getElementById('blog_total').textContent = allBlogs.length;
+        document.getElementById('blog_published').textContent = published;
+        document.getElementById('blog_draft').textContent = draft;
+        document.getElementById('blog_views').textContent = totalViews;
+    }
+    
+    function populateBlogCategoryFilters() {
+        var select = document.getElementById('blogCategoryFilter');
+        select.innerHTML = '<option value="all">全部分类</option>';
+        blogCategories.forEach(function(cat) {
+            select.innerHTML += '<option value="' + cat.name + '">' + cat.name + '</option>';
+        });
+    }
+    
+    function searchBlogs() {
+        var query = document.getElementById('blogSearch').value.toLowerCase();
+        var category = document.getElementById('blogCategoryFilter').value;
+        var status = document.getElementById('blogStatusFilter').value;
+        
+        filteredBlogs = allBlogs.filter(function(blog) {
+            var matchSearch = !query || blog.title.toLowerCase().includes(query) || blog.excerpt.toLowerCase().includes(query);
+            var matchCategory = category === 'all' || blog.category === category;
+            var matchStatus = status === 'all' || blog.status === status;
+            return matchSearch && matchCategory && matchStatus;
+        });
+        renderBlogList();
+    }
+    
+    function filterBlogsByCategory(cat) {
+        searchBlogs();
+    }
+    
+    function filterBlogsByStatus(status) {
+        searchBlogs();
+    }
+    
+    function renderBlogList() {
+        var container = document.getElementById('blogList');
+        if (filteredBlogs.length === 0) {
+            container.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无文章</p></div>';
+            return;
+        }
+        
+        container.innerHTML = filteredBlogs.map(function(blog) {
+            var statusClass = blog.status === 'published' ? 'btn-success' : 'btn-warning';
+            var statusText = blog.status === 'published' ? '已发布' : '草稿';
+            return '<div class="product-card">' +
+                '<img class="product-card-img" src="' + (blog.image || 'https://via.placeholder.com/100') + '" alt="' + blog.title + '">' +
+                '<div class="product-info">' +
+                    '<div class="product-title">' + blog.title + '</div>' +
+                    '<div class="product-meta">' +
+                        '<span class="product-tag">' + blog.category + '</span>' +
+                        '<span class="product-tag ' + (blog.status === 'published' ? '' : 'oem') + '">' + statusText + '</span>' +
+                    '</div>' +
+                    '<div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">' +
+                        '<i class="fas fa-calendar"></i> ' + blog.date + ' | <i class="fas fa-eye"></i> ' + (blog.views || 0) +
+                    '</div>' +
+                    '<div class="product-actions">' +
+                        '<button class="btn btn-edit btn-sm" onclick="openBlogModal(' + blog.id + ')"><i class="fas fa-edit"></i> 编辑</button>' +
+                        '<button class="btn btn-danger btn-sm" onclick="deleteBlog(' + blog.id + ')"><i class="fas fa-trash"></i> 删除</button>' +
+                        (blog.status === 'draft' ? '<button class="btn btn-success btn-sm" onclick="publishBlog(' + blog.id + ')"><i class="fas fa-upload"></i> 发布</button>' : '') +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+    }
+    
+    function openBlogModal(id) {
+        var blog = id ? allBlogs.find(function(b) { return b.id === id; }) : null;
+        var title = blog ? '编辑文章' : '新建文章';
+        var modal = document.getElementById('editModal');
+        modal.querySelector('.edit-modal').innerHTML = '<div class="modal-title">' + title + '</div>' +
+            '<div class="edit-form">' +
+                '<div class="form-group"><label>标题</label><input type="text" id="blog_title" value="' + (blog ? blog.title : '') + '"></div>' +
+                '<div class="form-group"><label>slug</label><input type="text" id="blog_slug" value="' + (blog ? blog.slug : '') + '"></div>' +
+                '<div class="form-group"><label>分类</label><select id="blog_category">' +
+                    blogCategories.map(function(c) { return '<option value="' + c.name + '">' + c.name + '</option>'; }).join('') +
+                '</select></div>' +
+                '<div class="form-group"><label>状态</label><select id="blog_status">' +
+                    '<option value="draft"' + (blog && blog.status === 'draft' ? ' selected' : '') + '>草稿</option>' +
+                    '<option value="published"' + (blog && blog.status === 'published' ? ' selected' : '') + '>已发布</option>' +
+                '</select></div>' +
+                '<div class="form-group"><label>图片URL</label><input type="text" id="blog_image" value="' + (blog ? blog.image : '') + '"></div>' +
+                '<div class="form-group"><label>作者</label><input type="text" id="blog_author" value="' + (blog ? blog.author : 'Carval Auto Team') + '"></div>' +
+                '<div class="form-group"><label>标签(逗号分隔)</label><input type="text" id="blog_tags" value="' + (blog ? blog.tags.join(', ') : '') + '"></div>' +
+                '<div class="form-group"><label>摘要</label><textarea id="blog_excerpt" rows="3" style="width:100%;padding:10px;background:var(--bg-dark);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:13px;">' + (blog ? blog.excerpt : '') + '</textarea></div>' +
+                '<div class="form-group"><label>SEO标题</label><input type="text" id="blog_seo_title" value="' + (blog && blog.seo ? blog.seo.title : '') + '"></div>' +
+                '<div class="form-group"><label>SEO描述</label><textarea id="blog_seo_desc" rows="2" style="width:100%;padding:10px;background:var(--bg-dark);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:13px;">' + (blog && blog.seo ? blog.seo.description : '') + '</textarea></div>' +
+                '<div class="form-group"><label>正文内容(HTML)</label><textarea id="blog_content" rows="10" style="width:100%;padding:10px;background:var(--bg-dark);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:13px;font-family:monospace;">' + (blog ? blog.content : '<h2>标题</h2><p>内容...</p>') + '</textarea></div>' +
+            '</div>' +
+            '<div class="edit-actions">' +
+                '<button class="btn" style="background:var(--border);" onclick="closeEditModal()">取消</button>' +
+                '<button class="btn btn-success" onclick="saveBlog(' + (id || 'null') + ')">保存</button>' +
+            '</div>';
+        modal.classList.add('show');
+    }
+    
+    async function saveBlog(id) {
+        var title = document.getElementById('blog_title').value;
+        var slug = document.getElementById('blog_slug').value || title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        var category = document.getElementById('blog_category').value;
+        var status = document.getElementById('blog_status').value;
+        var image = document.getElementById('blog_image').value;
+        var author = document.getElementById('blog_author').value;
+        var tags = document.getElementById('blog_tags').value.split(',').map(function(t) { return t.trim(); }).filter(Boolean);
+        var excerpt = document.getElementById('blog_excerpt').value;
+        var content = document.getElementById('blog_content').value;
+        var seoTitle = document.getElementById('blog_seo_title').value;
+        var seoDesc = document.getElementById('blog_seo_desc').value;
+        
+        if (!title) { showToast('请输入标题', true); return; }
+        
+        var blogData = {
+            id: id || Math.max.apply(Math, allBlogs.map(function(b) { return b.id; })) + 1,
+            title: title,
+            slug: slug,
+            category: category,
+            status: status,
+            image: image,
+            author: author,
+            tags: tags,
+            excerpt: excerpt,
+            content: content,
+            date: id ? allBlogs.find(function(b) { return b.id === id; }).date : new Date().toISOString().split('T')[0],
+            views: id ? allBlogs.find(function(b) { return b.id === id; }).views : 0,
+            seo: { title: seoTitle, description: seoDesc }
+        };
+        
+        if (id) {
+            var idx = allBlogs.findIndex(function(b) { return b.id === id; });
+            if (idx !== -1) allBlogs[idx] = blogData;
+        } else {
+            allBlogs.unshift(blogData);
+        }
+        
+        await saveBlogData();
+        closeEditModal();
+        renderBlogList();
+        updateBlogStats();
+        showToast('保存成功！');
+    }
+    
+    async function saveBlogData() {
+        var data = { blogs: allBlogs, categories: blogCategories };
+        localStorage.setItem('admin_blogs_data', JSON.stringify(data));
+        // Save to file via localStorage for demo
+        console.log('Blog data saved:', data);
+    }
+    
+    async function deleteBlog(id) {
+        if (!confirm('确定要删除这篇文章吗？')) return;
+        allBlogs = allBlogs.filter(function(b) { return b.id !== id; });
+        await saveBlogData();
+        renderBlogList();
+        updateBlogStats();
+        showToast('删除成功！');
+    }
+    
+    async function publishBlog(id) {
+        var idx = allBlogs.findIndex(function(b) { return b.id === id; });
+        if (idx !== -1) {
+            allBlogs[idx].status = 'published';
+            await saveBlogData();
+            renderBlogList();
+            updateBlogStats();
+            showToast('发布成功！');
+        }
+    }
+    
+    // ===== FAQ管理 =====
+    var allFAQs = [];
+    var faqCategories = [];
+    
+    async function loadFAQData() {
+        try {
+            var r = await fetch('data/faqs.json?t=' + Date.now());
+            if (r.ok) {
+                var data = await r.json();
+                allFAQs = data.faqs || [];
+                faqCategories = data.categories || [];
+                updateFAQStats();
+                populateFAQCategoryFilters();
+                renderFAQList();
+            }
+        } catch(e) {
+            console.error('Load FAQ error:', e);
+        }
+    }
+    
+    function updateFAQStats() {
+        document.getElementById('faq_total').textContent = allFAQs.length;
+        document.getElementById('faq_categories').textContent = faqCategories.length;
+    }
+    
+    function populateFAQCategoryFilters() {
+        var select = document.getElementById('faqCategoryFilter');
+        select.innerHTML = '<option value="all">全部分类</option>';
+        faqCategories.forEach(function(cat) {
+            select.innerHTML += '<option value="' + cat.name + '">' + cat.name + '</option>';
+        });
+    }
+    
+    function searchFAQs() {
+        var query = document.getElementById('faqSearch').value.toLowerCase();
+        var category = document.getElementById('faqCategoryFilter').value;
+        
+        var filtered = allFAQs.filter(function(faq) {
+            var matchSearch = !query || faq.question.toLowerCase().includes(query) || faq.answer.toLowerCase().includes(query);
+            var matchCategory = category === 'all' || faq.category === category;
+            return matchSearch && matchCategory;
+        });
+        renderFAQList(filtered);
+    }
+    
+    function filterFAQsByCategory(cat) {
+        searchFAQs();
+    }
+    
+    function renderFAQList(filtered) {
+        var list = filtered || allFAQs;
+        var container = document.getElementById('faqList');
+        if (list.length === 0) {
+            container.innerHTML = '<div class="loading"><i class="fas fa-inbox"></i><p>暂无问题</p></div>';
+            return;
+        }
+        
+        container.innerHTML = list.map(function(faq) {
+            return '<div class="inquiry-card">' +
+                '<div class="inquiry-header">' +
+                    '<div class="inquiry-info">' +
+                        '<div class="inquiry-name"><i class="fas fa-question-circle" style="color:var(--accent);margin-right:6px;"></i>' + faq.question + '</div>' +
+                        '<div class="inquiry-meta">' +
+                            '<span class="product-tag">' + faq.category + '</span>' +
+                            '<span>排序: ' + faq.order + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="inquiry-message">' + faq.answer.substring(0, 200) + (faq.answer.length > 200 ? '...' : '') + '</div>' +
+                '<div class="inquiry-actions">' +
+                    '<button class="btn btn-edit" onclick="openFAQModal(' + faq.id + ')"><i class="fas fa-edit"></i> 编辑</button>' +
+                    '<button class="btn btn-danger" onclick="deleteFAQ(' + faq.id + ')"><i class="fas fa-trash"></i> 删除</button>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+    }
+    
+    function openFAQModal(id) {
+        var faq = id ? allFAQs.find(function(f) { return f.id === id; }) : null;
+        var title = faq ? '编辑问题' : '新建问题';
+        var modal = document.getElementById('editModal');
+        modal.querySelector('.edit-modal').innerHTML = '<div class="modal-title">' + title + '</div>' +
+            '<div class="edit-form">' +
+                '<div class="form-group"><label>问题</label><input type="text" id="faq_question" value="' + (faq ? faq.question : '') + '"></div>' +
+                '<div class="form-group"><label>分类</label><select id="faq_category">' +
+                    faqCategories.map(function(c) { return '<option value="' + c.name + '">' + c.name + '</option>'; }).join('') +
+                '</select></div>' +
+                '<div class="form-group"><label>排序</label><input type="number" id="faq_order" value="' + (faq ? faq.order : 1) + '"></div>' +
+                '<div class="form-group"><label>答案</label><textarea id="faq_answer" rows="8" style="width:100%;padding:10px;background:var(--bg-dark);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:13px;">' + (faq ? faq.answer : '') + '</textarea></div>' +
+            '</div>' +
+            '<div class="edit-actions">' +
+                '<button class="btn" style="background:var(--border);" onclick="closeEditModal()">取消</button>' +
+                '<button class="btn btn-success" onclick="saveFAQ(' + (id || 'null') + ')">保存</button>' +
+            '</div>';
+        modal.classList.add('show');
+    }
+    
+    async function saveFAQ(id) {
+        var question = document.getElementById('faq_question').value;
+        var category = document.getElementById('faq_category').value;
+        var order = parseInt(document.getElementById('faq_order').value) || 1;
+        var answer = document.getElementById('faq_answer').value;
+        
+        if (!question || !answer) { showToast('请填写问题和答案', true); return; }
+        
+        var faqData = {
+            id: id || Math.max.apply(Math, allFAQs.map(function(f) { return f.id; })) + 1,
+            question: question,
+            category: category,
+            order: order,
+            answer: answer,
+            seo: {}
+        };
+        
+        if (id) {
+            var idx = allFAQs.findIndex(function(f) { return f.id === id; });
+            if (idx !== -1) {
+                faqData.seo = allFAQs[idx].seo;
+                allFAQs[idx] = faqData;
+            }
+        } else {
+            allFAQs.unshift(faqData);
+        }
+        
+        await saveFAQData();
+        closeEditModal();
+        renderFAQList();
+        updateFAQStats();
+        showToast('保存成功！');
+    }
+    
+    async function saveFAQData() {
+        var data = { faqs: allFAQs, categories: faqCategories };
+        localStorage.setItem('admin_faqs_data', JSON.stringify(data));
+        console.log('FAQ data saved:', data);
+    }
+    
+    async function deleteFAQ(id) {
+        if (!confirm('确定要删除这个问题吗？')) return;
+        allFAQs = allFAQs.filter(function(f) { return f.id !== id; });
+        await saveFAQData();
+        renderFAQList();
+        updateFAQStats();
+        showToast('删除成功！');
+    }
+    
+    function openCategoryModal() {
+        var modal = document.getElementById('editModal');
+        var html = '<div class="modal-title">分类管理</div><div class="edit-form">';
+        html += '<div id="categoryList">';
+        faqCategories.forEach(function(cat) {
+            html += '<div class="form-group" style="display:flex;gap:8px;align-items:center;">' +
+                '<input type="text" value="' + cat.name + '" data-id="' + cat.id + '" class="cat-name-input" style="flex:1;">' +
+                '<button class="btn btn-danger btn-sm" onclick="deleteCategory(' + cat.id + ')"><i class="fas fa-trash"></i></button>' +
+            '</div>';
+        });
+        html += '</div>';
+        html += '<div class="form-group"><label>新建分类</label><input type="text" id="newCategoryName" placeholder="输入新分类名称"></div>';
+        html += '</div><div class="edit-actions">' +
+            '<button class="btn" style="background:var(--border);" onclick="closeEditModal()">取消</button>' +
+            '<button class="btn btn-success" onclick="saveCategories()">保存</button>' +
+        '</div>';
+        modal.querySelector('.edit-modal').innerHTML = html;
+        modal.classList.add('show');
+    }
+    
+    async function saveCategories() {
+        var inputs = document.querySelectorAll('.cat-name-input');
+        inputs.forEach(function(input, idx) {
+            if (faqCategories[idx]) {
+                faqCategories[idx].name = input.value;
+            }
+        });
+        
+        var newName = document.getElementById('newCategoryName').value;
+        if (newName) {
+            faqCategories.push({
+                id: Math.max.apply(Math, faqCategories.map(function(c) { return c.id; })) + 1,
+                name: newName,
+                order: faqCategories.length + 1
+            });
+        }
+        
+        await saveFAQData();
+        closeEditModal();
+        populateFAQCategoryFilters();
+        updateFAQStats();
+        showToast('保存成功！');
+    }
+    
+    async function deleteCategory(id) {
+        if (!confirm('确定要删除这个分类吗？')) return;
+        faqCategories = faqCategories.filter(function(c) { return c.id !== id; });
+        await saveFAQData();
+        openCategoryModal();
+        populateFAQCategoryFilters();
+        updateFAQStats();
+    }
+    
+    function closeEditModal() {
+        document.getElementById('editModal').classList.remove('show');
     }
     
     async function loadProducts() {
