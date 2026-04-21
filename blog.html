@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Blog - Carval Auto Parts | Expert Auto Parts Guides & Tips</title>
+    <meta name="description" content="Carval Auto Parts blog - Expert guides, maintenance tips, buying advice, and industry news for auto parts. Learn about brake pads, oil changes, DIY maintenance, and more.">
+    <meta name="keywords" content="auto parts blog, car maintenance tips, brake pad guide, oil change guide, OEM parts, automotive advice, DIY car repair, vehicle maintenance">
+    <meta name="author" content="Carval Auto Parts">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://carvalautopart.com/blog.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carvalautopart.com/blog.html">
+    <meta property="og:title" content="Blog - Carval Auto Parts | Expert Auto Parts Guides">
+    <meta property="og:description" content="Expert guides, maintenance tips, and industry news for auto parts. Learn from the experts at Carval Auto Parts.">
+    <meta property="og:image" content="https://carvalautopart.com/carval-auto-logo.png">
+    <meta property="og:site_name" content="Carval Auto Parts">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blog - Carval Auto Parts">
+    <meta name="twitter:description" content="Expert guides, maintenance tips, and industry news for auto parts.">
+    <meta name="twitter:image" content="https://carvalautopart.com/carval-auto-logo.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://carvalautopart.com/carval-auto-logo.png">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+
+    <!-- Structured Data - Breadcrumb -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://carvalautopart.com/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://carvalautopart.com/blog.html"
+            }
+        ]
+    }
+    </script>
+
+    <!-- Structured Data - CollectionPage -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Carval Auto Parts Blog",
+        "description": "Expert guides, maintenance tips, and industry news for auto parts",
+        "url": "https://carvalautopart.com/blog.html",
+        "hasPart": []
+    }
+    </script>
+
+    <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --red: #D62B2B;
+        --red-dark: #A81F1F;
+        --steel: #1C2B3A;
+        --steel-mid: #243447;
+        --steel-lite: #2F4560;
+        --chrome: #E8E8E8;
+        --chrome-dk: #B0B8C1;
+        --offwhite: #F5F4F0;
+        --text-main: #1A1A1A;
+        --text-soft: #555F6D;
+        --border: #D4D8DE;
+        --font-head: 'Barlow Condensed', sans-serif;
+        --font-body: 'Barlow', sans-serif;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.10);
+        --shadow-md: 0 6px 24px rgba(0,0,0,0.14);
+        --shadow-lg: 0 16px 48px rgba(0,0,0,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        font-family: var(--font-body);
+        background: var(--offwhite);
+        color: var(--text-main);
+        line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; transition: all 0.25s; }
+    ul { list-style: none; }
+
+    /* ===== HEADER ===== */
+    .topbar {
+        background: var(--steel);
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .brand-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: var(--red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 16px;
+        color: white;
+    }
+
+    .brand-text {
+        font-family: var(--font-head);
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: white;
+    }
+
+    .brand-text span { color: var(--red); }
+
+    .desktop-nav {
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+        margin-left: 8px;
+    }
+
+    .desktop-nav a {
+        display: flex;
+        align-items: center;
+        padding: 0 18px;
+        color: var(--chrome-dk);
+        font-family: var(--font-head);
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        border-bottom: 3px solid transparent;
+        transition: all 0.25s;
+        margin-bottom: -3px;
+    }
+
+    .desktop-nav a:hover, .desktop-nav a.active {
+        color: white;
+        border-bottom-color: var(--red);
+        background: rgba(255,255,255,0.05);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+        background: var(--steel);
+        background-image:
+            linear-gradient(135deg, rgba(28,43,58,0.97) 0%, rgba(36,52,71,0.92) 50%, rgba(214,43,43,0.15) 100%);
+        padding: 50px 40px 40px;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-family: var(--font-head);
+        font-size: clamp(36px, 5vw, 54px);
+        font-weight: 900;
+        color: white;
+        line-height: 1.1;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+    }
+
+    .hero h1 span { color: var(--red); }
+
+    .hero p {
+        color: var(--chrome-dk);
+        font-size: 18px;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 40px;
+    }
+
+    /* ===== BLOG GRID ===== */
+    .blog-header {
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .search-box {
+        position: relative;
+        flex: 1;
+        max-width: 400px;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 12px 40px 12px 16px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.25s;
+    }
+
+    .search-box input:focus {
+        outline: none;
+        border-color: var(--red);
+    }
+
+    .search-box i {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-soft);
+    }
+
+    .category-filter {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        padding: 8px 16px;
+        background: white;
+        border: 2px solid var(--border);
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.25s;
+        white-space: nowrap;
+    }
+
+    .filter-btn:hover {
+        border-color: var(--red);
+        color: var(--red);
+    }
+
+    .filter-btn.active {
+        background: var(--red);
+        color: white;
+        border-color: var(--red);
+    }
+
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+
+    .blog-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .blog-card-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background: var(--steel-lite);
+    }
+
+    .blog-card-content {
+        padding: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .blog-meta {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+    }
+
+    .blog-tag {
+        display: inline-block;
+        padding: 4px 10px;
+        background: rgba(214,43,43,0.1);
+        color: var(--red);
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 4px;
+        text-transform: uppercase;
+    }
+
+    .blog-date {
+        display: inline-block;
+        color: var(--text-soft);
+        font-size: 12px;
+    }
+
+    .blog-title {
+        font-family: var(--font-head);
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.3;
+        margin-bottom: 10px;
+        color: var(--text-main);
+    }
+
+    .blog-card:hover .blog-title {
+        color: var(--red);
+    }
+
+    .blog-excerpt {
+        color: var(--text-soft);
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 16px;
+        flex: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .blog-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        margin-top: auto;
+    }
+
+    .blog-author {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--text-soft);
+    }
+
+    .blog-author i {
+        color: var(--red);
+    }
+
+    .blog-read-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--red);
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.25s;
+    }
+
+    .blog-read-more:hover {
+        gap: 10px;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+        position: sticky;
+        top: 100px;
+        height: fit-content;
+    }
+
+    .sidebar-section {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .sidebar-title {
+        font-family: var(--font-head);
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .sidebar-title i {
+        color: var(--red);
+    }
+
+    .category-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .category-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 14px;
+        background: var(--offwhite);
+        border-radius: 6px;
+        transition: all 0.25s;
+        cursor: pointer;
+    }
+
+    .category-item:hover {
+        background: var(--red);
+        color: white;
+    }
+
+    .category-item.active {
+        background: var(--red);
+        color: white;
+    }
+
+    .category-count {
+        background: rgba(0,0,0,0.1);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .popular-posts {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .popular-post {
+        display: flex;
+        gap: 12px;
+        cursor: pointer;
+    }
+
+    .popular-post-img {
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 6px;
+        background: var(--steel-lite);
+        flex-shrink: 0;
+    }
+
+    .popular-post-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .popular-post-title {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 1.4;
+        margin-bottom: 4px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .popular-post:hover .popular-post-title {
+        color: var(--red);
+    }
+
+    .popular-post-date {
+        font-size: 12px;
+        color: var(--text-soft);
+    }
+
+    /* ===== PAGINATION ===== */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 40px;
+    }
+
+    .page-btn {
+        padding: 10px 16px;
+        background: white;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s;
+        min-width: 44px;
+    }
+
+    .page-btn:hover {
+        border-color: var(--red);
+        color: var(--red);
+    }
+
+    .page-btn.active {
+        background: var(--red);
+        color: white;
+        border-color: var(--red);
+    }
+
+    .page-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    /* ===== NO RESULTS ===== */
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .no-results i {
+        font-size: 48px;
+        color: var(--text-soft);
+        margin-bottom: 16px;
+    }
+
+    .no-results h3 {
+        font-family: var(--font-head);
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+
+    .no-results p {
+        color: var(--text-soft);
+        margin-bottom: 20px;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+        background: var(--steel);
+        padding: 50px 40px 30px;
+        color: var(--chrome-dk);
+    }
+
+    .footer-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        margin-bottom: 30px;
+    }
+
+    .footer-section h4 {
+        color: white;
+        font-family: var(--font-head);
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+    }
+
+    .footer-links a {
+        display: block;
+        padding: 8px 0;
+        color: var(--chrome-dk);
+        font-size: 14px;
+    }
+
+    .footer-links a:hover {
+        color: var(--red);
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 20px;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+        .main-content {
+            grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+            position: static;
+        }
+
+        .blog-grid {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .topbar {
+            padding: 0 20px;
+        }
+
+        .desktop-nav {
+            display: none;
+        }
+
+        .hero {
+            padding: 40px 20px 30px;
+        }
+
+        .main-content {
+            padding: 30px 16px;
+        }
+
+        .blog-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-box {
+            max-width: 100%;
+        }
+
+        .blog-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <a href="index.html" class="brand">
+                <div class="brand-logo">C</div>
+                <div class="brand-text">CARVAL<span>AUTO</span></div>
+            </a>
+            <nav class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="blog.html" class="active">Blog</a>
+                <a href="faq.html">FAQ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Auto Parts <span>Blog</span></h1>
+        <p>Expert guides, maintenance tips, and industry insights</p>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Blog Section -->
+        <section class="blog-section">
+            <div class="blog-header">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search articles...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="category-filter" id="categoryFilter">
+                    <button class="filter-btn active" data-category="all">All</button>
+                </div>
+            </div>
+
+            <div class="blog-grid" id="blogGrid">
+                <!-- Blog cards will be loaded here -->
+            </div>
+
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-folder"></i>
+                    Categories
+                </h3>
+                <div class="category-list" id="categoryList">
+                    <!-- Categories will be loaded here -->
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-fire"></i>
+                    Popular Posts
+                </h3>
+                <div class="popular-posts" id="popularPosts">
+                    <!-- Popular posts will be loaded here -->
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Carval Auto Parts</h4>
+                <p>Trusted OEM quality auto parts supplier in Guangzhou, China since 2008.</p>
+            </div>
+            <div class="footer-section footer-links">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="blog.html">Blog</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-phone"></i> +86-195-2122-8657</p>
+                <p><i class="fas fa-envelope"></i> carvalxie@foxmail.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Guangzhou, China</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Carval Auto Parts. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    // Load and display blogs
+    let allBlogs = [];
+    let filteredBlogs = [];
+    let currentPage = 1;
+    const itemsPerPage = 6;
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    // Fetch blog data
+    async function loadBlogs() {
+        try {
+            const response = await fetch('data/blogs.json');
+            const data = await response.json();
+            allBlogs = data.blogs.filter(blog => blog.status === 'published');
+            filteredBlogs = [...allBlogs];
+            renderCategories(data.categories);
+            renderBlogs();
+            renderPopularPosts();
+            renderPagination();
+        } catch (error) {
+            console.error('Error loading blogs:', error);
+            document.getElementById('blogGrid').innerHTML = '<p class="error">Failed to load blog posts.</p>';
+        }
+    }
+
+    // Render category filter buttons
+    function renderCategories(categories) {
+        const filterContainer = document.getElementById('categoryFilter');
+        const sidebarCategories = document.getElementById('categoryList');
+
+        // Filter buttons
+        categories.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn';
+            btn.dataset.category = cat.name;
+            btn.textContent = cat.name;
+            btn.addEventListener('click', () => filterByCategory(cat.name));
+            filterContainer.appendChild(btn);
+        });
+
+        // Sidebar categories
+        categories.forEach(cat => {
+            const count = allBlogs.filter(b => b.category === cat.name).length;
+            const item = document.createElement('div');
+            item.className = 'category-item';
+            item.dataset.category = cat.name;
+            item.innerHTML = `
+                <span>${cat.name}</span>
+                <span class="category-count">${count}</span>
+            `;
+            item.addEventListener('click', () => filterByCategory(cat.name));
+            sidebarCategories.appendChild(item);
+        });
+    }
+
+    // Render blog cards
+    function renderBlogs() {
+        const grid = document.getElementById('blogGrid');
+
+        if (filteredBlogs.length === 0) {
+            grid.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-search"></i>
+                    <h3>No articles found</h3>
+                    <p>Try adjusting your search or filter</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Pagination
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const displayBlogs = filteredBlogs.slice(startIndex, endIndex);
+
+        grid.innerHTML = displayBlogs.map(blog => `
+            <article class="blog-card">
+                <img src="${blog.image}" alt="${blog.title}" class="blog-card-img" loading="lazy">
+                <div class="blog-card-content">
+                    <div class="blog-meta">
+                        <span class="blog-tag">${blog.category}</span>
+                        <span class="blog-date">${formatDate(blog.date)}</span>
+                    </div>
+                    <h2 class="blog-title">${blog.title}</h2>
+                    <p class="blog-excerpt">${blog.excerpt}</p>
+                    <div class="blog-footer">
+                        <div class="blog-author">
+                            <i class="fas fa-user"></i>
+                            ${blog.author}
+                        </div>
+                        <a href="blog-single.html?id=${blog.slug}" class="blog-read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        `).join('');
+    }
+
+    // Render popular posts
+    function renderPopularPosts() {
+        const container = document.getElementById('popularPosts');
+        const popular = [...allBlogs].sort((a, b) => b.views - a.views).slice(0, 4);
+
+        container.innerHTML = popular.map(blog => `
+            <div class="popular-post">
+                <img src="${blog.image}" alt="${blog.title}" class="popular-post-img" loading="lazy">
+                <div class="popular-post-content">
+                    <h4 class="popular-post-title">${blog.title}</h4>
+                    <span class="popular-post-date">${formatDate(blog.date)}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Render pagination
+    function renderPagination() {
+        const container = document.getElementById('pagination');
+        const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
+
+        if (totalPages <= 1) {
+            container.innerHTML = '';
+            return;
+        }
+
+        let html = '';
+
+        // Previous button
+        html += `<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">
+            <i class="fas fa-chevron-left"></i>
+        </button>`;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+        }
+
+        // Next button
+        html += `<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">
+            <i class="fas fa-chevron-right"></i>
+        </button>`;
+
+        container.innerHTML = html;
+    }
+
+    // Change page
+    function changePage(page) {
+        currentPage = page;
+        renderBlogs();
+        renderPagination();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Filter by category
+    function filterByCategory(category) {
+        activeCategory = category;
+        currentPage = 1;
+
+        // Update active state
+        document.querySelectorAll('.filter-btn, .category-item').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.category === category) {
+                btn.classList.add('active');
+            }
+        });
+
+        // Filter blogs
+        if (category === 'all') {
+            filteredBlogs = [...allBlogs];
+        } else {
+            filteredBlogs = allBlogs.filter(blog => blog.category === category);
+        }
+
+        // Apply search filter
+        if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            filteredBlogs = filteredBlogs.filter(blog =>
+                blog.title.toLowerCase().includes(query) ||
+                blog.excerpt.toLowerCase().includes(query) ||
+                blog.tags.some(tag => tag.toLowerCase().includes(query))
+            );
+        }
+
+        renderBlogs();
+        renderPagination();
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        searchQuery = e.target.value.toLowerCase();
+        currentPage = 1;
+
+        if (activeCategory === 'all') {
+            filteredBlogs = [...allBlogs];
+        } else {
+            filteredBlogs = allBlogs.filter(blog => blog.category === activeCategory);
+        }
+
+        if (searchQuery) {
+            filteredBlogs = filteredBlogs.filter(blog =>
+                blog.title.toLowerCase().includes(searchQuery) ||
+                blog.excerpt.toLowerCase().includes(searchQuery) ||
+                blog.tags.some(tag => tag.toLowerCase().includes(searchQuery))
+            );
+        }
+
+        renderBlogs();
+        renderPagination();
+    });
+
+    // Format date
+    function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', loadBlogs);
+    </script>
+</body>
+</html>
