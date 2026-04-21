@@ -11,7 +11,7 @@
     // 检查版本更新
     async function checkVersionUpdate() {
         try {
-            const resp = await fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/version.json?_=' + Date.now());
+            const resp = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/version.json?_=' + Date.now());
             if (resp.ok) {
                 const data = await resp.json();
                 if (data.version && data.version > currentVersion) {
@@ -77,7 +77,7 @@
         }
         
         // 先获取当前版本
-        fetch('https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/version.json?_=' + Date.now())
+        fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/version.json?_=' + Date.now())
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 if (data.version) {

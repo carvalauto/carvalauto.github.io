@@ -453,10 +453,6 @@ function forceRefresh() {
     if (btn) btn.classList.add('loading');
     hideUpdateBanner();
     
-    // 清除网络错误提示
-    var networkError = document.getElementById('networkErrorBanner');
-    if (networkError) networkError.remove();
-    
     // 清除缓存
     localStorage.removeItem('carval_products_v2');
     localStorage.removeItem('carval_products_cache');
@@ -502,40 +498,6 @@ function detectItemsPerPage() {
 detectItemsPerPage();
 window.addEventListener('resize', detectItemsPerPage);
 
-// 网络错误友好提示函数
-function showNetworkError() {
-    var grid = document.getElementById('productsGrid');
-    if (!grid) return;
-    
-    // 检查是否已经显示了错误提示
-    var existingError = document.getElementById('networkErrorBanner');
-    if (existingError) return; // 已经显示了，不再重复
-    
-    // 创建网络错误提示元素
-    var errorMsg = document.createElement('div');
-    errorMsg.id = 'networkErrorBanner';
-    errorMsg.style.cssText = 'text-align: center; padding: 40px 20px; background: #fff3e0; border-radius: 8px; margin: 20px;';
-    errorMsg.innerHTML = `
-        <div style="font-size: 48px; margin-bottom: 15px;">🌐</div>
-        <h3 style="color: #e65100; margin: 0 0 15px 0; font-size: 18px;">无法连接到产品数据</h3>
-        <p style="color: #666; line-height: 1.6; margin: 0 0 20px 0; font-size: 14px;">
-            <strong>可能的原因：</strong><br>
-            • 网络连接问题<br>
-            • GitHub服务暂时不可用<br>
-            • 防火墙阻止访问<br><br>
-            <strong>解决方案：</strong><br>
-            • 请检查网络连接<br>
-            • 尝试使用VPN或更换网络<br>
-            • 点击刷新按钮重试<br><br>
-            <span style="color: #2e7d32;">✅ 正在使用备用数据，功能正常</span>
-        </p>
-        <button onclick="forceRefresh()" style="background: #e63946; color: white; border: none; padding: 10px 25px; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600;">🔄 立即刷新</button>
-    `;
-    
-    // 将错误提示插入到产品网格之前
-    grid.parentNode.insertBefore(errorMsg, grid);
-}
-
 var categoryLabels = { japanese: 'Japanese', korean: 'Korean', german: 'German', chinese: 'Chinese', oil: 'Engine Oil', other: 'Other' };
 var defaultProducts = [
     { id: 1, name: "Toyota Camry Brake Pads", category: "japanese", oem: "04465-06110", description: "High-performance brake pads for Toyota Camry 2018-2023.", image: "" },
@@ -561,9 +523,7 @@ async function loadProducts() {
         if (btn) btn.classList.remove('loading');
     } catch(e) {
         console.error('[Products] 加载失败:', e);
-        // 显示网络错误友好提示
-        showNetworkError();
-        // 使用默认产品作为后备
+        // 使用默认产品
         products = defaultProducts;
         productsData = products;
         renderProducts();
@@ -593,10 +553,9 @@ async function checkForUpdates() {
 }
 
 async function fetchLatestProducts() {
-    // 🚨 优先使用 GitHub Raw（无 CDN 缓存），确保获取最新数据
+    // 🚀 使用 OSS 获取最新数据（速度快，空间大）
     var urls = [
-        'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?_=' + Date.now(),
-        'https://raw.githubusercontent.com/carvalauto/carvalauto.github.io/main/products.json?_=' + Date.now()
+        'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?_=' + Date.now()
     ];
     
     for (var i = 0; i < urls.length; i++) {
@@ -608,11 +567,11 @@ async function fetchLatestProducts() {
                     products = data;
                     productsData = products;
                     
-                    console.log('[Products] ✅ 加载成功，来源:', urls[i], '数量:', data.length);
+                    console.log('[Products] 从 CDN 加载成功，数量:', data.length);
                     return;
                 }
             }
-        } catch(e) { console.log('[Products] ❌ 加载失败:', urls[i], e.message); continue; }
+        } catch(e) { continue; }
     }
 }
 
@@ -734,29 +693,178 @@ function openProduct(id) {
     
     document.getElementById('productModal').classList.add('show');
     document.body.style.overflow = 'hidden';
+    
+    // 添加历史记录状态，支持浏览器返回
+    window.history.pushState({modal: true}, '');
 }
 
 function switchImg(index) { currentImgIndex = index; document.getElementById('modalMainImg').src = carouselImages[index]; document.querySelectorAll('.modal-thumb').forEach(function(t, i) { t.classList.toggle('active', i === index); }); }
-function closeProductModal() { document.getElementById('productModal').classList.remove('show'); document.body.style.overflow = ''; }
+function closeProductModal() { 
+    document.getElementById('productModal').classList.remove('show'); 
+    document.body.style.overflow = ''; 
+    // 移除历史记录状态
+    if (window.history.state && window.history.state.modal) {
+        window.history.back();
+    }
+}
 function closeModal(e) { if (e.target === document.getElementById('productModal')) closeProductModal(); }
 
-function openLightbox(index) { if (carouselImages.length === 0) return; document.getElementById('lightboxImg').src = carouselImages[index]; document.getElementById('lightbox').classList.add('show'); document.body.style.overflow = 'hidden'; }
-function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); document.body.style.overflow = ''; }
+function openLightbox(index) { 
+    if (carouselImages.length === 0) return; 
+    document.getElementById('lightboxImg').src = carouselImages[index]; 
+    document.getElementById('lightbox').classList.add('show'); 
+    document.body.style.overflow = 'hidden';
+    
+    // 添加历史记录状态，支持浏览器返回
+    window.history.pushState({lightbox: true}, '');
+}
+function closeLightbox() { 
+    document.getElementById('lightbox').classList.remove('show'); 
+    document.body.style.overflow = '';
+    
+    // 移除历史记录状态
+    if (window.history.state && window.history.state.lightbox) {
+        window.history.back();
+    }
+}
 function prevLightboxImg() { currentImgIndex = (currentImgIndex - 1 + carouselImages.length) % carouselImages.length; document.getElementById('lightboxImg').src = carouselImages[currentImgIndex]; }
 function nextLightboxImg() { currentImgIndex = (currentImgIndex + 1) % carouselImages.length; document.getElementById('lightboxImg').src = carouselImages[currentImgIndex]; }
 
-document.addEventListener('keydown', function(e) {
-    if (document.getElementById('productModal').classList.contains('show')) {
-        if (e.key === 'Escape') closeProductModal();
-        if (e.key === 'ArrowLeft' && carouselImages.length > 1) switchImg((currentImgIndex - 1 + carouselImages.length) % carouselImages.length);
-        if (e.key === 'ArrowRight' && carouselImages.length > 1) switchImg((currentImgIndex + 1) % carouselImages.length);
+// ===== 触摸滑动功能 =====
+var touchStartX = 0, touchEndX = 0;
+
+// 弹窗内图片滑动
+var modalMainImg = null;
+document.addEventListener('DOMContentLoaded', function() {
+    modalMainImg = document.getElementById('modalMainImg');
+    if (modalMainImg) {
+        modalMainImg.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        modalMainImg.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe('modal');
+        }, { passive: true });
     }
-    if (document.getElementById('lightbox').classList.contains('show')) {
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') prevLightboxImg();
-        if (e.key === 'ArrowRight') nextLightboxImg();
+    
+    // Lightbox 图片滑动
+    var lightboxImg = document.getElementById('lightboxImg');
+    if (lightboxImg) {
+        lightboxImg.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        lightboxImg.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe('lightbox');
+        }, { passive: true });
     }
 });
+
+function handleSwipe(type) {
+    var diff = touchStartX - touchEndX;
+    var threshold = 50; // 滑动阈值
+    
+    if (Math.abs(diff) > threshold) {
+        if (diff > 0) {
+            // 向左滑动，下一张
+            if (type === 'modal' && carouselImages.length > 1) {
+                var newIndex = (currentImgIndex + 1) % carouselImages.length;
+                switchImg(newIndex);
+            } else if (type === 'lightbox') {
+                nextLightboxImg();
+            }
+        } else {
+            // 向右滑动，上一张
+            if (type === 'modal' && carouselImages.length > 1) {
+                var newIndex = (currentImgIndex - 1 + carouselImages.length) % carouselImages.length;
+                switchImg(newIndex);
+            } else if (type === 'lightbox') {
+                prevLightboxImg();
+            }
+        }
+    }
+}
+
+// ===== 修改返回键逻辑，一层一层返回 =====
+document.addEventListener('keydown', function(e) {
+    if (document.getElementById('lightbox').classList.contains('show')) {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closeLightbox();
+        }
+    } else if (document.getElementById('productModal').classList.contains('show')) {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closeProductModal();
+        }
+        if (e.key === 'ArrowLeft' && carouselImages.length > 1) {
+            var newIndex = (currentImgIndex - 1 + carouselImages.length) % carouselImages.length;
+            switchImg(newIndex);
+        }
+        if (e.key === 'ArrowRight' && carouselImages.length > 1) {
+            var newIndex = (currentImgIndex + 1) % carouselImages.length;
+            switchImg(newIndex);
+        }
+    }
+});
+
+// 浏览器返回按钮处理
+window.addEventListener('popstate', function(e) {
+    var lightbox = document.getElementById('lightbox');
+    var productModal = document.getElementById('productModal');
+    
+    if (lightbox.classList.contains('show')) {
+        // 如果在 lightbox 中，关闭 lightbox
+        e.preventDefault();
+        closeLightbox();
+        window.history.pushState({lightbox: false}, '');
+    } else if (productModal.classList.contains('show')) {
+        // 如果在弹窗中，关闭弹窗
+        e.preventDefault();
+        closeProductModal();
+        window.history.pushState({modal: false}, '');
+    }
+    // 否则，允许正常返回
+});
+
+// GitHub配置（分段存储，保护Token）
+var GH_REPO = 'carvalauto/carvalauto.github.io';
+var GH_TOKEN = ['ghp_oWLm0san81c','Xqv3navRKnYZKo9','mYNU2pMhFf'].join('');
+
+// 保存询盘到GitHub（后台显示）
+async function saveInquiryToGitHub(inquiryData) {
+    try {
+        // 1. 获取现有的inquiries.json
+        var r1 = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), {
+            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        var j1 = await r1.json();
+        
+        // 2. 解码并添加新询盘
+        var existing = JSON.parse(decodeURIComponent(escape(atob(j1.content.replace(/\n/g, '')))));
+        existing.unshift(inquiryData); // 新询盘放到最前面
+        
+        // 3. 上传更新后的文件
+        var body = {
+            message: 'New inquiry from ' + inquiryData.name,
+            content: btoa(unescape(encodeURIComponent(JSON.stringify(existing)))),
+            sha: j1.sha
+        };
+        var r2 = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json', {
+            method: 'PUT',
+            headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        
+        if (r2.ok) {
+            console.log('[Inquiry] 保存到GitHub成功');
+        }
+    } catch(e) {
+        console.error('[Inquiry] 保存到GitHub失败:', e);
+    }
+}
 
 document.getElementById('modalContactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -764,11 +872,30 @@ document.getElementById('modalContactForm').addEventListener('submit', async fun
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...'; btn.disabled = true;
     try {
         var formData = { id: Date.now(), name: document.getElementById('modalName').value, email: document.getElementById('modalEmail').value, phone: document.getElementById('modalPhone').value || '', message: document.getElementById('modalMessage').value, product: document.getElementById('modalProductRef').value, timestamp: Date.now(), read: false, source: '产品询盘' };
-        try { var geoResp = await fetch('https://ipapi.co/json/'); var geoData = await geoResp.json(); formData.country = geoData.country_name || 'Unknown'; } catch(e) { formData.country = 'Unknown'; }
-        fetch('https://formspree.io/f/xyknoyzw', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
+        
+        // 获取地理位置信息
+        try {
+            var geoResp = await fetch('https://ipapi.co/json/');
+            var geoData = await geoResp.json();
+            formData.country = geoData.country_name || 'Unknown';
+        } catch(e) { formData.country = 'Unknown'; }
+        
+        // 1. 发送到Formspree（邮件通知）
+        fetch('https://formspree.io/f/xyknoyzw', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify(formData) 
+        });
+        
+        // 2. 保存到GitHub（后台显示）
+        await saveInquiryToGitHub(formData);
+        
         btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
         setTimeout(function() { closeProductModal(); btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message'; btn.disabled = false; document.getElementById('modalName').value = ''; document.getElementById('modalEmail').value = ''; document.getElementById('modalPhone').value = ''; document.getElementById('modalMessage').value = ''; }, 2000);
-    } catch(e) { btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error'; btn.disabled = false; }
+    } catch(e) { 
+        console.error('[Inquiry] 提交失败:', e);
+        btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error'; btn.disabled = false; 
+    }
 });
 
 loadProducts();

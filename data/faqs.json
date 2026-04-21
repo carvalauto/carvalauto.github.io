@@ -1,0 +1,144 @@
+{
+  "faqs": [
+    {
+      "id": 1,
+      "question": "How do I choose the right auto parts for my vehicle?",
+      "answer": "Choosing the right auto parts requires knowing your vehicle's make, model, and year. You can find this information on your vehicle's VIN (Vehicle Identification Number) or in your owner's manual. At Carval Auto Parts, we can help you identify the correct parts by providing your vehicle details. We offer both OEM (Original Equipment Manufacturer) and high-quality aftermarket parts to meet different budgets and needs. Our team is available to assist with part identification and compatibility questions.",
+      "category": "Product Selection",
+      "order": 1,
+      "seo": {
+        "title": "How to Choose Right Auto Parts - FAQ",
+        "description": "Learn how to select the correct auto parts for your vehicle using VIN, make/model/year, or with help from our team."
+      }
+    },
+    {
+      "id": 2,
+      "question": "What is the difference between OEM and aftermarket parts?",
+      "answer": "OEM (Original Equipment Manufacturer) parts are made by the same company that supplied parts for your vehicle originally. They guarantee a perfect fit and meet the manufacturer's specifications. Aftermarket parts are produced by third-party manufacturers and are designed to be compatible with multiple vehicle brands. Aftermarket parts often cost less and may offer performance upgrades, but quality varies. For critical safety components, we recommend OEM parts. For less critical items, quality aftermarket parts can provide excellent value. Contact us to discuss which option is best for your specific needs.",
+      "category": "Product Selection",
+      "order": 2,
+      "seo": {
+        "title": "OEM vs Aftermarket Parts FAQ",
+        "description": "Understand the key differences between OEM and aftermarket auto parts, including quality, price, and recommended use cases."
+      }
+    },
+    {
+      "id": 3,
+      "question": "Do your products come with a warranty?",
+      "answer": "Yes, all products from Carval Auto Parts come with warranty coverage. OEM parts typically include the manufacturer's warranty, which varies by product. Aftermarket parts we sell are backed by our quality guarantee. Warranty periods range from 6 months to 2 years depending on the product category. Electronic components and some high-wear items may have different warranty terms. Please contact us for specific warranty information on the products you're interested in, and keep your purchase receipt for warranty claims.",
+      "category": "Warranty & Returns",
+      "order": 1,
+      "seo": {
+        "title": "Product Warranty Information - FAQ",
+        "description": "Learn about our product warranty coverage, warranty periods for different parts, and how to file a warranty claim."
+      }
+    },
+    {
+      "id": 4,
+      "question": "How can I tell which parts need replacement?",
+      "answer": "There are several signs that indicate parts need replacement: 1) Warning lights on your dashboard (check engine, brake warning, etc.), 2) Unusual noises (squealing, grinding, rattling), 3) Reduced performance (poor acceleration, braking issues), 4) Visible wear or damage, 5) Age and mileage-based recommendations in your owner's manual. Regular maintenance inspections can also help identify parts that need attention before they fail completely. If you're experiencing any issues with your vehicle, we recommend a professional inspection to diagnose the problem accurately.",
+      "category": "Troubleshooting",
+      "order": 1,
+      "seo": {
+        "title": "Signs You Need Part Replacement - FAQ",
+        "description": "Learn the warning signs that indicate your vehicle needs part replacement, from dashboard lights to unusual noises and performance issues."
+      }
+    },
+    {
+      "id": 5,
+      "question": "How long does shipping take?",
+      "answer": "Shipping times vary based on your location and the products ordered: 1) Domestic China: 2-5 business days via standard shipping, 1-2 days for express, 2) International shipping: 7-21 business days depending on destination and shipping method chosen, 3) Express international: 3-7 business days to most countries. We ship from our warehouse in Guangzhou, China. Orders are typically processed within 1-2 business days. Tracking information will be provided once your order ships. For urgent needs, contact us to discuss expedited shipping options.",
+      "category": "Shipping & Delivery",
+      "order": 1,
+      "seo": {
+        "title": "Shipping Time and Delivery - FAQ",
+        "description": "Get detailed information about shipping times for domestic and international orders, express options, and tracking."
+      }
+    },
+    {
+      "id": 6,
+      "question": "Do you offer international shipping?",
+      "answer": "Yes, we offer worldwide shipping to most countries. As an international auto parts supplier, we have experience shipping to customers across Asia, Europe, North America, South America, Africa, and Oceania. Shipping costs are calculated based on package weight, dimensions, and destination. We work with reliable logistics partners including major international courier services. Import duties, taxes, and customs fees are the responsibility of the recipient and may apply depending on your country's regulations. Contact us with your location and order details for a shipping quote.",
+      "category": "Shipping & Delivery",
+      "order": 2,
+      "seo": {
+        "title": "International Shipping - FAQ",
+        "description": "Information about worldwide shipping availability, costs, customs duties, and our international shipping partners."
+      }
+    },
+    {
+      "id": 7,
+      "question": "Can I return or exchange products?",
+      "answer": "Yes, we accept returns and exchanges within our policy guidelines. Unopened, unused items in original packaging can be returned within 14 days of delivery for a full refund. Items must be in original condition with all tags and packaging intact. For defective or incorrect items, we'll cover return shipping costs. To initiate a return, contact our customer service team with your order number and reason for return. Custom-ordered or special parts may not be eligible for return. Processing time for refunds is 5-10 business days after we receive the returned item.",
+      "category": "Warranty & Returns",
+      "order": 2,
+      "seo": {
+        "title": "Returns and Exchanges Policy - FAQ",
+        "description": "Learn about our return and exchange policy, eligible items, timeframes, and how to initiate a return."
+      }
+    },
+    {
+      "id": 8,
+      "question": "What payment methods do you accept?",
+      "answer": "We accept multiple payment methods for your convenience: 1) Credit/Debit Cards (Visa, MasterCard, American Express, Discover), 2) PayPal, 3) Bank Transfer (for bulk orders), 4) Western Union (for international orders), 5) Alipay and WeChat Pay (for customers in China). All online transactions are secured with SSL encryption. For wholesale or bulk orders, we offer payment terms upon approval. Currency options include USD, EUR, GBP, and CNY. Contact us if you have questions about payment options for your specific order.",
+      "category": "Payment & Orders",
+      "order": 1,
+      "seo": {
+        "title": "Payment Methods - FAQ",
+        "description": "Information about accepted payment methods including credit cards, PayPal, bank transfer, and currency options."
+      }
+    },
+    {
+      "id": 9,
+      "question": "Do you provide technical support or installation guidance?",
+      "answer": "Yes, we provide technical support and installation guidance for all the parts we sell. Our team includes experienced automotive professionals who can help with: 1) Part installation instructions and tutorials, 2) Troubleshooting support, 3) Compatibility questions, 4) Maintenance advice. We offer detailed product documentation, installation guides, and video tutorials for many common repairs. For complex installations, we recommend consulting a certified mechanic. Contact us via email, WhatsApp, or phone for personalized technical support.",
+      "category": "Technical Support",
+      "order": 1,
+      "seo": {
+        "title": "Technical Support Services - FAQ",
+        "description": "Learn about the technical support and installation guidance we provide for auto parts purchases."
+      }
+    },
+    {
+      "id": 10,
+      "question": "Are your parts compatible with both left-hand and right-hand drive vehicles?",
+      "answer": "Most of our parts are designed for specific markets and may only fit left-hand drive (LHD) or right-hand drive (RHD) vehicles. When ordering, please specify your vehicle's drive type to ensure you receive the correct parts. Some universal parts fit both configurations. If you're unsure about compatibility, provide your vehicle's full specifications including the market/region where it was sold. We'll confirm part compatibility before you complete your purchase. This is especially important for steering components, pedals, and dashboard parts.",
+      "category": "Product Selection",
+      "order": 3,
+      "seo": {
+        "title": "Left-Hand vs Right-Hand Drive Parts - FAQ",
+        "description": "Information about part compatibility for left-hand drive and right-hand drive vehicles, and how to order the correct parts."
+      }
+    },
+    {
+      "id": 11,
+      "question": "What brands do you carry?",
+      "answer": "We carry parts from numerous reputable manufacturers including OEM brands (Genuine, Denso, Aisin, KYB, Bosch, NGK) and quality aftermarket brands (Monroe, Moog, Wagner, ACDelco, Motorcraft, Gates). For Japanese vehicles, we stock Toyota, Honda, Nissan, Mazda, Subaru, Mitsubishi, and Suzuki parts. For Korean vehicles, we carry Hyundai, Kia, and Genesis parts. German brands include BMW, Mercedes-Benz, Volkswagen, and Audi. We also supply parts for Chinese domestic brands like Geely, BYD, Wuling, and Baojun. Contact us if you're looking for a specific brand.",
+      "category": "Product Selection",
+      "order": 4,
+      "seo": {
+        "title": "Auto Parts Brands We Carry - FAQ",
+        "description": "Browse the list of auto parts brands we carry, including OEM and aftermarket options for Japanese, Korean, German, and Chinese vehicles."
+      }
+    },
+    {
+      "id": 12,
+      "question": "How can I track my order?",
+      "answer": "Once your order ships, you'll receive a confirmation email with tracking information. You can track your shipment through our website by entering your order number, or directly on the carrier's website using the tracking number provided. For international shipments, tracking may show limited updates as packages move through customs. If you haven't received tracking information within 3 business days of order confirmation, please check your spam folder or contact us. We also offer real-time order status updates through WhatsApp for registered customers.",
+      "category": "Shipping & Delivery",
+      "order": 3,
+      "seo": {
+        "title": "Order Tracking - FAQ",
+        "description": "Learn how to track your order, where to find tracking numbers, and how to get updates on your shipment."
+      }
+    }
+  ],
+  "categories": [
+    { "id": 1, "name": "Product Selection", "order": 1 },
+    { "id": 2, "name": "Shipping & Delivery", "order": 2 },
+    { "id": 3, "name": "Warranty & Returns", "order": 3 },
+    { "id": 4, "name": "Payment & Orders", "order": 4 },
+    { "id": 5, "name": "Technical Support", "order": 5 },
+    { "id": 6, "name": "Troubleshooting", "order": 6 }
+  ]
+}

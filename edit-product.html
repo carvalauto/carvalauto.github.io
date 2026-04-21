@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑商品 - Carval Auto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #0f4c81; --accent: #e63946; --bg-dark: #0f0f0f; --bg-card: #1a1a1a; --text: #f5f5f5; --text-muted: #888; --border: #333; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; }
+        
+        .header { background: linear-gradient(135deg, var(--primary) 0%, #1a3a5c 100%); padding: 12px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px; }
+        .back-btn:hover { background: rgba(255,255,255,0.2); }
+        .header-title { font-size: 16px; font-weight: 600; }
+        
+        .page { padding: 16px; max-width: 900px; margin: 0 auto; padding-bottom: 80px; }
+        
+        .edit-section { background: var(--bg-card); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+        .section-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .section-title i { color: var(--primary); }
+        
+        .form-group { margin-bottom: 16px; }
+        .form-group:last-child { margin-bottom: 0; }
+        .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+        .form-group input, .form-group select { 
+            width: 100%; padding: 12px; background: var(--bg-dark); border: 1px solid var(--border); 
+            border-radius: 6px; color: var(--text); font-size: 14px; transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus { 
+            outline: none; border-color: var(--primary); 
+        }
+        
+        /* 图片编辑器 */
+        .images-editor { display: flex; flex-direction: column; gap: 8px; }
+        .image-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 5px; }
+        .image-item img { width: 60px; height: 60px; object-fit: contain; background: #2a2a2a; border-radius: 4px; cursor: zoom-in; transition: transform 0.2s; }
+        .image-item img:hover { transform: scale(1.05); }
+        .image-item input { flex: 1; padding: 6px 8px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-size: 10px; }
+        .btn-remove { padding: 4px 8px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
+        .btn-add-image { padding: 8px; background: rgba(46,204,113,0.1); color: #7dcea0; border: 1px dashed #7dcea0; border-radius: 5px; cursor: pointer; font-size: 11px; text-align: center; }
+        
+        /* 车型编辑器 */
+        .fitment-list { display: flex; flex-direction: column; gap: 10px; }
+        .fitment-item { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 8px; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; }
+        .fitment-item input { padding: 8px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-size: 11px; }
+        .fitment-item input:focus { outline: none; border-color: var(--primary); }
+        .fitment-item button { padding: 8px 10px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
+        
+        .fitment-header { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 8px; margin-bottom: 8px; font-size: 10px; color: var(--text-muted); text-transform: uppercase; padding: 0 4px; }
+        
+        .add-fitment-btn { width: 100%; padding: 10px; background: rgba(46,204,113,0.1); color: #7dcea0; border: 1px dashed #7dcea0; border-radius: 6px; cursor: pointer; font-size: 11px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        
+        /* 底部操作栏 */
+        .bottom-actions { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 12px; z-index: 100; }
+        .bottom-actions .btn { flex: 1; padding: 12px; font-size: 14px; }
+        
+        .btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; }
+        .btn:hover { opacity: 0.9; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: rgba(46,204,113,0.2); color: #7dcea0; }
+        .btn-danger { background: rgba(230,57,70,0.2); color: #ff6b7a; }
+        
+        /* 放大查看器 */
+        .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; cursor: zoom-out; }
+        .lightbox.show { display: flex; }
+        .lightbox img { max-width: 95vw; max-height: 95vh; object-fit: contain; border-radius: 8px; }
+        .lightbox-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 28px; cursor: pointer; background: rgba(0,0,0,0.5); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 24px; cursor: pointer; padding: 16px; background: rgba(0,0,0,0.3); border-radius: 4px; }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+        .lightbox-count { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: white; font-size: 12px; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 12px; }
+        
+        /* 加载状态 */
+        .loading { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .loading i { font-size: 40px; margin-bottom: 16px; animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        /* 提示框 */
+        .toast { position: fixed; top: 80px; left: 12px; right: 12px; background: #2ecc71; color: white; padding: 12px 16px; border-radius: 8px; font-size: 12px; z-index: 1000; opacity: 0; transform: translateY(-20px); transition: all 0.3s; text-align: center; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background: #e74c3c; }
+        
+        /* 响应式适配 */
+        @media (min-width: 600px) {
+            .page { padding: 24px; }
+            .fitment-item { grid-template-columns: 1fr 1fr 1fr 1fr auto; }
+            .fitment-header { grid-template-columns: 1fr 1fr 1fr 1fr auto; }
+        }
+        
+        @media (min-width: 1024px) {
+            .page { padding: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> 返回
+            </button>
+            <span class="header-title">编辑商品</span>
+        </div>
+    </div>
+    
+    <div id="page" class="page">
+        <div id="loading" class="loading">
+            <i class="fas fa-spinner"></i>
+            <p>加载商品信息...</p>
+        </div>
+        
+        <div id="editContent" style="display: none;">
+            <!-- 基本信息 -->
+            <div class="edit-section">
+                <div class="section-title">
+                    <i class="fas fa-info-circle"></i> 基本信息
+                </div>
+                <div class="form-group">
+                    <label>商品名称</label>
+                    <input type="text" id="editTitle" placeholder="输入商品名称...">
+                </div>
+                <div class="form-group">
+                    <label>商品分类</label>
+                    <select id="editCategory">
+                        <option value="japanese">日系 Japanese</option>
+                        <option value="korean">韩系 Korean</option>
+                        <option value="german">德系 German</option>
+                        <option value="chinese">国产 Chinese</option>
+                        <option value="oil">机油 Engine Oil</option>
+                        <option value="other">其他 Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>OEM 编码</label>
+                    <input type="text" id="editOem" placeholder="输入 OEM 编码...">
+                </div>
+            </div>
+            
+            <!-- 商品图片 -->
+            <div class="edit-section">
+                <div class="section-title">
+                    <i class="fas fa-images"></i> 商品图片
+                </div>
+                <div id="imagesEditor" class="images-editor"></div>
+                <button class="add-image-btn" id="addImageBtn">
+                    <i class="fas fa-plus"></i> 添加图片
+                </button>
+            </div>
+            
+            <!-- 适用车型 -->
+            <div class="edit-section">
+                <div class="section-title">
+                    <i class="fas fa-car"></i> 适用车型
+                </div>
+                <div class="fitment-header">
+                    <span>品牌</span>
+                    <span>型号</span>
+                    <span>年份</span>
+                    <span>操作</span>
+                </div>
+                <div id="fitmentList" class="fitment-list"></div>
+                <button class="add-fitment-btn" onclick="addNewFitment()">
+                    <i class="fas fa-plus"></i> 添加车型
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bottom-actions">
+        <button class="btn" id="cancelBtn" style="background: var(--border);">
+            取消
+        </button>
+        <button class="btn btn-success" id="saveEditBtn">
+            <i class="fas fa-save"></i> 保存
+        </button>
+    </div>
+    
+    <!-- 放大查看器 -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); prevLightboxImg()">
+            <i class="fas fa-chevron-left"></i>
+        </span>
+        <img id="lightboxImg" src="" alt="">
+        <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); nextLightboxImg()">
+            <i class="fas fa-chevron-right"></i>
+        </span>
+        <div class="lightbox-count" id="lightboxCount"></div>
+    </div>
+    
+    <!-- 提示框 -->
+    <div class="toast" id="toast"></div>
+    
+    <script>
+    // ===== 配置信息 =====
+    var OSS_CONFIG = {
+        endpoint: 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com',
+        productsUrl: 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json',
+        accessKeyId: 'LTAI5tKCovsg5dJWKxoXwDr2',
+        accessKeySecret: 'vDdWLEKBnnmFFZwOeLzX73vRo8k0WW'
+    };
+    
+    var productId = null;
+    var productData = null;
+    var allProducts = [];
+    var editingProductId = null;
+    var isSubmitting = false;
+    var lightboxImages = [];
+    var currentLightboxIndex = 0;
+    
+    // 从 URL 获取产品 ID
+    function getProductId() {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('id');
+    }
+    
+    // 加载产品数据
+    async function loadProductData() {
+        productId = getProductId();
+        editingProductId = productId;
+        if (!productId) {
+            showToast('缺少产品 ID', true);
+            return;
+        }
+        
+        try {
+            // 从 OSS 读取数据
+            var r = await fetch(OSS_CONFIG.productsUrl + '?t=' + Date.now());
+            if (!r.ok) throw new Error('读取数据失败');
+            
+            allProducts = await r.json();
+            productData = allProducts.find(function(x) { return String(x.id) === String(productId); });
+            
+            if (!productData) {
+                throw new Error('未找到该商品');
+            }
+            
+            // 填充表单
+            document.getElementById('editTitle').value = productData.name || productData.title || '';
+            document.getElementById('editCategory').value = (productData.category || 'other').toLowerCase();
+            document.getElementById('editOem').value = productData.oem || productData.oemCode || '';
+            
+            // 渲染图片
+            renderImages();
+            
+            // 渲染车型
+            renderFitments();
+            
+            // 显示编辑内容
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('editContent').style.display = 'block';
+            
+        } catch(e) {
+            document.getElementById('loading').innerHTML = '<i class="fas fa-exclamation-circle"></i><p>' + e.message + '</p>';
+            showToast(e.message, true);
+        }
+    }
+    
+    // 渲染图片
+    function renderImages() {
+        var images = (productData.image || productData.images || '').toString().split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+        var editor = document.getElementById('imagesEditor');
+        
+        if (images.length) {
+            editor.innerHTML = images.map(function(url, i) { 
+                return '<div class="image-item">' +
+                    '<img src="' + url + '" alt="" onclick="openLightbox(' + i + ')" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>\'">' +
+                    '<input type="text" value="' + url + '" class="image-url">' +
+                    '<button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>' +
+                '</div>';
+            }).join('');
+        } else {
+            editor.innerHTML = '<div style="color:var(--text-muted);font-size:11px;padding:8px;text-align:center;">暂无图片，点击下方添加</div>';
+        }
+        
+        lightboxImages = images;
+    }
+    
+    // 放大查看
+    function openLightbox(index) { 
+        if (!lightboxImages.length) return;
+        currentLightboxIndex = index;
+        document.getElementById('lightboxImg').src = lightboxImages[index]; 
+        document.getElementById('lightboxCount').textContent = (index + 1) + ' / ' + lightboxImages.length;
+        document.getElementById('lightbox').classList.add('show'); 
+    } 
+    
+    function closeLightbox() { 
+        document.getElementById('lightbox').classList.remove('show'); 
+    }
+    
+    function prevLightboxImg() { 
+        currentLightboxIndex = (currentLightboxIndex - 1 + lightboxImages.length) % lightboxImages.length; 
+        document.getElementById('lightboxImg').src = lightboxImages[currentLightboxIndex];
+        document.getElementById('lightboxCount').textContent = (currentLightboxIndex + 1) + ' / ' + lightboxImages.length;
+    }
+    
+    function nextLightboxImg() { 
+        currentLightboxIndex = (currentLightboxIndex + 1) % lightboxImages.length; 
+        document.getElementById('lightboxImg').src = lightboxImages[currentLightboxIndex];
+        document.getElementById('lightboxCount').textContent = (currentLightboxIndex + 1) + ' / ' + lightboxImages.length;
+    }
+    
+    // 渲染车型
+    function renderFitments() {
+        var fitments = productData.fitmentTable || [];
+        var list = document.getElementById('fitmentList');
+        
+        if (fitments.length === 0) {
+            list.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-muted);">暂无适用车型</div>';
+            return;
+        }
+        
+        list.innerHTML = fitments.map(function(item, index) {
+            return '<div class="fitment-item">' +
+                '<input type="text" value="' + (item.make || item.brand || '') + '" placeholder="品牌">' +
+                '<input type="text" value="' + (item.model || '') + '" placeholder="型号">' +
+                '<input type="text" value="' + (item.year || '') + '" placeholder="年份">' +
+                '<button onclick="removeFitment(' + index + ')"><i class="fas fa-trash"></i></button>' +
+            '</div>';
+        }).join('');
+    }
+    
+    // 添加新车型
+    function addNewFitment() {
+        if (!productData.fitmentTable) {
+            productData.fitmentTable = [];
+        }
+        productData.fitmentTable.push({ make: '', model: '', year: '' });
+        renderFitments();
+    }
+    
+    // 删除车型
+    function removeFitment(index) {
+        if (!confirm('确定删除这个车型吗？')) return;
+        productData.fitmentTable.splice(index, 1);
+        renderFitments();
+    }
+    
+    // 返回
+    function goBack() {
+        window.location.href = 'admin.html';
+    }
+    
+    // 保存（使用和 admin.html 完全相同的逻辑）
+    async function saveProductEdit() {
+        if (!editingProductId) return;
+        if (isSubmitting) { showToast('正在处理中，请稍候...', true); return; }
+        
+        isSubmitting = true;
+        var saveBtn = document.getElementById('saveEditBtn');
+        if (saveBtn) saveBtn.disabled = true;
+        
+        var title = document.getElementById('editTitle').value.trim();
+        var category = document.getElementById('editCategory').value;
+        var oem = document.getElementById('editOem').value.trim();
+        var imageInputs = document.querySelectorAll('.image-item .image-url');
+        var images = Array.prototype.slice.call(imageInputs).map(function(i) { return i.value.trim(); }).filter(Boolean);
+        var imageStr = images.join(',');
+        
+        showToast('正在保存...', false);
+        
+        try {
+            // 从OSS读取products.json
+            var r = await fetch(OSS_CONFIG.productsUrl + '?t=' + Date.now());
+            
+            if (!r.ok) {
+                throw new Error('获取产品数据失败: ' + r.status);
+            }
+            
+            var content = await r.text();
+            var products = JSON.parse(content);
+            
+            // 查找要编辑的产品（支持字符串和数字ID）
+            var index = products.findIndex(function(x) { 
+                return x.id == editingProductId || x.id === parseInt(editingProductId); 
+            });
+            
+            if (index === -1) {
+                throw new Error('未找到该商品');
+            }
+            
+            // 更新产品信息
+            if (title) { 
+                products[index].name = title; 
+                products[index].title = title; 
+            }
+            products[index].category = category;
+            products[index].oem = oem;
+            products[index].oemCode = oem;
+            products[index].image = imageStr;
+            products[index].images = images;
+            
+            // 收集车型数据
+            var fitmentItems = document.querySelectorAll('.fitment-item');
+            var fitments = [];
+            fitmentItems.forEach(function(item) {
+                var inputs = item.querySelectorAll('input');
+                var make = inputs[0].value.trim();
+                var model = inputs[1].value.trim();
+                var year = inputs[2].value.trim();
+                if (make || model || year) {
+                    fitments.push({ make: make, model: model, year: year });
+                }
+            });
+            products[index].fitmentTable = fitments;
+            
+            // 生成OSS签名
+            var jsonData = JSON.stringify(products, null, 2);
+            var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
+            
+            // 上传到OSS
+            var updateR = await fetch(OSS_CONFIG.productsUrl, { 
+                method: 'PUT', 
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': auth,
+                    'x-oss-date': new Date().toUTCString()
+                }, 
+                body: jsonData 
+            });
+            
+            if (!updateR.ok) {
+                throw new Error('保存失败: ' + updateR.status);
+            }
+            
+            // 更新本地数据
+            allProducts = products;
+            
+            showToast('保存成功！', false);
+            
+            setTimeout(function() {
+                window.location.href = 'admin.html';
+            }, 1000);
+            
+        } catch (error) {
+            showToast('保存失败: ' + error.message, true);
+            console.error('保存失败:', error);
+        } finally {
+            isSubmitting = false;
+            if (saveBtn) saveBtn.disabled = false;
+        }
+    }
+    
+    // 生成OSS签名（和 admin.html 完全相同的函数）
+    async function generateOSSAuth(method, objectKey, contentLength) {
+        var date = new Date().toUTCString();
+        var stringToSign = [
+            method,
+            '',
+            'application/json',
+            date,
+            'x-oss-date:' + date,
+            '/carvalauto-products' + objectKey
+        ].join('\n');
+        
+        // 使用Web Crypto API进行HMAC-SHA1签名
+        var encoder = new TextEncoder();
+        var keyData = encoder.encode(OSS_CONFIG.accessKeySecret);
+        var messageData = encoder.encode(stringToSign);
+        
+        var cryptoKey = await crypto.subtle.importKey(
+            'raw',
+            keyData,
+            { name: 'HMAC', hash: 'SHA-1' },
+            false,
+            ['sign']
+        );
+        
+        var signature = await crypto.subtle.sign('HMAC', cryptoKey, messageData);
+        var signatureArray = Array.from(new Uint8Array(signature));
+        var signatureBase64 = btoa(String.fromCharCode.apply(null, signatureArray));
+        
+        return 'OSS ' + OSS_CONFIG.accessKeyId + ':' + signatureBase64;
+    }
+    
+    // 添加图片按钮事件
+    document.getElementById('addImageBtn').onclick = function() {
+        var editor = document.getElementById('imagesEditor');
+        var newImage = document.createElement('div');
+        newImage.className = 'image-item';
+        newImage.innerHTML = '<input type="text" class="image-url" placeholder="输入图片URL..."><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
+        editor.appendChild(newImage);
+    };
+    
+    // 绑定事件
+    document.getElementById('saveEditBtn').onclick = saveProductEdit;
+    document.getElementById('cancelBtn').onclick = goBack;
+    
+    // 键盘事件
+    document.addEventListener('keydown', function(e) {
+        if (document.getElementById('lightbox').classList.contains('show')) {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') prevLightboxImg();
+            if (e.key === 'ArrowRight') nextLightboxImg();
+        }
+    });
+    
+    // 提示
+    function showToast(msg, isError) {
+        var toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.className = 'toast show' + (isError ? ' error' : '');
+        setTimeout(function() { toast.className = 'toast'; }, 3000);
+    }
+    
+    // 页面加载时执行
+    loadProductData();
+    </script>
+</body>
+</html>
