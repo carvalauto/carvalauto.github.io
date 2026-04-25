@@ -2625,7 +2625,7 @@
                         if (ghResp.ok) {
                             var ghJson = await ghResp.json();
                             ghSha = ghJson.sha;
-                            ghData = JSON.parse(atob(ghJson.content.replace(/\n/g, '')));
+                            ghData = JSON.parse(decodeURIComponent(escape(atob(ghJson.content.replace(/\n/g, '')))));
                         }
                         ghData.unshift(inquiry);
                         if (ghData.length > 500) ghData = ghData.slice(0, 500);
