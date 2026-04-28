@@ -1159,38 +1159,29 @@
         showToast('正在保存...', false);
         
         try {
-            // 从OSS读取products.json
-            var r = await fetch(OSS_CONFIG.productsUrl + '?t=' + Date.now());
-            
-            if (!r.ok) {
-                throw new Error('获取产品数据失败: ' + r.status);
-            }
-            
-            var content = await r.text();
-            var products = JSON.parse(content);
-            
-            // 查找要编辑的产品（支持字符串和数字ID）
-            var index = products.findIndex(function(x) { 
-                return x.id == editingProductId || x.id === parseInt(editingProductId); 
+            // 先在本地更新产品数据
+            var editIdNum = parseInt(editingProductId);
+            var index = allProducts.findIndex(function(x) { 
+                return String(x.id) === String(editingProductId) || (editIdNum && x.id === editIdNum); 
             });
             
             if (index === -1) {
                 throw new Error('未找到该商品');
             }
             
-            // 更新产品信息
+            // 更新本地产品信息
             if (title) { 
-                products[index].name = title; 
-                products[index].title = title; 
+                allProducts[index].name = title; 
+                allProducts[index].title = title; 
             }
-            products[index].category = category;
-            products[index].oem = oem;
-            products[index].oemCode = oem;
-            products[index].image = imageStr;
-            products[index].images = images;
+            allProducts[index].category = category;
+            allProducts[index].oem = oem;
+            allProducts[index].oemCode = oem;
+            allProducts[index].image = imageStr;
+            allProducts[index].images = images;
             
             // 生成OSS签名
-            var jsonData = JSON.stringify(products, null, 2);
+            var jsonData = JSON.stringify(allProducts, null, 2);
             var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
             
             // 上传到OSS
@@ -1208,12 +1199,42 @@
                 throw new Error('保存失败: ' + updateR.status);
             }
             
-            // 更新本地数据
-            allProducts = products;
-            
             showToast('保存成功！', false);
             closeEditModal();
-            renderProducts(); // 直接渲染，不需要重新加载
+            
+            // 只更新当前页面上被编辑的那个卡片，不重新渲染所有卡片
+            var editId = String(editingProductId);
+            var cards = document.querySelectorAll('.product-card');
+            cards.forEach(function(card) {
+                var btn = card.querySelector('.btn-edit');
+                if (btn && btn.onclick && btn.onclick.toString().includes(editId)) {
+                    var name = title || allProducts[index].name || allProducts[index].title || '未命名';
+                    var cat = (category || 'other').toUpperCase();
+                    var img = imageStr.split(',')[0] || '';
+                    var oemCode = oem || '';
+                    
+                    var infoDiv = card.querySelector('.product-info');
+                    if (infoDiv) {
+                        infoDiv.innerHTML = 
+                            '<div class="product-title" title="' + name.replace(/"/g, '&quot;') + '">' + name.substring(0, 40) + (name.length > 40 ? '...' : '') + '</div>' +
+                            '<div class="product-meta"><span class="product-tag">' + cat + '</span>' + (oemCode ? '<span class="product-tag oem">OEM: ' + oemCode.substring(0, 15) + '</span>' : '') + '</div>' +
+                            '<div class="product-actions">' +
+                                '<button class="btn btn-edit" onclick="openEditModalById(' + String(editingProductId) + ')"><i class="fas fa-edit"></i> 编辑</button>' +
+                                '<button class="btn btn-danger" onclick="confirmDeleteProduct(' + String(editingProductId) + ', \'' + name.replace(/'/g, "\\'") + '\')"><i class="fas fa-trash"></i></button>' +
+                            '</div>';
+                    }
+                    
+                    var imgEl = card.querySelector('.product-card-img');
+                    if (imgEl) {
+                        if (img) {
+                            imgEl.src = img;
+                            imgEl.style.display = '';
+                        } else {
+                            imgEl.style.display = 'none';
+                        }
+                    }
+                }
+            });
             
         } catch (error) {
             showToast('保存失败: ' + error.message, true);
