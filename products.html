@@ -50,6 +50,8 @@
         .search-box input { padding: 8px 14px; border: 1px solid var(--border); border-right: none; font-size: 13px; width: 160px; outline: none; border-radius: 20px 0 0 20px; }
         .search-box button { padding: 8px 14px; background: var(--steel); border: 1px solid var(--steel); color: white; cursor: pointer; font-size: 13px; border-radius: 0 20px 20px 0; }
         .search-box button:hover { background: var(--red); }
+        .filter-select { padding: 8px 14px; border: 1px solid var(--border); background: white; font-size: 12px; text-transform: uppercase; cursor: pointer; border-radius: 20px; min-width: 140px; outline: none; }
+        .filter-select:hover { border-color: var(--steel); }
         
         /* 刷新按钮 */
         .refresh-btn { display: flex; align-items: center; gap: 4px; padding: 6px 12px; border: 1px solid var(--border); background: white; font-size: 11px; text-transform: uppercase; cursor: pointer; border-radius: 20px; flex-shrink: 0; white-space: nowrap; transition: all 0.2s; }
@@ -332,12 +334,15 @@
 </div>
 <div class="filter-bar">
     <span>Filter:</span>
-    <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
-    <button class="filter-btn" onclick="filterProducts('japanese', this)">Japanese</button>
-    <button class="filter-btn" onclick="filterProducts('korean', this)">Korean</button>
-    <button class="filter-btn" onclick="filterProducts('german', this)">German</button>
-    <button class="filter-btn" onclick="filterProducts('chinese', this)">Chinese</button>
-    <button class="filter-btn" onclick="filterProducts('oil', this)">Engine Oil</button>
+    <select class="filter-select" id="categoryFilter" onchange="filterProducts(this.value)">
+        <option value="all">All</option>
+        <option value="japanese">Japanese</option>
+        <option value="korean">Korean</option>
+        <option value="german">German</option>
+        <option value="chinese">Chinese</option>
+        <option value="oil">Engine Oil</option>
+        <option value="other">Other</option>
+    </select>
     <button class="refresh-btn" id="refreshBtn" onclick="forceRefresh()">
         <i class="fas fa-sync-alt"></i> Refresh
     </button>
@@ -646,7 +651,22 @@ function renderPagination(totalPages, totalItems) {
 }
 
 function goToPage(page) { currentPage = page; renderProducts(); document.getElementById('productsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-function filterProducts(cat, btn) { currentFilter = cat; currentPage = 1; document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); }); btn.classList.add('active'); renderProducts(); }
+function filterProducts(cat) { 
+    currentFilter = cat; 
+    currentPage = 1; 
+    // 如果有按钮，更新按钮状态
+    if (document.querySelectorAll('.filter-btn').length > 0) {
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        var btns = document.querySelectorAll('.filter-btn');
+        for (var i = 0; i < btns.length; i++) {
+            if (btns[i].onclick.toString().indexOf("'" + cat + "'") > -1) {
+                btns[i].classList.add('active');
+                break;
+            }
+        }
+    }
+    renderProducts(); 
+}
 function searchProducts() { currentSearch = document.getElementById('searchInput').value.toLowerCase().trim(); currentPage = 1; renderProducts(); }
 
 var carouselImages = [], currentImgIndex = 0;
