@@ -1039,14 +1039,34 @@
         
         c.innerHTML = pageProducts.map(function(x) {
             var img = (x.image || x.images || '').toString().split(',')[0] || '';
-            var cat = (x.category || 'other').toUpperCase();
+            var cat = (x.category || 'other');
+            var catDisplay = cat.toUpperCase();
             var name = (x.name || x.title || '未命名').toString();
             var oem = x.oem || x.oemCode || '';
+            
+            // 提取精准车型
+            var fitmentDisplay = '';
+            var fitmentTable = x.fitmentTable || [];
+            if (fitmentTable && fitmentTable.length > 0) {
+                var brands = {};
+                fitmentTable.forEach(function(item) {
+                    if (item.make) brands[item.make.toUpperCase()] = true;
+                });
+                var brandList = Object.keys(brands);
+                if (brandList.length > 0) {
+                    fitmentDisplay = brandList.slice(0, 3).join(', ');
+                }
+            }
+            
             return '<div class="product-card">' +
                 (img ? '<img src="' + img + '" class="product-card-img" alt="" onerror="this.style.display=\'none\'">' : '<div class="product-card-img" style="display:flex;align-items:center;justify-content:center;color:#555;font-size:24px;"><i class="fas fa-image"></i></div>') +
                 '<div class="product-info">' +
                     '<div class="product-title" title="' + name.replace(/"/g, '&quot;') + '">' + name.substring(0, 40) + (name.length > 40 ? '...' : '') + '</div>' +
-                    '<div class="product-meta"><span class="product-tag">' + cat + '</span>' + (oem ? '<span class="product-tag oem">OEM: ' + oem.substring(0, 15) + '</span>' : '') + '</div>' +
+                    '<div class="product-meta">' + 
+                        (fitmentDisplay ? '<span class="product-tag" style="background:rgba(230,57,70,0.2);color:#ff6b7a;">' + fitmentDisplay + '</span>' : '') +
+                        '<span class="product-tag">' + catDisplay + '</span>' + 
+                        (oem ? '<span class="product-tag oem">OEM: ' + oem.substring(0, 15) + '</span>' : '') + 
+                    '</div>' +
                     '<div class="product-actions">' +
                         '<button class="btn btn-edit" onclick="openEditModalById(' + String(x.id) + ')"><i class="fas fa-edit"></i> 编辑</button>' +
                         '<button class="btn btn-danger" onclick="confirmDeleteProduct(' + String(x.id) + ', \'' + name.replace(/'/g, "\\'") + '\')"><i class="fas fa-trash"></i></button>' +
@@ -1218,15 +1238,35 @@
                 var btn = card.querySelector('.btn-edit');
                 if (btn && btn.onclick && btn.onclick.toString().includes(editId)) {
                     var name = title || allProducts[index].name || allProducts[index].title || '未命名';
-                    var cat = (category || 'other').toUpperCase();
+                    var product = allProducts[index];
+                    var cat = (product.category || 'other');
+                    var catDisplay = cat.toUpperCase();
                     var img = imageStr.split(',')[0] || '';
                     var oemCode = oem || '';
+                    
+                    // 提取精准车型
+                    var fitmentDisplay = '';
+                    var fitmentTable = product.fitmentTable || [];
+                    if (fitmentTable && fitmentTable.length > 0) {
+                        var brands = {};
+                        fitmentTable.forEach(function(item) {
+                            if (item.make) brands[item.make.toUpperCase()] = true;
+                        });
+                        var brandList = Object.keys(brands);
+                        if (brandList.length > 0) {
+                            fitmentDisplay = brandList.slice(0, 3).join(', ');
+                        }
+                    }
                     
                     var infoDiv = card.querySelector('.product-info');
                     if (infoDiv) {
                         infoDiv.innerHTML = 
                             '<div class="product-title" title="' + name.replace(/"/g, '&quot;') + '">' + name.substring(0, 40) + (name.length > 40 ? '...' : '') + '</div>' +
-                            '<div class="product-meta"><span class="product-tag">' + cat + '</span>' + (oemCode ? '<span class="product-tag oem">OEM: ' + oemCode.substring(0, 15) + '</span>' : '') + '</div>' +
+                            '<div class="product-meta">' + 
+                                (fitmentDisplay ? '<span class="product-tag" style="background:rgba(230,57,70,0.2);color:#ff6b7a;">' + fitmentDisplay + '</span>' : '') +
+                                '<span class="product-tag">' + catDisplay + '</span>' + 
+                                (oemCode ? '<span class="product-tag oem">OEM: ' + oemCode.substring(0, 15) + '</span>' : '') + 
+                            '</div>' +
                             '<div class="product-actions">' +
                                 '<button class="btn btn-edit" onclick="openEditModalById(' + String(editingProductId) + ')"><i class="fas fa-edit"></i> 编辑</button>' +
                                 '<button class="btn btn-danger" onclick="confirmDeleteProduct(' + String(editingProductId) + ', \'' + name.replace(/'/g, "\\'") + '\')"><i class="fas fa-trash"></i></button>' +

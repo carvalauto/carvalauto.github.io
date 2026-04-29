@@ -612,12 +612,27 @@ function renderProducts() {
         var brandInfo = brandMatch ? brandMatch[1].trim() : '';
         var oemCode = p.oem || p.oemCode || '';
         
+        // 提取精准车型
+        var fitmentDisplay = '';
+        var fitmentTable = p.fitmentTable || [];
+        if (fitmentTable && fitmentTable.length > 0) {
+            var brands = {};
+            fitmentTable.forEach(function(item) {
+                if (item.make) brands[item.make.toUpperCase()] = true;
+            });
+            var brandList = Object.keys(brands);
+            if (brandList.length > 0) {
+                fitmentDisplay = brandList.slice(0, 2).join(', ');
+            }
+        }
+        
         return '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
             '<div class="product-img-wrap">' +
                 (firstImg ? '<img src="' + firstImg + '" alt="' + (p.name || p.title || '') + '" loading="lazy" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\'"><div class="no-image" style="display:none"><i class="fas fa-car"></i><span>No Image</span></div>' : '<div class="no-image"><i class="fas fa-car"></i><span>No Image</span></div>') +
             '</div>' +
             '<div class="product-body">' +
-                '<div class="product-category">' + (categoryLabels[p.category] || p.category || 'Other') + '</div>' +
+                '<div class="product-category">' + (fitmentDisplay || categoryLabels[p.category] || p.category || 'Other') + '</div>' +
+                (fitmentDisplay ? '<div style="font-size:9px;color:var(--text-soft);margin-bottom:4px;text-transform:uppercase;">' + (categoryLabels[p.category] || p.category || '') + '</div>' : '') +
                 '<div class="product-name">' + (p.name || p.title || 'Product') + '</div>' +
                 '<div class="product-oem">' + (oemCode || 'OEM: -') + '</div>' +
                 '<button class="inquire-btn" onclick="event.stopPropagation(); openProduct(' + p.id + ')"><i class="fas fa-info-circle"></i> View Details</button>' +
