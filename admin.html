@@ -952,11 +952,43 @@
         document.getElementById('editModal').classList.remove('show');
     }
     
-    async function loadProducts() {
+    async function loadProducts(useCache = true) {
         var c = document.getElementById('productList');
+        
+        // 如果有缓存且允许使用，先显示缓存数据
+        if (useCache) {
+            var cached = localStorage.getItem('cached_products');
+            if (cached) {
+                try {
+                    var cachedData = JSON.parse(cached);
+                    allProducts = cachedData.data;
+                    currentProductPage = 1;
+                    renderProducts();
+                    console.log('[Products] 使用缓存数据，产品数:', allProducts.length);
+                    // 后台静默更新数据
+                    loadProductsFromOSS(false);
+                    return;
+                } catch(e) {
+                    console.warn('[Products] 缓存解析失败:', e);
+                }
+            }
+        }
+        
+        // 显示加载状态
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         
+        // 从 OSS 加载
+        await loadProductsFromOSS(true);
+    }
+    
+    async function loadProductsFromOSS(showLoading = true) {
+        var c = document.getElementById('productList');
+        
         try {
+            if (showLoading) {
+                c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
+            }
+            
             var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now();
             var r = await fetch(OSS_URL);
             
@@ -970,20 +1002,23 @@
             currentProductPage = 1;
             renderProducts();
             localStorage.setItem('cached_products', JSON.stringify({data: allProducts, sha: Date.now()}));
+            console.log('[Products] 从OSS加载完成，产品数:', allProducts.length);
         } catch(e) { 
-            console.error('Load error:', e);
-            var cached = localStorage.getItem('cached_products');
-            if (cached) {
-                try {
-                    var cachedData = JSON.parse(cached);
-                    allProducts = cachedData.data;
-                    renderProducts();
-                    showToast('使用缓存数据', false);
-                } catch(e2) {
+            console.error('[Products] 加载失败:', e);
+            if (showLoading) {
+                var cached = localStorage.getItem('cached_products');
+                if (cached) {
+                    try {
+                        var cachedData = JSON.parse(cached);
+                        allProducts = cachedData.data;
+                        renderProducts();
+                        showToast('使用缓存数据', false);
+                    } catch(e2) {
+                        c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
+                    }
+                } else {
                     c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
                 }
-            } else {
-                c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
             }
         }
     }
