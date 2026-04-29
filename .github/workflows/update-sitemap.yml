@@ -2,9 +2,8 @@ name: Auto Update Sitemap
 
 on:
   schedule:
-    # 每6小时执行一次
     - cron: '0 */6 * * *'
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:
 
 jobs:
   update-sitemap:
@@ -19,20 +18,9 @@ jobs:
         with:
           python-version: '3.x'
       
-      - name: Get current SEO pages count
-        id: count
-        run: |
-          TOKEN="${{ secrets.GITHUB_TOKEN }}"
-          REPO="${{ github.repository }}"
-          PAGES=$(curl -s -H "Authorization: token $TOKEN" \
-            "https://api.github.com/repos/$REPO/contents/products" | \
-            python3 -c "import sys,json; data=json.load(sys.stdin); print(len([f for f in data if f['name'].endswith('.html')]))" 2>/dev/null)
-          echo "pages=$PAGES" >> $GITHUB_OUTPUT
-          echo "当前SEO页面数: $PAGES"
-      
       - name: Generate and update sitemap
         run: |
-          python3 << 'PYEOF'
+          python3 << 'SCRIPT'
 import json
 import base64
 import urllib.request
@@ -56,7 +44,7 @@ today = datetime.now().strftime('%Y-%m-%d')
 print(f"找到 {len(files)} 个SEO页面")
 
 # 生成sitemap
-sitemap = f'''<?xml version="1.0" encoding="UTF-8"?>
+sitemap = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://carvalautopart.com/</loc>
@@ -64,17 +52,17 @@ sitemap = f'''<?xml version="1.0" encoding="UTF-8"?>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-'''
+"""
 
 for f in files:
     pid = f['name'].replace('.html', '')
-    sitemap += f'''  <url>
+    sitemap += f"""  <url>
     <loc>https://carvalautopart.com/products/{pid}.html</loc>
     <lastmod>{today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-'''
+"""
 
 sitemap += '</urlset>'
 
@@ -118,8 +106,8 @@ with urllib.request.urlopen(req) as resp:
     if "commit" in result:
         print(f"✅ sitemap.xml 更新成功! ({len(files)} pages)")
     else:
-        print(f"❌ 更新失败: {result}")
-PYEOF
+        print(f"❌ 更新失败")
+SCRIPT
       
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
