@@ -1266,6 +1266,11 @@
             showToast('保存成功！', false);
             closeEditModal();
             
+            // 同步当前版本号，防止 realtime-update.js 触发刷新
+            if (typeof window.realtimeVersion !== 'undefined' && window.realtimeVersion) {
+                window.realtimeVersion = Date.now();
+            }
+            
             // 只更新当前页面上被编辑的那个卡片，不重新渲染所有卡片
             var editId = String(editingProductId);
             var cards = document.querySelectorAll('.product-card');

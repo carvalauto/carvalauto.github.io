@@ -4,6 +4,8 @@
     
     console.log('[实时更新] 0延迟实时更新系统启动中...');
     
+    // 暴露版本号到全局，供 admin.html 同步使用
+    window.realtimeVersion = 0;
     var currentVersion = 0;
     var checkInterval = null;
     var isInitialized = false;
@@ -17,6 +19,7 @@
                 if (data.version && data.version > currentVersion) {
                     console.log('[实时更新] 检测到版本更新:', currentVersion, '→', data.version);
                     currentVersion = data.version;
+                    window.realtimeVersion = data.version;
                     
                     // 清除缓存
                     localStorage.removeItem('carval_products_v2');
@@ -82,6 +85,7 @@
             .then(function(data) {
                 if (data.version) {
                     currentVersion = data.version;
+                    window.realtimeVersion = data.version;
                     console.log('[实时更新] 当前版本:', currentVersion);
                     console.log('[实时更新] 系统已启动，每5秒检查一次更新');
                     
