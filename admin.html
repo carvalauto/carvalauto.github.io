@@ -443,15 +443,8 @@
             <div class="edit-form">
                 <div class="form-group"><label>商品标题</label><input type="text" id="editTitle" placeholder="输入商品标题..."></div>
                 <div class="form-group">
-                    <label>商品分类</label>
-                    <select id="editCategory">
-                        <option value="japanese">日系 Japanese</option>
-                        <option value="korean">韩系 Korean</option>
-                        <option value="german">德系 German</option>
-                        <option value="chinese">国产 Chinese</option>
-                        <option value="oil">机油 Engine Oil</option>
-                        <option value="other">其他 Other</option>
-                    </select>
+                    <label>精准车型（只读）</label>
+                    <div id="editFitmentInfo" style="padding:10px 12px;background:var(--bg-dark);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:12px;min-height:40px;"></div>
                 </div>
                 <div class="form-group"><label>OEM 编码</label><input type="text" id="editOem" placeholder="输入 OEM 编码..."></div>
                 <div class="form-group">
@@ -1113,8 +1106,26 @@
     function openEditModal(product) {
         editingProductId = product.id;
         document.getElementById('editTitle').value = product.name || product.title || '';
-        document.getElementById('editCategory').value = (product.category || 'other').toLowerCase();
         document.getElementById('editOem').value = product.oem || product.oemCode || '';
+        
+        // 显示精准车型信息
+        var fitmentInfo = document.getElementById('editFitmentInfo');
+        var fitmentTable = product.fitmentTable || [];
+        if (fitmentTable && fitmentTable.length > 0) {
+            // 提取唯一的品牌/车型
+            var brands = {};
+            fitmentTable.forEach(function(item) {
+                var make = item.make || '';
+                var model = item.model || '';
+                if (make) brands[make] = true;
+                if (model && make) brands[make + ' ' + model] = true;
+            });
+            var brandList = Object.keys(brands).slice(0, 10).join(', ');
+            fitmentInfo.textContent = brandList || '暂无车型数据';
+        } else {
+            fitmentInfo.textContent = '暂无车型数据';
+        }
+        
         var imagesEditor = document.getElementById('imagesEditor');
         var images = (product.image || product.images || '').toString().split(',').map(function(s) { return s.trim(); }).filter(Boolean);
         if (images.length) {
@@ -1150,7 +1161,6 @@
         if (saveBtn) saveBtn.disabled = true;
         
         var title = document.getElementById('editTitle').value.trim();
-        var category = document.getElementById('editCategory').value;
         var oem = document.getElementById('editOem').value.trim();
         var imageInputs = document.querySelectorAll('.image-item .image-url');
         var images = Array.prototype.slice.call(imageInputs).map(function(i) { return i.value.trim(); }).filter(Boolean);
@@ -1169,12 +1179,11 @@
                 throw new Error('未找到该商品');
             }
             
-            // 更新本地产品信息
+            // 更新本地产品信息（不修改分类，保持原始采集的分类）
             if (title) { 
                 allProducts[index].name = title; 
                 allProducts[index].title = title; 
             }
-            allProducts[index].category = category;
             allProducts[index].oem = oem;
             allProducts[index].oemCode = oem;
             allProducts[index].image = imageStr;
