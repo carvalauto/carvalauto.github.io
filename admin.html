@@ -1140,22 +1140,27 @@
         document.getElementById('editTitle').value = product.name || product.title || '';
         document.getElementById('editOem').value = product.oem || product.oemCode || '';
         
-        // 显示精准车型信息
+        // 显示精准车型信息（标签形式）
         var fitmentInfo = document.getElementById('editFitmentInfo');
         var fitmentTable = product.fitmentTable || [];
         if (fitmentTable && fitmentTable.length > 0) {
-            // 提取唯一的品牌/车型
+            // 提取唯一的品牌
             var brands = {};
             fitmentTable.forEach(function(item) {
                 var make = item.make || '';
-                var model = item.model || '';
-                if (make) brands[make] = true;
-                if (model && make) brands[make + ' ' + model] = true;
+                if (make) brands[make.toUpperCase()] = true;
             });
-            var brandList = Object.keys(brands).slice(0, 10).join(', ');
-            fitmentInfo.textContent = brandList || '暂无车型数据';
+            var brandList = Object.keys(brands);
+            if (brandList.length > 0) {
+                var tagsHtml = brandList.map(function(brand) {
+                    return '<span style="display:inline-block;padding:6px 12px;background:rgba(230,57,70,0.2);color:#ff6b7a;border-radius:4px;font-size:12px;font-weight:600;margin:2px;">' + brand + '</span>';
+                }).join('');
+                fitmentInfo.innerHTML = tagsHtml;
+            } else {
+                fitmentInfo.innerHTML = '<span style="color:#888;font-size:12px;">暂无车型数据</span>';
+            }
         } else {
-            fitmentInfo.textContent = '暂无车型数据';
+            fitmentInfo.innerHTML = '<span style="color:#888;font-size:12px;">暂无车型数据</span>';
         }
         
         var imagesEditor = document.getElementById('imagesEditor');
