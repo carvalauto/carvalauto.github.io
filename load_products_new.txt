@@ -1,0 +1,29 @@
+    function loadProducts() {
+        if (!checkToken()) return;
+        var c = document.getElementById('productList');
+        c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
+        apiRequest('/products', 'GET')
+            .then(function(data) {
+                allProducts = data.products || data || [];
+                console.log('[Admin] 从API加载产品，数量:', allProducts.length);
+                currentProductPage = 1;
+                renderProducts();
+                localStorage.setItem('cached_products', JSON.stringify({ data: allProducts }));
+            })
+            .catch(function(e) {
+                console.error('[Admin] Load error:', e);
+                var cached = localStorage.getItem('cached_products');
+                if (cached) {
+                    try {
+                        var cachedData = JSON.parse(cached);
+                        allProducts = cachedData.data;
+                        renderProducts();
+                        showToast('使用缓存数据', false);
+                    } catch(e2) {
+                        showNetworkError(c, '无法加载产品: ' + e.message, true);
+                    }
+                } else {
+                    showNetworkError(c, '无法加载产品: ' + e.message, false);
+                }
+            });
+    }
