@@ -955,9 +955,10 @@
     async function loadProducts() {
         var c = document.getElementById('productList');
         
-        // 优先使用缓存，立即显示
+        // 1. 立即显示本地缓存
         var cached = localStorage.getItem('cached_products');
         var hasCache = false;
+        
         if (cached) {
             try {
                 var cachedData = JSON.parse(cached);
@@ -966,38 +967,29 @@
                     currentProductPage = 1;
                     renderProducts();
                     hasCache = true;
-                    console.log('[Products] 优先显示缓存，产品数:', allProducts.length);
+                    console.log('[缓存] 显示', allProducts.length, '条');
                 }
-            } catch(e) {
-                console.warn('[Products] 缓存解析失败:', e);
-            }
+            } catch(e) {}
         }
         
-        // 如果没有缓存，显示加载动画
         if (!hasCache) {
             c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         }
         
-        // 后台静默加载 OSS 数据
-        setTimeout(async function() {
-            try {
-                var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now();
-                var r = await fetch(OSS_URL);
-                
-                if (!r.ok) throw new Error('OSS请求失败: ' + r.status);
-                
-                allProducts = await r.json();
-                currentProductPage = 1;
-                renderProducts();
-                localStorage.setItem('cached_products', JSON.stringify({data: allProducts, sha: Date.now()}));
-                console.log('[Products] OSS加载完成，产品数:', allProducts.length);
-            } catch(e) { 
-                console.error('[Products] OSS加载失败:', e);
-                if (!hasCache) {
-                    c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败</p></div>'; 
-                }
-            }
-        }, hasCache ? 500 : 0);
+        // 2. 直接从OSS加载最新数据
+        try {
+            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now(), {cache: 'no-store'});
+            if (!r.ok) throw new Error('OSS请求失败');
+            
+            var newData = await r.json();
+            allProducts = newData;
+            currentProductPage = 1;
+            renderProducts();
+            localStorage.setItem('cached_products', JSON.stringify({data: newData, time: Date.now()}));
+            console.log('[OSS] 加载完成', allProducts.length, '条');
+        } catch(e) {
+            console.error('[OSS] 加载失败:', e);
+        }
     }
     
     function renderProducts() {
