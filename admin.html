@@ -954,9 +954,8 @@
     
     async function loadProducts() {
         var c = document.getElementById('productList');
-        c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         
-        // 先检查缓存
+        // 优先使用缓存，立即显示
         var cached = localStorage.getItem('cached_products');
         var hasCache = false;
         if (cached) {
@@ -974,32 +973,31 @@
             }
         }
         
-        // 后台加载 OSS 数据
-        try {
-            var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now();
-            var startTime = Date.now();
-            var r = await fetch(OSS_URL);
-            console.log('[Products] OSS请求耗时:', Date.now() - startTime, 'ms');
-            
-            if (!r.ok) {
-                throw new Error('OSS请求失败: ' + r.status);
-            }
-            
-            var content = await r.text();
-            var parseStart = Date.now();
-            allProducts = JSON.parse(content);
-            console.log('[Products] JSON解析耗时:', Date.now() - parseStart, 'ms');
-            
-            currentProductPage = 1;
-            renderProducts();
-            localStorage.setItem('cached_products', JSON.stringify({data: allProducts, sha: Date.now()}));
-            console.log('[Products] OSS加载完成，产品数:', allProducts.length);
-        } catch(e) { 
-            console.error('[Products] OSS加载失败:', e);
-            if (!hasCache) {
-                c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>'; 
-            }
+        // 如果没有缓存，显示加载动画
+        if (!hasCache) {
+            c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         }
+        
+        // 后台静默加载 OSS 数据
+        setTimeout(async function() {
+            try {
+                var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now();
+                var r = await fetch(OSS_URL);
+                
+                if (!r.ok) throw new Error('OSS请求失败: ' + r.status);
+                
+                allProducts = await r.json();
+                currentProductPage = 1;
+                renderProducts();
+                localStorage.setItem('cached_products', JSON.stringify({data: allProducts, sha: Date.now()}));
+                console.log('[Products] OSS加载完成，产品数:', allProducts.length);
+            } catch(e) { 
+                console.error('[Products] OSS加载失败:', e);
+                if (!hasCache) {
+                    c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败</p></div>'; 
+                }
+            }
+        }, hasCache ? 500 : 0);
     }
     
     function renderProducts() {
