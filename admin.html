@@ -1433,11 +1433,6 @@
     }
     
     window.addEventListener('load', function() {
-        // 不再使用 localStorage 中的 Token，直接使用代码中定义的 Token
-        // var savedToken = localStorage.getItem('gh_token');
-        // if (savedToken) GH_TOKEN = savedToken;
-        loadProducts();
-        
         // 绑定 Google 登录按钮
         var loginBtn = document.getElementById('googleLoginBtn');
         var logoutBtn = document.getElementById('logoutBtn');
@@ -1767,3 +1762,5 @@
     </script>
 </body>
 </html>
+
+    // 页面加载后直接调用
