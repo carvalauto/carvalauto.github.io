@@ -84,24 +84,27 @@
         .toast.show { opacity: 1; transform: translateY(0); }
         .toast.error { background: #e74c3c; }
         
-        /* 手机端车型输入框 - 紧凑横向排列 */
+        /* 手机端车型输入框 - 对齐上面输入框样式 */
         @media (max-width: 480px) {
-            .fitment-list { gap: 6px; }
+            .fitment-list { gap: 8px; }
             .fitment-item { 
-                grid-template-columns: 2fr 1.5fr 1fr auto; 
-                gap: 4px; 
-                padding: 8px;
+                grid-template-columns: 1.5fr 1.5fr 1fr auto; 
+                gap: 6px; 
+                padding: 0;
+                background: transparent;
             }
             .fitment-item input { 
-                padding: 6px 4px;
-                font-size: 10px;
+                padding: 10px 8px;
+                font-size: 12px;
+                border-radius: 6px;
             }
             .fitment-item button { 
-                padding: 6px 8px;
+                padding: 10px 8px;
+                border-radius: 6px;
             }
             .fitment-header { 
-                font-size: 8px;
-                padding: 0 4px;
+                font-size: 9px;
+                padding: 0;
             }
         }
         
