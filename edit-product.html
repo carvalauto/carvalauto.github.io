@@ -42,16 +42,32 @@
         .btn-remove { padding: 4px 8px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
         .btn-add-image { padding: 8px; background: rgba(46,204,113,0.1); color: #7dcea0; border: 1px dashed #7dcea0; border-radius: 5px; cursor: pointer; font-size: 11px; text-align: center; }
         
-        /* 车型编辑器 */
-        .fitment-list { display: flex; flex-direction: column; gap: 10px; }
-        .fitment-item { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 8px; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; }
-        .fitment-item input { padding: 8px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-size: 11px; }
-        .fitment-item input:focus { outline: none; border-color: var(--primary); }
-        .fitment-item button { padding: 8px 10px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
-        
-        .fitment-header { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 8px; margin-bottom: 8px; font-size: 10px; color: var(--text-muted); text-transform: uppercase; padding: 0 4px; }
-        
-        .add-fitment-btn { width: 100%; padding: 10px; background: rgba(46,204,113,0.1); color: #7dcea0; border: 1px dashed #7dcea0; border-radius: 6px; cursor: pointer; font-size: 11px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        /* 精准车型显示 */
+        .fitment-display { 
+            padding: 12px; 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid var(--border); 
+            border-radius: 6px; 
+            color: var(--text); 
+            font-size: 13px;
+            min-height: 48px;
+            word-wrap: break-word;
+        }
+        .fitment-display .fitment-brand {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(230,57,70,0.2);
+            color: #ff6b7a;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin: 2px;
+            text-transform: uppercase;
+        }
+        .fitment-display .no-fitment {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
         
         /* 底部操作栏 */
         .bottom-actions { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 12px; z-index: 100; }
@@ -87,8 +103,6 @@
         /* 响应式适配 */
         @media (min-width: 600px) {
             .page { padding: 24px; }
-            .fitment-item { grid-template-columns: 1fr 1fr 1fr 1fr auto; }
-            .fitment-header { grid-template-columns: 1fr 1fr 1fr 1fr auto; }
         }
         
         @media (min-width: 1024px) {
@@ -123,15 +137,8 @@
                     <input type="text" id="editTitle" placeholder="输入商品名称...">
                 </div>
                 <div class="form-group">
-                    <label>商品分类</label>
-                    <select id="editCategory">
-                        <option value="japanese">日系 Japanese</option>
-                        <option value="korean">韩系 Korean</option>
-                        <option value="german">德系 German</option>
-                        <option value="chinese">国产 Chinese</option>
-                        <option value="oil">机油 Engine Oil</option>
-                        <option value="other">其他 Other</option>
-                    </select>
+                    <label>精准车型（只读）</label>
+                    <div id="fitmentDisplay" class="fitment-display"></div>
                 </div>
                 <div class="form-group">
                     <label>OEM 编码</label>
@@ -147,23 +154,6 @@
                 <div id="imagesEditor" class="images-editor"></div>
                 <button class="add-image-btn" id="addImageBtn">
                     <i class="fas fa-plus"></i> 添加图片
-                </button>
-            </div>
-            
-            <!-- 适用车型 -->
-            <div class="edit-section">
-                <div class="section-title">
-                    <i class="fas fa-car"></i> 适用车型
-                </div>
-                <div class="fitment-header">
-                    <span>品牌</span>
-                    <span>型号</span>
-                    <span>年份</span>
-                    <span>操作</span>
-                </div>
-                <div id="fitmentList" class="fitment-list"></div>
-                <button class="add-fitment-btn" onclick="addNewFitment()">
-                    <i class="fas fa-plus"></i> 添加车型
                 </button>
             </div>
         </div>
@@ -240,14 +230,13 @@
             
             // 填充表单
             document.getElementById('editTitle').value = productData.name || productData.title || '';
-            document.getElementById('editCategory').value = (productData.category || 'other').toLowerCase();
             document.getElementById('editOem').value = productData.oem || productData.oemCode || '';
+            
+            // 渲染精准车型
+            renderFitmentDisplay();
             
             // 渲染图片
             renderImages();
-            
-            // 渲染车型
-            renderFitments();
             
             // 显示编辑内容
             document.getElementById('loading').style.display = 'none';
@@ -256,6 +245,31 @@
         } catch(e) {
             document.getElementById('loading').innerHTML = '<i class="fas fa-exclamation-circle"></i><p>' + e.message + '</p>';
             showToast(e.message, true);
+        }
+    }
+    
+    // 渲染精准车型（只读）
+    function renderFitmentDisplay() {
+        var display = document.getElementById('fitmentDisplay');
+        var fitmentTable = productData.fitmentTable || [];
+        
+        if (fitmentTable && fitmentTable.length > 0) {
+            var brands = {};
+            fitmentTable.forEach(function(item) {
+                if (item.make) brands[item.make.toUpperCase()] = true;
+            });
+            var brandList = Object.keys(brands);
+            
+            if (brandList.length > 0) {
+                var html = brandList.map(function(brand) {
+                    return '<span class="fitment-brand">' + brand + '</span>';
+                }).join('');
+                display.innerHTML = html;
+            } else {
+                display.innerHTML = '<span class="no-fitment">暂无车型数据</span>';
+            }
+        } else {
+            display.innerHTML = '<span class="no-fitment">暂无车型数据</span>';
         }
     }
     
@@ -304,42 +318,6 @@
         document.getElementById('lightboxCount').textContent = (currentLightboxIndex + 1) + ' / ' + lightboxImages.length;
     }
     
-    // 渲染车型
-    function renderFitments() {
-        var fitments = productData.fitmentTable || [];
-        var list = document.getElementById('fitmentList');
-        
-        if (fitments.length === 0) {
-            list.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-muted);">暂无适用车型</div>';
-            return;
-        }
-        
-        list.innerHTML = fitments.map(function(item, index) {
-            return '<div class="fitment-item">' +
-                '<input type="text" value="' + (item.make || item.brand || '') + '" placeholder="品牌">' +
-                '<input type="text" value="' + (item.model || '') + '" placeholder="型号">' +
-                '<input type="text" value="' + (item.year || '') + '" placeholder="年份">' +
-                '<button onclick="removeFitment(' + index + ')"><i class="fas fa-trash"></i></button>' +
-            '</div>';
-        }).join('');
-    }
-    
-    // 添加新车型
-    function addNewFitment() {
-        if (!productData.fitmentTable) {
-            productData.fitmentTable = [];
-        }
-        productData.fitmentTable.push({ make: '', model: '', year: '' });
-        renderFitments();
-    }
-    
-    // 删除车型
-    function removeFitment(index) {
-        if (!confirm('确定删除这个车型吗？')) return;
-        productData.fitmentTable.splice(index, 1);
-        renderFitments();
-    }
-    
     // 返回
     function goBack() {
         window.location.href = 'admin.html';
@@ -355,7 +333,6 @@
         if (saveBtn) saveBtn.disabled = true;
         
         var title = document.getElementById('editTitle').value.trim();
-        var category = document.getElementById('editCategory').value;
         var oem = document.getElementById('editOem').value.trim();
         var imageInputs = document.querySelectorAll('.image-item .image-url');
         var images = Array.prototype.slice.call(imageInputs).map(function(i) { return i.value.trim(); }).filter(Boolean);
@@ -383,30 +360,15 @@
                 throw new Error('未找到该商品');
             }
             
-            // 更新产品信息
+            // 更新产品信息（不修改分类，保持原始采集的分类）
             if (title) { 
                 products[index].name = title; 
                 products[index].title = title; 
             }
-            products[index].category = category;
             products[index].oem = oem;
             products[index].oemCode = oem;
             products[index].image = imageStr;
             products[index].images = images;
-            
-            // 收集车型数据
-            var fitmentItems = document.querySelectorAll('.fitment-item');
-            var fitments = [];
-            fitmentItems.forEach(function(item) {
-                var inputs = item.querySelectorAll('input');
-                var make = inputs[0].value.trim();
-                var model = inputs[1].value.trim();
-                var year = inputs[2].value.trim();
-                if (make || model || year) {
-                    fitments.push({ make: make, model: model, year: year });
-                }
-            });
-            products[index].fitmentTable = fitments;
             
             // 生成OSS签名
             var jsonData = JSON.stringify(products, null, 2);
