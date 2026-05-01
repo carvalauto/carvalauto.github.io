@@ -42,14 +42,45 @@
         .btn-remove { padding: 4px 8px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
         .btn-add-image { padding: 8px; background: rgba(46,204,113,0.1); color: #7dcea0; border: 1px dashed #7dcea0; border-radius: 5px; cursor: pointer; font-size: 11px; text-align: center; }
         
-        /* 车型编辑器 */
+        /* 车型编辑器 - 对齐输入框样式 */
         .fitment-list { display: flex; flex-direction: column; gap: 10px; }
-        .fitment-item { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 8px; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; }
-        .fitment-item input { padding: 8px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-size: 11px; }
+        .fitment-item { 
+            display: grid; 
+            grid-template-columns: 1.5fr 1.5fr 1fr auto; 
+            gap: 8px; 
+            align-items: center;
+            padding: 0;
+            background: transparent;
+        }
+        .fitment-item input { 
+            padding: 12px; 
+            background: var(--bg-dark); 
+            border: 1px solid var(--border); 
+            border-radius: 6px; 
+            color: var(--text); 
+            font-size: 14px;
+        }
         .fitment-item input:focus { outline: none; border-color: var(--primary); }
-        .fitment-item button { padding: 8px 10px; background: rgba(230,57,70,0.2); color: #ff6b7a; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; }
+        .fitment-item button { 
+            padding: 12px 10px; 
+            background: rgba(230,57,70,0.2); 
+            color: #ff6b7a; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 12px;
+        }
         
-        .fitment-header { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 8px; margin-bottom: 8px; font-size: 10px; color: var(--text-muted); text-transform: uppercase; padding: 0 4px; }
+        .fitment-header { 
+            display: grid; 
+            grid-template-columns: 1.5fr 1.5fr 1fr auto; 
+            gap: 8px; 
+            margin-bottom: 8px; 
+            font-size: 10px; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            padding: 0 4px; 
+        }
         
         .add-fitment-btn { width: 100%; padding: 10px; background: rgba(46,204,113,0.1); color: #7dcea0; border: 1px dashed #7dcea0; border-radius: 6px; cursor: pointer; font-size: 11px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; }
         
