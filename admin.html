@@ -952,44 +952,23 @@
         document.getElementById('editModal').classList.remove('show');
     }
     
-    async function loadProducts() {
+    function loadProducts() {
         var c = document.getElementById('productList');
+        c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         
-        // 1. 立即显示本地缓存
-        var cached = localStorage.getItem('cached_products');
-        var hasCache = false;
-        
-        if (cached) {
-            try {
-                var cachedData = JSON.parse(cached);
-                if (cachedData.data && cachedData.data.length > 0) {
-                    allProducts = cachedData.data;
-                    currentProductPage = 1;
-                    renderProducts();
-                    hasCache = true;
-                    console.log('[缓存] 显示', allProducts.length, '条');
-                }
-            } catch(e) {}
-        }
-        
-        if (!hasCache) {
-            c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
-        }
-        
-        // 2. 直接从OSS加载最新数据
-        try {
-            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now(), {cache: 'no-store'});
-            if (!r.ok) throw new Error('OSS请求失败');
-            
-            var newData = await r.json();
-            allProducts = newData;
-            currentProductPage = 1;
-            renderProducts();
-            localStorage.setItem('cached_products', JSON.stringify({data: newData, time: Date.now()}));
-            console.log('[OSS] 加载完成', allProducts.length, '条');
-        } catch(e) {
-            console.error('[OSS] 加载失败:', e);
-        }
+        fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now())
+            .then(function(r) { 
+                if (!r.ok) throw new Error('请求失败');
+                return r.json(); 
+            })
+            .then(function(data) {
+                allProducts = data;
+                currentProductPage = 1;
+                renderProducts();
+            })
+            .catch(function(e) {
+                c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle"></i><p>加载失败: ' + e.message + '</p></div>';
+            });
     }
     
     function renderProducts() {
