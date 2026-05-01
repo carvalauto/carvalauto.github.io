@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carval Auto - 后台管理</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.18.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js">
+    
+    // 页面加载后直接调用
+    loadProducts();
+</script>
+    <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.18.0.min.js">
+    
+    // 页面加载后直接调用
+    loadProducts();
+</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -150,7 +158,11 @@
             .charts-grid { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
-    <script src="realtime-update.js"></script>
+    <script src="realtime-update.js">
+    
+    // 页面加载后直接调用
+    loadProducts();
+</script>
     <script>
     // ===== 实时刷新系统 - version.json 监控 =====
     var currentVersion = null;
@@ -294,7 +306,11 @@
     } else {
         startRealtimeMonitor();
     }
-    </script>
+    
+    
+    // 页面加载后直接调用
+    loadProducts();
+</script>
 </head>
 <body>
     <div id="updateBanner" class="update-banner">
@@ -474,8 +490,16 @@
         </div>
     </div>
     
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://apis.google.com/js/api.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer>
+    
+    // 页面加载后直接调用
+    loadProducts();
+</script>
+    <script src="https://apis.google.com/js/api.js" async defer>
+    
+    // 页面加载后直接调用
+    loadProducts();
+</script>
     <script>
     // ===== 数据同步通知系统 v2 =====
     var dataSyncChannel = null;
@@ -1759,8 +1783,10 @@
             showToast('删除失败: ' + e.message, true);
         }
     }
-    </script>
+    
+    
+    // 页面加载后直接调用
+    loadProducts();
+</script>
 </body>
 </html>
-
-    // 页面加载后直接调用
