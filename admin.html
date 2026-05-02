@@ -294,10 +294,8 @@
 
     // 启动实时监控（每5秒）
     function startRealtimeMonitor() {
-        initVersion();
-        if (realtimeInterval) clearInterval(realtimeInterval);
-        realtimeInterval = setInterval(checkVersion, 5000);
-        console.log('[Realtime] 实时监控已启动（5秒间隔）');
+        // 实时监控已禁用
+        console.log('[Realtime] 实时监控已禁用');
     }
     
     // 页面加载完成后启动监控
@@ -1242,11 +1240,7 @@
             
             showToast('保存成功！', false);
             closeEditModal();
-            
-            // 同步当前版本号，防止 realtime-update.js 触发刷新
-            if (typeof window.realtimeVersion !== 'undefined' && window.realtimeVersion) {
-                window.realtimeVersion = Date.now();
-            }
+            // 实时监控已禁用
             
             // 只更新当前页面上被编辑的那个卡片，不重新渲染所有卡片
             var editId = String(editingProductId);
