@@ -1110,7 +1110,7 @@
                 html += '<span class="page-info">...</span>';
             }
         }
-        html += '<button class="page-btn" onclick="goToProductPage(' + (currentProductPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>下一页 &raquo;</button>';
+        html += '<button class="page-btn" onclick="goToProductPage(' + (currentProductPage + 1) + ')" ' + (currentProductPage === totalPages ? 'disabled' : '') + '>下一页 &raquo;</button>';
         var tp = totalPages;
         html += '<input type="number" id="jumpPageInput" min="1" max="' + tp + '" placeholder="页码" onkeypress="if(event.key===' + "'Enter'" + '){var p=parseInt(this.value);if(p>=1&&p<=' + tp + '){goToProductPage(p);this.value=' + "''" + ';}else{alert(' + "'请输入1-' + tp + '之间的页码'" + ');}}" style="width:55px;padding:5px 8px;border:1px solid #ddd;border-radius:20px;font-size:12px;text-align:center;outline:none;margin-left:10px;">';
         html += '<button class="page-btn" onclick="var p=parseInt(document.getElementById(' + "'jumpPageInput'" + ').value);var tp=' + tp + ';if(p>=1&&p<=tp){goToProductPage(p);document.getElementById(' + "'jumpPageInput'" + ').value=' + "''" + ';}else{alert(' + "'请输入1-' + tp + '之间的页码'" + ');}" style="padding:5px 10px;cursor:pointer;">跳转</button>';
