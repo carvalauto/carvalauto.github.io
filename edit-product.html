@@ -409,7 +409,7 @@
     }
     
     // 返回
-    function goBack() {
+    function goBack() { var p = new URLSearchParams(window.location.search).get("page"); window.location.href = p ? "admin.html?page=" + p : "admin.html"; } function goBackDUMMY() {
         // 返回上一页（保留页码）
         if (window.history.length > 1) {
             window.history.back();
@@ -422,7 +422,7 @@
         } else if (window.history.length > 1) {
             window.history.back();
         } else {
-            window.location.href = 'admin.html';
+            var p = new URLSearchParams(window.location.search).get('page'); window.location.href = p ? 'admin.html?page=' + p : 'admin.html';
         }
         }
     }
@@ -523,7 +523,7 @@
         } else if (window.history.length > 1) {
             window.history.back();
         } else {
-            window.location.href = 'admin.html';
+            var p = new URLSearchParams(window.location.search).get('page'); window.location.href = p ? 'admin.html?page=' + p : 'admin.html';
         }
             }, 1000);
             
