@@ -987,7 +987,9 @@
             })
             .then(function(data) {
                 allProducts = data;
-                currentProductPage = 1;
+                // 保持当前页码，只在页码超出范围时才重置
+                var totalPages = Math.ceil(data.length / productsPerPage);
+                if (currentProductPage > totalPages) currentProductPage = 1;
                 renderProducts();
             })
             .catch(function(e) {
