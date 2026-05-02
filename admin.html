@@ -540,7 +540,10 @@
     
     var allProducts = [], allInquiries = [], accessToken = null, deleteTarget = null;
     var editingProductId = null;
-    var currentProductPage = 1;
+    // 从URL参数读取页码
+    var urlParams = new URLSearchParams(window.location.search);
+    var initialPage = urlParams.get('page');
+    var currentProductPage = initialPage ? parseInt(initialPage) : 1;
     var productsPerPage = 20;
     var currentCategoryFilter = 'all';
     var isSubmitting = false;
