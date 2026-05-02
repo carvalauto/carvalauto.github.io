@@ -1110,9 +1110,10 @@
                 html += '<span class="page-info">...</span>';
             }
         }
-        html += '<button class="page-btn" onclick="goToProductPage(' + (currentProductPage + 1) + ')" ' + (currentProductPage === totalPages ? 'disabled' : '') + '>下一页 &raquo;</button>';
-        html += '<input type="number" id="jumpPageInput" min="1" max="' + totalPages + '" placeholder="页码" onkeypress="if(event.key===' + "'Enter'" + ')jumpToProductPage()" style="width:55px;padding:5px 8px;border:1px solid #ddd;border-radius:20px;font-size:12px;text-align:center;outline:none;margin-left:10px;">';
-        html += '<button class="page-btn" onclick="jumpToProductPage()" style="padding:5px 10px;">跳转</button>';
+        html += '<button class="page-btn" onclick="goToProductPage(' + (currentProductPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>下一页 &raquo;</button>';
+        var tp = totalPages;
+        html += '<input type="number" id="jumpPageInput" min="1" max="' + tp + '" placeholder="页码" onkeypress="if(event.key===' + "'Enter'" + '){var p=parseInt(this.value);if(p>=1&&p<=' + tp + '){goToProductPage(p);this.value=' + "''" + ';}else{alert(' + "'请输入1-' + tp + '之间的页码'" + ');}}" style="width:55px;padding:5px 8px;border:1px solid #ddd;border-radius:20px;font-size:12px;text-align:center;outline:none;margin-left:10px;">';
+        html += '<button class="page-btn" onclick="var p=parseInt(document.getElementById(' + "'jumpPageInput'" + ').value);var tp=' + tp + ';if(p>=1&&p<=tp){goToProductPage(p);document.getElementById(' + "'jumpPageInput'" + ').value=' + "''" + ';}else{alert(' + "'请输入1-' + tp + '之间的页码'" + ');}" style="padding:5px 10px;cursor:pointer;">跳转</button>';
         var startItem = (currentProductPage - 1) * productsPerPage + 1;
         var endItem = Math.min(currentProductPage * productsPerPage, totalItems);
         html += '<span class="page-info">' + startItem + '-' + endItem + ' / ' + totalItems + '</span>';
@@ -1120,7 +1121,6 @@
     }
     
     function goToProductPage(page) { currentProductPage = page; renderProducts(); document.getElementById('productList').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    function jumpToProductPage() { var input = document.getElementById('jumpPageInput'); var page = parseInt(input.value); var totalPages = Math.ceil(productsData.length / productsPerPage); if (page && page >= 1 && page <= totalPages) { goToProductPage(page); input.value = ''; } else { alert('请输入1-' + totalPages + '之间的页码'); } }
     function searchProducts() { currentProductPage = 1; renderProducts(); }
     
     function openEditModalById(id) {
