@@ -410,7 +410,17 @@
     
     // 返回
     function goBack() {
-        window.location.href = 'admin.html';
+        // 返回上一页（保留页码）
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            // 返回上一页（保留页码）
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = 'admin.html';
+        }
+        }
     }
     
     // 保存（使用和 admin.html 完全相同的逻辑）
@@ -501,7 +511,12 @@
             showToast('保存成功！', false);
             
             setTimeout(function() {
-                window.location.href = 'admin.html';
+                // 返回上一页（保留页码）
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = 'admin.html';
+        }
             }, 1000);
             
         } catch (error) {
