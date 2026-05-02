@@ -414,8 +414,12 @@
         if (window.history.length > 1) {
             window.history.back();
         } else {
-            // 返回上一页（保留页码）
-        if (window.history.length > 1) {
+            // 返回时带上页码
+        var urlParams = new URLSearchParams(window.location.search);
+        var page = urlParams.get('page');
+        if (page) {
+            window.location.href = 'admin.html?page=' + page;
+        } else if (window.history.length > 1) {
             window.history.back();
         } else {
             window.location.href = 'admin.html';
@@ -511,8 +515,12 @@
             showToast('保存成功！', false);
             
             setTimeout(function() {
-                // 返回上一页（保留页码）
-        if (window.history.length > 1) {
+                // 返回时带上页码
+        var urlParams = new URLSearchParams(window.location.search);
+        var page = urlParams.get('page');
+        if (page) {
+            window.location.href = 'admin.html?page=' + page;
+        } else if (window.history.length > 1) {
             window.history.back();
         } else {
             window.location.href = 'admin.html';
