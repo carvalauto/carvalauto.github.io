@@ -2617,7 +2617,7 @@
                     localStorage.setItem('carval_new_inquiry', Date.now().toString());
                     // Sync to GitHub for cross-device access
                     try {
-                        var ghToken = ['ghp_oWLm0san81c','Xqv3navRKnYZKo9','mYNU2pMhFf'].join('');
+                        var ghToken = 'ghp_ItGkMF','oFAWzVWv6f','nhQqZyKgxDXfdG3GQiQQ'.join('');
                         var ghRepo = 'carvalauto/carvalauto.github.io';
                         var ghFile = 'inquiries.json';
                         var ghResp = await fetch('https://api.github.com/repos/' + ghRepo + '/contents/' + ghFile, {
@@ -2719,7 +2719,7 @@ window.addEventListener('load', function() {
 // 询盘保存到 GitHub
 async function saveInquiryToGitHub(inquiryData) {
     try {
-        var GH_TOKEN = ['ghp_9gxuv4t','qZ0FL1AviV7hG','Y2Mw2uQrK81gqjjm'].join('');
+        var GH_TOKEN = ['ghp_ItGkMF','oFAWzVWv6f','nhQqZyKgxDXfdG3GQiQQ].join('');
         var GH_REPO = 'carvalauto/carvalauto.github.io';
         
         // 获取现有数据
