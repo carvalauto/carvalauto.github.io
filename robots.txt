@@ -1,6 +1,22 @@
 User-agent: *
 Allow: /
+Allow: /products/
+Allow: /products/
 
+# 重要页面优先抓取
 Sitemap: https://carvalautopart.com/sitemap.xml
 
-Disallow: /admin/
+# 后台管理页面禁止抓取
+Disallow: /admin
+Disallow: /edit-product
+Disallow: /test
+Disallow: /collector/
+Disallow: /data/
+Disallow: /.github/
+Disallow: /*.json$
+Disallow: /*.py$
+Disallow: /*.js$
+Disallow: /alibaba-plugin
+Disallow: /admin-*.html
+Disallow: /admin_*.html
+Disallow: /admin*.html
