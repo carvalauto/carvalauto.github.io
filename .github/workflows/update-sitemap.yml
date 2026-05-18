@@ -6,8 +6,7 @@ on:
       - main
     paths:
       - 'products.json'
-      - 'products/**'
-      - 'sitemap.xml'
+      - 'products/ **'
   schedule:
     - cron: '0 */6 * * *'
   workflow_dispatch:
@@ -21,100 +20,16 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Download products from OSS
-        run: |
-          curl -sL "https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json" -o products.json
+        run: curl -sL "https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json" -o products.json
           
       - name: Generate sitemap
-        run: |
-          python3 << 'PYEOF'
-import json
-from datetime import datetime
+        run: python3 generate_sitemap.py
 
-with open('products.json', 'r') as f:
-    products = json.load(f)
-
-today = datetime.now().strftime('%Y-%m-%d')
-
-lines = [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    '  <url>',
-    '    <loc>https://carvalautopart.com/</loc>',
-    f'    <lastmod>{today}</lastmod>',
-    '    <changefreq>daily</changefreq>',
-    '    <priority>1.0</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://carvalautopart.com/products.html</loc>',
-    f'    <lastmod>{today}</lastmod>',
-    '    <changefreq>daily</changefreq>',
-    '    <priority>0.9</priority>',
-    '  </url>',
-]
-
-for i, p in enumerate(products):
-    pid = p.get('id', str(i + 1))
-    lines.append('  <url>')
-    lines.append(f'    <loc>https://carvalautopart.com/products/{pid}.html</loc>')
-    lines.append(f'    <lastmod>{today}</lastmod>')
-    lines.append('    <changefreq>weekly</changefreq>')
-    lines.append('    <priority>0.8</priority>')
-    lines.append('  </url>')
-
-lines.append('</urlset>')
-
-with open('sitemap.xml', 'w') as f:
-    f.write('\n'.join(lines))
-
-print(f"生成完成! {len(products)} 个产品")
-PYEOF
-          
       - name: Update sitemap on GitHub
-        run: |
-          python3 << 'PYEOF'
-import json
-import base64
-import os
-import urllib.request
-
-TOKEN = os.environ['GITHUB_TOKEN']
-REPO = os.environ['GITHUB_REPOSITORY']
-BASE_URL = f'https://api.github.com/repos/{REPO}'
-
-with open('sitemap.xml', 'r') as f:
-    sitemap = f.read()
-
-req = urllib.request.Request(
-    f'{BASE_URL}/contents/sitemap.xml',
-    headers={'Authorization': f'token {TOKEN}'}
-)
-sha = None
-try:
-    with urllib.request.urlopen(req) as resp:
-        sha = json.loads(resp.read()).get('sha')
-except:
-    pass
-
-data = {
-    'message': 'Auto-update sitemap.xml',
-    'content': base64.b64encode(sitemap.encode()).decode(),
-    'branch': 'main'
-}
-if sha:
-    data['sha'] = sha
-
-req = urllib.request.Request(
-    f'{BASE_URL}/contents/sitemap.xml',
-    data=json.dumps(data).encode(),
-    headers={'Authorization': f'token {TOKEN}'},
-    method='PUT'
-)
-
-with urllib.request.urlopen(req) as resp:
-    result = json.loads(resp.read())
-    if 'commit' in result:
-        print('✅ sitemap.xml 更新成功!')
-PYEOF
+        run: python3 update_github.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
 
       - name: Send IndexNow
         run: |
