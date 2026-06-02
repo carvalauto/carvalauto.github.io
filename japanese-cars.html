@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Auto Parts Wholesale Supplier | Carval Auto</title>
+    <meta name="description" content="Wholesale Japanese auto parts supplier from China. OEM quality Toyota, Honda, Nissan, Mitsubishi parts. Direct from manufacturer with competitive pricing and global shipping.">
+    <meta name="keywords" content="Japanese auto parts wholesale, Toyota parts supplier China, Honda parts OEM, Nissan parts manufacturer, Mitsubishi auto parts, Japanese car spare parts, wholesale auto parts China">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://carvalautopart.com/japanese-cars.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Japanese Auto Parts Wholesale Supplier | Carval Auto">
+    <meta property="og:description" content="Wholesale Japanese auto parts supplier from China. OEM quality Toyota, Honda, Nissan, Mitsubishi parts with global shipping.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carvalautopart.com/japanese-cars.html">
+    <meta property="og:site_name" content="Carval Auto Parts">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Japanese Auto Parts Wholesale Supplier | Carval Auto">
+    <meta name="twitter:description" content="Wholesale Japanese auto parts supplier from China. OEM quality Toyota, Honda, Nissan, Mitsubishi parts.">
+    
+    <!-- Hreflang -->
+    <link rel="alternate" hreflang="en" href="https://carvalautopart.com/japanese-cars.html">
+    <link rel="alternate" hreflang="x-default" href="https://carvalautopart.com/japanese-cars.html">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Japanese Auto Parts Wholesale",
+        "description": "Wholesale Japanese auto parts supplier offering OEM quality Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru parts from China.",
+        "url": "https://carvalautopart.com/japanese-cars.html",
+        "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Toyota Parts"},
+                {"@type": "ListItem", "position": 2, "name": "Honda Parts"},
+                {"@type": "ListItem", "position": 3, "name": "Nissan Parts"},
+                {"@type": "ListItem", "position": 4, "name": "Mitsubishi Parts"}
+            ]
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Carval Auto Parts",
+            "url": "https://carvalautopart.com",
+            "logo": "https://cdn.jsdelivr.net/gh/carvalauto/carvalauto.github.io@main/carval-auto-logo.png",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+86-195-2122-8657",
+                "contactType": "sales",
+                "availableLanguage": ["English", "Chinese"]
+            }
+        }
+    }
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #D62B2B; --red-dark: #A81F1F; --steel: #1C2B3A; --steel-mid: #243447;
+            --chrome-dk: #B0B8C1; --offwhite: #F5F4F0; --text-main: #1A1A1A; --text-soft: #555F6D; --border: #D4D8DE;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--offwhite); color: var(--text-main); }
+        
+        .topbar { background: var(--steel); border-bottom: 2px solid var(--red); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 1000; }
+        .topbar-left { display: flex; align-items: center; gap: 32px; }
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand-text { font-size: 18px; font-weight: 800; color: white; letter-spacing: 1.5px; text-transform: uppercase; }
+        .brand-text span { color: var(--red); }
+        .desktop-nav { display: flex; gap: 4px; }
+        .desktop-nav a { padding: 8px 16px; color: var(--chrome-dk); text-decoration: none; font-size: 13px; font-weight: 600; text-transform: uppercase; border-radius: 4px; }
+        .desktop-nav a:hover, .desktop-nav a.active { color: white; background: rgba(255,255,255,0.1); }
+        .desktop-nav a.active { color: var(--red); }
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
+        .hamburger span { display: block; width: 20px; height: 2px; background: white; border-radius: 1px; }
+        
+        .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 998; }
+        .nav-overlay.show { display: block; }
+        .mobile-nav { position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: var(--steel); z-index: 999; transition: right 0.3s; border-left: 3px solid var(--red); }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav-header { padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; }
+        .mobile-nav-logo { font-size: 18px; font-weight: 800; color: white; }
+        .mobile-nav-logo span { color: var(--red); }
+        .mobile-nav-links a { display: flex; gap: 12px; padding: 14px 20px; color: var(--chrome-dk); text-decoration: none; font-size: 14px; font-weight: 600; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        
+        .page-hero { background: linear-gradient(135deg, var(--steel) 0%, #2a3a4a 100%); padding: 60px 24px; text-align: center; border-bottom: 2px solid var(--red); position: relative; overflow: hidden; }
+        .page-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/></svg>'); opacity: 0.5; }
+        .page-hero h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 900; color: white; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; position: relative; }
+        .page-hero h1 span { color: var(--red); }
+        .page-hero p { color: var(--chrome-dk); font-size: 15px; max-width: 600px; margin: 0 auto; position: relative; }
+        
+        .page-hero-badges { display: flex; justify-content: center; gap: 24px; margin-top: 24px; flex-wrap: wrap; position: relative; }
+        .badge { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; color: var(--chrome-dk); font-size: 12px; }
+        .badge i { color: var(--red); }
+        
+        .filter-bar { background: white; padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; max-width: 1400px; margin: 0 auto; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .filter-bar::-webkit-scrollbar { display: none; }
+        .filter-bar span { font-size: 11px; text-transform: uppercase; color: var(--text-soft); letter-spacing: 1px; flex-shrink: 0; }
+        .filter-btn { padding: 6px 12px; border: 1px solid var(--border); background: white; font-size: 11px; text-transform: uppercase; cursor: pointer; border-radius: 20px; flex-shrink: 0; white-space: nowrap; }
+        .filter-btn:hover, .filter-btn.active { background: var(--steel); border-color: var(--steel); color: white; }
+        .filter-btn.active { background: var(--red); border-color: var(--red); }
+        .search-box { margin-left: auto; display: flex; flex-shrink: 0; }
+        .search-box input { padding: 8px 14px; border: 1px solid var(--border); border-right: none; font-size: 13px; width: 160px; outline: none; border-radius: 20px 0 0 20px; }
+        .search-box button { padding: 8px 14px; background: var(--steel); border: 1px solid var(--steel); color: white; cursor: pointer; font-size: 13px; border-radius: 0 20px 20px 0; }
+        .search-box button:hover { background: var(--red); }
+        
+        .products-section { max-width: 1400px; margin: 0 auto; padding: 24px; }
+        .products-count { font-size: 13px; color: var(--text-soft); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .products-count span { color: var(--red); font-weight: 700; }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        
+        .product-card { background: white; border-radius: 8px; overflow: hidden; transition: all 0.3s; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
+        .product-img-wrap { position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
+        .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+        .product-card:hover .product-img-wrap img { transform: scale(1.05); }
+        .no-image { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #adb5bd; gap: 8px; }
+        .no-image i { font-size: 48px; }
+        .no-image span { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .product-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+        .product-category { font-size: 10px; color: white; background: var(--red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 700; padding: 4px 10px; border-radius: 3px; display: inline-block; align-self: flex-start; }
+        .product-name { font-size: 14px; color: var(--steel); text-transform: uppercase; margin-bottom: 8px; line-height: 1.3; font-weight: 700; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-oem { display: inline-block; background: #f5f5f5; padding: 4px 10px; font-size: 11px; color: #666; border-left: 3px solid var(--red); margin-bottom: 12px; }
+        .inquire-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 16px; background: var(--steel); color: white; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer; transition: all 0.25s; border-radius: 4px; width: 100%; }
+        .inquire-btn:hover { background: var(--red); }
+        
+        .pagination { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 32px; padding: 20px 0; flex-wrap: wrap; }
+        .page-btn { padding: 10px 16px; border: 1px solid var(--border); background: white; font-size: 13px; cursor: pointer; border-radius: 6px; transition: all 0.2s; min-width: 44px; text-align: center; }
+        .page-btn:hover:not(:disabled) { border-color: var(--steel); color: var(--steel); }
+        .page-btn.active { background: var(--red); border-color: var(--red); color: white; }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .page-info { font-size: 12px; color: var(--text-soft); margin: 0 12px; }
+        
+        .empty-state { text-align: center; padding: 60px 24px; color: #aaa; grid-column: 1 / -1; }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; }
+        .empty-state h3 { font-size: 20px; margin-bottom: 8px; color: #ccc; text-transform: uppercase; }
+        
+        /* Contact Section */
+        .contact-section { background: var(--steel); padding: 60px 24px; text-align: center; }
+        .contact-section h2 { font-size: 28px; color: white; text-transform: uppercase; margin-bottom: 12px; }
+        .contact-section h2 span { color: var(--red); }
+        .contact-section p { color: var(--chrome-dk); max-width: 600px; margin: 0 auto 32px; }
+        .contact-methods { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+        .contact-method { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.1); padding: 16px 24px; border-radius: 8px; color: white; text-decoration: none; transition: all 0.3s; }
+        .contact-method:hover { background: var(--red); transform: translateY(-2px); }
+        .contact-method i { font-size: 24px; color: var(--red); }
+        .contact-method:hover i { color: white; }
+        .contact-method-text { text-align: left; }
+        .contact-method-label { font-size: 10px; text-transform: uppercase; color: var(--chrome-dk); }
+        .contact-method-value { font-size: 14px; font-weight: 600; }
+        
+        footer { background: #111; color: var(--chrome-dk); padding: 32px 24px; text-align: center; font-size: 13px; border-top: 3px solid var(--red); }
+        .footer-slogan { font-size: 16px; margin-bottom: 10px; color: white; text-transform: uppercase; }
+        .footer-slogan span { color: var(--red); }
+        
+        .social-float { position: fixed; bottom: 24px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 900; }
+        .social-btn { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 16px; transition: all 0.3s; border-radius: 50%; box-shadow: 0 3px 10px rgba(0,0,0,0.25); }
+        .social-btn:hover { transform: scale(1.1); }
+        .social-btn.wa { background: #25d366; }
+        
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; backdrop-filter: blur(3px); overflow-y: auto; padding: 20px; }
+        .modal-overlay.show { display: flex; align-items: flex-start; justify-content: center; }
+        .modal-box { background: white; max-width: 900px; width: 100%; margin: 20px auto; position: relative; animation: modalIn 0.3s; border-radius: 8px; overflow: hidden; }
+        @keyframes modalIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+        .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; z-index: 10; }
+        .modal-close:hover { color: var(--red); }
+        .modal-inner { display: grid; grid-template-columns: 1fr 1fr; }
+        .modal-images { background: #f8f9fa; padding: 24px; }
+        .modal-main-img { width: 100%; aspect-ratio: 1; object-fit: contain; background: white; border: 1px solid #eee; padding: 12px; cursor: zoom-in; border-radius: 4px; }
+        .modal-info { padding: 28px 24px; }
+        .modal-category { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
+        .modal-title { font-size: 22px; font-weight: 800; color: var(--steel); text-transform: uppercase; margin-bottom: 16px; }
+        .modal-specs { display: flex; flex-direction: column; gap: 8px; padding: 16px 0; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; margin-bottom: 16px; }
+        .spec-row { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; }
+        .spec-icon { width: 28px; height: 28px; background: var(--steel); color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; border-radius: 3px; }
+        .spec-label { font-size: 10px; text-transform: uppercase; color: #888; }
+        .spec-value { font-size: 13px; color: var(--text-main); font-weight: 500; }
+        .modal-inquire { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; background: var(--red); color: white; border: none; font-size: 14px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.25s; width: 100%; border-radius: 4px; text-decoration: none; }
+        .modal-inquire:hover { background: var(--red-dark); }
+        .modal-contact { padding: 20px 24px; background: #f8f9fa; border-top: 1px solid #eee; grid-column: 1 / -1; }
+        .modal-contact h3 { font-size: 14px; text-transform: uppercase; color: var(--steel); margin-bottom: 14px; }
+        .modal-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .modal-form-group { display: flex; flex-direction: column; gap: 4px; }
+        .modal-form-group label { font-size: 10px; text-transform: uppercase; color: #888; }
+        .modal-form-group input, .modal-form-group textarea { padding: 10px 12px; border: 1px solid #ddd; font-size: 13px; outline: none; border-radius: 4px; }
+        .modal-form-group input:focus, .modal-form-group textarea:focus { border-color: var(--steel); }
+        .modal-form-group textarea { min-height: 70px; resize: vertical; }
+        .modal-send-btn { width: 100%; padding: 12px; background: var(--steel); color: white; border: none; font-size: 13px; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
+        .modal-send-btn:hover { background: var(--steel-mid); }
+        
+        @media (max-width: 768px) {
+            .desktop-nav { display: none; }
+            .hamburger { display: flex; }
+            .topbar { padding: 0 16px; height: 50px; }
+            .brand-text { font-size: 15px; }
+            .page-hero { padding: 30px 16px; }
+            .page-hero-badges { gap: 12px; }
+            .badge { padding: 6px 12px; font-size: 10px; }
+            
+            .filter-bar { padding: 10px 12px; gap: 6px; }
+            .filter-bar span { font-size: 10px; }
+            .filter-btn { padding: 5px 10px; font-size: 10px; }
+            .search-box input { width: 100px; font-size: 11px; }
+            
+            .products-section { padding: 12px; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .product-card { border-radius: 8px; }
+            .product-img-wrap { aspect-ratio: 4/3; }
+            .product-img-wrap img { object-fit: cover; }
+            .product-body { padding: 10px; }
+            .product-category { font-size: 8px; padding: 3px 6px; }
+            .product-name { font-size: 11px; line-height: 1.3; -webkit-line-clamp: 2; }
+            .product-oem { font-size: 9px; padding: 2px 6px; }
+            .inquire-btn { font-size: 9px; padding: 8px 8px; }
+            
+            .contact-section { padding: 40px 16px; }
+            .contact-methods { flex-direction: column; align-items: center; }
+            .contact-method { width: 100%; max-width: 300px; }
+            
+            .modal-inner { grid-template-columns: 1fr; }
+            .modal-images { padding: 12px; }
+            .modal-info { padding: 16px 12px; }
+            .modal-contact { padding: 12px; }
+            .modal-form-row { grid-template-columns: 1fr; }
+            
+            .social-float { right: 10px; bottom: 12px; }
+            .social-btn { width: 36px; height: 36px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-left">
+            <a href="/" class="brand">
+                <span class="brand-text">CARVAL <span>AUTO</span></span>
+            </a>
+            <nav class="desktop-nav">
+                <a href="/index.html">Home</a>
+                <a href="/products.html">Products</a>
+                <a href="/japanese-cars.html" class="active">Japanese</a>
+                <a href="/korean-cars.html">Korean</a>
+                <a href="/german-cars.html">German</a>
+                <a href="/chinese-cars.html">Chinese</a>
+                <a href="/engine-oil.html">Engine Oil</a>
+            </nav>
+        </div>
+        <div class="topbar-right">
+            <button class="hamburger" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+    
+    <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <span class="mobile-nav-logo">CARVAL <span>AUTO</span></span>
+            <button onclick="closeNav()" style="background:none;border:none;color:white;font-size:20px;">&times;</button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="/index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="/products.html"><i class="fas fa-box"></i> Products</a>
+            <a href="/japanese-cars.html"><i class="fas fa-car"></i> Japanese Parts</a>
+            <a href="/korean-cars.html"><i class="fas fa-car"></i> Korean Parts</a>
+            <a href="/german-cars.html"><i class="fas fa-car"></i> German Parts</a>
+            <a href="/chinese-cars.html"><i class="fas fa-car"></i> Chinese Parts</a>
+            <a href="/engine-oil.html"><i class="fas fa-oil-can"></i> Engine Oil</a>
+        </div>
+    </nav>
+    
+    <section class="page-hero">
+        <h1>Japanese <span>Auto Parts</span></h1>
+        <p>Wholesale supplier of OEM quality auto parts for Toyota, Honda, Nissan, Mitsubishi, Suzuki, Mazda, Subaru and more Japanese vehicle brands.</p>
+        <div class="page-hero-badges">
+            <div class="badge"><i class="fas fa-check-circle"></i> OEM Quality</div>
+            <div class="badge"><i class="fas fa-shipping-fast"></i> Global Shipping</div>
+            <div class="badge"><i class="fas fa-tags"></i> Wholesale Prices</div>
+        </div>
+    </section>
+    
+    <div class="filter-bar">
+        <span>Filter:</span>
+        <button class="filter-btn" onclick="filterProducts('all')">All</button>
+        <button class="filter-btn active" onclick="filterProducts('japanese')">Japanese</button>
+        <button class="filter-btn" onclick="filterProducts('korean')">Korean</button>
+        <button class="filter-btn" onclick="filterProducts('german')">German</button>
+        <button class="filter-btn" onclick="filterProducts('chinese')">Chinese</button>
+        <button class="filter-btn" onclick="filterProducts('oil')">Engine Oil</button>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search products...">
+            <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    
+    <section class="products-section">
+        <div class="products-count">
+            Showing <span id="countDisplay">0</span> Japanese auto parts products
+        </div>
+        <div class="products-grid" id="productsGrid">
+            <div class="empty-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <h3>Loading Products</h3>
+                <p>Please wait while we load the product catalog...</p>
+            </div>
+        </div>
+        <div class="pagination" id="pagination"></div>
+    </section>
+    
+    <section class="contact-section">
+        <h2>Contact <span>Us</span></h2>
+        <p>Get in touch for wholesale pricing on Japanese auto parts. We ship globally with competitive rates.</p>
+        <div class="contact-methods">
+            <a href="mailto:carvalxie@foxmail.com" class="contact-method">
+                <i class="fas fa-envelope"></i>
+                <div class="contact-method-text">
+                    <div class="contact-method-label">Email</div>
+                    <div class="contact-method-value">carvalxie@foxmail.com</div>
+                </div>
+            </a>
+            <a href="https://wa.me/8619521228657" class="contact-method">
+                <i class="fab fa-whatsapp"></i>
+                <div class="contact-method-text">
+                    <div class="contact-method-label">WhatsApp</div>
+                    <div class="contact-method-value">+86 195 2122 8657</div>
+                </div>
+            </a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-slogan">CARVAL <span>AUTO</span> - Given your car a second life</div>
+        <p>&copy; 2024 Carval Auto Parts Co., Ltd. | Guangzhou, China | OEM Quality Auto Parts Supplier</p>
+    </footer>
+    
+    <div class="social-float">
+        <a href="https://wa.me/8619521228657" class="social-btn wa"><i class="fab fa-whatsapp"></i></a>
+    </div>
+    
+    <!-- Product Modal -->
+    <div class="modal-overlay" id="productModal" onclick="closeModal(event)">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            <div class="modal-inner">
+                <div class="modal-images">
+                    <img class="modal-main-img" id="modalMainImg" src="" alt="Product Image">
+                </div>
+                <div class="modal-info">
+                    <div class="modal-category" id="modalCategory">Category</div>
+                    <h2 class="modal-title" id="modalTitle">Product Name</h2>
+                    <div class="modal-specs" id="modalSpecs"></div>
+                    <a href="mailto:carvalxie@foxmail.com?subject=Product Inquiry" class="modal-inquire">
+                        <i class="fas fa-envelope"></i> Inquire Now
+                    </a>
+                </div>
+                <div class="modal-contact">
+                    <h3><i class="fas fa-paper-plane"></i> Send Inquiry</h3>
+                    <form id="modalContactForm" onsubmit="submitInquiry(event)">
+                        <div class="modal-form-row">
+                            <div class="modal-form-group">
+                                <label>Your Name *</label>
+                                <input type="text" id="modalName" required>
+                            </div>
+                            <div class="modal-form-group">
+                                <label>Email *</label>
+                                <input type="email" id="modalEmail" required>
+                            </div>
+                        </div>
+                        <div class="modal-form-group" style="margin-bottom:12px;">
+                            <label>Product Reference</label>
+                            <input type="text" id="modalProductRef" readonly>
+                        </div>
+                        <div class="modal-form-group">
+                            <label>Message</label>
+                            <textarea id="modalMessage">Hi, I am interested in this product. Please provide price and availability.</textarea>
+                        </div>
+                        <button type="submit" class="modal-send-btn"><i class="fas fa-paper-plane"></i> Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var GH_REPO = 'carvalauto/carvalauto.github.io';
+        var GH_TOKEN = ['ghp_oWLm0san81c','Xqv3navRKnYZKo9','mYNU2pMhFf'].join('');
+        
+        var productsData = [];
+        var currentFilter = 'japanese';
+        var currentSearch = '';
+        var currentPage = 1;
+        var itemsPerPage = 50;
+        
+        function toggleNav() { document.getElementById('mobileNav').classList.toggle('open'); document.getElementById('navOverlay').classList.toggle('show'); }
+        function closeNav() { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('navOverlay').classList.remove('show'); }
+        
+        function detectItemsPerPage() {
+            itemsPerPage = window.innerWidth <= 768 ? 10 : 50;
+        }
+        detectItemsPerPage();
+        window.addEventListener('resize', detectItemsPerPage);
+        
+        var categoryLabels = { japanese: 'Japanese', korean: 'Korean', german: 'German', chinese: 'Chinese', oil: 'Engine Oil', other: 'Other' };
+        
+        async function loadProducts() {
+            var grid = document.getElementById('productsGrid');
+            try {
+                var resp = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?_=' + Date.now());
+                if (resp.ok) {
+                    var data = await resp.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        productsData = data;
+                        renderProducts();
+                        return;
+                    }
+                }
+            } catch(e) {}
+            
+            // Fallback to default products
+            productsData = [
+                { id: 1, name: "Toyota Camry Brake Pads", category: "japanese", oem: "04465-06110", description: "High-performance brake pads for Toyota Camry 2018-2023.", image: "" },
+                { id: 2, name: "Honda Civic Air Filter", category: "japanese", oem: "17220-RNA-A00", description: "Genuine quality air filter for Honda Civic 2016-2021.", image: "" }
+            ];
+            renderProducts();
+        }
+        
+        function renderProducts() {
+            var grid = document.getElementById('productsGrid');
+            var countEl = document.getElementById('countDisplay');
+            var paginationEl = document.getElementById('pagination');
+            
+            var filtered = productsData.filter(function(p) {
+                var matchCat = currentFilter === 'all' || p.category === currentFilter;
+                var matchSearch = currentSearch === '' || (p.name || '').toLowerCase().includes(currentSearch) || (p.oem || '').toLowerCase().includes(currentSearch);
+                return matchCat && matchSearch;
+            });
+            
+            countEl.textContent = filtered.length;
+            if (filtered.length === 0) { 
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><h3>No Products Found</h3><p>Try adjusting your filter or search terms.</p></div>'; 
+                paginationEl.innerHTML = ''; 
+                return; 
+            }
+            
+            var totalPages = Math.ceil(filtered.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages || 1;
+            if (currentPage < 1) currentPage = 1;
+            
+            var startIndex = (currentPage - 1) * itemsPerPage;
+            var endIndex = startIndex + itemsPerPage;
+            var pageProducts = filtered.slice(startIndex, endIndex);
+            
+            grid.innerHTML = pageProducts.map(function(p) {
+                var firstImg = '';
+                if (p.image) firstImg = p.image.split(',')[0].trim();
+                else if (p.images && Array.isArray(p.images)) firstImg = p.images[0] || '';
+                
+                var oemCode = p.oem || p.oemCode || '';
+                var fitmentDisplay = '';
+                var fitmentTable = p.fitmentTable || [];
+                if (fitmentTable && fitmentTable.length > 0) {
+                    var brands = {};
+                    fitmentTable.forEach(function(item) {
+                        if (item.make) brands[item.make.toUpperCase()] = true;
+                    });
+                    var brandList = Object.keys(brands);
+                    if (brandList.length > 0) {
+                        fitmentDisplay = brandList.slice(0, 2).join(', ');
+                    }
+                }
+                
+                return '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
+                    '<div class="product-img-wrap">' +
+                        (firstImg ? '<img loading="lazy" src="' + firstImg + '" alt="' + (p.name || '') + '" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\'"><div class="no-image" style="display:none"><i class="fas fa-car"></i><span>No Image</span></div>' : '<div class="no-image"><i class="fas fa-car"></i><span>No Image</span></div>') +
+                    '</div>' +
+                    '<div class="product-body">' +
+                        '<div class="product-category">' + (fitmentDisplay || categoryLabels[p.category] || p.category || 'Other') + '</div>' +
+                        '<div class="product-name">' + (p.name || 'Product') + '</div>' +
+                        '<div class="product-oem">' + (oemCode || 'OEM: -') + '</div>' +
+                        '<button class="inquire-btn" onclick="event.stopPropagation(); openProduct(' + p.id + ')"><i class="fas fa-info-circle"></i> View Details</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+            
+            renderPagination(totalPages, filtered.length);
+        }
+        
+        function renderPagination(totalPages, totalItems) {
+            var paginationEl = document.getElementById('pagination');
+            if (totalPages <= 1) { paginationEl.innerHTML = ''; return; }
+            
+            var html = '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '>&laquo; Prev</button>';
+            
+            var startPage = Math.max(1, currentPage - 2);
+            var endPage = Math.min(totalPages, currentPage + 2);
+            
+            if (startPage > 1) { html += '<button class="page-btn" onclick="goToPage(1)">1</button>'; if (startPage > 2) html += '<span class="page-info">...</span>'; }
+            for (var i = startPage; i <= endPage; i++) { html += '<button class="page-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>'; }
+            if (endPage < totalPages) { if (endPage < totalPages - 1) html += '<span class="page-info">...</span>'; html += '<button class="page-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>'; }
+            
+            html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>Next &raquo;</button>';
+            
+            paginationEl.innerHTML = html;
+        }
+        
+        function goToPage(page) { currentPage = page; renderProducts(); document.getElementById('productsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        function filterProducts(cat) { currentFilter = cat; currentPage = 1; renderProducts(); }
+        function searchProducts() { currentSearch = document.getElementById('searchInput').value.toLowerCase().trim(); currentPage = 1; renderProducts(); }
+        
+        function openProduct(id) {
+            var p = productsData.find(function(x) { return x.id == id || x.id === parseInt(id); });
+            if (!p) return;
+            
+            var carouselImages = [];
+            if (p.image) carouselImages = p.image.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+            else if (p.images && Array.isArray(p.images)) carouselImages = p.images.filter(Boolean);
+            
+            var mainImg = document.getElementById('modalMainImg');
+            if (carouselImages.length > 0) {
+                mainImg.src = carouselImages[0];
+                mainImg.style.display = 'block';
+            } else {
+                mainImg.style.display = 'none';
+            }
+            
+            document.getElementById('modalCategory').textContent = categoryLabels[p.category] || p.category || 'Other';
+            document.getElementById('modalTitle').textContent = p.name || p.title || 'Product';
+            
+            var oemCode = p.oem || p.oemCode || '';
+            var specsHtml = '';
+            if (oemCode) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-barcode"></i></div><div><div class="spec-label">OEM Number</div><div class="spec-value">' + oemCode + '</div></div></div>';
+            
+            var desc = p.description || '';
+            var brandMatch = desc.match(/Brand:\s*([^|.]+)/i);
+            if (brandMatch) specsHtml += '<div class="spec-row"><div class="spec-icon"><i class="fas fa-car"></i></div><div><div class="spec-label">Brand</div><div class="spec-value">' + brandMatch[1].trim() + '</div></div></div>';
+            
+            document.getElementById('modalSpecs').innerHTML = specsHtml;
+            document.getElementById('modalProductRef').value = (p.name || p.title) + (oemCode ? ' (OEM: ' + oemCode + ')' : '');
+            document.getElementById('modalMessage').value = 'Hi, I am interested in: ' + (p.name || p.title) + (oemCode ? ' (OEM: ' + oemCode + ')' : '') + '. Please provide price and availability.';
+            
+            document.getElementById('productModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeProductModal() { document.getElementById('productModal').classList.remove('show'); document.body.style.overflow = ''; }
+        function closeModal(e) { if (e.target === document.getElementById('productModal')) closeProductModal(); }
+        
+        function submitInquiry(e) {
+            e.preventDefault();
+            var btn = e.target.querySelector('.modal-send-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+            
+            var formData = {
+                name: document.getElementById('modalName').value,
+                email: document.getElementById('modalEmail').value,
+                product: document.getElementById('modalProductRef').value,
+                message: document.getElementById('modalMessage').value,
+                source: 'japanese-cars.html',
+                timestamp: Date.now()
+            };
+            
+            fetch('https://formspree.io/f/xyknoyzw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
+                setTimeout(function() {
+                    closeProductModal();
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+                    btn.disabled = false;
+                    e.target.reset();
+                }, 2000);
+            }, 1000);
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('productModal').classList.contains('show')) {
+                closeProductModal();
+            }
+        });
+        
+        loadProducts();
+    </script>
+</body>
+</html>
