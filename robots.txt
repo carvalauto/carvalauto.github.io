@@ -30,4 +30,4 @@ User-agent: Baiduspider
 Allow: /
 
 User-agent: YandexBot
-Allot: /
+Allow: /
