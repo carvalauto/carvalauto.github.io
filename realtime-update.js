@@ -20,25 +20,27 @@
                     console.log('[实时更新] 检测到版本更新:', currentVersion, '→', data.version);
                     currentVersion = data.version;
                     window.realtimeVersion = data.version;
-                    
-                    // 清除缓存
+
+                    // admin 后台不清缓存、不刷新（保留编辑状态和当前页码）
+                        var isAdminPage = window.location.pathname.indexOf('admin') !== -1;
+                        if (isAdminPage) {
+                            showUpdateNotification('数据已更新（admin 后台不自动刷新）');
+                            console.log('[实时更新] admin 后台跳过刷新和清缓存');
+                            return;
+                        }
+
+                    // 前台照常：清缓存 + 刷新
                     localStorage.removeItem('carval_products_v2');
                     localStorage.removeItem('carval_products_cache');
                     localStorage.removeItem('cached_products');
-                    
+
                     // 显示更新通知
                     showUpdateNotification('数据已更新，正在刷新...');
 
-                    // admin 后台不强制刷新（保留编辑状态和当前页码）
-                    var isAdminPage = window.location.pathname.indexOf('admin') !== -1;
-                    if (isAdminPage) {
-                        console.log('[实时更新] admin 后台跳过自动刷新，保留当前页码');
-                    } else {
-                        // 重新加载页面
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
-                    }
+                    // 重新加载页面
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
                 }
             }
         } catch(e) {
