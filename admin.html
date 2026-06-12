@@ -963,7 +963,7 @@
                 var cachedData = JSON.parse(cached);
                 if (cachedData.data && cachedData.data.length > 0) {
                     allProducts = cachedData.data;
-                    currentProductPage = parseInt(sessionStorage.getItem('adminProductPage') || '1');
+                    currentProductPage = 1;
                     renderProducts();
                     hasCache = true;
                     console.log('[Products] 优先显示缓存，产品数:', allProducts.length);
@@ -987,7 +987,7 @@
                 if (!r.ok) throw new Error('OSS请求失败: ' + r.status);
                 
                 allProducts = await r.json();
-                currentProductPage = parseInt(sessionStorage.getItem('adminProductPage') || '1');
+                currentProductPage = 1;
                 renderProducts();
                 localStorage.setItem('cached_products', JSON.stringify({data: allProducts, sha: Date.now()}));
                 console.log('[Products] OSS加载完成，产品数:', allProducts.length);
