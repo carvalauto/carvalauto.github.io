@@ -28,11 +28,17 @@
                     
                     // 显示更新通知
                     showUpdateNotification('数据已更新，正在刷新...');
-                    
-                    // 重新加载页面
-                    setTimeout(function() {
-                        location.reload();
-                    }, 2000);
+
+                    // admin 后台不强制刷新（保留编辑状态和当前页码）
+                    var isAdminPage = window.location.pathname.indexOf('admin') !== -1;
+                    if (isAdminPage) {
+                        console.log('[实时更新] admin 后台跳过自动刷新，保留当前页码');
+                    } else {
+                        // 重新加载页面
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    }
                 }
             }
         } catch(e) {
