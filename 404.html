@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redirecting... - Carval Auto Parts</title>
+<style>
+body { font-family: Arial, sans-serif; text-align: center; padding: 60px 20px; color: #333; }
+.redirect-msg { color: #888; font-size: 14px; margin-bottom: 20px; }
+.fallback { display: none; }
+h1 { font-size: 28px; margin-bottom: 16px; }
+a { color: #1a73e8; text-decoration: none; }
+a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div id="redirect-msg" class="redirect-msg">Redirecting to the correct page...</div>
+<div id="fallback" class="fallback">
+  <h1>404 - Page Not Found</h1>
+  <p>The page you are looking for does not exist.</p>
+  <p><a href="/">Go to Homepage</a> &nbsp;|&nbsp; <a href="/products.html">Browse Products</a></p>
+</div>
+<script>
+(function() {
+  var path = window.location.pathname;
+  var search = window.location.search;
+  var target = null;
+
+  // 模式1: 根目录旧URL /{纯数字ID}.html → /products/{id}.html
+  var m1 = path.match(/^\/(\d+)\.html$/);
+  if (m1) {
+    target = '/products/' + m1[1] + '.html';
+  }
+
+  // 模式2: /product.html?id=...&slug=... → /products/{id}.html
+  if (!target && path === '/product.html' && search) {
+    var id = new URLSearchParams(search).get('id');
+    if (id && /^\d+$/.test(id)) {
+      target = '/products/' + id + '.html';
+    }
+  }
+
+  // 模式3: /products/{longslug}-{id}.html → /products/{id}.html
+  if (!target) {
+    var m3 = path.match(/^\/products\/[a-z0-9-]+-(\d+)\.html$/i);
+    if (m3) {
+      target = '/products/' + m3[1] + '.html';
+    }
+  }
+
+  if (target) {
+    window.location.replace(target);
+  } else {
+    document.getElementById('redirect-msg').style.display = 'none';
+    document.getElementById('fallback').style.display = 'block';
+  }
+})();
+</script>
+</body>
+</html>
