@@ -2,17 +2,49 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Redirecting...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading product...</title>
+<meta name="description" content="Loading product information...">
+<link rel="canonical" href="https://carvalautopart.com/">
 <script>
-(function() {
+(async function() {
   var params = new URLSearchParams(window.location.search);
   var id = params.get('id');
-  if (id && /^\d+$/.test(id)) {
-    var target = '/products/' + id + '.html';
-    document.querySelector('link[rel=canonical]').href = target;
-    window.location.replace(target);
-  } else {
+  if (!id || !/^\d+$/.test(id)) {
     window.location.replace('/');
+    return;
+  }
+  var target = '/products/' + id + '.html';
+  var canonicalUrl = 'https://carvalautopart.com' + target;
+  try {
+    var resp = await fetch(target, { cache: 'force-cache' });
+    if (!resp.ok) { window.location.replace(target); return; }
+    var html = await resp.text();
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var titleEl = doc.querySelector('title');
+    var descEl  = doc.querySelector('meta[name="description"]');
+    var jsonLd  = doc.querySelector('script[type="application/ld+json"]');
+    var title = (titleEl && titleEl.textContent.trim()) || 'Product ' + id;
+    var desc  = (descEl && descEl.getAttribute('content')) || '';
+    if (jsonLd) {
+      try {
+        var data = JSON.parse(jsonLd.textContent);
+        if (data && data.name) title = data.name;
+      } catch (e) {}
+    }
+    document.title = title;
+    var h1 = document.querySelector('h1');
+    if (h1) h1.textContent = title;
+    var md = document.querySelector('meta[name="description"]');
+    if (md) md.setAttribute('content', desc || ('View ' + title + ' - specifications, application, and wholesale pricing.'));
+    var can = document.querySelector('link[rel="canonical"]');
+    if (can) can.setAttribute('href', canonicalUrl);
+    document.body.innerHTML = '<h1 style="font-family:Arial,sans-serif;text-align:center;padding:60px 20px 0;">' + title + '</h1>'
+      + '<p style="text-align:center;color:#666;font-family:Arial,sans-serif;padding:20px;">Redirecting to product page...</p>'
+      + '<p style="text-align:center;font-family:Arial,sans-serif;"><a href="' + target + '">Click here if you are not redirected</a></p>';
+    setTimeout(function() { window.location.replace(target); }, 500);
+  } catch (e) {
+    window.location.replace(target);
   }
 })();
 </script>
@@ -21,6 +53,7 @@
 </noscript>
 </head>
 <body>
+<h1>Loading product...</h1>
 <p>Redirecting...</p>
 </body>
 </html>
