@@ -353,6 +353,7 @@
             <button class="tab-btn" id="tab-faq" onclick="switchTab('faq')"><i class="fas fa-question-circle"></i> FAQ</button>
             <button class="tab-btn" id="tab-analytics" onclick="switchTab('analytics')"><i class="fas fa-chart-line"></i> 流量</button>
             <button class="tab-btn" id="tab-pending" onclick="switchTab('pending')"><i class="fas fa-clock"></i> 待审核<span id="pendingBadge" style="display:none;"></span></button>
+        <button class="tab-btn" id="tab-published" onclick="switchTab('published')"><i class="fas fa-check-circle"></i> 已发布<span id="publishedBadge" style="display:none;"></span></button>
         </div>
         <div class="header-right">
             <a href="https://carvalautopart.com" target="_blank"><i class="fas fa-external-link-alt"></i> 网站</a>
@@ -481,8 +482,22 @@
         </div>
         <div class="inquiry-list" id="faqList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
     </div>
-    
-    <div class="modal" id="deleteModal">
+
+    <!-- Published Page -->
+    <div class="page" id="page-published">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-num" id="published_total">-</div><div class="stat-label">已发布总数</div></div>
+            <div class="stat-card accent"><div class="stat-num" id="published_this_month">-</div><div class="stat-label">本月发布</div></div>
+            <div class="stat-card"><div class="stat-num" id="published_with_images">-</div><div class="stat-label">带图发布</div></div>
+        </div>
+        <div class="filter-bar">
+            <input type="text" id="publishedSearch" placeholder="搜索已发布商品..." onkeyup="filterPublishedProducts()">
+        </div>
+        <div class="product-list" id="publishedList"><div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div></div>
+    </div>
+
+
+<div class="modal" id="deleteModal">
         <div class="modal-content">
             <div class="modal-title">确认删除</div>
             <div class="modal-text" id="deleteModalText">确定要删除吗？</div>
@@ -530,6 +545,64 @@
         </div>
     </div>
     
+    <!-- 预览/编辑 SEO 页面 (v2.3.0) -->
+    <div class="modal" id="previewSEOModal">
+        <div class="modal-content" style="max-width:95vw;width:1200px;height:90vh;display:flex;flex-direction:column;padding:16px;">
+            <div class="modal-title" id="previewSEOTitle" style="margin-bottom:12px;">预览 / 编辑 SEO 页面</div>
+            <div style="flex:1;display:flex;gap:12px;min-height:0;">
+                <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+                    <div style="background:var(--bg-dark);padding:6px 10px;border-radius:5px;margin-bottom:6px;font-size:12px;color:var(--text-soft);">
+                        <i class="fas fa-eye"></i> 实时预览
+                    </div>
+                    <iframe id="previewSEOFrame" style="flex:1;width:100%;border:1px solid var(--border);border-radius:5px;background:#fff;"></iframe>
+                </div>
+                <div style="width:320px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding-right:4px;">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>产品标题 (H1)</label>
+                        <input type="text" id="edit_seo_title" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>SEO Description</label>
+                        <textarea id="edit_seo_description" rows="3" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;"></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>SEO Keywords</label>
+                        <input type="text" id="edit_seo_keywords" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>H2 副标题</label>
+                        <input type="text" id="edit_h2" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>产品描述</label>
+                        <textarea id="edit_description" rows="4" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions" style="margin-top:12px;">
+                <button class="btn" onclick="closePreviewSEOModal()" style="background:var(--border);">取消</button>
+                <button class="btn btn-success" onclick="confirmPublishFromPreview()" id="confirmPublishBtn"><i class="fas fa-check"></i> 审核通过并发布</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 查看已发布 SEO 页面 (v2.3.0) -->
+    <div class="modal" id="viewPublishedModal">
+        <div class="modal-content" style="max-width:95vw;width:1200px;height:90vh;display:flex;flex-direction:column;padding:16px;">
+            <div class="modal-title" id="viewPublishedTitle" style="margin-bottom:12px;">查看已发布 SEO 页面</div>
+            <div style="flex:1;display:flex;flex-direction:column;min-height:0;">
+                <div style="background:var(--bg-dark);padding:6px 10px;border-radius:5px;margin-bottom:6px;font-size:12px;color:var(--text-soft);">
+                    <i class="fas fa-globe"></i> 已发布页面
+                    <a id="viewPublishedLink" href="" target="_blank" style="color:#5dade2;margin-left:8px;">新窗口打开 <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <iframe id="viewPublishedFrame" style="flex:1;width:100%;border:1px solid var(--border);border-radius:5px;background:#fff;"></iframe>
+            </div>
+            <div class="modal-actions" style="margin-top:12px;">
+                <button class="btn" onclick="closeViewPublishedModal()" style="background:var(--border);">关闭</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://apis.google.com/js/api.js" async defer></script>
     <script>
@@ -619,6 +692,7 @@
         else if (tab === 'faq') { loadFAQData(); }
         else if (tab === 'analytics') { initAnalytics(); }
         else if (tab === 'pending') { loadPendingProducts(); }
+        else if (tab === 'published') { loadPublishedProducts(); }
     }
     
     // ===== 博客管理 =====
@@ -3344,7 +3418,7 @@ var CATEGORY_CONTENT = {
                         '<span class="product-tag">' + imgs.length + ' 图</span>' +
                     '</div>' +
                     '<div class="product-actions">' +
-                        '<button class="btn btn-success" onclick="generatePendingSEOPage(\'' + String(p.id).replace(/'/g, "\\'") + '\')"><i class="fas fa-check"></i> 审核通过</button>' +
+                        '<button class="btn btn-success" onclick="previewAndEditPendingSEOPage(\'' + String(p.id).replace(/'/g, "\\'") + '\')"><i class="fas fa-check"></i> 审核通过</button>' +
                         '<button class="btn btn-danger" onclick="confirmDeletePending(' + JSON.stringify(p.id) + ', \'' + htmlEsc(name).replace(/'/g, "\\'") + '\')"><i class="fas fa-trash"></i> 删除</button>' +
                     '</div>' +
                 '</div>' +
@@ -3921,6 +3995,306 @@ var CATEGORY_CONTENT = {
             showToast('删除失败: ' + e.message, true);
         }
     }
-    </script>
+    
+    // ============================================================
+    // ===== v2.3.0: 预览/编辑 SEO 页面 (previewAndEdit) =====
+    // ============================================================
+    var previewSEOState = null;
+    var allPublishedProducts = [];
+    var filteredPublishedProducts = [];
+
+    async function previewAndEditPendingSEOPage(productId) {
+        if (isSubmitting) { showToast('正在处理中，请稍候...', true); return; }
+        try {
+            // 1) 拉 products.json
+            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
+            if (!r.ok) throw new Error('拉 products.json 失败: ' + r.status);
+            var products = await r.json();
+            var product = products.find(function(p) { return String(p.id) === String(productId); });
+            if (!product) throw new Error('未找到产品 ID=' + productId);
+
+            // 2) 检测品类 + 3 Schema
+            var catKey = detectCategory(product.name || product.title || '');
+            var catContent = CATEGORY_CONTENT[catKey] || CATEGORY_CONTENT['general'];
+            var safeId = String(productId).replace(/[^a-zA-Z0-9-_]/g, '_');
+            var filePath = 'products/' + safeId + '.html';
+            var url = 'https://carvalautopart.com/' + filePath;
+            var productSchema = buildProductSchema(product, url, catContent);
+            var howtoSchema = buildHowToSchema(product, catContent);
+            var faqSchema = buildFAQSchema(product, catContent);
+
+            // 3) 生成 HTML
+            var html = buildSEOHtml(product, catContent, productSchema, howtoSchema, faqSchema);
+
+            // 4) 保存到 modal 状态
+            previewSEOState = {
+                productId: productId,
+                product: product,
+                catKey: catKey,
+                catContent: catContent,
+                html: html,
+                filePath: filePath,
+                url: url
+            };
+
+            // 5) 填充可编辑字段
+            document.getElementById('previewSEOTitle').textContent = '预览 / 编辑 - ' + (product.name || product.title || productId).slice(0, 60);
+            document.getElementById('edit_seo_title').value = product.title || product.name || '';
+            document.getElementById('edit_seo_description').value = product.seo_description || product.description || '';
+            document.getElementById('edit_seo_keywords').value = product.seo_keywords || '';
+            document.getElementById('edit_h2').value = (catContent && catContent.h2) || '';
+            document.getElementById('edit_description').value = product.description || '';
+
+            // 6) 显示 modal + iframe
+            document.getElementById('previewSEOModal').classList.add('show');
+            var frame = document.getElementById('previewSEOFrame');
+            frame.srcdoc = html;
+        } catch(e) {
+            console.error('[v2.3.0] previewAndEditPendingSEOPage error:', e);
+            showToast('预览失败: ' + e.message, true);
+        }
+    }
+
+    function closePreviewSEOModal() {
+        document.getElementById('previewSEOModal').classList.remove('show');
+        previewSEOState = null;
+    }
+
+    function updatePreviewFrame() {
+        if (!previewSEOState) return;
+        var product = previewSEOState.product;
+        var catContent = previewSEOState.catContent;
+
+        // 用编辑后的字段更新 product
+        var newTitle = document.getElementById('edit_seo_title').value.trim();
+        if (newTitle) {
+            product.title = newTitle;
+            product.name = newTitle;
+        }
+        var newDesc = document.getElementById('edit_description').value.trim();
+        if (newDesc) product.description = newDesc;
+        var newSeoDesc = document.getElementById('edit_seo_description').value.trim();
+        if (newSeoDesc) product.seo_description = newSeoDesc;
+        var newKw = document.getElementById('edit_seo_keywords').value.trim();
+        if (newKw) product.seo_keywords = newKw;
+        var newH2 = document.getElementById('edit_h2').value.trim();
+        if (newH2) product.h2 = newH2;
+
+        // 重新生成 HTML
+        var productSchema = buildProductSchema(product, previewSEOState.url, catContent);
+        var howtoSchema = buildHowToSchema(product, catContent);
+        var faqSchema = buildFAQSchema(product, catContent);
+        var html = buildSEOHtml(product, catContent, productSchema, howtoSchema, faqSchema);
+        previewSEOState.html = html;
+        document.getElementById('previewSEOFrame').srcdoc = html;
+    }
+
+    async function confirmPublishFromPreview() {
+        if (!previewSEOState) { showToast('请先预览', true); return; }
+        if (isSubmitting) { showToast('正在处理中，请稍候...', true); return; }
+        if (!initGitHubTokens()) { showToast('需要配置 5 个 GitHub PAT', true); return; }
+        isSubmitting = true;
+        var btn = document.getElementById('confirmPublishBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发布中...';
+        showToast('正在发布...', false);
+        try {
+            // 1) GitHub PUT
+            var filePath = previewSEOState.filePath;
+            var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
+            var sha = null;
+            try {
+                var checkResp = await githubApiRequest(apiUrl, { method: 'GET' }, 1, 1000);
+                if (checkResp.ok) {
+                    var existing = await checkResp.json();
+                    sha = existing.sha;
+                }
+            } catch(e) { console.log('GET sha 失败，继续 PUT:', e.message); }
+
+            var html = previewSEOState.html;
+            var bodyObj = {
+                message: 'Publish SEO: ' + (previewSEOState.product.name || previewSEOState.product.title || previewSEOState.productId),
+                content: btoa(unescape(encodeURIComponent(html))),
+                branch: GH_BRANCH
+            };
+            if (sha) bodyObj.sha = sha;
+
+            var putResp = await githubApiRequest(apiUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bodyObj)
+            }, 5, 2000);
+            if (!putResp.ok) {
+                var errText = await putResp.text();
+                throw new Error('GitHub PUT 失败: ' + putResp.status + ' - ' + errText.slice(0, 200));
+            }
+
+            // 2) 回写 products.json
+            var productsR = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
+            if (!productsR.ok) throw new Error('拉 products.json 失败: ' + productsR.status);
+            var products = await productsR.json();
+            var idx = products.findIndex(function(p) { return String(p.id) === String(previewSEOState.productId); });
+            if (idx !== -1) {
+                products[idx].seo_status = 'published';
+                products[idx].seo_url = previewSEOState.url;
+                products[idx].seo_published_at = new Date().toISOString();
+                if (previewSEOState.product.title) products[idx].title = previewSEOState.product.title;
+                if (previewSEOState.product.name) products[idx].name = previewSEOState.product.name;
+                if (previewSEOState.product.description) products[idx].description = previewSEOState.product.description;
+                if (previewSEOState.product.seo_description) products[idx].seo_description = previewSEOState.product.seo_description;
+                if (previewSEOState.product.seo_keywords) products[idx].seo_keywords = previewSEOState.product.seo_keywords;
+                if (previewSEOState.product.h2) products[idx].h2 = previewSEOState.product.h2;
+            }
+
+            // 3) 上传 OSS products.json
+            var jsonData = JSON.stringify(products, null, 2);
+            var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
+            var ossR = await fetch(OSS_CONFIG.productsUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': new Date().toUTCString() },
+                body: jsonData
+            });
+            if (!ossR.ok) throw new Error('OSS 上传 products.json 失败: ' + ossR.status);
+
+            // 4) 写 version.json
+            try {
+                var newVersion = Date.now();
+                var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_publish_seo' };
+                var versionAuth = await generateOSSAuth('PUT', '/version.json', JSON.stringify(versionData).length);
+                var vR = await fetch(OSS_CONFIG.endpoint + '/version.json', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': versionAuth, 'x-oss-date': new Date().toUTCString() },
+                    body: JSON.stringify(versionData, null, 2)
+                });
+            } catch(e) { console.log('version.json 写入失败（不影响主流程）:', e.message); }
+
+            showSuccessModal('SEO 页面已发布！', previewSEOState.url);
+            closePreviewSEOModal();
+            if (typeof loadPendingProducts === 'function') loadPendingProducts();
+        } catch(e) {
+            console.error('[v2.3.0] confirmPublishFromPreview error:', e);
+            showToast('发布失败: ' + e.message, true);
+        } finally {
+            isSubmitting = false;
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-check"></i> 审核通过并发布';
+        }
+    }
+
+    // ============================================================
+    // ===== v2.3.0: 已发布 tab (loadPublishedProducts) =====
+    // ============================================================
+    async function loadPublishedProducts() {
+        var c = document.getElementById('publishedList');
+        c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
+        try {
+            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
+            if (!r.ok) throw new Error('拉 products.json 失败: ' + r.status);
+            var products = await r.json();
+            allPublishedProducts = products.filter(function(p) { return p.seo_status === 'published' && p.seo_url; });
+            // 倒序：最新发布在前
+            allPublishedProducts.sort(function(a, b) {
+                var ta = a.seo_published_at ? new Date(a.seo_published_at).getTime() : 0;
+                var tb = b.seo_published_at ? new Date(b.seo_published_at).getTime() : 0;
+                return tb - ta;
+            });
+            filteredPublishedProducts = allPublishedProducts.slice();
+            updatePublishedStats();
+            renderPublishedProducts();
+            // 更新 badge
+            var badge = document.getElementById('publishedBadge');
+            if (badge) {
+                if (allPublishedProducts.length > 0) {
+                    badge.textContent = allPublishedProducts.length > 99 ? '99+' : allPublishedProducts.length;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        } catch(e) {
+            console.error('[v2.3.0] loadPublishedProducts error:', e);
+            c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>加载失败: ' + e.message + '</p></div>';
+        }
+    }
+
+    function updatePublishedStats() {
+        document.getElementById('published_total').textContent = allPublishedProducts.length;
+        var now = new Date();
+        var thisMonthCount = allPublishedProducts.filter(function(p) {
+            if (!p.seo_published_at) return false;
+            var d = new Date(p.seo_published_at);
+            return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+        }).length;
+        document.getElementById('published_this_month').textContent = thisMonthCount;
+        var withImages = allPublishedProducts.filter(function(p) { return p.images && p.images.length > 0; }).length;
+        document.getElementById('published_with_images').textContent = withImages;
+    }
+
+    function filterPublishedProducts() {
+        var q = (document.getElementById('publishedSearch').value || '').toLowerCase();
+        filteredPublishedProducts = allPublishedProducts.filter(function(p) {
+            var name = (p.name || p.title || '').toLowerCase();
+            var oem = (p.oem || p.oemCode || '').toLowerCase();
+            return !q || name.includes(q) || oem.includes(q);
+        });
+        renderPublishedProducts();
+    }
+
+    function renderPublishedProducts() {
+        var container = document.getElementById('publishedList');
+        if (filteredPublishedProducts.length === 0) {
+            container.innerHTML = '<div class="loading"><i class="fas fa-check-circle" style="color:#2ecc71;"></i><p>没有已发布商品</p></div>';
+            return;
+        }
+        container.innerHTML = filteredPublishedProducts.map(function(p) {
+            var name = p.name || p.title || '未命名';
+            var imgs = (p.image || '').toString().split(',').map(function(s){return s.trim();}).filter(Boolean);
+            var firstImg = imgs[0] || 'data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 60 60\"><rect fill=\"#2a2a2a\" width=\"60\" height=\"60\"/><text x=\"30\" y=\"35\" text-anchor=\"middle\" fill=\"#666\" font-size=\"10\">No Img</text></svg>';
+            var publishedAt = p.seo_published_at ? new Date(p.seo_published_at).toLocaleDateString('zh-CN') : '';
+            var safeId = String(p.id).replace(/'/g, "\\'");
+            var safeUrl = (p.seo_url || '').replace(/'/g, "\\'");
+            return '<div class="product-card">' +
+                '<img class="product-card-img" src="' + firstImg + '" alt="" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>\'>' +
+                '<div class="product-info">' +
+                    '<div class="product-title" title="' + htmlEsc(name) + '">' + htmlEsc(name) + '</div>' +
+                    '<div class="product-meta">' +
+                        '<span class="product-tag" style="background:rgba(46,204,113,0.2);color:#2ecc71;">已发布</span>' +
+                        (publishedAt ? '<span class="product-tag">' + publishedAt + '</span>' : '') +
+                        '<span class="product-tag">' + imgs.length + ' 图</span>' +
+                    '</div>' +
+                    '<div class="product-actions">' +
+                        '<button class="btn btn-edit btn-sm" onclick="viewPublishedSEOPage(\'' + safeId + '\')"><i class="fas fa-eye"></i> 查看</button>' +
+                        '<button class="btn btn-sm" style="background:#5dade2;" onclick="window.open(\'' + safeUrl + '\', \'_blank\')"><i class="fas fa-external-link-alt"></i> 打开</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+    }
+
+    async function viewPublishedSEOPage(productId) {
+        try {
+            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
+            if (!r.ok) throw new Error('拉 products.json 失败: ' + r.status);
+            var products = await r.json();
+            var product = products.find(function(p) { return String(p.id) === String(productId); });
+            if (!product) throw new Error('未找到产品 ID=' + productId);
+            if (!product.seo_url) throw new Error('产品没有 seo_url');
+
+            document.getElementById('viewPublishedTitle').textContent = '查看 - ' + (product.name || product.title || productId).slice(0, 60);
+            document.getElementById('viewPublishedLink').href = product.seo_url;
+            var frame = document.getElementById('viewPublishedFrame');
+            frame.src = product.seo_url + '?t=' + Date.now();
+            document.getElementById('viewPublishedModal').classList.add('show');
+        } catch(e) {
+            console.error('[v2.3.0] viewPublishedSEOPage error:', e);
+            showToast('加载失败: ' + e.message, true);
+        }
+    }
+
+    function closeViewPublishedModal() {
+        document.getElementById('viewPublishedModal').classList.remove('show');
+        document.getElementById('viewPublishedFrame').src = '';
+    }
+</script>
 </body>
 </html>
