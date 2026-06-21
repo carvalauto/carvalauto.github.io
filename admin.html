@@ -1103,11 +1103,14 @@
             try {
                 var cachedData = JSON.parse(cached);
                 if (cachedData.data && cachedData.data.length > 0) {
+                    // ===== 2026-06-21 修复: 精简版缓存直接用 (3.3MB 完整版存不进 5MB 配额) =====
+                    // 精简版字段: id, name, category, oem, image, brands
+                    // renderProducts 已兼容 (用 brands 替代 fitmentTable 品牌提取)
                     allProducts = cachedData.data;
                     currentProductPage = 1;
                     renderProducts();
                     hasCache = true;
-                    console.log('[Products] 优先显示缓存，产品数:', allProducts.length);
+                    console.log('[Products] 优先显示' + (cachedData.full ? '完整' : '精简') + '缓存,产品数:', allProducts.length);
                 }
             } catch(e) {
                 console.warn('[Products] 缓存解析失败:', e);
@@ -1136,7 +1139,36 @@
                 allProducts = jsonData;
                 currentProductPage = 1;
                 renderProducts();
-                localStorage.setItem('cached_products', JSON.stringify({data: allProducts, sha: Date.now()}));
+                // ===== 2026-06-21 修复: 只存精简版到 localStorage (3.3MB -> ~60KB) =====
+                // 不然超 5MB 配额静默失败 -> 下次进 admin.html 还是没缓存 -> 又要重新拉 OSS 慢
+                try {
+                    var lightProducts = allProducts.map(function(p) {
+                        var imgs = (p.image || p.images || '').toString().split(',');
+                        var firstImg = imgs[0] || (Array.isArray(p.images) ? p.images[0] : '') || '';
+                        var brands = '';
+                        var ft = p.fitmentTable || [];
+                        if (ft.length) {
+                            var seen = {};
+                            for (var i = 0; i < ft.length; i++) {
+                                var m = (ft[i].make || '').toUpperCase();
+                                if (m && !seen[m]) { seen[m] = 1; brands += (brands ? ',' : '') + m; }
+                            }
+                        }
+                        return {
+                            id: p.id,
+                            name: p.name || p.title || '',
+                            category: p.category || 'other',
+                            oem: p.oem || p.oemCode || '',
+                            image: firstImg,
+                            fileName: p.fileName || '',
+                            brands: brands
+                        };
+                    });
+                    localStorage.setItem('cached_products', JSON.stringify({data: lightProducts, sha: Date.now(), full: false}));
+                    console.log('[Products] 精简缓存已存,产品数:', lightProducts.length, ',原 3.3MB -> 精简后估算', Math.round(JSON.stringify(lightProducts).length/1024) + 'KB');
+                } catch(e) {
+                    console.warn('[Products] 精简缓存写入失败:', e);
+                }
                 console.log('[Products] OSS加载完成，产品数:', allProducts.length);
             } catch(e) {
                 console.error('[Products] OSS加载失败:', e);
@@ -1209,17 +1241,22 @@
             var name = (x.name || x.title || '未命名').toString();
             var oem = x.oem || x.oemCode || '';
             
-            // 提取精准车型
+            // 提取精准车型 (兼容精简版: 直接用 brands 字段; 完整版: 从 fitmentTable 提取)
             var fitmentDisplay = '';
-            var fitmentTable = x.fitmentTable || [];
-            if (fitmentTable && fitmentTable.length > 0) {
-                var brands = {};
-                fitmentTable.forEach(function(item) {
-                    if (item.make) brands[item.make.toUpperCase()] = true;
-                });
-                var brandList = Object.keys(brands);
-                if (brandList.length > 0) {
-                    fitmentDisplay = brandList.slice(0, 3).join(', ');
+            if (x.brands) {
+                // 精简版: brands 已经是 "HONDA,TOYOTA,NISSAN" 形式
+                fitmentDisplay = x.brands.split(',').slice(0, 3).join(', ');
+            } else {
+                var fitmentTable = x.fitmentTable || [];
+                if (fitmentTable && fitmentTable.length > 0) {
+                    var brandsObj = {};
+                    fitmentTable.forEach(function(item) {
+                        if (item.make) brandsObj[item.make.toUpperCase()] = true;
+                    });
+                    var brandList = Object.keys(brandsObj);
+                    if (brandList.length > 0) {
+                        fitmentDisplay = brandList.slice(0, 3).join(', ');
+                    }
                 }
             }
             
@@ -1418,13 +1455,36 @@
             showToast('保存成功！', false);
             closeEditModal();
 
-            // ===== 2026-06-21 修复: 保存后立即写 localStorage 缓存 + 同步 currentVersion =====
+            // ===== 2026-06-21 修复: 保存后立即写精简版 localStorage 缓存 + 同步 currentVersion =====
             // 不然下次切回商品 tab 还得重新拉 OSS 3.3MB (跨网慢) -> 卡 40秒+ "加载中..."
+            // 精简版只存渲染列表需要的字段 (3.3MB -> ~60KB), 轻松放 5MB 配额
             try {
-                localStorage.setItem('cached_products', JSON.stringify({data: allProducts, sha: Date.now()}));
+                var lightProducts2 = allProducts.map(function(p) {
+                    var imgs2 = (p.image || p.images || '').toString().split(',');
+                    var firstImg2 = imgs2[0] || (Array.isArray(p.images) ? p.images[0] : '') || '';
+                    var brands2 = '';
+                    var ft2 = p.fitmentTable || [];
+                    if (ft2.length) {
+                        var seen2 = {};
+                        for (var j = 0; j < ft2.length; j++) {
+                            var m2 = (ft2[j].make || '').toUpperCase();
+                            if (m2 && !seen2[m2]) { seen2[m2] = 1; brands2 += (brands2 ? ',' : '') + m2; }
+                        }
+                    }
+                    return {
+                        id: p.id,
+                        name: p.name || p.title || '',
+                        category: p.category || 'other',
+                        oem: p.oem || p.oemCode || '',
+                        image: firstImg2,
+                        fileName: p.fileName || '',
+                        brands: brands2
+                    };
+                });
+                localStorage.setItem('cached_products', JSON.stringify({data: lightProducts2, sha: Date.now(), full: false}));
                 if (typeof currentVersion !== 'undefined') { currentVersion = Date.now(); }
-                console.log('[Admin Edit] localStorage 缓存已更新,产品数:', allProducts.length);
-            } catch(e) { console.warn('[Admin Edit] 缓存更新失败:', e); }
+                console.log('[Admin Edit] 精简缓存已更新,产品数:', lightProducts2.length);
+            } catch(e) { console.warn('[Admin Edit] 精简缓存更新失败:', e); }
 
             
             // 只更新当前页面上被编辑的那个卡片，不重新渲染所有卡片
