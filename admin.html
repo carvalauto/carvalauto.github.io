@@ -1122,9 +1122,9 @@
         // 后台静默加载 OSS 数据
         setTimeout(async function() {
             try {
-                var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now();
+                var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json';
                 var controller = new AbortController();
-                var timeoutId = setTimeout(function() { controller.abort(); }, 10000);
+                var timeoutId = setTimeout(function() { controller.abort(); }, 30000);
                 var r = await fetch(OSS_URL, { signal: controller.signal });
                 clearTimeout(timeoutId);
 
@@ -1417,11 +1417,15 @@
             
             showToast('保存成功！', false);
             closeEditModal();
-            
-            // 同步当前版本号，防止 realtime-update.js 触发刷新
-            if (typeof window.realtimeVersion !== 'undefined' && window.realtimeVersion) {
-                window.realtimeVersion = Date.now();
-            }
+
+            // ===== 2026-06-21 修复: 保存后立即写 localStorage 缓存 + 同步 currentVersion =====
+            // 不然下次切回商品 tab 还得重新拉 OSS 3.3MB (跨网慢) -> 卡 40秒+ "加载中..."
+            try {
+                localStorage.setItem('cached_products', JSON.stringify({data: allProducts, sha: Date.now()}));
+                if (typeof currentVersion !== 'undefined') { currentVersion = Date.now(); }
+                console.log('[Admin Edit] localStorage 缓存已更新,产品数:', allProducts.length);
+            } catch(e) { console.warn('[Admin Edit] 缓存更新失败:', e); }
+
             
             // 只更新当前页面上被编辑的那个卡片，不重新渲染所有卡片
             var editId = String(editingProductId);
