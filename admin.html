@@ -3738,7 +3738,6 @@ var CATEGORY_CONTENT = {
         setTimeout(function() { t.classList.remove('show'); }, isError ? 4000 : 3000);
     }
     
-    window.addEventListener('load', function() {
         // 不再使用 localStorage 中的 Token，直接使用代码中定义的 Token
         // var savedToken = localStorage.getItem('gh_token');
         // if (savedToken) GH_TOKEN = savedToken;
@@ -3779,7 +3778,6 @@ var CATEGORY_CONTENT = {
                 document.getElementById('dashboardSection').style.display = 'none';
             };
         }
-    });
     
     // ===== Google Analytics 集成 =====
     function initAnalytics() {
