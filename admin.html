@@ -1315,7 +1315,8 @@
         var images = (product.image || product.images || '').toString().split(',').map(function(s) { return s.trim(); }).filter(Boolean);
         if (images.length) {
             imagesEditor.innerHTML = images.map(function(url, i) { 
-                return '<div class="image-item"><img src="' + url + '" alt="" onerror="this.src=&#39;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>&#39;' + '"><input type="text" value="' + url + '" class="image-url"><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button></div>';
+                var fileName = url.split('/').pop();
+                return '<div class="image-item"><img src="' + url + '" alt="" onerror="this.src=&#39;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>&#39;' + '"><input type="text" value="' + fileName + '" data-full-url="' + url + '" class="image-url" title="' + url + '"><button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button></div>';
             }).join('');
         } else {
             imagesEditor.innerHTML = '<div style="color:var(--text-muted);font-size:11px;padding:8px;text-align:center;">暂无图片，点击下方添加</div>';
@@ -1348,7 +1349,7 @@
         var title = document.getElementById('editTitle').value.trim();
         var oem = document.getElementById('editOem').value.trim();
         var imageInputs = document.querySelectorAll('.image-item .image-url');
-        var images = Array.prototype.slice.call(imageInputs).map(function(i) { return i.value.trim(); }).filter(Boolean);
+        var images = Array.prototype.slice.call(imageInputs).map(function(i) { return (i.dataset.fullUrl || i.value).trim(); }).filter(Boolean);
         var imageStr = images.join(',');
         
         showToast('正在保存...', false);
