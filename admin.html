@@ -1095,7 +1095,12 @@
     
     async function loadProducts() {
         var c = document.getElementById('productList');
-        
+
+        // ===== 2026-06-21 修复 v2: 一次性读 URL ?page=N 并清掉,缓存和OSS分支共用同一个变量 =====
+        // 不然缓存分支先 history.replaceState 清掉 URL,OSS 分支(0ms 后)读 URL 拿到 null 强制设回第 1 页
+        var _pageFromUrl = parseInt(new URLSearchParams(window.location.search).get('page'));
+        if (_pageFromUrl > 0) { try { history.replaceState({}, '', 'admin.html'); } catch(e){} }
+
         // 优先使用缓存，立即显示
         var cached = localStorage.getItem('cached_products');
         var hasCache = false;
@@ -1107,9 +1112,7 @@
                     // 精简版字段: id, name, category, oem, image, brands
                     // renderProducts 已兼容 (用 brands 替代 fitmentTable 品牌提取)
                     allProducts = cachedData.data;
-                    var _up = parseInt(new URLSearchParams(window.location.search).get('page'));
-                    currentProductPage = (_up > 0 && _up <= Math.ceil(allProducts.length / productsPerPage)) ? _up : 1;
-                    if (_up > 0) { try { history.replaceState({}, '', 'admin.html'); } catch(e){} }
+                    currentProductPage = (_pageFromUrl > 0 && _pageFromUrl <= Math.ceil(allProducts.length / productsPerPage)) ? _pageFromUrl : 1;
                     renderProducts();
                     hasCache = true;
                     console.log('[Products] 优先显示' + (cachedData.full ? '完整' : '精简') + '缓存,产品数:', allProducts.length);
@@ -1139,9 +1142,7 @@
                 if (!Array.isArray(jsonData)) throw new Error('OSS返回非数组 (' + (typeof jsonData) + ')');
 
                 allProducts = jsonData;
-                var _up2 = parseInt(new URLSearchParams(window.location.search).get('page'));
-                currentProductPage = (_up2 > 0 && _up2 <= Math.ceil(allProducts.length / productsPerPage)) ? _up2 : 1;
-                if (_up2 > 0) { try { history.replaceState({}, '', 'admin.html'); } catch(e){} }
+                currentProductPage = (_pageFromUrl > 0 && _pageFromUrl <= Math.ceil(allProducts.length / productsPerPage)) ? _pageFromUrl : 1;
                 renderProducts();
                 // ===== 2026-06-21 修复: 只存精简版到 localStorage (3.3MB -> ~60KB) =====
                 // 不然超 5MB 配额静默失败 -> 下次进 admin.html 还是没缓存 -> 又要重新拉 OSS 慢
