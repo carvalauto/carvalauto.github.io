@@ -1110,7 +1110,7 @@
                     currentProductPage = 1;
                     renderProducts();
                     hasCache = true;
-                    console.log('[Products] 优先显示' + (cachedData.full ? '完整' : '精简') + '缓存,产品数:', allProducts.length);
+                    console.log('[Products] 优先显示' + (cachedData.full ? '完整' : '精简') + '缓存,产品数:', allProducts.length, (cachedData.source ? ',来源:' + cachedData.source : ''));
                 }
             } catch(e) {
                 console.warn('[Products] 缓存解析失败:', e);
@@ -1122,61 +1122,98 @@
             c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         }
         
-        // 后台静默加载 OSS 数据
+        // 后台静默加载产品数据 - 2026-06-21 修复：优先 Cloudflare CDN (gzip 525KB 快) + OSS 回退
         setTimeout(async function() {
+            // 优先走 carvalautopart.com (Cloudflare CDN, gzip 后 525KB, 国内访问快)
+            // 失败回退到 OSS (阿里云杭州, 3.3MB, 国内访问慢)
+            var PAGES_URL = 'https://carvalautopart.com/products.json';
+            var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json';
+
+            var t0 = Date.now();
+            var jsonData = null;
+            var usedSource = null;
+            var failReason = null;
+
+            // 先试 Cloudflare CDN
             try {
-                var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json';
-                var controller = new AbortController();
-                var timeoutId = setTimeout(function() { controller.abort(); }, 30000);
-                var r = await fetch(OSS_URL, { signal: controller.signal });
-                clearTimeout(timeoutId);
-
-                if (!r.ok) throw new Error('OSS请求失败: ' + r.status);
-
-                var jsonData = await r.json();
-                if (!Array.isArray(jsonData)) throw new Error('OSS返回非数组 (' + (typeof jsonData) + ')');
-
-                allProducts = jsonData;
-                currentProductPage = 1;
-                renderProducts();
-                // ===== 2026-06-21 修复: 只存精简版到 localStorage (3.3MB -> ~60KB) =====
-                // 不然超 5MB 配额静默失败 -> 下次进 admin.html 还是没缓存 -> 又要重新拉 OSS 慢
+                console.log('[Products] 优先尝试 Cloudflare CDN:', PAGES_URL);
+                var controller1 = new AbortController();
+                var timeoutId1 = setTimeout(function() { controller1.abort(); }, 15000);
+                var r1 = await fetch(PAGES_URL, { signal: controller1.signal, cache: 'no-cache' });
+                clearTimeout(timeoutId1);
+                if (!r1.ok) throw new Error('CDN HTTP ' + r1.status);
+                jsonData = await r1.json();
+                if (!Array.isArray(jsonData)) throw new Error('CDN 返回非数组 (' + (typeof jsonData) + ')');
+                usedSource = 'Cloudflare CDN';
+            } catch(e1) {
+                failReason = e1.name === 'AbortError' ? 'CDN 超时(>15秒)' : ('CDN 失败: ' + e1.message);
+                console.warn('[Products] Cloudflare CDN 失败,回退 OSS。', failReason);
+                // 回退 OSS
                 try {
-                    var lightProducts = allProducts.map(function(p) {
-                        var imgs = (p.image || p.images || '').toString().split(',');
-                        var firstImg = imgs[0] || (Array.isArray(p.images) ? p.images[0] : '') || '';
-                        var brands = '';
-                        var ft = p.fitmentTable || [];
-                        if (ft.length) {
-                            var seen = {};
-                            for (var i = 0; i < ft.length; i++) {
-                                var m = (ft[i].make || '').toUpperCase();
-                                if (m && !seen[m]) { seen[m] = 1; brands += (brands ? ',' : '') + m; }
-                            }
-                        }
-                        return {
-                            id: p.id,
-                            name: p.name || p.title || '',
-                            category: p.category || 'other',
-                            oem: p.oem || p.oemCode || '',
-                            image: firstImg,
-                            fileName: p.fileName || '',
-                            brands: brands
-                        };
-                    });
-                    localStorage.setItem('cached_products', JSON.stringify({data: lightProducts, sha: Date.now(), full: false}));
-                    console.log('[Products] 精简缓存已存,产品数:', lightProducts.length, ',原 3.3MB -> 精简后估算', Math.round(JSON.stringify(lightProducts).length/1024) + 'KB');
-                } catch(e) {
-                    console.warn('[Products] 精简缓存写入失败:', e);
+                    console.log('[Products] 回退尝试 OSS:', OSS_URL);
+                    var controller2 = new AbortController();
+                    var timeoutId2 = setTimeout(function() { controller2.abort(); }, 30000);
+                    var r2 = await fetch(OSS_URL, { signal: controller2.signal, cache: 'no-cache' });
+                    clearTimeout(timeoutId2);
+                    if (!r2.ok) throw new Error('OSS HTTP ' + r2.status);
+                    jsonData = await r2.json();
+                    if (!Array.isArray(jsonData)) throw new Error('OSS 返回非数组 (' + (typeof jsonData) + ')');
+                    usedSource = 'OSS (阿里云)';
+                } catch(e2) {
+                    console.error('[Products] OSS 也失败:', e2);
+                    if (!hasCache) {
+                        var errMsg = (e2.name === 'AbortError' ? 'OSS 超时(>30秒)' : (e2.message || '未知错误')) + ' (CDN: ' + failReason + ')';
+                        var hint = location.protocol === 'file:' ? '<p style="font-size:12px;margin-top:8px;color:var(--text-muted);">提示：file:// 协议下 CORS 会阻塞，请用 https://carvalauto.github.io/admin.html 打开</p>' : '';
+                        c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);font-size:32px;"></i><p>加载失败: ' + errMsg + '</p>' + hint + '</div>';
+                    }
+                    return;
                 }
-                console.log('[Products] OSS加载完成，产品数:', allProducts.length);
+            }
+
+            var elapsed = Date.now() - t0;
+            console.log('[Products] 数据加载成功,来源:', usedSource, ',耗时:', elapsed + 'ms', ',产品数:', jsonData.length);
+
+            allProducts = jsonData;
+            currentProductPage = 1;
+            try {
+                renderProducts();
+                console.log('[Products] 渲染完成,productList.innerHTML.length =', c.innerHTML.length);
             } catch(e) {
-                console.error('[Products] OSS加载失败:', e);
+                console.error('[Products] renderProducts 抛错:', e);
                 if (!hasCache) {
-                    var errMsg = e.name === 'AbortError' ? '加载超时(>10秒)' : (e.message || '未知错误');
-                    var hint = location.protocol === 'file:' ? '<p style="font-size:12px;margin-top:8px;color:var(--text-muted);">提示：file:// 协议下 CORS 会阻塞，请用 https://carvalauto.github.io/admin.html 打开</p>' : '';
-                    c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);font-size:32px;"></i><p>加载失败: ' + errMsg + '</p>' + hint + '</div>';
+                    c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);"></i><p>渲染失败: ' + e.message + '</p></div>';
                 }
+                return;
+            }
+
+            // 写精简版到 localStorage
+            try {
+                var lightProducts = allProducts.map(function(p) {
+                    var imgs = (p.image || p.images || '').toString().split(',');
+                    var firstImg = imgs[0] || (Array.isArray(p.images) ? p.images[0] : '') || '';
+                    var brands = '';
+                    var ft = p.fitmentTable || [];
+                    if (ft.length) {
+                        var seen = {};
+                        for (var i = 0; i < ft.length; i++) {
+                            var m = (ft[i].make || '').toUpperCase();
+                            if (m && !seen[m]) { seen[m] = 1; brands += (brands ? ',' : '') + m; }
+                        }
+                    }
+                    return {
+                        id: p.id,
+                        name: p.name || p.title || '',
+                        category: p.category || 'other',
+                        oem: p.oem || p.oemCode || '',
+                        image: firstImg,
+                        fileName: p.fileName || '',
+                        brands: brands
+                    };
+                });
+                localStorage.setItem('cached_products', JSON.stringify({data: lightProducts, sha: Date.now(), full: false, source: usedSource}));
+                console.log('[Products] 精简缓存已存,产品数:', lightProducts.length, ',精简后', Math.round(JSON.stringify(lightProducts).length/1024) + 'KB');
+            } catch(e) {
+                console.warn('[Products] 精简缓存写入失败:', e);
             }
         }, hasCache ? 500 : 0);
     }
@@ -1234,6 +1271,7 @@
             return; 
         }
         
+        console.log('[Products] renderProducts 渲染,filtered.length =', filtered.length, ',pageProducts.length =', pageProducts.length, ',categoryFilter =', categoryFilter);
         c.innerHTML = pageProducts.map(function(x) {
             var img = (x.image || x.images || '').toString().split(',')[0] || '';
             var cat = (x.category || 'other');
