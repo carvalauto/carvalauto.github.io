@@ -41,15 +41,15 @@
         .stat-card.active-filter .stat-label { color: rgba(255,255,255,0.8); }
         
         .product-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .product-card { background: var(--bg-card); border-radius: 8px; overflow: hidden; display: flex; }
-        .product-card-img { width: 80px; height: 80px; object-fit: cover; background: #2a2a2a; flex-shrink: 0; }
-        .product-info { padding: 10px; flex: 1; min-width: 0; }
-        .product-title { font-size: 12px; font-weight: 600; margin-bottom: 5px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .product-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
-        .product-tag { font-size: 8px; padding: 2px 5px; border-radius: 3px; background: rgba(15,76,129,0.3); color: #6db3f2; }
+        .product-card { background: var(--bg-card); border-radius: 8px; overflow: hidden; display: flex; align-items: center; padding: 10px; gap: 14px; }
+        .product-card-img { width: 100px; height: 100px; object-fit: cover; background: #2a2a2a; flex-shrink: 0; border-radius: 6px; }
+        .product-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+        .product-title { font-size: 13px; font-weight: 600; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .product-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+        .product-tag { font-size: 10px; padding: 3px 7px; border-radius: 4px; background: rgba(15,76,129,0.3); color: #6db3f2; }
         .product-tag.oem { background: rgba(230,57,70,0.2); color: #ff6b7a; }
-        .product-actions { display: flex; gap: 6px; padding-top: 8px; border-top: 1px solid var(--border); }
-        .btn { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; display: flex; align-items: center; gap: 4px; transition: all 0.2s; }
+        .product-actions { display: flex; gap: 8px; padding-top: 8px; border-top: 1px solid var(--border); margin-top: auto; }
+        .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; display: flex; align-items: center; gap: 4px; transition: all 0.2s; }
         .btn:hover { opacity: 0.8; transform: translateY(-1px); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .btn-danger { background: rgba(230,57,70,0.2); color: #ff6b7a; }
