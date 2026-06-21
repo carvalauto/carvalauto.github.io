@@ -1122,47 +1122,49 @@
             c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         }
         
-        // 后台静默加载产品数据 - 2026-06-21 修复：优先 Cloudflare CDN (gzip 525KB 快) + OSS 回退
+        // 后台静默加载产品数据 - 2026-06-21 修复(第四次): 优先 OSS 后 CDN
+        // 重要变更: OSS 才是新数据 (993 个), Cloudflare CDN 是 6 月份前的旧数据 (114 个)
+        // 之前优先 CDN 把缓存的 993 个覆盖成了 114 个 → 用户看到的产品变少
         setTimeout(async function() {
-            // 优先走 carvalautopart.com (Cloudflare CDN, gzip 后 525KB, 国内访问快)
-            // 失败回退到 OSS (阿里云杭州, 3.3MB, 国内访问慢)
-            var PAGES_URL = 'https://carvalautopart.com/products.json';
+            // 优先走 OSS (阿里云杭州, 3.3MB, 1-3s 拉到 993 个最新产品)
+            // 回退到 carvalautopart.com (Cloudflare CDN, 525KB gzip, 但只有 114 个老数据)
             var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json';
+            var PAGES_URL = 'https://carvalautopart.com/products.json';
 
             var t0 = Date.now();
             var jsonData = null;
             var usedSource = null;
             var failReason = null;
 
-            // 先试 Cloudflare CDN
+            // 先试 OSS (新数据源)
             try {
-                console.log('[Products] 优先尝试 Cloudflare CDN:', PAGES_URL);
+                console.log('[Products] 优先尝试 OSS (新数据源):', OSS_URL);
                 var controller1 = new AbortController();
                 var timeoutId1 = setTimeout(function() { controller1.abort(); }, 15000);
-                var r1 = await fetch(PAGES_URL, { signal: controller1.signal, cache: 'no-cache' });
+                var r1 = await fetch(OSS_URL, { signal: controller1.signal, cache: 'no-cache' });
                 clearTimeout(timeoutId1);
-                if (!r1.ok) throw new Error('CDN HTTP ' + r1.status);
+                if (!r1.ok) throw new Error('OSS HTTP ' + r1.status);
                 jsonData = await r1.json();
-                if (!Array.isArray(jsonData)) throw new Error('CDN 返回非数组 (' + (typeof jsonData) + ')');
-                usedSource = 'Cloudflare CDN';
+                if (!Array.isArray(jsonData)) throw new Error('OSS 返回非数组 (' + (typeof jsonData) + ')');
+                usedSource = 'OSS (阿里云)';
             } catch(e1) {
-                failReason = e1.name === 'AbortError' ? 'CDN 超时(>15秒)' : ('CDN 失败: ' + e1.message);
-                console.warn('[Products] Cloudflare CDN 失败,回退 OSS。', failReason);
-                // 回退 OSS
+                failReason = e1.name === 'AbortError' ? 'OSS 超时(>15秒)' : ('OSS 失败: ' + e1.message);
+                console.warn('[Products] OSS 失败,回退 CDN。', failReason);
+                // 回退 CDN
                 try {
-                    console.log('[Products] 回退尝试 OSS:', OSS_URL);
+                    console.log('[Products] 回退尝试 Cloudflare CDN:', PAGES_URL);
                     var controller2 = new AbortController();
-                    var timeoutId2 = setTimeout(function() { controller2.abort(); }, 30000);
-                    var r2 = await fetch(OSS_URL, { signal: controller2.signal, cache: 'no-cache' });
+                    var timeoutId2 = setTimeout(function() { controller2.abort(); }, 15000);
+                    var r2 = await fetch(PAGES_URL, { signal: controller2.signal, cache: 'no-cache' });
                     clearTimeout(timeoutId2);
-                    if (!r2.ok) throw new Error('OSS HTTP ' + r2.status);
+                    if (!r2.ok) throw new Error('CDN HTTP ' + r2.status);
                     jsonData = await r2.json();
-                    if (!Array.isArray(jsonData)) throw new Error('OSS 返回非数组 (' + (typeof jsonData) + ')');
-                    usedSource = 'OSS (阿里云)';
+                    if (!Array.isArray(jsonData)) throw new Error('CDN 返回非数组 (' + (typeof jsonData) + ')');
+                    usedSource = 'Cloudflare CDN';
                 } catch(e2) {
-                    console.error('[Products] OSS 也失败:', e2);
+                    console.error('[Products] CDN 也失败:', e2);
                     if (!hasCache) {
-                        var errMsg = (e2.name === 'AbortError' ? 'OSS 超时(>30秒)' : (e2.message || '未知错误')) + ' (CDN: ' + failReason + ')';
+                        var errMsg = (e2.name === 'AbortError' ? 'CDN 超时(>15秒)' : (e2.message || '未知错误')) + ' (OSS: ' + failReason + ')';
                         var hint = location.protocol === 'file:' ? '<p style="font-size:12px;margin-top:8px;color:var(--text-muted);">提示：file:// 协议下 CORS 会阻塞，请用 https://carvalauto.github.io/admin.html 打开</p>' : '';
                         c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);font-size:32px;"></i><p>加载失败: ' + errMsg + '</p>' + hint + '</div>';
                     }
