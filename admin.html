@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com" crossorigin>
-    <link rel="preload" as="fetch" href="https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json" crossorigin="anonymous">
-
     <title>Carval Auto - 后台管理</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.18.0.min.js"></script>
@@ -3762,10 +3759,7 @@ var CATEGORY_CONTENT = {
         setTimeout(function() { t.classList.remove('show'); }, isError ? 4000 : 3000);
     }
     
-    // [v2.3.5 修复] 立即触发 loadProducts - 不等 CDN 资源加载完
-    // 原来在 window.load 触发 → 等 chart.js/oss-sdk/Google SDK 全部加载完 (3-5s+) → admin 主体一直显示加载中
-    // 现在: DOMContentLoaded 触发 → 立即拉 OSS 数据 → 1-2s 内看到产品
-    function initApp() {
+    window.addEventListener('load', function() {
         loadProducts();
         
         // Google 按钮绑定
@@ -3828,13 +3822,6 @@ var CATEGORY_CONTENT = {
                 dashboardSection.style.display = 'none';
             }
         });
-    }
-    
-    // [v2.3.5 修复] DOMContentLoaded 触发 initApp (不等 CDN 资源)
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initApp);
-    } else {
-        initApp();
     }
     
     // 旧的绑定代码（已废弃）
