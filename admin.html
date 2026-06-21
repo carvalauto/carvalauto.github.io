@@ -1489,12 +1489,14 @@
     // 生成OSS签名（新增函数）
     async function generateOSSAuth(method, objectKey, contentLength) {
         var date = new Date().toUTCString();
+        // OSS v1 签名：CanonicalizedOSSHeaders 只包含 x-oss-* 中 OSS 实际识别的字段
+        // 之前误把 'x-oss-date:' + date 加进 StringToSign，OSS 不认这个 header，签名永远 403
+        // 修复：删掉该行，仅保留 VERB/MD5/Content-Type/Date/Resource
         var stringToSign = [
             method,
             '',
             'application/json',
             date,
-            'x-oss-date:' + date,
             '/carvalauto-products' + objectKey
         ].join('\n');
         
