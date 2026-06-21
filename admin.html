@@ -1834,7 +1834,7 @@
             if (skip) continue;
             seen[url] = true;
             safeImgs.push(url);
-            if (safeImgs.length >= 2) return safeImgs;
+            // v2.3.5: 去掉 max 2 限制，采集多少图就生成多少图缩略图
         }
         return safeImgs.length ? safeImgs : [PLACEHOLDER];
     }
@@ -2053,7 +2053,8 @@
         var thumbHtml = '';
         var imgCounterHtml = '';
         if (images.length > 1) {
-            for (var ti = 0; ti < Math.min(2, images.length); ti++) {
+            // v2.3.5: 不限制 2 张，采集多少图就显示多少图缩略图
+            for (var ti = 0; ti < images.length; ti++) {
                 var active = ti === 0 ? ' active' : '';
                 var alt = oem ? (name + ' - Product Image ' + (ti + 1) + ' of ' + images.length + ' - OEM ' + oem) : (name + ' - Product Image ' + (ti + 1) + ' of ' + images.length);
                 thumbHtml += '<img src="' + htmlEsc(images[ti]) + '" alt="' + htmlEsc(alt) + '" class="thumb' + active + '" data-idx="' + ti + '" loading="lazy">';
