@@ -2,5 +2,5 @@
 /product.html / 301
 # 废弃内容目录跳转首页
 /contents/ / 301
-# 所有404兜底交给404.html处理
-/* /index.html 200
+# 注释掉SPA兜底，改用404.html全局拦截
+# /* /index.html 200
