@@ -2068,6 +2068,16 @@
         return { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faqs };
     }
 
+    function generateSlug(name, id) {
+        var slug = (name || '').toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-|-$/g, '')
+            .slice(0, 100);
+        return slug ? (slug + '-' + id) : String(id);
+    }
+
     function buildSEOHtml(productData, catContent, productSchema, howtoSchema, faqSchema) {
         var name = (productData.name || productData.title || '').toString();
         var oem = productData.oem || productData.oemCode || '';
@@ -2088,7 +2098,7 @@
         metaDesc += ' | Application + Installation Guide | Wholesale MOQ 5pcs | Free Quote';
         metaDesc = metaDesc.slice(0, 160);
 
-        var slug = String(productId);
+        var slug = generateSlug(name, productId);
         var url = 'https://carvalautopart.com/products/' + slug + '.html';
 
         var fitmentHtml = '';
@@ -3570,8 +3580,8 @@ var CATEGORY_CONTENT = {
             // 2) 检测品类 + 3 Schema
             var catKey = detectCategory(product.name || product.title || '');
             var catContent = CATEGORY_CONTENT[catKey] || CATEGORY_CONTENT['general'];
-            var safeId = String(productId).replace(/[^a-zA-Z0-9-_]/g, '_');
-            var filePath = 'products/' + safeId + '.html';
+            var slug = generateSlug(product.name || product.title, productId);
+            var filePath = 'products/' + slug + '.html';
             var url = 'https://carvalautopart.com/' + filePath;
             var productSchema = buildProductSchema(product, url, catContent);
             var howtoSchema = buildHowToSchema(product, catContent);
@@ -4135,8 +4145,8 @@ var CATEGORY_CONTENT = {
             // 2) 检测品类 + 3 Schema
             var catKey = detectCategory(product.name || product.title || '');
             var catContent = CATEGORY_CONTENT[catKey] || CATEGORY_CONTENT['general'];
-            var safeId = String(productId).replace(/[^a-zA-Z0-9-_]/g, '_');
-            var filePath = 'products/' + safeId + '.html';
+            var slug = generateSlug(product.name || product.title, productId);
+            var filePath = 'products/' + slug + '.html';
             var url = 'https://carvalautopart.com/' + filePath;
             var productSchema = buildProductSchema(product, url, catContent);
             var howtoSchema = buildHowToSchema(product, catContent);
