@@ -1,15 +1,19 @@
 User-agent: *
 Allow: /
 
-# 屏蔽管理后台，爬虫不抓取
+# 屏蔽管理后台
 Disallow: /admin.html
-# 无用垃圾页面、CDN路径屏蔽
 Disallow: /contents/
 Disallow: /cdn-cgi/
-# 禁止抓取筛选、分页类动态链接（防止海量无效404）
+
+# 屏蔽旧格式产品页（纯数字ID），防止无效404
+Disallow: /products/177*
+Disallow: /products/ru/177*
+
+# 禁止抓取筛选、分页类动态链接
 Disallow: /*?filter=
 Disallow: /*?sort=
 Disallow: /page/*
 
-# 提交站点地图地址，引导谷歌爬有效产品页
+# 提交站点地图地址
 Sitemap: https://carvalautopart.com/sitemap.xml
