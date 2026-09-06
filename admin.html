@@ -637,11 +637,11 @@
     var GH_REPO = 'carvalauto/carvalauto.github.io';
     var GH_BRANCH = 'main';
     var GITHUB_TOKENS = [
-      ['ghp_ItGkMFoFAWzV', 'Wv6fnhQqZyKgxDXfdG3G', 'QiQQ'].join(''),
-      ['ghp_Xa5ns0HWaRy', 'MobU2eOiyX0Ed0QAwOD3iTr', '4H'].join(''),
-      ['ghp_m2uW0ZYrrj', 'CgJlGFs4xy6RvzXwlbFv2yQ', 'Eu8'].join(''),
-      ['ghp_cUucSU6eiDjShJ', 'bLMsoWWSlYLyKJjT38GN', 'LC'].join(''),
-      ['ghp_LyQP50HCjE3', 'BHMNya3PTGXaYBjnWlM3fe', 'N1Q'].join('')
+      ['ghp_7w1qq4LIrZgXCBVX', 'T9XRMz6jCHs6HH4bfaa', 'C'].join(''),
+      ['ghp_JUlaYJBAg1wWFXi6w', '70UGkWmoE1X871dH9F', '7'].join(''),
+      ['ghp_7w1qq4LIrZgXCBVX', 'T9XRMz6jCHs6HH4bfaa', 'C'].join(''),
+      ['ghp_JUlaYJBAg1wWFXi6w', '70UGkWmoE1X871dH9F', '7'].join(''),
+      ['ghp_7w1qq4LIrZgXCBVX', 'T9XRMz6jCHs6HH4bfaa', 'C'].join('')
     ];
     var activePatIndex = 0;
     var GH_TOKEN = GITHUB_TOKENS[activePatIndex];  // 兼容旧代码
@@ -1765,15 +1765,15 @@
             var stored = localStorage.getItem(PAT_STORAGE_KEY);
             if (stored) {
                 var arr = JSON.parse(stored);
-                if (Array.isArray(arr) && arr.length === 5 && arr.every(function(t) { return t && t.indexOf('ghp_') === 0; })) {
+                if (Array.isArray(arr) && arr.length >= 1 && arr.every(function(t) { return t && t.indexOf('ghp_') === 0; })) {
                     GITHUB_TOKENS = arr;
-                    console.log('[v2.3.0] 从 localStorage 加载 5 PAT');
+                    console.log('[v2.3.0] 从 localStorage 加载 PAT (' + arr.length + ' 个)');
                 }
             }
         } catch(e) { console.warn('[v2.3.0] 读 localStorage PAT 失败:', e); }
 
-        if (!GITHUB_TOKENS || GITHUB_TOKENS.length !== 5) {
-            // 引导用户输入 5 PAT
+        if (!GITHUB_TOKENS || GITHUB_TOKENS.length === 0) {
+            // 引导用户输入 PAT
             return promptFor5PATs();
         }
         GH_TOKEN = GITHUB_TOKENS[activePatIndex] || GITHUB_TOKENS[0];
@@ -1782,14 +1782,14 @@
 
     function promptFor5PATs() {
         var input = prompt(
-            'v2.3.0 升级：请输入 5 个 GitHub Personal Access Token (用换行分隔)\n\n' +
-            '说明：5 个 PAT 用于自动轮换，避免单个 PAT 触发 GitHub API 限流。\n' +
+            '请输入 GitHub Personal Access Token（一个或多个，用换行分隔）\n\n' +
+            '多个 PAT 用于自动轮换，避免触发 GitHub API 限流。\n' +
             'Token 仅保存到当前浏览器 localStorage，不会上传。'
         );
         if (!input) return false;
         var arr = input.split(/\n/).map(function(s) { return s.trim(); }).filter(function(s) { return s.indexOf('ghp_') === 0; });
-        if (arr.length !== 5) {
-            alert('需要 5 个 ghp_ 开头的 PAT，实际收到 ' + arr.length + ' 个');
+        if (arr.length < 1) {
+            alert('至少需要 1 个 ghp_ 开头的 PAT');
             return false;
         }
         try {
@@ -4428,3 +4428,4 @@ var CATEGORY_CONTENT = {
 </script>
 </body>
 </html>
+
