@@ -579,7 +579,7 @@
                     </div>
                     <div style="margin-top:6px;">
                         <button class="btn btn-primary" onclick="generateSEOByAI()" id="aiSeoBtn" style="width:100%;justify-content:center;"><i class="fas fa-robot"></i> 🤖 DeepSeek 一键生成 SEO</button>
-                        <div style="font-size:11px;color:var(--text-soft);margin-top:4px;text-align:center;">自动生成标题/描述/关键词/H2，可再手动微调</div>
+                        <div style="font-size:11px;color:var(--text-soft);margin-top:4px;text-align:center;">自动生成标题/描述/关键词/H2，可再手动微调 | <a href="javascript:void(0)" onclick="localStorage.removeItem('deepseek_api_key');showToast('Key 已清除，请刷新后重新输入')" style="color:var(--accent);">更换 Key</a></div>
                     </div>
                 </div>
             </div>
@@ -4224,13 +4224,25 @@ var CATEGORY_CONTENT = {
     }
 
     // ===== v2.4.5: DeepSeek 一键生成 SEO（标题/描述/关键词/H2/产品描述）=====
-    var AI_SEO_KEY = 'sk-a2cc94daf5ae418bbb7ebdefba91c27b';
     var AI_SEO_ENDPOINT = 'https://api.deepseek.com/chat/completions';
     var aiGenerating = false;
+
+    function getAIKey() {
+        var k = localStorage.getItem('deepseek_api_key');
+        if (!k) {
+            k = prompt('请输入 DeepSeek API Key（仅存于你浏览器本地，不会上传）：');
+            if (k && k.trim()) {
+                localStorage.setItem('deepseek_api_key', k.trim());
+            }
+        }
+        return k;
+    }
 
     async function generateSEOByAI() {
         if (!previewSEOState) { showToast('请先打开预览', true); return; }
         if (aiGenerating) { showToast('正在生成中...', true); return; }
+        var apiKey = getAIKey();
+        if (!apiKey) { showToast('未设置 DeepSeek API Key', true); return; }
         var product = previewSEOState.product;
         var catContent = previewSEOState.catContent;
         var name = product.name || product.title || '';
@@ -4263,7 +4275,7 @@ var CATEGORY_CONTENT = {
             ].filter(function(x){return x;}).join('\n');
             var resp = await fetch(AI_SEO_ENDPOINT, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + AI_SEO_KEY },
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getAIKey() },
                 body: JSON.stringify({
                     model: 'deepseek-chat',
                     messages: [{ role: 'user', content: prompt }],
