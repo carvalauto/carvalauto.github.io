@@ -2107,14 +2107,23 @@
 
         var fitmentHtml = '';
         if (summary && Array.isArray(productData.fitmentTable)) {
-            fitmentHtml = '<div class="fitment-section"><h2>Vehicle Fitment (' + summary.count + ' Compatible Variants)</h2><table class="fitment-table"><thead><tr><th>Make</th><th>Model</th><th>Year</th><th>Engine</th></tr></thead><tbody>';
-            for (var fi = 0; fi < productData.fitmentTable.length && fi < 15; fi++) {
-                var row = productData.fitmentTable[fi];
-                if (row.make && row.model) {
-                    fitmentHtml += '<tr><td>' + htmlEsc(row.make) + '</td><td>' + htmlEsc(row.model) + '</td><td>' + htmlEsc(row.year || '') + '</td><td>' + htmlEsc(row.engine || '') + '</td></tr>';
-                }
+            // 全量去重（make+model+year），表头与阿里一致 Car Fitment/Model/Year
+            var seenK = {};
+            var uniq = [];
+            for (var ui = 0; ui < productData.fitmentTable.length; ui++) {
+                var rw = productData.fitmentTable[ui];
+                if (!rw || !rw.make || !rw.model) continue;
+                var kk = rw.make + '|' + rw.model + '|' + (rw.year || '');
+                if (seenK[kk]) continue;
+                seenK[kk] = true;
+                uniq.push(rw);
             }
-            fitmentHtml += '</tbody></table></div>';
+            fitmentHtml = '<div class="fitment-section"><h2>Vehicle Fitment (' + uniq.length + ' Compatible Variants)</h2><div style="max-height:480px;overflow-y:auto;border:1px solid #e0e0e0;border-radius:6px;"><table class="fitment-table"><thead><tr><th>Car Fitment</th><th>Model</th><th>Year</th></tr></thead><tbody>';
+            for (var fi = 0; fi < uniq.length; fi++) {
+                var row = uniq[fi];
+                fitmentHtml += '<tr><td>' + htmlEsc(row.make) + '</td><td>' + htmlEsc(row.model) + '</td><td>' + htmlEsc(row.year || '') + '</td></tr>';
+            }
+            fitmentHtml += '</tbody></table></div></div>';
         }
 
         var compatHtml = '';
