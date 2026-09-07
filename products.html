@@ -148,9 +148,11 @@
         .modal-fitment { margin-bottom: 16px; }
         .modal-fitment-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--steel); margin-bottom: 10px; }
         .modal-fitment-title i { color: var(--red); margin-right: 6px; }
+        .fitment-wrap { max-height: 320px; overflow-y: auto; border: 1px solid #e5e5e5; border-radius: 4px; }
         .fitment-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        .fitment-table th { background: var(--steel); color: white; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; }
+        .fitment-table th { background: var(--steel); color: white; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; position: sticky; top: 0; z-index: 1; }
         .fitment-table td { padding: 7px 10px; border-bottom: 1px solid #eee; }
+        .fitment-table tbody tr:nth-child(even) { background: #f8fafc; }
         .modal-inquire { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; background: var(--red); color: white; border: none; font-size: 14px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.25s; width: 100%; border-radius: 4px; text-decoration: none; }
         .modal-inquire:hover { background: var(--red-dark); }
         .modal-contact { padding: 20px 24px; background: #f8f9fa; border-top: 1px solid #eee; grid-column: 1 / -1; }
@@ -723,9 +725,11 @@ function openProduct(id) {
     
     var fitmentHtml = '';
     if (p.fitmentTable && p.fitmentTable.length > 0) {
-        fitmentHtml = '<div class="modal-fitment-title"><i class="fas fa-car-side"></i> Compatible Vehicles (' + p.fitmentTable.length + ')</div><table class="fitment-table"><thead><tr><th>Make</th><th>Model</th><th>Year</th></tr></thead><tbody>';
-        p.fitmentTable.forEach(function(item) { fitmentHtml += '<tr><td>' + (item.make || item.brand || '-') + '</td><td>' + (item.model || '-') + '</td><td>' + (item.year || '-') + '</td></tr>'; });
-        fitmentHtml += '</tbody></table>';
+        fitmentHtml = '<div class="modal-fitment-title"><i class="fas fa-car-side"></i> Compatible Vehicles (' + p.fitmentTable.length + ')</div><div class="fitment-wrap"><table class="fitment-table"><thead><tr><th>Car Fitment</th><th>Model</th><th>Year</th></tr></thead><tbody>';
+        p.fitmentTable.forEach(function(item) {
+            fitmentHtml += '<tr><td>' + (item.make || item.brand || '-') + '</td><td>' + (item.model || '-') + '</td><td>' + (item.year || '-') + '</td></tr>';
+        });
+        fitmentHtml += '</tbody></table></div>';
     }
     document.getElementById('modalFitment').innerHTML = fitmentHtml;
     document.getElementById('modalDesc').textContent = desc;
