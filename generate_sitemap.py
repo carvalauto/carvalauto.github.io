@@ -1,61 +1,60 @@
-import json
-import re
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Generate sitemap.xml from the REAL files present in the local products/ directory.
+The workflow checks out the whole repo first, so products/*.html (incl. ru/ subdir)
+are real files -> every sitemap URL is guaranteed to resolve.
+"""
+import os
 from datetime import datetime
 
-def clean_slug(text):
-    text = text.lower().strip()
-    text = re.sub(r'[^\x00-\x7f]', '', text)
-    text = re.sub(r'[^a-z0-9\s-]', '', text)
-    text = re.sub(r'[\s_]+', '-', text)
-    text = re.sub(r'-+', '-', text)
-    text = text.strip('-')
-    return text
+BASE = 'https://carvalautopart.com'
+PRODUCTS_DIR = 'products'
 
-def generate_slug(product_name, product_id):
-    name = clean_slug(product_name)
-    name = re.sub(r'\b(api|sn|sp|snsn|acea|cfa|gf|gb|gl|gl-5|dexron|mercon|atf|automatic|transmission|fluid|oil|lubricant|motor|gasoline|diesel|petroleum|base|additive|for|the|of|and|or|in|on|with|20000km|long|life|1l|4l|6l|12|bottles|case|workshop|bulk|pack|1q|1qt|1liter|5w|0w|10w|15w|20w|25w|30|40|50)\b', '', name)
-    name = re.sub(r'-+', '-', name)
-    name = name.strip('-')
-    if len(name) > 55:
-        name = name[:55]
-        last_dash = name.rfind('-')
-        if last_dash > 0:
-            name = name[:last_dash]
-        else:
-            name = name[:50]
-        name = name.rstrip('-')
-    return name + '.html'
-
-with open('products.json', 'r') as f:
-    products = json.load(f)
+def collect_html_files(root):
+    """Recursively collect .html files under root. Returns list of URL paths (no leading slash)."""
+    files = []
+    if not os.path.isdir(root):
+        return files
+    for dirpath, dirnames, filenames in os.walk(root):
+        # skip hidden dirs
+        dirnames[:] = [d for d in dirnames if not d.startswith('.')]
+        for fn in sorted(filenames):
+            if fn.endswith('.html'):
+                rel = os.path.join(dirpath, fn).replace('\\', '/')
+                files.append(rel)
+    return files
 
 today = datetime.now().strftime('%Y-%m-%d')
+
+# Static pages (keep stable order)
+static_urls = [
+    ('https://carvalautopart.com/', 'daily', '1.0'),
+    ('https://carvalautopart.com/products.html', 'daily', '0.9'),
+    ('https://carvalautopart.com/index.html', 'weekly', '0.8'),
+]
+
+product_files = collect_html_files(PRODUCTS_DIR)
+print('Real product HTML files found:', len(product_files))
 
 lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    '  <url>',
-    '    <loc>https://carvalautopart.com/</loc>',
-    '    <lastmod>' + today + '</lastmod>',
-    '    <changefreq>daily</changefreq>',
-    '    <priority>1.0</priority>',
-    '  </url>',
-    '  <url>',
-    '    <loc>https://carvalautopart.com/products.html</loc>',
-    '    <lastmod>' + today + '</lastmod>',
-    '    <changefreq>daily</changefreq>',
-    '    <priority>0.9</priority>',
-    '  </url>',
 ]
 
-for i, p in enumerate(products):
-    pid = p.get('id', str(i + 1))
-    pname = p.get('name', p.get('title', f'Product {pid}'))
-    slug = generate_slug(pname, pid)
+for loc, freq, prio in static_urls:
     lines.append('  <url>')
-    lines.append('    <loc>https://carvalautopart.com/products/' + slug + '</loc>')
+    lines.append('    <loc>' + loc + '</loc>')
     lines.append('    <lastmod>' + today + '</lastmod>')
-    lines.append('    <changefreq>weekly</changefreq>', )
+    lines.append('    <changefreq>' + freq + '</changefreq>')
+    lines.append('    <priority>' + prio + '</priority>')
+    lines.append('  </url>')
+
+for f in product_files:
+    lines.append('  <url>')
+    lines.append('    <loc>' + BASE + '/' + f + '</loc>')
+    lines.append('    <lastmod>' + today + '</lastmod>')
+    lines.append('    <changefreq>weekly</changefreq>')
     lines.append('    <priority>0.8</priority>')
     lines.append('  </url>')
 
@@ -64,4 +63,4 @@ lines.append('</urlset>')
 with open('sitemap.xml', 'w') as f:
     f.write('\n'.join(lines))
 
-print('Sitemap generated! ' + str(len(products)) + ' products')
+print('Sitemap generated! ' + str(len(product_files)) + ' product pages + ' + str(len(static_urls)) + ' static')
