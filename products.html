@@ -594,6 +594,7 @@ function renderProducts() {
     var paginationEl = document.getElementById('pagination');
     
     var filtered = productsData.filter(function(p) {
+        if (p.seo_status === 'pending') return false; // 隐藏待审核，只显示已发布/旧产品
         var matchCat = currentFilter === 'all' || p.category === currentFilter;
         var matchSearch = currentSearch === '' || (p.name || '').toLowerCase().includes(currentSearch) || (p.title || '').toLowerCase().includes(currentSearch) || (p.oem || '').toLowerCase().includes(currentSearch) || (p.oemCode || '').toLowerCase().includes(currentSearch);
         return matchCat && matchSearch;

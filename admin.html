@@ -4325,6 +4325,210 @@ var CATEGORY_CONTENT = {
         }
     }
 
+    // ============================================================
+    // ===== v2.6: 俄语 SEO 页生成（发布时自动，模板不变，仅新增RU页）=====
+    // ============================================================
+    function ruEsc(s) {
+        return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function ruSnippetHreflang(ruUrl, enUrl) {
+        return '<link rel="alternate" hreflang="ru" href="' + ruUrl + '">\n' +
+               '<link rel="alternate" hreflang="en" href="' + enUrl + '">\n' +
+               '<link rel="alternate" hreflang="x-default" href="' + enUrl + '">';
+    }
+    // 给已生成的英文 HTML 注入 ru 的 alternate（不动英文模板，只在 </head> 前插一行）
+    function injectRuHreflang(enHtml, ruUrl, enUrl) {
+        var link = ruSnippetHreflang(ruUrl, enUrl || 'https://carvalautopart.com/');
+        return enHtml.replace(/<\/head>/i, link + '\n</head>');
+    }
+    function ruVehicleSummary(product) {
+        var ft = product.fitmentTable || product.fitment || [];
+        if (!ft.length) return '';
+        var makes = {};
+        for (var i = 0; i < ft.length; i++) { var m = String(ft[i].make || '').trim(); if (m) makes[m] = 1; }
+        return Object.keys(makes).join(', ');
+    }
+    function ruFitmentRows(product) {
+        var ft = product.fitmentTable || product.fitment || [];
+        if (!ft.length) return '';
+        var rows = [];
+        for (var i = 0; i < ft.length; i++) {
+            var f = ft[i]; if (!f) continue;
+            rows.push('<tr><td>' + ruEsc(f.make || '') + '</td><td>' + ruEsc(f.model || '') + '</td><td>' + ruEsc(f.year || '') + '</td></tr>');
+        }
+        return rows.join('\n');
+    }
+    function ruAllImages(product) {
+        var out = [];
+        if (Array.isArray(product.images)) out = product.images.slice();
+        else if (product.image) out = String(product.image).split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+        return out.slice(0, 6);
+    }
+    // DeepSeek 俄语翻译：标题/描述/H1/简介（一次调用，失败返回 null 由调用方降级）
+    async function ruTranslateAI(product) {
+        var apiKey = getAIKey();
+        if (!apiKey) return null;
+        var name = product.name || product.title || '';
+        var oem = product.oem || product.oemCode || '';
+        var brands = ruVehicleSummary(product);
+        try {
+            var promptText = [
+                'Ты SEO-специалист для оптового сайта автозапчастей. Переведи данные продукта на русский.',
+                'Верни ТОЛЬКО JSON без пояснений:',
+                '{"t":"русский title 55-70 символов, OEM и названия моделей оставь латиницей",',
+                '"d":"русское meta описание 120-160 символов: тип детали, OEM, совместимость, опт из Китая",',
+                '"h":"русский H1 до 80 символов, OEM латиницей",',
+                '"intro":"1-2 коротких русских предложения описания с OEM и совместимостью"}',
+                'Правила: без рекламных штампов; марки/модели TOYOTA COROLLA и т.п. пиши латиницей.',
+                'Название товара: ' + name,
+                oem ? 'OEM: ' + oem : '',
+                brands ? 'Совместимость: ' + brands : ''
+            ].filter(Boolean).join('\n');
+            var resp = await fetch(AI_SEO_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+                body: JSON.stringify({
+                    model: 'deepseek-chat',
+                    messages: [{ role: 'user', content: promptText }],
+                    max_tokens: 700,
+                    temperature: 0.5,
+                    response_format: { type: 'json_object' }
+                })
+            });
+            if (!resp.ok) return null;
+            var json = await resp.json();
+            var content = (json.choices && json.choices[0] && json.choices[0].message) ? json.choices[0].message.content : '';
+            var parsed = {};
+            try { parsed = JSON.parse(content); } catch (e) {
+                var mm = String(content).match(/\{[\s\S]*\}/);
+                if (mm) { try { parsed = JSON.parse(mm[0]); } catch (e2) {} }
+            }
+            return { t: parsed.t, d: parsed.d, h: parsed.h, intro: parsed.intro };
+        } catch (e) {
+            console.error('[RU] 翻译失败:', e.message);
+            return null;
+        }
+    }
+    // 翻译失败时的降级俄语文本（结构完整可上线，质量可后续人工补）
+    function ruDefaultTexts(product) {
+        var name = product.name || product.title || '';
+        var oem = product.oem || product.oemCode || '';
+        var brands = ruVehicleSummary(product);
+        var t = name;
+        var d = (name ? name + '. ' : '') + (oem ? 'OEM: ' + oem + '. ' : '') + (brands ? 'Совместимость: ' + brands + '. ' : '') + 'Оптовая продажа автозапчастей из Китая, гарантия качества.';
+        if (d.length > 158) d = d.slice(0, 155) + '...';
+        var h = name;
+        var intro = (name ? 'Запчасть ' + name + '. ' : '') + (oem ? 'Оригинальный номер (OEM): ' + oem + '. ' : '') + (brands ? 'Подходит для: ' + brands + '. ' : '') + 'Качество подтверждено, опт и розница, отгрузка по всему миру.';
+        return { t: t, d: d, h: h, intro: intro };
+    }
+    // 组装完整俄语 SEO HTML（结构完整、样式简洁专业，利于 Yandex 收录）
+    function buildRUPageHtml(product, tr, ruUrl, enUrl) {
+        var name = product.name || product.title || '';
+        var oem = product.oem || product.oemCode || '';
+        var t = tr.t || name;
+        var d = tr.d || '';
+        var h = ruEsc(tr.h || name);
+        var intro = tr.intro || '';
+        var images = ruAllImages(product);
+        var mainImg = images[0] || '';
+        var thumbs = '';
+        for (var i = 0; i < images.length; i++) {
+            thumbs += '<img src="' + ruEsc(images[i]) + '" alt="' + ruEsc(t) + ' - фото ' + (i + 1) + '" loading="lazy" onclick="document.getElementById(\'ruMain\').src=this.src">';
+        }
+        var fitRows = ruFitmentRows(product);
+        var fitBlocks = fitRows
+            ? '<section class="ru-sec"><h2>Совместимые автомобили (' + (product.fitmentTable || product.fitment || []).length + ')</h2><div class="ru-table-wrap"><table><thead><tr><th>Марка</th><th>Модель</th><th>Год</th></tr></thead><tbody>' + fitRows + '</tbody></table></div></section>'
+            : '';
+        var faqs = [
+            { q: 'Совместима ли эта деталь с моим автомобилем?', a: 'Проверьте таблицу «Совместимые автомобили» на этой странице. ' + (oem ? 'Оригинальный номер OEM: ' + oem + '. ' : '') + 'Если вашей модели нет в списке — напишите нам, подберём аналог.' },
+            { q: 'Это оригинальная деталь или аналог?', a: 'Деталь соответствует заводским спецификациям (OEM) и проходит проверку качества. ' + (name ? 'Для ' + name + '.' : '') },
+            { q: 'Каков минимальный заказ (MOQ)?', a: 'Минимальный заказ — от 5 штук. Допускается смешанный заказ разных моделей. Возможны образцы для проверки качества.' },
+            { q: 'Какая гарантия и сроки доставки?', a: 'Гарантия 12 месяцев на заводские дефекты. Доставка: море 20–35 дней, авиа 5–10 дней, экспресс DHL/FedEx 3–7 дней по всему миру.' },
+            { q: 'Как сделать заказ?', a: 'Напишите нам на email carvalxie@foxmail.com или в WhatsApp +86 195 2122 8657 с указанием OEM-номера и количества — пришлём оптовый расчёт в течение 24 часов.' }
+        ];
+        var faqHtml = '';
+        for (var fi = 0; fi < faqs.length; fi++) {
+            faqHtml += '<div class="ru-faq"><div class="ru-q">' + ruEsc(faqs[fi].q) + '</div><div class="ru-a">' + ruEsc(faqs[fi].a) + '</div></div>';
+        }
+        // JSON-LD
+        var schemaFAQ = [];
+        for (var si = 0; si < faqs.length; si++) schemaFAQ.push({ '@type': 'Question', name: faqs[si].q, acceptedAnswer: { '@type': 'Answer', text: faqs[si].a } });
+        var ldProduct = JSON.stringify({
+            '@context': 'https://schema.org', '@type': 'Product',
+            name: t, productID: String(product.id || ''), sku: oem, mpn: oem,
+            brand: { '@type': 'Brand', name: 'Carval Auto Parts' },
+            description: (intro || d || t).slice(0, 300),
+            image: images.length ? images : [mainImg],
+            url: ruUrl,
+            offers: { '@type': 'Offer', priceCurrency: 'USD', availability: 'https://schema.org/ContactForOffer', seller: { '@type': 'Organization', name: 'Guangzhou Carval Auto Parts Co., Ltd.' } }
+        });
+        var ldFAQ = JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: schemaFAQ });
+        var mailto = 'mailto:carvalxie@foxmail.com?subject=Запрос: ' + encodeURIComponent(t);
+        var hreflang = ruSnippetHreflang(ruUrl, enUrl);
+        return '' +
+            '<!DOCTYPE html>\n<html lang="ru">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+            '<title>' + ruEsc(t) + '</title>\n' +
+            '<meta name="description" content="' + ruEsc(d) + '">\n' +
+            '<meta name="keywords" content="' + ruEsc((oem + ', автозапчасти оптом, запчасти, совместимость, Китай') ) + '">\n' +
+            '<link rel="canonical" href="' + ruUrl + '">\n' +
+            hreflang + '\n' +
+            '<meta property="og:type" content="product">\n<meta property="og:title" content="' + ruEsc(t) + '">\n<meta property="og:description" content="' + ruEsc(d) + '">\n<meta property="og:url" content="' + ruUrl + '">\n<meta property="og:image" content="' + ruEsc(mainImg) + '">\n<meta property="og:site_name" content="Carval Auto Parts">\n' +
+            '<script type="application/ld+json">' + ldProduct + '<\/script>\n' +
+            '<script type="application/ld+json">' + ldFAQ + '<\/script>\n' +
+            '<style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;margin:0;color:#222;background:#f5f5f5;line-height:1.6}.ru-top{background:#1c2b3a;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}.ru-top a{color:#fff;text-decoration:none;font-weight:700}.ru-top .ru-brand span{color:#e04545}.ru-wrap{max-width:1120px;margin:0 auto;padding:16px}.ru-bread{font-size:13px;color:#777;padding:10px 0}.ru-bread a{color:#1e73be;text-decoration:none}.ru-card{background:#fff;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:24px;margin-bottom:18px}.ru-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.ru-imgs img{width:100%;height:auto;border-radius:8px}.ru-thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.ru-thumbs img{width:70px;height:70px;object-fit:cover;border-radius:6px;cursor:pointer}.ru-oem{background:#e8f4f8;border-left:4px solid #1e73be;padding:10px 14px;border-radius:4px;margin:14px 0}.ru-fit{background:#f0f7ff;padding:10px 14px;border-radius:6px;margin:12px 0;font-size:14px}.ru-sec h2{font-size:20px;margin:0 0 12px}.ru-table-wrap{max-height:480px;overflow:auto;border:1px solid #e0e0e0;border-radius:8px}table{width:100%;border-collapse:collapse}th{background:#1e73be;color:#fff;text-align:left;padding:10px 12px;position:sticky;top:0}td{padding:9px 12px;border-bottom:1px solid #eee}tr:nth-child(even){background:#fafafa}.ru-faq{border-bottom:1px solid #eee;padding:14px 0}.ru-q{font-weight:700;margin-bottom:6px}.ru-a{color:#444}.ru-btn{display:inline-block;background:#e04545;color:#fff;padding:12px 26px;border-radius:6px;text-decoration:none;font-weight:700;margin-top:14px}.ru-contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}.ru-contact div{background:#f8f9fa;padding:12px;border-radius:6px}.ru-contact a{color:#1e73be;text-decoration:none}.ru-footer{background:#0e1a24;color:#8aa;text-align:center;padding:22px;font-size:13px}@media(max-width:760px){.ru-grid{grid-template-columns:1fr}}</style>\n' +
+            '</head>\n<body>\n' +
+            '<div class="ru-top"><a href="https://carvalautopart.com/"><span class="ru-brand">CARVAL <span>AUTO</span></span></a><span>Оптовая продажа автозапчастей с 2008 года</span></div>\n' +
+            '<div class="ru-wrap">\n' +
+            '<div class="ru-bread"><a href="https://carvalautopart.com/">Главная</a> / <a href="https://carvalautopart.com/products.html">Товары</a> / <span>' + ruEsc(String(name).slice(0, 60)) + '</span></div>\n' +
+            '<div class="ru-card"><div class="ru-grid">' +
+            '<div class="ru-imgs">' + (mainImg ? '<img id="ruMain" src="' + ruEsc(mainImg) + '" alt="' + ruEsc(t) + '">' : '') + (thumbs ? '<div class="ru-thumbs">' + thumbs + '</div>' : '') + '</div>' +
+            '<div><h1 style="margin:0 0 8px">' + h + '</h1>' +
+            (oem ? '<div class="ru-oem"><strong>Оригинальный номер (OEM):</strong> ' + ruEsc(oem) + '</div>' : '') +
+            (intro ? '<p style="color:#333">' + ruEsc(intro) + '</p>' : '') +
+            '<a class="ru-btn" href="' + mailto + '">Запросить оптовую цену →</a>' +
+            '</div></div></div>\n' +
+            '<div class="ru-card">' + (fitBlocks || '<p>Совместимость уточняйте у менеджера.</p>') + '</div>\n' +
+            '<div class="ru-card"><h2>Часто задаваемые вопросы</h2>' + faqHtml + '</div>\n' +
+            '<div class="ru-card"><h2>Свяжитесь с нами</h2><div class="ru-contact">' +
+            '<div>📧 Email: <a href="mailto:carvalxie@foxmail.com">carvalxie@foxmail.com</a></div>' +
+            '<div>📞 WhatsApp: <a href="https://wa.me/8619521228657">+86 195 2122 8657</a></div>' +
+            '<div>📍 Гуанчжоу, Китай</div></div></div>\n' +
+            '<div class="ru-card"><h2>О нас</h2><p>Guangzhou Carval Auto Parts Co., Ltd. — оптовый поставщик автозапчастей OEM-качества из Гуанчжоу с 2008 года. Специализируемся на деталях для японских, корейских, немецких и китайских автомобилей. Гарантия качества, гибкая доставка по всему миру.</p></div>\n' +
+            '</div>\n' +
+            '<div class="ru-footer">© 2026 Carval Auto Parts. Все права защищены. Guangzhou, China</div>\n' +
+            '</body>\n</html>';
+    }
+    // 生成并上传俄语页（含翻译与 GitHub PUT）；失败返回 null 不阻断英文发布
+    async function makeRUPage(product, enFilePath) {
+        try {
+            var slugFile = String(enFilePath).split('/').pop();
+            var ruFilePath = 'products/ru/' + slugFile;
+            var ruUrl = 'https://carvalautopart.com/' + ruFilePath;
+            var enUrl = 'https://carvalautopart.com/' + enFilePath;
+            var tr = await ruTranslateAI(product);
+            if (!tr) tr = ruDefaultTexts(product);
+            var ruHtml = buildRUPageHtml(product, tr, ruUrl, enUrl);
+            var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + ruFilePath + '?t=' + Date.now();
+            var sha = null;
+            try {
+                var checkResp = await githubApiRequest(apiUrl, { method: 'GET' }, 1, 1000);
+                if (checkResp.ok) { var existing = await checkResp.json(); sha = existing.sha; }
+            } catch (e) {}
+            var bodyObj = {
+                message: 'Publish RU SEO: ' + (product.name || product.title || slugFile),
+                content: btoa(unescape(encodeURIComponent(ruHtml))),
+                branch: GH_BRANCH
+            };
+            if (sha) bodyObj.sha = sha;
+            var putResp = await githubApiRequest(apiUrl, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyObj) }, 5, 2000);
+            if (!putResp.ok) throw new Error('RU GitHub PUT ' + putResp.status);
+            return { ruUrl: ruUrl, ruFilePath: ruFilePath };
+        } catch (e) {
+            console.error('[RU] 发布失败:', e.message);
+            return null;
+        }
+    }
+
     async function confirmPublishFromPreview() {
         if (!previewSEOState) { showToast('请先预览', true); return; }
         if (isSubmitting) { showToast('正在处理中，请稍候...', true); return; }
@@ -4347,7 +4551,7 @@ var CATEGORY_CONTENT = {
                 }
             } catch(e) { console.log('GET sha 失败，继续 PUT:', e.message); }
 
-            var html = previewSEOState.html;
+            var html = injectRuHreflang(previewSEOState.html, 'https://carvalautopart.com/products/ru/' + String(filePath).split('/').pop(), previewSEOState.url);
             var bodyObj = {
                 message: 'Publish SEO: ' + (previewSEOState.product.name || previewSEOState.product.title || previewSEOState.productId),
                 content: btoa(unescape(encodeURIComponent(html))),
@@ -4365,6 +4569,10 @@ var CATEGORY_CONTENT = {
                 throw new Error('GitHub PUT 失败: ' + putResp.status + ' - ' + errText.slice(0, 200));
             }
 
+            // 1.7) 生成并上传俄语 SEO 页（翻译失败也降级生成；失败不阻断英文已发布）
+            var ruRes = await makeRUPage(previewSEOState.product, filePath);
+            if (ruRes) console.log('[RU] 俄语页已发布: ' + ruRes.ruUrl);
+
             // 2) 回写 products.json
             var productsR = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
             if (!productsR.ok) throw new Error('拉 products.json 失败: ' + productsR.status);
@@ -4373,6 +4581,7 @@ var CATEGORY_CONTENT = {
             if (idx !== -1) {
                 products[idx].seo_status = 'published';
                 products[idx].seo_url = previewSEOState.url;
+                products[idx].seo_ru_url = (ruRes && ruRes.ruUrl) ? ruRes.ruUrl : (products[idx].seo_ru_url || null);
                 products[idx].seo_published_at = new Date().toISOString();
                 if (previewSEOState.product.title) products[idx].title = previewSEOState.product.title;
                 if (previewSEOState.product.name) products[idx].name = previewSEOState.product.name;
