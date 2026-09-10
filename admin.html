@@ -4345,6 +4345,10 @@ var CATEGORY_CONTENT = {
             }).join('; ');
         }
         var desc = (product.description || '').slice(0, 300);
+        var specStr = '';
+        if (Array.isArray(product.specs) && product.specs.length) {
+            specStr = product.specs.map(function(s){ return s.name + ': ' + s.value; }).slice(0, 12).join('; ');
+        }
 
         aiGenerating = true;
         var btn = document.getElementById('aiSeoBtn');
@@ -4358,10 +4362,11 @@ var CATEGORY_CONTENT = {
                 '"seoKeywords":"<comma-separated keywords: OEM, part type, brand, vehicle models, wholesale china>",',
                 '"h2":"<one H2 subtitle summarizing compatible vehicles + OEM, <=150 chars>",',
                 '"description":"<2-3 sentence clean product description for the page, include OEM, part type, fitment, quality>")}',
-                'Rules: English only, no Chinese. No marketing fluff words (best/high-quality/factory-direct/new) repeated. Be specific and factual.',
+                'Rules: English only, no Chinese. Write SPECIFIC factual text using the given specifications (material, size, etc). Do NOT use marketing fluff (best/high-quality/factory-direct/premium/professional/durable). Be concrete.',
                 'Product name: ' + name,
                 oem ? 'OEM: ' + oem : '',
                 fitStr ? 'Fitment: ' + fitStr : '',
+                specStr ? 'Specifications: ' + specStr : '',
                 desc ? 'Current description: ' + desc : ''
             ].filter(function(x){return x;}).join('\n');
             var resp = await fetch(AI_SEO_ENDPOINT, {
