@@ -24,7 +24,7 @@
                     // admin 后台不清缓存、不刷新（保留编辑状态和当前页码）
                         var isAdminPage = window.location.pathname.indexOf('admin') !== -1;
                         if (isAdminPage) {
-                            showUpdateNotification('数据已更新（admin 后台不自动刷新）');
+                            // admin 后台已有自动刷新，这里静默跳过，不弹任何提示
                             console.log('[实时更新] admin 后台跳过刷新和清缓存');
                             return;
                         }
