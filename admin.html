@@ -150,7 +150,7 @@
             .charts-grid { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
-    <script src="realtime-update.js?v=2"></script>
+    <script src="realtime-update.js?v=3"></script>
     <script>
     // ===== 全局错误捕获（v2.3.0 增强）=====
     (function() {
@@ -231,13 +231,8 @@
         }
     }
     
-    // 显示更新提示
-    function showUpdateBanner() {
-        var banner = document.getElementById('updateBanner');
-        if (banner) {
-            banner.classList.add('show');
-        }
-    }
+    // 显示更新提示（已禁用：后台自动静默刷新，不打扰用户）
+    function showUpdateBanner() { /* 静默：不再显示任何更新提示 */ }
 
     // 检测到数据变化时：自动刷新当前列表（不打断正在预览/提交的操作）
     function autoRefreshOnChange() {
@@ -250,10 +245,9 @@
             else if (currentTab === 'products') { loadProducts(); }
             else if (currentTab === 'published') { loadPublishedProducts(); }
             else if (currentTab === 'inquiries') { loadInquiries(); }
-            else { showUpdateBanner(); return; }
+            else { return; }
         } catch (e) {
             console.error('[Realtime] 自动刷新失败:', e);
-            showUpdateBanner();
         }
     }
     
