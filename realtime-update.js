@@ -34,8 +34,7 @@
                     localStorage.removeItem('carval_products_cache');
                     localStorage.removeItem('cached_products');
 
-                    // 显示更新通知
-                    showUpdateNotification('数据已更新，正在刷新...');
+                    // 静默刷新（不显示任何提示）
 
                     // 重新加载页面
                     setTimeout(function() {
