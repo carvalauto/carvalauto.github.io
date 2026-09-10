@@ -473,7 +473,7 @@
                 headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': auth,
-                    'x-oss-date': new Date().toUTCString()
+                    'x-oss-date': window.__ossAuthDate
                 }, 
                 body: jsonData 
             });
@@ -504,6 +504,7 @@
     // 生成OSS签名（和 admin.html 完全相同的函数）
     async function generateOSSAuth(method, objectKey, contentLength) {
         var date = new Date().toUTCString();
+        window.__ossAuthDate = date; // 请求头复用同一时间，避免跨秒导致 403
         var stringToSign = [
             method,
             '',
