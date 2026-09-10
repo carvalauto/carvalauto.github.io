@@ -352,7 +352,10 @@
     </script>
 </head>
 <body>
-    <!-- update banner removed -->
+    <div id="updateBanner" class="update-banner">
+        <i class="fas fa-sync-alt"></i> 检测到网站数据已更新 
+        <button onclick="forceRefresh()">立即刷新</button>
+    </div>
     
     <div class="header">
         <div class="header-logo">CARVAL <span>AUTO</span></div>
@@ -555,18 +558,40 @@
         </div>
     </div>
     
+    <!-- 手机端 SEO 预览适配样式 -->
+    <style>
+    .preview-seo-tabs { display: none; }
+    @media (max-width: 768px) {
+        #previewSEOModal { padding: 0 !important; align-items: stretch !important; }
+        #previewSEOModal .modal-content { width: 100vw !important; max-width: 100vw !important; height: 100vh !important; max-height: 100vh !important; border-radius: 0 !important; padding: 10px !important; }
+        .preview-seo-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
+        .preview-seo-tabs .pst-btn { flex: 1; padding: 11px 8px; border: 1px solid var(--border); background: var(--bg-dark); color: var(--text-soft); border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .preview-seo-tabs .pst-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        #previewSEOBody { flex-direction: column !important; }
+        #previewSEOLeft { flex: 1 1 auto !important; }
+        #previewSEOForm { width: 100% !important; flex: 1 1 auto !important; overflow-y: auto !important; padding-right: 0 !important; }
+        /* 手机端按标签切换：预览 / 编辑 二选一，避免挤在一起 */
+        #previewSEOModal.mobile-tab-preview #previewSEOForm { display: none !important; }
+        #previewSEOModal.mobile-tab-edit #previewSEOLeft { display: none !important; }
+    }
+    </style>
+
     <!-- 预览/编辑 SEO 页面 (v2.3.0) -->
     <div class="modal" id="previewSEOModal">
         <div class="modal-content" style="max-width:95vw;width:1200px;height:90vh;display:flex;flex-direction:column;padding:16px;">
             <div class="modal-title" id="previewSEOTitle" style="margin-bottom:12px;">预览 / 编辑 SEO 页面</div>
-            <div style="flex:1;display:flex;gap:12px;min-height:0;">
-                <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+            <div class="preview-seo-tabs">
+                <button type="button" class="pst-btn active" data-tab="preview" onclick="switchPreviewTab('preview')">👁 预览页面</button>
+                <button type="button" class="pst-btn" data-tab="edit" onclick="switchPreviewTab('edit')">✏️ 编辑内容</button>
+            </div>
+            <div id="previewSEOBody" style="flex:1;display:flex;gap:12px;min-height:0;">
+                <div id="previewSEOLeft" style="flex:1;display:flex;flex-direction:column;min-width:0;">
                     <div style="background:var(--bg-dark);padding:6px 10px;border-radius:5px;margin-bottom:6px;font-size:12px;color:var(--text-soft);">
                         <i class="fas fa-eye"></i> 实时预览
                     </div>
                     <iframe id="previewSEOFrame" style="flex:1;width:100%;border:1px solid var(--border);border-radius:5px;background:#fff;"></iframe>
                 </div>
-                <div style="width:320px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding-right:4px;">
+                <div id="previewSEOForm" style="width:320px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding-right:4px;">
                     <div class="form-group" style="margin-bottom:0;">
                         <label>产品标题 (H1)</label>
                         <input type="text" id="edit_seo_title" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;">
@@ -4211,6 +4236,7 @@ var CATEGORY_CONTENT = {
 
             // 6) 显示 modal + iframe
             document.getElementById('previewSEOModal').classList.add('show');
+            switchPreviewTab('preview');
             var frame = document.getElementById('previewSEOFrame');
             frame.srcdoc = html;
         } catch(e) {
@@ -4222,6 +4248,19 @@ var CATEGORY_CONTENT = {
     function closePreviewSEOModal() {
         document.getElementById('previewSEOModal').classList.remove('show');
         previewSEOState = null;
+    }
+
+    // 手机端：切换「预览 / 编辑」标签（桌面端两个都显示）
+    function switchPreviewTab(tab) {
+        var modal = document.getElementById('previewSEOModal');
+        if (!modal) return;
+        modal.classList.remove('mobile-tab-preview', 'mobile-tab-edit');
+        modal.classList.add('mobile-tab-' + tab);
+        var btns = document.querySelectorAll('.preview-seo-tabs .pst-btn');
+        for (var i = 0; i < btns.length; i++) {
+            if (btns[i].getAttribute('data-tab') === tab) btns[i].classList.add('active');
+            else btns[i].classList.remove('active');
+        }
     }
 
     function updatePreviewFrame() {
