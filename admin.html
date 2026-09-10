@@ -3593,8 +3593,13 @@ var CATEGORY_CONTENT = {
             // 2) 检测品类 + 3 Schema
             var catKey = detectCategory(product.name || product.title || '');
             var catContent = CATEGORY_CONTENT[catKey] || CATEGORY_CONTENT['general'];
-            var slug = generateSlug(product.name || product.title, productId);
-            var filePath = 'products/' + slug + '.html';
+            // 文件名优先复用该产品已有的 SEO 文件名（与采集端保持一致，避免生成两套重复文件）
+            var existingSeo = product.seo_url || '';
+            var fileName = existingSeo ? String(existingSeo).split('/').pop() : '';
+            if (!fileName || fileName.indexOf('.html') === -1) {
+                fileName = generateSlug(product.name || product.title, productId) + '.html';
+            }
+            var filePath = 'products/' + fileName;
             var url = 'https://carvalautopart.com/' + filePath;
             var productSchema = buildProductSchema(product, url, catContent);
             var howtoSchema = buildHowToSchema(product, catContent);
@@ -4158,8 +4163,13 @@ var CATEGORY_CONTENT = {
             // 2) 检测品类 + 3 Schema
             var catKey = detectCategory(product.name || product.title || '');
             var catContent = CATEGORY_CONTENT[catKey] || CATEGORY_CONTENT['general'];
-            var slug = generateSlug(product.name || product.title, productId);
-            var filePath = 'products/' + slug + '.html';
+            // 文件名优先复用该产品已有的 SEO 文件名（与采集端保持一致，避免生成两套重复文件）
+            var existingSeo = product.seo_url || '';
+            var fileName = existingSeo ? String(existingSeo).split('/').pop() : '';
+            if (!fileName || fileName.indexOf('.html') === -1) {
+                fileName = generateSlug(product.name || product.title, productId) + '.html';
+            }
+            var filePath = 'products/' + fileName;
             var url = 'https://carvalautopart.com/' + filePath;
             var productSchema = buildProductSchema(product, url, catContent);
             var howtoSchema = buildHowToSchema(product, catContent);
@@ -4336,9 +4346,10 @@ var CATEGORY_CONTENT = {
                '<link rel="alternate" hreflang="en" href="' + enUrl + '">\n' +
                '<link rel="alternate" hreflang="x-default" href="' + enUrl + '">';
     }
-    // 给已生成的英文 HTML 注入 ru 的 alternate（不动英文模板，只在 </head> 前插一行）
+    // 给已生成的英文 HTML 注入 ru 的 alternate（英文模板自带 en/x-default，这里只补 ru 一条，避免重复）
     function injectRuHreflang(enHtml, ruUrl, enUrl) {
-        var link = ruSnippetHreflang(ruUrl, enUrl || 'https://carvalautopart.com/');
+        if (/hreflang="ru"/i.test(enHtml)) return enHtml;
+        var link = '<link rel="alternate" hreflang="ru" href="' + ruUrl + '">';
         return enHtml.replace(/<\/head>/i, link + '\n</head>');
     }
     function ruVehicleSummary(product) {
