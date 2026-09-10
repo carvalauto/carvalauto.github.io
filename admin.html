@@ -609,8 +609,8 @@
                         <input type="text" id="edit_h2" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;">
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
-                        <label>价格 Price（只填数字即可，留空显示"询价"）</label>
-                        <input type="text" id="edit_price" oninput="updatePreviewFrame()" placeholder="例：3.50 或 3.50-6.00" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;">
+                        <label>价格 Price（单位：美元 US $，只填数字，留空显示"询价"）</label>
+                        <input type="text" id="edit_price" oninput="updatePreviewFrame()" placeholder="例：3.50 或 3.50-6.00（美元）" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;">
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
                         <label>产品描述</label>
@@ -620,11 +620,11 @@
                         <button class="btn btn-primary" onclick="generateSEOByAI()" id="aiSeoBtn" style="width:100%;justify-content:center;"><i class="fas fa-robot"></i> 🤖 DeepSeek 一键生成 SEO</button>
                         <div style="font-size:11px;color:var(--text-soft);margin-top:4px;text-align:center;">自动生成标题/描述/关键词/H2，可再手动微调 | <a href="javascript:void(0)" onclick="localStorage.removeItem('deepseek_api_key');showToast('Key 已清除，请刷新后重新输入')" style="color:var(--accent);">更换 Key</a></div>
                     </div>
+                    <div class="modal-actions" style="margin-top:10px;flex-wrap:wrap;">
+                        <button class="btn" onclick="closePreviewSEOModal()" style="background:var(--border);">取消</button>
+                        <button class="btn btn-success" onclick="confirmPublishFromPreview()" id="confirmPublishBtn"><i class="fas fa-check"></i> 审核通过并发布</button>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-actions" style="margin-top:12px;margin-bottom:34px;padding-bottom:6px;">
-                <button class="btn" onclick="closePreviewSEOModal()" style="background:var(--border);">取消</button>
-                <button class="btn btn-success" onclick="confirmPublishFromPreview()" id="confirmPublishBtn"><i class="fas fa-check"></i> 审核通过并发布</button>
             </div>
         </div>
     </div>
