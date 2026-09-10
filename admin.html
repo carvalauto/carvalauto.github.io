@@ -2103,7 +2103,7 @@
         metaDesc = metaDesc.slice(0, 160);
 
         var slug = generateSlug(name, productId);
-        var url = 'https://carvalautopart.com/products/' + slug + '.html';
+        var url = (productSchema && productSchema.url) ? productSchema.url : ('https://carvalautopart.com/products/' + slug + '.html');
 
         var fitmentHtml = '';
         if (summary && Array.isArray(productData.fitmentTable)) {
