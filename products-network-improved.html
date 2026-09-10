@@ -327,9 +327,7 @@
     <p>Browse our full range of OEM quality auto parts</p>
 </div>
 <!-- 更新提示条 -->
-<div class="update-banner" id="updateBanner" onclick="handleBannerClick()">
-    <i class="fas fa-sync-alt"></i> New products available! Click to refresh.
-</div>
+<!-- update banner removed -->
 <div class="filter-bar">
     <span>Filter:</span>
     <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
@@ -466,7 +464,13 @@ function forceRefresh() {
 }
 
 // 显示更新提示
-function showUpdateBanner() { /* 静默：不显示更新提示 */ }
+function showUpdateBanner() {
+    var banner = document.getElementById('updateBanner');
+    if (banner) {
+        banner.classList.add('show');
+        hasPendingUpdate = true;
+    }
+}
 
 function hideUpdateBanner() {
     var banner = document.getElementById('updateBanner');
