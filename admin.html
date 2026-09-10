@@ -197,6 +197,7 @@
     // ===== 实时刷新系统 - version.json 监控 =====
     var currentVersion = null;
     var realtimeInterval = null;
+    var currentTab = 'products';
     
     // 初始化时获取当前版本号
     async function initVersion() {
@@ -221,8 +222,8 @@
                 if (currentVersion && data.version && data.version !== currentVersion) {
                     console.log('[Realtime] 检测到版本变化:', currentVersion, '->', data.version);
                     currentVersion = data.version;
-                    // 显示更新提示
-                    showUpdateBanner();
+                    // 自动刷新当前列表（无需手动刷新）
+                    autoRefreshOnChange();
                 }
             }
         } catch(e) {
@@ -235,6 +236,26 @@
         var banner = document.getElementById('updateBanner');
         if (banner) {
             banner.classList.add('show');
+        }
+    }
+
+    // 检测到数据变化时：自动刷新当前列表（不打断正在预览/提交的操作）
+    function autoRefreshOnChange() {
+        try {
+            var modalOpen = document.querySelector('#previewSEOModal.show');
+            if (modalOpen || (typeof isSubmitting !== 'undefined' && isSubmitting)) {
+                showUpdateBanner();
+                return;
+            }
+            if (currentTab === 'pending') { loadPendingProducts(); }
+            else if (currentTab === 'products') { loadProducts(); }
+            else if (currentTab === 'published') { loadPublishedProducts(); }
+            else if (currentTab === 'inquiries') { loadInquiries(); }
+            else { showUpdateBanner(); return; }
+            if (typeof showToast === 'function') showToast('🔄 检测到新数据，已自动更新', false);
+        } catch (e) {
+            console.error('[Realtime] 自动刷新失败:', e);
+            showUpdateBanner();
         }
     }
     
@@ -684,6 +705,7 @@
     }
     
     function switchTab(tab) {
+        currentTab = tab;
         document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
         document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
         var targetPage = document.getElementById('page-' + tab);
