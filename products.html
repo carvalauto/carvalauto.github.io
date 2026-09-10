@@ -298,7 +298,7 @@
     })();
     </script>
 
-    <script src="realtime-update.js"></script>
+    <script src="realtime-update.js?v=3"></script>
 </head>
 <body>
 <header class="topbar">
@@ -474,14 +474,8 @@ function forceRefresh() {
     loadProducts();
 }
 
-// 显示更新提示
-function showUpdateBanner() {
-    var banner = document.getElementById('updateBanner');
-    if (banner) {
-        banner.classList.add('show');
-        hasPendingUpdate = true;
-    }
-}
+// 显示更新提示（已禁用：不再显示任何更新提示）
+function showUpdateBanner() { /* 静默 */ }
 
 function hideUpdateBanner() {
     var banner = document.getElementById('updateBanner');
