@@ -609,8 +609,8 @@
                         <input type="text" id="edit_h2" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;">
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
-                        <label>价格 Price（可选，留空显示"询价"）</label>
-                        <input type="text" id="edit_price" oninput="updatePreviewFrame()" placeholder="例：US $3.50 - 6.00 / pc" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;">
+                        <label>价格 Price（只填数字即可，留空显示"询价"）</label>
+                        <input type="text" id="edit_price" oninput="updatePreviewFrame()" placeholder="例：3.50 或 3.50-6.00" style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;">
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
                         <label>产品描述</label>
@@ -2146,7 +2146,12 @@
         var slug = generateSlug(name, productId);
         var url = (productSchema && productSchema.url) ? productSchema.url : ('https://carvalautopart.com/products/' + slug + '.html');
 
-        var priceHtml = '<div class="oem-badge" style="background:#fff8e1;border-left-color:#f39c12;">Price: <span style="color:#e67e22;">' + (productData.price ? htmlEsc(productData.price) : 'Get Wholesale Quote') + '</span></div>';
+        var priceVal = String(productData.price || '').trim();
+        var priceText;
+        if (!priceVal) { priceText = 'Get Wholesale Quote'; }
+        else if (/^[0-9.\s\-–~]+$/.test(priceVal)) { priceText = 'US $' + priceVal.replace(/\s*[-–~]\s*/, ' - ').replace(/\s+/g, ' ').trim() + ' / pc'; }
+        else { priceText = priceVal; }
+        var priceHtml = '<div class="oem-badge" style="background:#fff8e1;border-left-color:#f39c12;">Price: <span style="color:#e67e22;">' + htmlEsc(priceText) + '</span></div>';
         var fitmentHtml = '';
         if (summary && Array.isArray(productData.fitmentTable)) {
             // 全量去重（make+model+year），表头与阿里一致 Car Fitment/Model/Year
