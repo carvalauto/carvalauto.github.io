@@ -1472,7 +1472,7 @@
                 headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': auth,
-                    'x-oss-date': new Date().toUTCString()
+                    'x-oss-date': window.__ossAuthDate
                 }, 
                 body: jsonData 
             });
@@ -1599,6 +1599,7 @@
     // 生成OSS签名（新增函数）
     async function generateOSSAuth(method, objectKey, contentLength) {
         var date = new Date().toUTCString();
+        window.__ossAuthDate = date; // 关键：请求头复用同一时间，避免签名与 x-oss-date 跨秒不一致导致 403
         // OSS v1 签名：CanonicalizedOSSHeaders 必须按字母排序（这里只有 x-oss-date 一项）
         // 当 client 发 x-oss-date header 时，OSS 期望 StringToSign 包含 'x-oss-date:<value>' 一行
         // 2026-06-21: 之前误以为 OSS 不认 x-oss-date，所以删了这行 → 反而导致签名不匹配 → 403
@@ -3685,7 +3686,7 @@ var CATEGORY_CONTENT = {
             var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
             var ossR = await fetch(OSS_CONFIG.productsUrl, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': new Date().toUTCString() },
+                headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': window.__ossAuthDate },
                 body: jsonData
             });
             if (!ossR.ok) throw new Error('OSS 上传 products.json 失败: ' + ossR.status);
@@ -3696,7 +3697,7 @@ var CATEGORY_CONTENT = {
             var versionAuth = await generateOSSAuth('PUT', '/version.json', JSON.stringify(versionData).length);
             var vR = await fetch(OSS_CONFIG.endpoint + '/version.json', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': versionAuth, 'x-oss-date': new Date().toUTCString() },
+                headers: { 'Content-Type': 'application/json', 'Authorization': versionAuth, 'x-oss-date': window.__ossAuthDate },
                 body: JSON.stringify(versionData, null, 2)
             });
 
@@ -3798,7 +3799,7 @@ var CATEGORY_CONTENT = {
             var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
             var ossR = await fetch(OSS_CONFIG.productsUrl, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': new Date().toUTCString() },
+                headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': window.__ossAuthDate },
                 body: jsonData
             });
             if (!ossR.ok) throw new Error('OSS 上传 products.json 失败: ' + ossR.status);
@@ -3816,7 +3817,7 @@ var CATEGORY_CONTENT = {
             var versionAuth = await generateOSSAuth('PUT', '/version.json', JSON.stringify(versionData).length);
             await fetch(OSS_CONFIG.endpoint + '/version.json', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': versionAuth, 'x-oss-date': new Date().toUTCString() },
+                headers: { 'Content-Type': 'application/json', 'Authorization': versionAuth, 'x-oss-date': window.__ossAuthDate },
                 body: JSON.stringify(versionData, null, 2)
             });
             broadcastDataChange('edit', productId);
@@ -4657,7 +4658,7 @@ var CATEGORY_CONTENT = {
             var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
             var ossR = await fetch(OSS_CONFIG.productsUrl, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': new Date().toUTCString() },
+                headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': window.__ossAuthDate },
                 body: jsonData
             });
             if (!ossR.ok) throw new Error('OSS 上传 products.json 失败: ' + ossR.status);
@@ -4669,7 +4670,7 @@ var CATEGORY_CONTENT = {
                 var versionAuth = await generateOSSAuth('PUT', '/version.json', JSON.stringify(versionData).length);
                 var vR = await fetch(OSS_CONFIG.endpoint + '/version.json', {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': versionAuth, 'x-oss-date': new Date().toUTCString() },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': versionAuth, 'x-oss-date': window.__ossAuthDate },
                     body: JSON.stringify(versionData, null, 2)
                 });
             } catch(e) { console.log('version.json 写入失败（不影响主流程）:', e.message); }
