@@ -6,10 +6,6 @@ Disallow: /admin.html
 Disallow: /contents/
 Disallow: /cdn-cgi/
 
-# 屏蔽旧格式产品页（纯数字ID），防止无效404
-Disallow: /products/177*
-Disallow: /products/ru/177*
-
 # 禁止抓取筛选、分页类动态链接
 Disallow: /*?filter=
 Disallow: /*?sort=
