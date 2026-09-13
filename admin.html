@@ -2127,6 +2127,11 @@
         var name = (productData.name || productData.title || '').toString();
         var oem = productData.oem || productData.oemCode || '';
         var description = productData.description || '';
+        // 安全：英文页面禁止出现西里尔字母（俄语），防止语言串页
+        var __stripCyr = function (s) { return String(s || '').replace(/[\u0400-\u04FF]+/g, ' ').replace(/\s+/g, ' ').trim(); };
+        name = __stripCyr(name);
+        description = __stripCyr(description);
+        if (productData.title) productData.title = __stripCyr(productData.title);
         var images = getAllSEOUrls(productData);
         var firstImage = images[0];
         var productId = productData.id || Date.now();
