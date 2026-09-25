@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO Meta Tags -->
     <title>Blog - Carval Auto Parts | Expert Auto Parts Guides & Tips</title>
@@ -843,13 +843,13 @@
 
         grid.innerHTML = displayBlogs.map(blog => `
             <article class="blog-card">
-                <img src="${blog.image}" alt="${blog.title}" class="blog-card-img" loading="lazy">
+                <a href="/blog/${blog.slug}.html"><img src="${blog.image}" alt="${blog.title}" class="blog-card-img" loading="lazy"></a>
                 <div class="blog-card-content">
                     <div class="blog-meta">
                         <span class="blog-tag">${blog.category}</span>
                         <span class="blog-date">${formatDate(blog.date)}</span>
                     </div>
-                    <h2 class="blog-title">${blog.title}</h2>
+                    <h2 class="blog-title"><a href="/blog/${blog.slug}.html">${blog.title}</a></h2>
                     <p class="blog-excerpt">${blog.excerpt}</p>
                     <div class="blog-footer">
                         <div class="blog-author">
