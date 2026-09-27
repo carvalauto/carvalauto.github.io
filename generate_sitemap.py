@@ -242,6 +242,8 @@ def generate_blog_pages():
     </main>
 
     %(footer)s
+<style>.social-float{position:fixed;bottom:24px;right:20px;display:flex;flex-direction:column;gap:10px;z-index:900}.social-btn{width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:16px;transition:all .3s;border-radius:50%;box-shadow:0 3px 10px rgba(0,0,0,.25)}.social-btn:hover{transform:scale(1.1)}.social-btn.fb{background:#3b5998}.social-btn.ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}.social-btn.wa{background:#25d366}</style>
+<div class="social-float"><a href="https://www.facebook.com/share/18W9wuCPT4/" class="social-btn fb" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="https://www.instagram.com/carval_auto" class="social-btn ig" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="https://wa.me/8619521228657" class="social-btn wa" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div>
 </body>
 </html>''' % {
             'title': esc(title),
@@ -303,17 +305,27 @@ def generate_sitemap():
         ('https://carvalautopart.com/german-cars.html', 'weekly', '0.7'),
         ('https://carvalautopart.com/chinese-cars.html', 'weekly', '0.7'),
         ('https://carvalautopart.com/engine-oil.html', 'weekly', '0.7'),
+        ('https://carvalautopart.com/parts.html', 'weekly', '0.9'),
+        ('https://carvalautopart.com/brands.html', 'weekly', '0.9'),
+        ('https://carvalautopart.com/vehicles.html', 'weekly', '0.9'),
+        ('https://carvalautopart.com/american-cars.html', 'weekly', '0.7'),
+        ('https://carvalautopart.com/european-cars.html', 'weekly', '0.7'),
     ]
     product_files = collect_html_files(PRODUCTS_DIR)
     blog_files = collect_html_files(BLOG_DIR)
+    category_files = collect_html_files('parts') + collect_html_files('brands')
     print('Product HTML files:', len(product_files))
     print('Blog HTML files:', len(blog_files))
+    print('Category HTML files:', len(category_files))
 
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for loc, freq, prio in static_urls:
         lines += ['  <url>', '    <loc>' + loc + '</loc>', '    <lastmod>' + today + '</lastmod>',
                   '    <changefreq>' + freq + '</changefreq>', '    <priority>' + prio + '</priority>', '  </url>']
+    for f in category_files:
+        lines += ['  <url>', '    <loc>' + BASE + '/' + f + '</loc>', '    <lastmod>' + today + '</lastmod>',
+                  '    <changefreq>weekly</changefreq>', '    <priority>0.7</priority>', '  </url>']
     for f in product_files:
         lines += ['  <url>', '    <loc>' + BASE + '/' + f + '</loc>', '    <lastmod>' + today + '</lastmod>',
                   '    <changefreq>weekly</changefreq>', '    <priority>0.8</priority>', '  </url>']
