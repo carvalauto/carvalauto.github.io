@@ -4667,7 +4667,7 @@ var CATEGORY_CONTENT = {
     var publishChanges = {};
     var syncTimer = null;
     var isSyncing = false;
-    var makeRuOnPublish = (localStorage.getItem('carval_make_ru') === '1');
+    var makeRuOnPublish = (localStorage.getItem('carval_make_ru') !== '0');
     function pqSleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
 
     function confirmPublishFromPreview() {
