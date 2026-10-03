@@ -4668,6 +4668,7 @@ var CATEGORY_CONTENT = {
     var syncTimer = null;
     var isSyncing = false;
     var makeRuOnPublish = (localStorage.getItem('carval_make_ru') !== '0');
+    try { var _pqcb = document.getElementById('pqRuCb'); if (_pqcb) _pqcb.checked = makeRuOnPublish; } catch (e) {}
     function pqSleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
 
     function confirmPublishFromPreview() {
