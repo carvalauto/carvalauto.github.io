@@ -545,7 +545,39 @@
     </div>
     
     <div class="toast" id="toast"></div>
-    
+
+    <!-- v2.5.0 后台发布队列面板 -->
+    <style>
+    #publishQueuePanel{position:fixed;right:16px;bottom:16px;width:330px;max-height:62vh;background:#1c2530;color:#e8edf2;border:1px solid #34424f;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.45);z-index:3000;display:none;flex-direction:column;font-size:13px;overflow:hidden}
+    #publishQueuePanel.show{display:flex}
+    .pq-head{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#243447;font-weight:700;border-bottom:1px solid #34424f}
+    .pq-head #pqSummary{margin-left:auto;font-weight:500;color:#9fb3c8}
+    .pq-x{background:none;border:none;color:#9fb3c8;font-size:18px;cursor:pointer;line-height:1}
+    #pqBody{overflow-y:auto;padding:6px 10px;flex:1;min-height:40px}
+    .pq-row{display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed #2c3a47;align-items:center}
+    .pq-nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#c9d6e2}
+    .pq-empty{color:#6b7d8f;padding:10px;text-align:center}
+    .pq-hint{padding:6px 12px;color:#f0b429;min-height:16px}
+    .pq-foot{padding:8px 12px;border-top:1px solid #34424f;display:flex;flex-direction:column;gap:8px}
+    .pq-foot>div{display:flex;gap:6px;justify-content:flex-end}
+    .pq-foot button{background:#2e6da4;color:#fff;border:none;border-radius:5px;padding:6px 10px;cursor:pointer;font-size:12px}
+    .pq-foot button:disabled{opacity:.45;cursor:default}
+    .pq-ru{color:#9fb3c8;font-size:12px;display:flex;align-items:center;gap:6px}
+    </style>
+    <div id="publishQueuePanel">
+        <div class="pq-head">📤 上传队列 <span id="pqSummary"></span><button class="pq-x" onclick="closeQueuePanel()">×</button></div>
+        <div id="pqBody"></div>
+        <div id="pqSyncHint" class="pq-hint"></div>
+        <div class="pq-foot">
+            <label class="pq-ru"><input type="checkbox" id="pqRuCb" onchange="toggleRuOnPublish(this)"> 生成俄语页</label>
+            <div>
+                <button id="pqRetryBtn" onclick="retryFailedQueue()">重试失败</button>
+                <button id="pqClearBtn" onclick="clearDoneQueue()">清除完成</button>
+                <button id="pqSyncBtn" onclick="syncProductsJson()">立即同步</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="successModal">
         <div class="modal-content" style="max-width:320px;">
             <div style="font-size:48px;color:#2ecc71;margin-bottom:10px;"><i class="fas fa-check-circle"></i></div>
@@ -4627,104 +4659,172 @@ var CATEGORY_CONTENT = {
         }
     }
 
-    async function confirmPublishFromPreview() {
+    // ============================================================
+    // ===== v2.5.0: 后台发布队列（点审核秒过，后台上传 + 批量同步）=====
+    // ============================================================
+    var publishQueue = [];
+    var publishQueueRunning = false;
+    var publishChanges = {};
+    var syncTimer = null;
+    var isSyncing = false;
+    var makeRuOnPublish = (localStorage.getItem('carval_make_ru') === '1');
+    function pqSleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
+
+    function confirmPublishFromPreview() {
         if (!previewSEOState) { showToast('请先预览', true); return; }
-        if (isSubmitting) { showToast('正在处理中，请稍候...', true); return; }
-        if (!initGitHubTokens()) { showToast('需要配置 5 个 GitHub PAT', true); return; }
-        updatePreviewFrame(); // 发布前先读取你填写的所有字段（含价格），确保生效
-        isSubmitting = true;
-        var btn = document.getElementById('confirmPublishBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发布中...';
-        showToast('正在发布...', false);
+        if (!initGitHubTokens()) { showToast('需要配置 GitHub PAT', true); return; }
+        updatePreviewFrame(); // 读取编辑框内容（含价格）
+        var item = {
+            key: 'q' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+            productId: previewSEOState.productId,
+            product: previewSEOState.product,
+            html: previewSEOState.html,
+            filePath: previewSEOState.filePath,
+            url: previewSEOState.url,
+            status: 'pending', retries: 0, error: null, ruUrl: null
+        };
+        publishQueue.push(item);
+        closePreviewSEOModal();
+        showToast('已加入上传队列，可继续审核下一个 ✅');
+        renderQueueUI();
+        processPublishQueue();
+    }
+
+    async function uploadEnglishPage(item) {
+        var filePath = item.filePath;
+        var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
+        var sha = null;
         try {
-            // 1) GitHub PUT
-            var filePath = previewSEOState.filePath;
-            var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
-            var sha = null;
+            var checkResp = await githubApiRequest(apiUrl, { method: 'GET' }, 1, 1000);
+            if (checkResp.ok) { var existing = await checkResp.json(); sha = existing.sha; }
+        } catch (e) { console.log('GET sha 失败，继续 PUT:', e.message); }
+        var html = injectRuHreflang(item.html, 'https://carvalautopart.com/products/ru/' + String(filePath).split('/').pop(), item.url);
+        var bodyObj = { message: 'Publish SEO: ' + (item.product.name || item.product.title || item.productId), content: btoa(unescape(encodeURIComponent(html))), branch: GH_BRANCH };
+        if (sha) bodyObj.sha = sha;
+        var putResp = await githubApiRequest(apiUrl, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyObj) }, 5, 2000);
+        if (!putResp.ok) { var errText = await putResp.text(); throw new Error('GitHub PUT ' + putResp.status + ' ' + String(errText).slice(0, 120)); }
+        if (makeRuOnPublish) {
+            try { var ruRes = await makeRUPage(item.product, filePath); if (ruRes) item.ruUrl = ruRes.ruUrl; } catch (e) { console.log('[RU] 失败:', e.message); }
+        }
+        return true;
+    }
+
+    function buildChangeObj(item) {
+        var p = item.product;
+        var ch = { seo_status: 'published', seo_url: item.url, seo_published_at: new Date().toISOString() };
+        if (item.ruUrl) ch.seo_ru_url = item.ruUrl;
+        if (p.title) ch.title = p.title;
+        if (p.name) ch.name = p.name;
+        if (p.description) ch.description = p.description;
+        if (p.seo_description) ch.seo_description = p.seo_description;
+        if (p.seo_keywords) ch.seo_keywords = p.seo_keywords;
+        if (p.h2) ch.h2 = p.h2;
+        if (p.price !== undefined) ch.price = p.price;
+        return ch;
+    }
+
+    async function processPublishQueue() {
+        if (publishQueueRunning) return;
+        publishQueueRunning = true;
+        renderQueueUI();
+        while (true) {
+            var item = publishQueue.find(function(x){ return x.status === 'pending'; });
+            if (!item) break;
+            item.status = 'uploading';
+            renderQueueUI();
             try {
-                var checkResp = await githubApiRequest(apiUrl, { method: 'GET' }, 1, 1000);
-                if (checkResp.ok) {
-                    var existing = await checkResp.json();
-                    sha = existing.sha;
-                }
-            } catch(e) { console.log('GET sha 失败，继续 PUT:', e.message); }
-
-            var html = injectRuHreflang(previewSEOState.html, 'https://carvalautopart.com/products/ru/' + String(filePath).split('/').pop(), previewSEOState.url);
-            var bodyObj = {
-                message: 'Publish SEO: ' + (previewSEOState.product.name || previewSEOState.product.title || previewSEOState.productId),
-                content: btoa(unescape(encodeURIComponent(html))),
-                branch: GH_BRANCH
-            };
-            if (sha) bodyObj.sha = sha;
-
-            var putResp = await githubApiRequest(apiUrl, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(bodyObj)
-            }, 5, 2000);
-            if (!putResp.ok) {
-                var errText = await putResp.text();
-                throw new Error('GitHub PUT 失败: ' + putResp.status + ' - ' + errText.slice(0, 200));
+                await uploadEnglishPage(item);
+                publishChanges[item.productId] = buildChangeObj(item);
+                item.status = 'done';
+            } catch (e) {
+                item.error = e.message; item.retries++;
+                if (item.retries < 3) { item.status = 'pending'; await pqSleep(1500 * item.retries); }
+                else item.status = 'failed';
+                console.error('[发布队列] 失败:', item.productId, e.message);
             }
+            renderQueueUI();
+        }
+        publishQueueRunning = false;
+        renderQueueUI();
+        scheduleSync();
+    }
 
-            // 1.7) 生成并上传俄语 SEO 页（翻译失败也降级生成；失败不阻断英文已发布）
-            var ruRes = await makeRUPage(previewSEOState.product, filePath);
-            if (ruRes) console.log('[RU] 俄语页已发布: ' + ruRes.ruUrl);
+    function scheduleSync() {
+        if (Object.keys(publishChanges).length === 0) return;
+        if (syncTimer) clearTimeout(syncTimer);
+        syncTimer = setTimeout(function(){ syncProductsJson(); }, 2500);
+    }
 
-            // 2) 回写 products.json
-            var productsR = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
-            if (!productsR.ok) throw new Error('拉 products.json 失败: ' + productsR.status);
-            var products = await productsR.json();
-            var idx = products.findIndex(function(p) { return String(p.id) === String(previewSEOState.productId); });
-            if (idx !== -1) {
-                products[idx].seo_status = 'published';
-                products[idx].seo_url = previewSEOState.url;
-                products[idx].seo_ru_url = (ruRes && ruRes.ruUrl) ? ruRes.ruUrl : (products[idx].seo_ru_url || null);
-                products[idx].seo_published_at = new Date().toISOString();
-                if (previewSEOState.product.title) products[idx].title = previewSEOState.product.title;
-                if (previewSEOState.product.name) products[idx].name = previewSEOState.product.name;
-                if (previewSEOState.product.description) products[idx].description = previewSEOState.product.description;
-                if (previewSEOState.product.seo_description) products[idx].seo_description = previewSEOState.product.seo_description;
-                if (previewSEOState.product.seo_keywords) products[idx].seo_keywords = previewSEOState.product.seo_keywords;
-                if (previewSEOState.product.h2) products[idx].h2 = previewSEOState.product.h2;
-                if (previewSEOState.product.price !== undefined) products[idx].price = previewSEOState.product.price;
-            }
-
-            // 3) 上传 OSS products.json
+    async function syncProductsJson() {
+        if (isSyncing) return;
+        var ids = Object.keys(publishChanges);
+        if (!ids.length) { showToast('没有需要同步的改动'); return; }
+        isSyncing = true; renderQueueUI();
+        try {
+            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
+            if (!r.ok) throw new Error('拉 products.json 失败 ' + r.status);
+            var products = await r.json();
+            var applied = 0;
+            ids.forEach(function(id) {
+                var idx = products.findIndex(function(p){ return String(p.id) === String(id); });
+                if (idx !== -1) { Object.assign(products[idx], publishChanges[id]); applied++; }
+                delete publishChanges[id];
+            });
             var jsonData = JSON.stringify(products, null, 2);
             var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
-            var ossR = await fetch(OSS_CONFIG.productsUrl, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': window.__ossAuthDate },
-                body: jsonData
-            });
-            if (!ossR.ok) throw new Error('OSS 上传 products.json 失败: ' + ossR.status);
-
-            // 4) 写 version.json
+            var ossR = await fetch(OSS_CONFIG.productsUrl, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': window.__ossAuthDate }, body: jsonData });
+            if (!ossR.ok) throw new Error('OSS 上传失败 ' + ossR.status);
             try {
-                var newVersion = Date.now();
-                var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_publish_seo' };
-                var versionAuth = await generateOSSAuth('PUT', '/version.json', JSON.stringify(versionData).length);
-                var vR = await fetch(OSS_CONFIG.endpoint + '/version.json', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': versionAuth, 'x-oss-date': window.__ossAuthDate },
-                    body: JSON.stringify(versionData, null, 2)
-                });
-            } catch(e) { console.log('version.json 写入失败（不影响主流程）:', e.message); }
-
-            showSuccessModal('SEO 页面已发布！', previewSEOState.url);
-            closePreviewSEOModal();
+                var nv = Date.now(); var vd = { version: nv, timestamp: new Date(nv).toISOString(), source: 'admin_publish_seo_batch' };
+                var va = await generateOSSAuth('PUT', '/version.json', JSON.stringify(vd).length);
+                await fetch(OSS_CONFIG.endpoint + '/version.json', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': va, 'x-oss-date': window.__ossAuthDate }, body: JSON.stringify(vd, null, 2) });
+            } catch (e) {}
+            showToast('✅ products.json 已同步（' + applied + ' 个产品）');
             if (typeof loadPendingProducts === 'function') loadPendingProducts();
-        } catch(e) {
-            console.error('[v2.3.0] confirmPublishFromPreview error:', e);
-            showToast('发布失败: ' + e.message, true);
-        } finally {
-            isSubmitting = false;
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-check"></i> 审核通过并发布';
-        }
+        } catch (e) {
+            console.error('[同步] 失败:', e);
+            showToast('⚠️ products.json 同步失败：' + e.message + '（可点"立即同步"重试）', true);
+        } finally { isSyncing = false; renderQueueUI(); }
     }
+
+    function retryFailedQueue() { publishQueue.forEach(function(x){ if (x.status === 'failed') { x.status = 'pending'; x.retries = 0; x.error = null; } }); renderQueueUI(); processPublishQueue(); }
+    function clearDoneQueue() { publishQueue = publishQueue.filter(function(x){ return x.status !== 'done'; }); renderQueueUI(); }
+    function closeQueuePanel() { var p = document.getElementById('publishQueuePanel'); if (p) p.classList.remove('show'); }
+    function toggleRuOnPublish(cb) { makeRuOnPublish = cb.checked; localStorage.setItem('carval_make_ru', makeRuOnPublish ? '1' : '0'); }
+
+    function renderQueueUI() {
+        var panel = document.getElementById('publishQueuePanel');
+        if (!panel) return;
+        var total = publishQueue.length;
+        var done = publishQueue.filter(function(x){return x.status==='done';}).length;
+        var failed = publishQueue.filter(function(x){return x.status==='failed';}).length;
+        var uploading = publishQueue.filter(function(x){return x.status==='uploading';}).length;
+        var pending = publishQueue.filter(function(x){return x.status==='pending';}).length;
+        var unsynced = Object.keys(publishChanges).length;
+        if (total === 0 && unsynced === 0 && !isSyncing) { panel.classList.remove('show'); return; }
+        panel.classList.add('show');
+        document.getElementById('pqSummary').textContent = '✅' + done + (failed?' ❌'+failed:'') + (uploading?' ⏳'+uploading:'') + (pending?' 🕐'+pending:'');
+        var rows = publishQueue.slice().reverse().map(function(x) {
+            var icon = x.status==='done'?'✅':x.status==='uploading'?'⏳':x.status==='failed'?'❌':'🕐';
+            var nm = String(x.product.name || x.product.title || x.productId).slice(0, 42).replace(/</g,'&lt;').replace(/"/g,'&quot;');
+            return '<div class="pq-row"><span>'+icon+'</span><span class="pq-nm" title="'+nm+'">'+nm+'</span></div>';
+        }).join('');
+        document.getElementById('pqBody').innerHTML = rows || '<div class="pq-empty">队列为空</div>';
+        var hint = '';
+        if (isSyncing) hint = '⏳ 正在同步 products.json...';
+        else if (unsynced > 0) hint = '待同步 products.json: ' + unsynced + ' 个（自动同步中）';
+        else if (total > 0 && done === total && failed === 0) hint = '✅ 全部完成';
+        document.getElementById('pqSyncHint').textContent = hint;
+        document.getElementById('pqRetryBtn').style.display = failed > 0 ? '' : 'none';
+        document.getElementById('pqClearBtn').style.display = done > 0 ? '' : 'none';
+        document.getElementById('pqSyncBtn').disabled = isSyncing || unsynced === 0;
+        document.getElementById('pqRuCb').checked = makeRuOnPublish;
+    }
+
+    window.addEventListener('beforeunload', function(e) {
+        var busy = publishQueue.some(function(x){ return x.status === 'pending' || x.status === 'uploading'; });
+        if (busy || isSyncing || Object.keys(publishChanges).length > 0) { e.preventDefault(); e.returnValue = '还有上传/同步未完成，确定离开？'; return e.returnValue; }
+    });
 
     // ============================================================
     // ===== v2.3.0: 已发布 tab (loadPublishedProducts) =====
