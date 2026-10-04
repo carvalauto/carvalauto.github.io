@@ -433,6 +433,16 @@
     </div>
     
     <div class="page" id="page-analytics">
+        <!-- 三平台 SEO 概览 -->
+        <div id="seoStatsSection" style="margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                <div style="font-weight:700;font-size:15px;"><i class="fas fa-chart-bar"></i> 三平台 SEO 概览</div>
+                <span id="seoStatsUpdated" style="font-size:11px;color:var(--text-muted);"></span>
+                <button class="btn btn-primary" style="margin-left:auto;padding:5px 12px;font-size:12px;" onclick="loadSEOStats()"><i class="fas fa-sync"></i> 刷新</button>
+            </div>
+            <div id="seoStatsCards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"><div style="color:var(--text-muted);font-size:12px;">加载中...</div></div>
+            <div id="seoStatsQueries" style="margin-top:12px;"></div>
+        </div>
         <div id="loginSection">
             <div class="login-card">
                 <div class="logo">CARVAL <span>AUTO</span></div>
@@ -775,7 +785,7 @@
         else if (tab === 'inquiries') { loadInquiries(); }
         else if (tab === 'blog') { loadBlogData(); }
         else if (tab === 'faq') { loadFAQData(); }
-        else if (tab === 'analytics') { initAnalytics(); }
+        else if (tab === 'analytics') { initAnalytics(); loadSEOStats(); }
         else if (tab === 'pending') { loadPendingProducts(); }
         else if (tab === 'published') { loadPublishedProducts(); }
     }
@@ -4050,6 +4060,35 @@ var CATEGORY_CONTENT = {
         }
     }
     
+    function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    async function loadSEOStats() {
+        var wrap = document.getElementById('seoStatsCards');
+        if (!wrap) return;
+        try {
+            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/seo_stats.json?t=' + Date.now());
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            var d = await r.json();
+            var up = document.getElementById('seoStatsUpdated');
+            if (up) up.textContent = '更新于 ' + String(d.updated || '').replace('T', ' ').slice(0, 16) + '（近28天）';
+            var g = d.google || {}, b = d.bing || {}, y = d.yandex || {};
+            function card(title, color, rows) {
+                return '<div class="chart-card" style="padding:14px;"><div style="font-weight:700;margin-bottom:8px;color:' + color + ';">' + title + '</div>' +
+                    rows.map(function (x) { return '<div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:1px dashed var(--border);"><span style="color:var(--text-muted);">' + x[0] + '</span><span style="font-weight:600;">' + x[1] + '</span></div>'; }).join('') + '</div>';
+            }
+            wrap.innerHTML =
+                card('🟢 Google', '#4285F4', [['曝光', g.impressions || 0], ['点击', g.clicks || 0], ['CTR', (g.ctr || 0) + '%'], ['平均排名', g.position || '-']]) +
+                card('🔵 Bing', '#008373', [['曝光', b.impressions || 0], ['点击', b.clicks || 0], ['爬虫2xx', (b.crawl && b.crawl.c2xx) || '-'], ['404数', (b.crawl && b.crawl.c4xx) || '-']]) +
+                card('🟡 Yandex', '#FC3F1D', [['收录页', y.searchablePages || 0], ['排除页', y.excludedPages || 0], ['SQI', y.sqi || 0], ['查询词', (y.topQueries || []).length + '+']]);
+            var rows = '';
+            (d.google && d.google.topQueries ? d.google.topQueries : []).slice(0, 6).forEach(function (q) { rows += '<div style="display:flex;gap:10px;font-size:12px;padding:2px 0;"><span style="width:70px;color:#4285F4;font-weight:700;">Google</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escHtml(q.q) + '</span><span style="color:var(--text-muted);">' + q.i + '曝光</span></div>'; });
+            if (d.yandex && d.yandex.topQueries) d.yandex.topQueries.slice(0, 6).forEach(function (q) { rows += '<div style="display:flex;gap:10px;font-size:12px;padding:2px 0;"><span style="width:70px;color:#FC3F1D;font-weight:700;">Yandex</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escHtml(q.q) + '</span><span style="color:var(--text-muted);">' + q.shows + '展示</span></div>'; });
+            document.getElementById('seoStatsQueries').innerHTML = rows ? '<div class="chart-card" style="padding:12px;"><div style="font-weight:700;margin-bottom:6px;">热门查询词</div>' + rows + '</div>' : '';
+        } catch (e) {
+            wrap.innerHTML = '<div style="color:#e74c3c;font-size:12px;grid-column:1/-1;">三平台数据加载失败: ' + e.message + '（点刷新重试）</div>';
+        }
+    }
+
     function setDateRange(startDate, btnId) {
         document.querySelectorAll('.date-btn').forEach(function(b) { b.classList.remove('active'); });
         document.getElementById(btnId).classList.add('active');
