@@ -167,8 +167,17 @@
                 errBox.innerHTML += '<div style="margin:1px 0;">🔴 <b>' + prefix + ':</b> ' + msg + (line !== undefined ? ' (line ' + line + ':' + col + ')' : '') + '</div>';
             } catch(e) {}
         }
-        // 同步错误
+        // 同步错误（忽略外部脚本/被墙CDN的错误，只显示本站代码的错误）
         window.onerror = function(msg, url, line, col, error) {
+            try {
+                var m = (error && error.message) || msg || '';
+                var fromExternal = url && url.indexOf('carvalautopart.com') === -1;
+                var htmlInJs = /Unexpected token '</.test(m);
+                if (fromExternal || htmlInJs) {
+                    console.warn('[已忽略外部脚本错误] ' + (url || '(inline)') + ' :: ' + m);
+                    return false;
+                }
+            } catch (e) {}
             showErr('JS错误', ((error && error.message) || msg), line, col);
             return false;
         };
