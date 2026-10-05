@@ -4053,13 +4053,48 @@ var CATEGORY_CONTENT = {
                 }
             }
             
-            // 图表数据加载...
+            // 图表数据加载
+            await loadCharts(token, startDate, endDate);
         } catch(e) {
             console.error('Analytics error:', e);
             showToast('加载Analytics数据失败', true);
         }
     }
     
+    var _gaCharts = {};
+    async function gaQuery(token, startDate, endDate, dims, mets, limit, orderBy) {
+        var body = { dateRanges: [{ startDate: startDate, endDate: endDate }], dimensions: dims, metrics: mets };
+        if (limit) body.limit = limit;
+        if (orderBy) body.orderBys = orderBy;
+        var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + GA_PROPERTY_ID + ':runReport', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (!r.ok) return [];
+        var j = await r.json();
+        return (j.rows || []).map(function (row) {
+            var o = {};
+            (dims || []).forEach(function (d, i) { o[d.name] = row.dimensionValues[i].value; });
+            (mets || []).forEach(function (m, i) { o[m.name] = parseFloat(row.metricValues[i].value); });
+            return o;
+        });
+    }
+    function drawChart(id, cfg) {
+        var el = document.getElementById(id); if (!el) return;
+        if (_gaCharts[id]) { try { _gaCharts[id].destroy(); } catch (e) {} }
+        if (typeof Chart === 'undefined') return;
+        _gaCharts[id] = new Chart(el, cfg);
+    }
+    async function loadCharts(token, startDate, endDate) {
+        try {
+            var rows = await gaQuery(token, startDate, endDate, [{ name: 'date' }], [{ name: 'screenPageViews' }, { name: 'totalUsers' }]);
+            rows.sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
+            var labels = rows.map(function (x) { var d = String(x.date); return d.length === 8 ? d.slice(4, 6) + '-' + d.slice(6, 8) : d; });
+            drawChart('trendChart', { type: 'line', data: { labels: labels, datasets: [{ label: '浏览量', data: rows.map(function (x) { return x.screenPageViews; }), borderColor: '#3498db', backgroundColor: 'rgba(52,152,219,.15)', fill: true, tension: .3 }, { label: '访客', data: rows.map(function (x) { return x.totalUsers; }), borderColor: '#e74c3c', backgroundColor: 'rgba(231,76,60,.1)', fill: true, tension: .3 }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } } });
+            var c = await gaQuery(token, startDate, endDate, [{ name: 'country' }], [{ name: 'totalUsers' }], 6, [{ metric: { metricName: 'totalUsers' }, desc: true }]);
+            drawChart('countryChart', { type: 'doughnut', data: { labels: c.map(function (x) { return x.country; }), datasets: [{ data: c.map(function (x) { return x.totalUsers; }), backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c'] }] }, options: { responsive: true, plugins: { legend: { position: 'bottom' } } } });
+            var dv = await gaQuery(token, startDate, endDate, [{ name: 'deviceCategory' }], [{ name: 'totalUsers' }]);
+            drawChart('deviceChart', { type: 'bar', data: { labels: dv.map(function (x) { return x.deviceCategory; }), datasets: [{ label: '访客', data: dv.map(function (x) { return x.totalUsers; }), backgroundColor: ['#3498db', '#2ecc71', '#e74c3c'] }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } } });
+        } catch (e) { console.warn('图表加载失败', e); }
+    }
+
     function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
     async function loadSEOStats() {
