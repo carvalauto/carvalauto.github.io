@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Publish generated files (blog/*.html + parts/ + brands/ + sitemap.xml) back to the repo.
-Used by the GitHub Action. Uses git (checkout already configured with push token).
+Publish generated files (blog/ + parts/ + brands/ + sitemap.xml) back to the repo.
+Used by the GitHub Action. Single git commit + push to main (works from detached HEAD).
 """
 import os
 import subprocess
@@ -20,14 +20,23 @@ def main():
                'parts.html', 'brands.html', 'vehicles.html',
                'american-cars.html', 'european-cars.html']
     existing = [t for t in targets if os.path.exists(t)]
+    if not existing:
+        print('nothing to add')
+        return
     sh('git', 'add', '-A', *existing)
     r = sh('git', 'commit', '-m', 'Auto-generate category/blog pages + sitemap')
     if 'nothing to commit' in (r.stdout + r.stderr):
         print('no changes to commit')
         return
-    p = sh('git', 'push')
+    # 同步远程最新，避免 non-fast-forward
+    sh('git', 'fetch', 'origin', 'main')
+    sh('git', 'rebase', 'origin/main')
+    p = sh('git', 'push', 'origin', 'HEAD:main')
     print('push stdout:', p.stdout)
     print('push stderr:', p.stderr)
+    if p.returncode != 0:
+        print('::error::git push failed with code', p.returncode)
+        raise SystemExit(1)
 
 
 if __name__ == '__main__':
