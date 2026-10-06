@@ -339,6 +339,18 @@ def generate_sitemap():
     print('Sitemap generated! ' + str(len(product_files)) + ' products + ' + str(len(blog_files)) + ' blog + ' + str(len(static_urls)) + ' static')
 
 
+def generate_category_pages():
+    import subprocess
+    try:
+        r = subprocess.run(['node', 'generate_category_pages.js'], capture_output=True, text=True)
+        print(r.stdout)
+        if r.returncode != 0:
+            print('category generation stderr:', (r.stderr or '')[:500])
+    except Exception as e:
+        print('category generation skipped:', e)
+
+
 if __name__ == '__main__':
     generate_blog_pages()
+    generate_category_pages()
     generate_sitemap()
