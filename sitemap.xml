@@ -253,6 +253,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/parts/crankshaft-sensors.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/parts/crankshafts.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -452,6 +458,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/parts/lighting.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/maf-sensors.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -871,6 +883,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/parts/camshafts/nissan.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/parts/spark-plugs/honda.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -1081,6 +1099,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/parts/power-steering-pumps/honda.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/parts/brake-calipers/wuling.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -1112,6 +1136,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/parts/radiators/honda.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/radiators/nissan.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1333,6 +1363,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/parts/sensors/renault.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/parts/sensors/toyota.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -1352,6 +1388,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/parts/gaskets/toyota.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/alternators/nissan.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/crankshafts/nissan.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1573,6 +1621,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/ram.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/renault.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -1699,6 +1753,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/honda/pilot.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/honda/tiida.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/chevrolet/cruze.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -1718,6 +1784,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/brands/chevrolet/fit.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/ram/accord.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/ram/tiida.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1861,6 +1939,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/bmw/golf.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/bmw/passat.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/bmw/x1.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -1909,6 +1999,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/citroen/fit.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/mini/hongguang.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -1916,6 +2012,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/brands/mini/mini-ev.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/kia/carens.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2018,6 +2120,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/brands/hyundai/sonata.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/hyundai/sorento.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2191,6 +2299,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/toyota/altima.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/toyota/avalon.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/toyota/camry.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -2233,6 +2353,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/toyota/juke.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/toyota/lancer.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -2269,6 +2395,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/toyota/sentra.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/toyota/sienna.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -2294,6 +2426,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/brands/toyota/vios.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/toyota/vito.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2743,6 +2881,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/nissan/almera.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/nissan/altima.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -2821,6 +2965,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/nissan/patrol.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/nissan/polo.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -2845,7 +2995,25 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/nissan/sonata.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/nissan/sunny.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/nissan/sylphy.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/nissan/tahoe.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2864,6 +3032,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/brands/nissan/x-trail.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/renault/logan.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -9626,6 +9800,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/intake-manifold-air-flap-runner-repair-part-for-compatible-with-mercedes-benz-m272-m273-oem-a2721402401-424.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/iridium-spark-plugs-fxe20hr11-22401-1hc1b-for-cars-model-tiida-accord-iridium-ceramic-material-oe-no-1791208747066.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -17312,6 +17492,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/intake-manifold-air-flap-runner-repair-part-for-compatible-with-mercedes-benz-m272-m273-oem-a2721402401-424.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/iridium-spark-plugs-fxe20hr11-22401-1hc1b-for-cars-model-tiida-accord-iridium-ceramic-material-oe-no-1791208747066.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
