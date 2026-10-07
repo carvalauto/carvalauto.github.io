@@ -308,6 +308,7 @@ def generate_sitemap():
         ('https://carvalautopart.com/parts.html', 'weekly', '0.9'),
         ('https://carvalautopart.com/brands.html', 'weekly', '0.9'),
         ('https://carvalautopart.com/vehicles.html', 'weekly', '0.9'),
+        ('https://carvalautopart.com/oem-lookup.html', 'weekly', '0.8'),
         ('https://carvalautopart.com/american-cars.html', 'weekly', '0.7'),
         ('https://carvalautopart.com/european-cars.html', 'weekly', '0.7'),
     ]
