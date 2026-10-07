@@ -1061,6 +1061,30 @@
         "keywords": "Hyundai Accent headlight, 92101-1R520, halogen headlight, LED headlight, Hyundai Accent 2015, replacement headlight"
       },
       "id": 42
+    },
+    {
+      "id": 43,
+      "title": "How to Find the Right OEM Part Number: A Complete Cross-Reference Guide (2026)",
+      "slug": "how-to-find-oem-part-number-cross-reference-guide",
+      "content": "<h2>What Is an OEM Part Number?</h2>\n<p>An OEM (Original Equipment Manufacturer) part number is the unique code a vehicle manufacturer assigns to each component. Every genuine part — from a headlight to a brake pad — has its own OEM number. Using it is the most reliable way to order the <strong>exact</strong> part your car needs, without guesswork.</p>\n\n<h2>Why OEM Numbers Matter When Buying Auto Parts</h2>\n<p>Two parts can look identical but fit completely different vehicles. The OEM number guarantees compatibility. For wholesalers and repair shops, checking the OEM number avoids costly returns and wrong-fit complaints.</p>\n<ul>\n<li><strong>Exact fitment</strong> — matches the part your vehicle was built with</li>\n<li><strong>Cross-reference</strong> — one OEM number often maps to several equivalent part numbers</li>\n<li><strong>Faster sourcing</strong> — suppliers can quote instantly when you provide the OEM number</li>\n</ul>\n\n<h2>Where to Find Your OEM Part Number</h2>\n<ol>\n<li><strong>On the old part itself</strong> — stamped or printed on the component.</li>\n<li><strong>In your vehicle manual or dealer catalogue.</strong></li>\n<li><strong>On parts diagrams</strong> for your model and model year.</li>\n<li><strong>Using an online OEM lookup tool</strong> — type the number and see matching parts instantly.</li>\n</ol>\n\n<h2>How to Cross-Reference an OEM Number</h2>\n<p>Cross-referencing means finding all the alternative part numbers that will fit the same position. This is useful when the exact OEM part is discontinued or when a compatible aftermarket part costs less.</p>\n<p>Our free <a href=\"https://carvalautopart.com/oem-lookup.html\">OEM Part Number Lookup tool</a> lets you search by OEM number, part name or car model and instantly see matching products across Japanese, Korean, German, Chinese and American vehicles.</p>\n\n<h2>Common OEM Number Formats</h2>\n<ul>\n<li><strong>Toyota:</strong> 10 digits, e.g. 90919-01247 (spark plug), 04152-YZZA1 (oil filter)</li>\n<li><strong>Honda:</strong> 5-3-3 format, e.g. 15400-PLM-A02 (oil filter)</li>\n<li><strong>Nissan:</strong> e.g. 15208-65F0A (oil filter)</li>\n<li><strong>Hyundai / Kia:</strong> e.g. 26300-35505 (oil filter)</li>\n<li><strong>BMW:</strong> 11-digit, e.g. 11427510717 (oil filter)</li>\n</ul>\n\n<h2>OEM vs Aftermarket: Which Should You Buy?</h2>\n<p>OEM parts are made to the manufacturer's specification and guarantee fitment. Quality aftermarket parts follow the same specifications and are often more affordable for wholesale buyers. Whichever you choose, always verify with the OEM number first.</p>\n\n<h2>Buying Auto Parts Wholesale</h2>\n<p>At <a href=\"https://carvalautopart.com/\">Carval Auto Parts</a> we supply OEM and aftermarket parts for all car brands — Toyota, Honda, Nissan, Hyundai, Kia, BMW, Mercedes-Benz, Audi, Volkswagen, Wuling, Baojun and more — at factory-direct wholesale prices from Guangzhou, China. Browse our <a href=\"https://carvalautopart.com/parts.html\">parts catalog</a> or <a href=\"https://carvalautopart.com/brands.html\">shop by brand</a>.</p>",
+      "excerpt": "Learn what an OEM part number is, how to find it, and how to cross-reference it to get the exact auto part for your car — plus a free OEM lookup tool.",
+      "author": "Carval Auto Parts",
+      "category": "Guides",
+      "tags": [
+        "OEM parts",
+        "cross reference",
+        "how to",
+        "auto parts guide"
+      ],
+      "image": "https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/images/oem-ce",
+      "date": "2026-10-07",
+      "status": "published",
+      "views": 0,
+      "seo": {
+        "metaTitle": "How to Find the Right OEM Part Number: Cross-Reference Guide 2026",
+        "metaDescription": "What is an OEM part number, where to find it, and how to cross-reference it to get the exact auto part. Free OEM lookup tool for all car brands.",
+        "keywords": "OEM part number, cross reference, how to find OEM number, auto parts lookup"
+      }
     }
   ],
   "categories": [
@@ -1088,6 +1112,7 @@
       "id": 5,
       "name": "Industry News",
       "order": 5
-    }
+    },
+    "Guides"
   ]
 }
