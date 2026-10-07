@@ -769,6 +769,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/parts/motors/toyota.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/parts/motors/wuling.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -1124,6 +1130,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/parts/blower-motors/nissan.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/blower-motors/toyota.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1885,6 +1897,36 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/changan/edge.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/changan/escape.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/changan/fiesta.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/changan/fit.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/changan/focus.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/changan/kuga.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -2353,6 +2395,24 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/toyota/a4.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/toyota/a6.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/toyota/accord.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/toyota/alphard.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -2408,6 +2468,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/brands/toyota/hilux.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/toyota/jazz.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -3422,6 +3488,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/160_1994-2002_New_Auto_Parts_Starter_Assembl.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/16100-39525-cooling-system-coolant-water-pump-for-toyota-1791356968467.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -4639,6 +4711,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/19200-5k0-a01-19200-6c1-305-for-honda-accord-crv-odyssey-2018-2025-hybrid-engine-water-pump-1791356455550.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/19200-5k0-a01-goway-engine-electric-cooling-water-pump-for-honda-accord-insight-clarity-replacement--1791356675132.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/19200-r40-a01-cooling-system-automatic-water-pump-assembly-condition-for-honda-cp2-cu2-accord-t-1791356023432.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/19200-rx0-a01-for-honda-for-civic-crv-engine-water-pump-for-use-1791356935050.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/192_71101-TB0_Factory_Direct_Sales_Front_Bum.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -4765,6 +4861,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/1uz-2uz-water-pump-16307-0f010-16307-50012-163070f010-1630750012-for-toyota-12v-1791356892442.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/2-pcs-1992-1996-for-toyota-for-camry-shock-absorbers-and-strut-spring-assembly-1789045578047.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -4850,6 +4952,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/20l4e-cylinder-head-assembly-datong-g10-t60td90-roewe-rx5-2--1782146202676.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/21010-vb025-water-pump-for-nissan-civilian-safari-safari-pick-up-tb45-engine-6-cyl-1791356907223.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -4988,6 +5096,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/249_89542-04020_89542-04020_8954204020_89542-6.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/25100-3c100-water-pump-for-2006-2014-hyundai-kia-33l-35l-38l-dohc-v6-oem-251003c100-21355-3c510-2510-1791356765420.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/25100-3l100-251003l100-coolant-pump-assy-for-hyundai-genesis-kia-stinger-1791356878243.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -5647,6 +5767,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/45251-tk8-a02-front-brake-rotor-fits-for-honda-odyssey-2011-2020-pilot-2016-2022-passport-2019-2025--1791357479365.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/452_25100-26550_The_Original_CVVT_Engine_Water.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -6013,6 +6139,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/7i-6603-cm676169-khr2845-blower-motor-for-kobelco-sk60-sk100-sk220-1791380042661.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/80730-cd00a-80730-ca011-80730-ca00a-742-524-for-nissan-infiniti-drivers-front-350z-window-lift-regulator-motor-290.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -6020,6 +6152,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/83_0281002907 0281002920 0281002720 0281002834_Auto_Injection_Fuel_Rail_Press.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/87103-od340-blower-motor-for-toyota-vios-1791380118997.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/87103-on010-87103-0c051-87103-60480-blower-motor-for-toyota-landcruiser-lexus-1791380166097.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -6193,6 +6337,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ac-87103-06090-87103-33090-87103-48080-87103-0e070-heat-blower-fan-motor-for-toyota-camry-1791379948053.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ac-electric-heater-24v-blower-motor-8ew351029041-0038300508-for-mercedes-benz-actros-1791380011440.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/acc-radar-probe-cruise-control-module-for-sgmw-wuling-baojun-victory-acc-controller-module-1777821849968.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -6235,7 +6391,25 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/air-conditioner-specification-ac-blower-motor-fan-for-97114-4h000-971144h000-hyundai-starex-1791379924539.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/air-conditioning-12v-heater-blower-fan-motor-27220-2y900-3l04130370-for-mitsubishi-triton-isuzu-1791379826035.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/air-conditioning-compressor-for-toyota-1788681678115.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/air-conditioning-cooling-fan-oem-19016-sfe-000-for-honda-odyssey-2005-2008-19015-rfe-003-hs-rb1-1791379751768.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -6308,6 +6482,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/aisin-afw-automatic-transmission-fluid-atf-oil-4l-made-in-japan-for-toyota-japanese-cars-1778420291358.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/aisin-engine-water-pump-wph801-19200r70a11-for-honda-saturn-1791356799547.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -6709,6 +6889,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/automobile-water-pump-coupling-bracket-16307-62020-1791356957448.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/automobile-water-pump-t-130-gwt-101a-1nz-16100-29155-1791356823260.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/automotive-engine-oil-pump-for-h-yundai-k-ia-2300-2g400-233002g400-auto-parts-23300-2g400-1777831792555.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -6836,6 +7028,24 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/best-sell-clutch-slave-cylinder-yb053high-quality-car-hydraulic-release-bearings-oe-no-23902590car-auto-parts-for-sgmw-baojun-267.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/blower-motor-27226-js60b-ba153-40610-12v-blower-for-nissan-navara-2-rhd-assy-in-stock-1791380346819.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/blower-motor-ae272700-0450-87103-52120-for-yaris-2008-12v-in-stock-1791380250779.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/blower-motor-electric-air-blower-87103-60260-for-toyota-lexus-lx470-1791380202850.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -7579,6 +7789,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/d1303-front-brake-pads-04465-60280-04465-0c020-24386-for-toyota-land-cruiser-200-lexus-lx570-tundra--1791355849587.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/d976-brake-pads-for-toyota-hilux-mitsubishi-pajero-04465-04070-04465-0k090-044650k370-04465-35250-04-1791355733950.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/datong-g10-g20-t60-t90v90-engine-middle-cylinder-assembly-wi-1782032327941.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -8012,6 +8234,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/engine-timing-chain-kit-with-sprockets-bolts-for-bmw-mini-n14-n14b16-oem-11318618317-1789116534773.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/engine-water-pump-for-honda-civic-2001-2005-fr-v-2004-stream-2001-2006-19200-pm3-003-19200-p01-003-1791356919627.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -8455,6 +8683,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/for-honda-fr1-jade-38615-5m1-h00-air-conditioning-cooling-fan-radiator-fan-1791379703449.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/for-honda-odyssey-a-c-condenser-fan-assembly-2018-2021-oe-38615-5mr-a01-1791357166471.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/for-hyundai-accent-engine-control-module-ecu-ecm-me179211-ecc-39116-03752-1789186893801.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -8792,6 +9032,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/front-lower-wishbones-control-arm-drop-links-suspension-kit-6-pcs-for-bmw-e60-e61-520-523-525-530-540-maxpeedingrods-146.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/front-oem-lexus-rx350-450h-nx-brake-pads-04465-az319-1791355927398.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -9235,6 +9481,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/gwm-haval-h6-turbocharger-for-control-solenoid-valve-gw4c20b-oe-1118100xec05-1118433aelt08-1-year-wa-1791356637083.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/haishida-auto-spare-parts-23858612-l3c-l2b-piston-std-engine-parts-for-wuling-hongguang-rongguang-excelle-baojun-730-747mm-138.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -9266,6 +9518,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/headlamp-combination-headlight-is-suitable-for-wuling-hongguang-miniev-gb-macaron-macaron-iii-1777797938386.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/heater-blower-motor-27220-5e900-27220vb002-for-nissan-patrol-y61-27220-vb002-1791379888393.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -10525,6 +10783,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/nd116340-7350-24v-air-conditioner-ac-blower-fan-motor-spare-for-komatsu-excavator-pc200-8-1791379855720.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/new-04313-12030-cylinder-kit-clutch-release-for-for-for-6d26-407.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -10843,6 +11107,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/odyssey-pilot-50820-tk8-a61-50810-thr-a02-50830-thr-a02-50850-thr-a02-50810-sfe-020-50830-sfe-030-50-1791358642707.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/oe-04711-31a-h10zz-auto-body-parts-for-honda-ens1-enp1-electric-vehicle-body-parts-front-bumper-496.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -10982,6 +11252,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/oem-2058859802-2058859902-front-bumper-insert-strip-for-mercedes-benz-c-class-wamg-w205-c43-2019-2020-174.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/oem-210104m525-cooling-water-pump-for-nissan-1791356785082.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -11893,6 +12169,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/radiator-cooling-fan-38615-rza-a01-for-honda-cr-v-iii-re-2006-1791357225984.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/radiator-cooling-fan-for-honda-accord-2013-2014-38615-5a2-a01-1791357081733.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/radiator-tanks-aluminum-core-plastic-2015-2018-30-pcs-oem-21460-4ba0a-competitive-for-nissan-rogue-1791197410038.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -11978,6 +12266,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/replacement-hydraulic-oil-pump-ampar-for-chevrolet-16l-engine-2h0-part-numbers-55556428-55566793-55566893-new-1-year-warranty-95.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/rhd-blower-for-2000-2006-honda-insight-79310-s0x-a51-air-blower-1791380298006.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -12961,6 +13255,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/water-pump-for-honda-rxs-coupe-k20a3-k20a-1hz-1hd-19200-rfe-003-19200-rbb-013-19200-rbb002-19200-raa-1791356728852.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/water-pump-for-nissan-y61-patrol-b1010-vc2x5-21010-vc225-b1010-vc2x5-1791356838534.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/wheel-hub-bearing-40202-ed510-compatible-with-nissan-motor-automotive-hub-unit-bearings-assemblies-1788691811878.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -13118,6 +13424,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/widely-used-4d56-d4bb-2-5t-engine-assembly-gasoline-car-engi-1782023368056.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/wpt-187-water-pump-for-toyota-lexus-ls460-16100-39505-1791356856817.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -13675,6 +13987,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/16100-39525-cooling-system-coolant-water-pump-for-toyota-1791356968467.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/161a0-29015-161a0-39015-161a029015-161a039015-engine-electric-water-pump-for-toyota-prius-corolla-2z-1788890714224.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -13771,6 +14089,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/19200-5k0-a01-19200-6c1-305-for-honda-accord-crv-odyssey-2018-2025-hybrid-engine-water-pump-1791356455550.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/19200-5k0-a01-goway-engine-electric-cooling-water-pump-for-honda-accord-insight-clarity-replacement--1791356675132.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/19200-r40-a01-cooling-system-automatic-water-pump-assembly-condition-for-honda-cp2-cu2-accord-t-1791356023432.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/19200-rx0-a01-for-honda-for-civic-crv-engine-water-pump-for-use-1791356935050.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/19d4n-cylinder-head-assembly-19l-4-cylinder-engine-for-sorento-standard-fitment-factory-direct-saic--1782032291597.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -13825,6 +14167,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/1uz-2uz-water-pump-16307-0f010-16307-50012-163070f010-1630750012-for-toyota-12v-1791356892442.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/2-pcs-1992-1996-for-toyota-for-camry-shock-absorbers-and-strut-spring-assembly-1789045578047.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -13862,6 +14210,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/2049800964-suitable-for-mercedes-benz-c-class-w204-hood-support-rod-1789143412572.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/21010-vb025-water-pump-for-nissan-civilian-safari-safari-pick-up-tb45-engine-6-cyl-1791356907223.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -13940,6 +14294,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/24568768-for-wuling-baojun-730-2014-2016-rear-300.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/25100-3c100-water-pump-for-2006-2014-hyundai-kia-33l-35l-38l-dohc-v6-oem-251003c100-21355-3c510-2510-1791356765420.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/25100-3l100-251003l100-coolant-pump-assy-for-hyundai-genesis-kia-stinger-1791356878243.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -14114,6 +14480,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/433mhz-pre-programmed-tpms-tire-pressure-sensor-56029398ab-56029398aa-for-chrysler-300-dodge-ram-jee-1788935172426.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/45251-tk8-a02-front-brake-rotor-fits-for-honda-odyssey-2011-2020-pilot-2016-2022-passport-2019-2025--1791357479365.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -14341,7 +14713,25 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/7i-6603-cm676169-khr2845-blower-motor-for-kobelco-sk60-sk100-sk220-1791380042661.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/80730-cd00a-80730-ca011-80730-ca00a-742-524-for-nissan-infiniti-drivers-front-350z-window-lift-regulator-motor-290.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/87103-od340-blower-motor-for-toyota-vios-1791380118997.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/87103-on010-87103-0c051-87103-60480-blower-motor-for-toyota-landcruiser-lexus-1791380166097.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -14455,6 +14845,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/ac-87103-06090-87103-33090-87103-48080-87103-0e070-heat-blower-fan-motor-for-toyota-camry-1791379948053.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/ac-electric-heater-24v-blower-motor-8ew351029041-0038300508-for-mercedes-benz-actros-1791380011440.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/acc-radar-probe-cruise-control-module-for-sgmw-wuling-baojun-victory-acc-controller-module-1777821849968.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -14486,6 +14888,24 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/aftermarket-car-auto-air-conditioning-system-auto-ac-evaporator-for-baojun-730-oem-23890011-271.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/air-conditioner-specification-ac-blower-motor-fan-for-97114-4h000-971144h000-hyundai-starex-1791379924539.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/air-conditioning-12v-heater-blower-fan-motor-27220-2y900-3l04130370-for-mitsubishi-triton-isuzu-1791379826035.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/air-conditioning-cooling-fan-oem-19016-sfe-000-for-honda-odyssey-2005-2008-19015-rfe-003-hs-rb1-1791379751768.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -14558,6 +14978,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/aisin-afw-automatic-transmission-fluid-atf-oil-4l-made-in-japan-for-toyota-japanese-cars-1778420291358.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/aisin-engine-water-pump-wph801-19200r70a11-for-honda-saturn-1791356799547.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -14887,6 +15313,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/automobile-water-pump-coupling-bracket-16307-62020-1791356957448.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/automobile-water-pump-t-130-gwt-101a-1nz-16100-29155-1791356823260.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/automotive-engine-oil-pump-for-h-yundai-k-ia-2300-2g400-233002g400-auto-parts-23300-2g400-1777831792555.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -14996,6 +15434,24 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/best-sell-clutch-slave-cylinder-yb053high-quality-car-hydraulic-release-bearings-oe-no-23902590car-auto-parts-for-sgmw-baojun-267.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/blower-motor-27226-js60b-ba153-40610-12v-blower-for-nissan-navara-2-rhd-assy-in-stock-1791380346819.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/blower-motor-ae272700-0450-87103-52120-for-yaris-2008-12v-in-stock-1791380250779.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/blower-motor-electric-air-blower-87103-60260-for-toyota-lexus-lx470-1791380202850.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -15649,6 +16105,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/d1303-front-brake-pads-04465-60280-04465-0c020-24386-for-toyota-land-cruiser-200-lexus-lx570-tundra--1791355849587.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/d976-brake-pads-for-toyota-hilux-mitsubishi-pajero-04465-04070-04465-0k090-044650k370-04465-35250-04-1791355733950.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/datong-g10g20t60t90v90-engine-middle-cylinder-assembly-with-crankshaft-sc20m163q6a-oliver-car-fitmen-1782032327942.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -15968,6 +16436,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/engine-timing-chain-kit-with-sprockets-bolts-for-bmw-mini-n14-n14b16-oem-11318618317-1789116534773.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/engine-water-pump-for-honda-civic-2001-2005-fr-v-2004-stream-2001-2006-19200-pm3-003-19200-p01-003-1791356919627.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -16327,6 +16801,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/for-honda-fr1-jade-38615-5m1-h00-air-conditioning-cooling-fan-radiator-fan-1791379703449.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/for-honda-odyssey-a-c-condenser-fan-assembly-2018-2021-oe-38615-5mr-a01-1791357166471.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/for-hyundai-accent-engine-control-module-ecu-ecm-me179211-ecc-39116-03752-1789186893801.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -16628,6 +17114,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/front-lower-wishbones-control-arm-drop-links-suspension-kit-6-pcs-for-bmw-e60-e61-520-523-525-530-540-maxpeedingrods-146.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/front-oem-lexus-rx350-450h-nx-brake-pads-04465-az319-1791355927398.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -17035,6 +17527,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/gwm-haval-h6-turbocharger-for-control-solenoid-valve-gw4c20b-oe-1118100xec05-1118433aelt08-1-year-wa-1791356637083.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/haishida-auto-spare-parts-23858612-l3c-l2b-piston-std-engine-parts-for-wuling-hongguang-rongguang-excelle-baojun-730-747mm-138.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -17066,6 +17564,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/headlamp-combination-headlight-is-suitable-for-wuling-hongguang-miniev-gb-macaron-macaron-iii-1777797938386.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/heater-blower-motor-27220-5e900-27220vb002-for-nissan-patrol-y61-27220-vb002-1791379888393.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -18193,6 +18697,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/nd116340-7350-24v-air-conditioner-ac-blower-fan-motor-spare-for-komatsu-excavator-pc200-8-1791379855720.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/new-04313-12030-cylinder-kit-clutch-release-for-for-for-6d26-407.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -18433,6 +18943,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/odyssey-pilot-50820-tk8-a61-50810-thr-a02-50830-thr-a02-50850-thr-a02-50810-sfe-020-50830-sfe-030-50-1791358642707.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/oe-04711-31a-h10zz-auto-body-parts-for-honda-ens1-enp1-electric-vehicle-body-parts-front-bumper-496.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -18554,6 +19070,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/oem-2058859802-2058859902-front-bumper-insert-strip-for-mercedes-benz-c-class-wamg-w205-c43-2019-2020-174.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/oem-210104m525-cooling-water-pump-for-nissan-1791356785082.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19345,6 +19867,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/radiator-cooling-fan-38615-rza-a01-for-honda-cr-v-iii-re-2006-1791357225984.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/radiator-cooling-fan-for-honda-accord-2013-2014-38615-5a2-a01-1791357081733.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/radiator-tanks-aluminum-core-plastic-2015-2018-30-pcs-oem-21460-4ba0a-competitive-for-nissan-rogue-1791197410038.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -19430,6 +19964,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/replacement-hydraulic-oil-pump-ampar-for-chevrolet-16l-engine-2h0-part-numbers-55556428-55566793-55566893-new-1-year-warranty-95.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/rhd-blower-for-2000-2006-honda-insight-79310-s0x-a51-air-blower-1791380298006.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -20335,6 +20875,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/water-pump-for-honda-rxs-coupe-k20a3-k20a-1hz-1hd-19200-rfe-003-19200-rbb-013-19200-rbb002-19200-raa-1791356728852.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/water-pump-for-nissan-y61-patrol-b1010-vc2x5-21010-vc225-b1010-vc2x5-1791356838534.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/wheel-hub-bearing-40202-ed510-compatible-with-nissan-motor-automotive-hub-unit-bearings-assemblies-1788691811878.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -20474,6 +21026,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/wholesales-advance-fully-synthetic-5l-5w40-motor-oils-5w30-vehicle-automotive-lubricant-engine-oil-for-refined-formula-1778404686712.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/wpt-187-water-pump-for-toyota-lexus-ls460-16100-39505-1791356856817.html</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
