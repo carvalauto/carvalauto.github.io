@@ -132,6 +132,7 @@ async function yandexRange(days) {
   const out = {};
   try {
     const sm = await req('api.webmaster.yandex.net', 'GET', '/v4/user/' + YUID + '/hosts/' + YHID + '/summary/', yh);
+    console.log('    [yandex summary] status=' + sm.status + ' body=' + String(sm.body).slice(0, 200));
     const sj = JSON.parse(sm.body);
     out.summary = { searchablePages: sj.searchable_pages_count, excludedPages: sj.excluded_pages_count, sqi: sj.sqi, problems: sj.site_problems };
     const q = await req('api.webmaster.yandex.net', 'GET', '/v4/user/' + YUID + '/hosts/' + YHID + '/search-queries/popular/?order_by=TOTAL_SHOWS&query_indicator=TOTAL_SHOWS&query_indicator=TOTAL_CLICKS&query_indicator=AVG_SHOW_POSITION&date_from=' + s + '&date_to=' + e + '&limit=200', yh);
