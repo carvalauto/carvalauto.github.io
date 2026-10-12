@@ -452,13 +452,7 @@
             <div id="seoStatsCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;"><div style="color:var(--text-muted);font-size:12px;">加载中...</div></div>
             <div id="seoStatsQueries" style="margin-top:12px;"></div>
         </div>
-        <div id="loginSection">
-            <div class="login-card">
-                <div class="logo">CARVAL <span>AUTO</span></div>
-                <p>连接 Google Analytics<br>查看网站流量数据</p>
-                <button class="btn-google" id="googleLoginBtn"><i class="fab fa-google"></i> Google 登录</button>
-            </div>
-        </div>
+        <div id="loginSection" style="display:none;"></div>
         <div id="dashboardSection" style="display:none;">
             <div class="date-bar">
                 <span style="font-size:11px;color:var(--text-muted);">时间：</span>
@@ -3993,12 +3987,12 @@ var CATEGORY_CONTENT = {
         gapi.load('client', function() {
             var token = localStorage.getItem('ga_token');
             if (token) {
-                loginSection.style.display = 'none';
-                dashboardSection.style.display = 'block';
+                if (loginSection) loginSection.style.display = 'none';
+                if (dashboardSection) dashboardSection.style.display = 'block';
                 loadAnalyticsData();
             } else {
-                loginSection.style.display = 'block';
-                dashboardSection.style.display = 'none';
+                if (loginSection) loginSection.style.display = 'none';
+                if (dashboardSection) dashboardSection.style.display = 'none';
             }
         });
     }
