@@ -19,10 +19,12 @@ jobs:
 
       - name: Debug Yandex connectivity
         run: |
-          echo "== 1) yandex.com 连通性 =="
-          curl -sS -m 20 -o /dev/null -w "code=%{http_code}\n" https://yandex.com/ || echo "curl exit=$?"
-          echo "== 2) Yandex Webmaster API summary =="
-          curl -sS -m 20 -w "\ncode=%{http_code}\n" -H "Authorization: OAuth ${{ secrets.YANDEX_TOKEN }}" "https://api.webmaster.yandex.net/v4/user/2336934622/hosts/https:carvalautopart.com:443/summary/" || echo "curl exit=$?"
+          echo "== DNS =="
+          getent hosts api.webmaster.yandex.net || echo "no getent"
+          echo "== IPv4 =="
+          curl -4 -sS -m 20 -o /dev/null -w "IPv4 code=%{http_code}\n" -H "Authorization: OAuth ${{ secrets.YANDEX_TOKEN }}" "https://api.webmaster.yandex.net/v4/user/2336934622/hosts/https:carvalautopart.com:443/summary/" || echo "IPv4 curl exit=$?"
+          echo "== IPv6 =="
+          curl -6 -sS -m 15 -o /dev/null -w "IPv6 code=%{http_code}\n" -H "Authorization: OAuth ${{ secrets.YANDEX_TOKEN }}" "https://api.webmaster.yandex.net/v4/user/2336934622/hosts/https:carvalautopart.com:443/summary/" || echo "IPv6 curl exit=$?"
 
       - name: Generate SEO stats (3 platforms x ranges)
         env:
