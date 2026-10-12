@@ -1,0 +1,28 @@
+name: SEO Stats Full
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate SEO stats (3 platforms x ranges)
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          BING_KEY: ${{ secrets.BING_KEY }}
+          YANDEX_TOKEN: ${{ secrets.YANDEX_TOKEN }}
+          YANDEX_UID: ${{ secrets.YANDEX_UID }}
+          OSS_AK: ${{ secrets.OSS_AK }}
+          OSS_SK: ${{ secrets.OSS_SK }}
+        run: node gen_seo_full.js
