@@ -137,7 +137,7 @@ async function yandexRange(days) {
     out.summary = { searchablePages: sj.searchable_pages_count, excludedPages: sj.excluded_pages_count, sqi: sj.sqi, problems: sj.site_problems };
     const q = await req('api.webmaster.yandex.net', 'GET', '/v4/user/' + YUID + '/hosts/' + YHID + '/search-queries/popular/?order_by=TOTAL_SHOWS&query_indicator=TOTAL_SHOWS&query_indicator=TOTAL_CLICKS&query_indicator=AVG_SHOW_POSITION&date_from=' + s + '&date_to=' + e + '&limit=200', yh);
     out.byQuery = ((JSON.parse(q.body).queries) || []).map(x => ({ q: x.query_text, clicks: (x.indicators || {}).TOTAL_CLICKS || 0, impressions: (x.indicators || {}).TOTAL_SHOWS || 0, position: (x.indicators || {}).AVG_SHOW_POSITION || null }));
-  } catch (err) { out.error = err.message; }
+  } catch (err) { out.error = err.message; console.log('    [yandex] 失败: ' + err.message); }
   return out;
 }
 
