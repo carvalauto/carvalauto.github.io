@@ -449,7 +449,7 @@
                 <button class="date-btn" data-days="90" onclick="renderSeoRange(90)">90天</button>
                 <button class="date-btn" data-days="180" onclick="renderSeoRange(180)">180天</button>
             </div>
-            <div id="seoStatsCards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"><div style="color:var(--text-muted);font-size:12px;">加载中...</div></div>
+            <div id="seoStatsCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;"><div style="color:var(--text-muted);font-size:12px;">加载中...</div></div>
             <div id="seoStatsQueries" style="margin-top:12px;"></div>
         </div>
         <div id="loginSection">
@@ -4104,7 +4104,7 @@ var CATEGORY_CONTENT = {
         } catch (e) { console.warn('图表加载失败', e); }
     }
 
-    function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
     var _seoFull = null;
     window.__seoDays = 30;
@@ -4139,17 +4139,22 @@ var CATEGORY_CONTENT = {
         rows = rows || [];
         if (filter === 'imp') rows = rows.filter(function (x) { return x.impressions > 0; });
         if (filter === 'clk') rows = rows.filter(function (x) { return x.clicks > 0; });
-        var head = cols.map(function (c) { return '<th style="text-align:left;padding:5px 8px;border-bottom:1px solid var(--border);font-size:11px;color:var(--text-muted);">' + c[0] + '</th>'; }).join('');
-        var body = rows.slice(0, 80).map(function (x) {
+        function al(i) { return i === 0 ? 'left' : 'right'; }
+        var head = cols.map(function (c, i) { return '<th style="text-align:' + al(i) + ';' + (i === 0 ? '' : 'width:60px;') + 'padding:6px 8px;border-bottom:1px solid var(--border);font-size:11px;color:var(--text-muted);white-space:nowrap;">' + c[0] + '</th>'; }).join('');
+        var body = rows.slice(0, 100).map(function (x) {
             return '<tr>' + cols.map(function (c, i) {
-                var v = x[c[1]];
-                if (c[1] === 'q' || c[1] === 'page') v = '<span style="display:inline-block;max-width:360px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom;" title="' + escHtml(String(v == null ? '' : v)) + '">' + escHtml(String(v == null ? '' : v)) + '</span>';
-                return '<td style="padding:5px 8px;border-bottom:1px dashed var(--border);font-size:12px;' + (i === 0 ? '' : 'text-align:right;') + '">' + v + '</td>';
+                var v = x[c[1]] == null ? '' : x[c[1]];
+                if (c[1] === 'q' || c[1] === 'page') v = '<span style="display:block;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + escHtml(v) + '">' + escHtml(v) + '</span>';
+                return '<td style="text-align:' + al(i) + ';padding:6px 8px;border-bottom:1px dashed var(--border);font-size:12px;white-space:nowrap;vertical-align:top;">' + v + '</td>';
             }).join('') + '</tr>';
         }).join('');
-        return '<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;"><thead><tr>' + head + '</tr></thead><tbody>' + body + (body ? '' : '<tr><td colspan="' + cols.length + '" style="padding:10px;color:var(--text-muted);font-size:12px;">暂无数据</td></tr>') + '</tbody></table></div>';
+        return '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;"><table style="width:100%;border-collapse:collapse;"><thead><tr>' + head + '</tr></thead><tbody>' + body + (body ? '' : '<tr><td colspan="' + cols.length + '" style="padding:10px;color:var(--text-muted);font-size:12px;text-align:center;">暂无数据</td></tr>') + '</tbody></table></div>';
     }
     function seoSection(title) { return '<div style="font-weight:700;font-size:14px;margin:0 0 8px;">' + title + '</div>'; }
+    var CN_COUNTRY = { usa: '美国', gbr: '英国', deu: '德国', fra: '法国', ita: '意大利', esp: '西班牙', nld: '荷兰', bel: '比利时', che: '瑞士', aut: '奥地利', swe: '瑞典', nor: '挪威', dnk: '丹麦', fin: '芬兰', pol: '波兰', cze: '捷克', prt: '葡萄牙', grc: '希腊', irl: '爱尔兰', hun: '匈牙利', rou: '罗马尼亚', bgr: '保加利亚', hrv: '克罗地亚', svk: '斯洛伐克', svn: '斯洛文尼亚', srb: '塞尔维亚', ltu: '立陶宛', lva: '拉脱维亚', est: '爱沙尼亚', ukr: '乌克兰', rus: '俄罗斯', kaz: '哈萨克斯坦', uzb: '乌兹别克斯坦', can: '加拿大', mex: '墨西哥', bra: '巴西', arg: '阿根廷', chl: '智利', col: '哥伦比亚', per: '秘鲁', ecu: '厄瓜多尔', ven: '委内瑞拉', ury: '乌拉圭', bol: '玻利维亚', pry: '巴拉圭', aus: '澳大利亚', nzl: '新西兰', jpn: '日本', kor: '韩国', chn: '中国', hkg: '中国香港', twn: '中国台湾', ind: '印度', pak: '巴基斯坦', bgd: '孟加拉国', lka: '斯里兰卡', idn: '印度尼西亚', mys: '马来西亚', tha: '泰国', vnm: '越南', phl: '菲律宾', sgp: '新加坡', khm: '柬埔寨', mmr: '缅甸', are: '阿联酋', sau: '沙特阿拉伯', qat: '卡塔尔', kwt: '科威特', oma: '阿曼', bhr: '巴林', isr: '以色列', tur: '土耳其', irn: '伊朗', irq: '伊拉克', jor: '约旦', lbn: '黎巴嫩', egy: '埃及', dza: '阿尔及利亚', mar: '摩洛哥', tun: '突尼斯', lby: '利比亚', sdn: '苏丹', nga: '尼日利亚', gha: '加纳', ken: '肯尼亚', eth: '埃塞俄比亚', tza: '坦桑尼亚', uga: '乌干达', zaf: '南非', zwe: '津巴布韦', zmb: '赞比亚', moz: '莫桑比克', ago: '安哥拉', cmr: '喀麦隆', civ: '科特迪瓦', sen: '塞内加尔', bfa: '布基纳法索', mli: '马里', ner: '尼日尔', tcd: '乍得', cod: '刚果(金)', cog: '刚果(布)', gab: '加蓬', bwa: '博茨瓦纳', nam: '纳米比亚', mwi: '马拉维', rwa: '卢旺达', bdi: '布隆迪', som: '索马里', eri: '厄立特里亚', yem: '也门', syr: '叙利亚', afg: '阿富汗', nep: '尼泊尔', mng: '蒙古', geo: '格鲁吉亚', arm: '亚美尼亚', aze: '阿塞拜疆', blr: '白俄罗斯', mda: '摩尔多瓦', alb: '阿尔巴尼亚', mkd: '北马其顿', bih: '波黑', mne: '黑山', lux: '卢森堡', isl: '冰岛', mlt: '马耳他', cyp: '塞浦路斯', pyf: '法属波利尼西亚', mrt: '毛里塔尼亚', gin: '几内亚', sle: '塞拉利昂', lbr: '利比里亚', tgo: '多哥', ben: '贝宁', gnb: '几内亚比绍', gamb: '冈比亚' };
+    function cnCountry(c) { var k = String(c || '').toLowerCase(); return CN_COUNTRY[k] || k.toUpperCase(); }
+    var CN_DEVICE = { mobile: '手机', desktop: '电脑', tablet: '平板' };
+    function cnDevice(d) { var k = String(d || '').toLowerCase(); return CN_DEVICE[k] || d; }
     function renderSeoRange(days) {
         if (!_seoFull || !_seoFull.ranges) return;
         window.__seoDays = days;
@@ -4169,8 +4174,10 @@ var CATEGORY_CONTENT = {
             '<div style="margin-bottom:6px;"><button class="date-btn" style="font-size:11px;" onclick="seoKwFilter(\'\')">全部</button> <button class="date-btn" style="font-size:11px;" onclick="seoKwFilter(\'imp\')">有曝光</button> <button class="date-btn" style="font-size:11px;" onclick="seoKwFilter(\'clk\')">有点击</button></div>' +
             '<div id="seoKwBox">' + seoTable(g.byQuery, [['关键词', 'q'], ['曝光', 'impressions'], ['点击', 'clicks'], ['排名', 'position']], window.__seoKwFilter) + '</div></div>';
         html += '<div class="chart-card" style="padding:12px;margin-bottom:12px;">' + seoSection('📄 Google 曝光页面') + seoTable(g.byPage, [['页面', 'page'], ['曝光', 'impressions'], ['点击', 'clicks'], ['排名', 'position']], '') + '</div>';
-        html += '<div class="chart-card" style="padding:12px;margin-bottom:12px;">' + seoSection('🌍 国家/地区（GSC）') + seoTable(g.byCountry, [['国家', 'country'], ['曝光', 'impressions'], ['点击', 'clicks']], '') + '</div>';
-        html += '<div class="chart-card" style="padding:12px;margin-bottom:12px;">' + seoSection('💻 设备') + seoTable(g.byDevice, [['设备', 'device'], ['曝光', 'impressions'], ['点击', 'clicks']], '') + '</div>';
+        var countries = (g.byCountry || []).map(function (x) { return { country: cnCountry(x.country), impressions: x.impressions, clicks: x.clicks }; });
+        var devices = (g.byDevice || []).map(function (x) { return { device: cnDevice(x.device), impressions: x.impressions, clicks: x.clicks }; });
+        html += '<div class="chart-card" style="padding:12px;margin-bottom:12px;">' + seoSection('🌍 国家/地区（GSC）') + seoTable(countries, [['国家', 'country'], ['曝光', 'impressions'], ['点击', 'clicks']], '') + '</div>';
+        html += '<div class="chart-card" style="padding:12px;margin-bottom:12px;">' + seoSection('💻 设备') + seoTable(devices, [['设备', 'device'], ['曝光', 'impressions'], ['点击', 'clicks']], '') + '</div>';
         if ((b.byQuery || []).length) html += '<div class="chart-card" style="padding:12px;margin-bottom:12px;">' + seoSection('🔑 Bing 关键词') + seoTable(b.byQuery, [['关键词', 'q'], ['曝光', 'impressions'], ['点击', 'clicks']], '') + '</div>';
         document.getElementById('seoStatsQueries').innerHTML = html;
     }
