@@ -41,7 +41,7 @@ function dc(b) { const p = []; let i = 0; while (i < b.length) { const n = b.ind
 function direct(host, method, path, headers, body) {
   return new Promise((res, rej) => {
     const data = body || null;
-    const req = https.request({ hostname: host, path, method, headers: Object.assign({ 'Accept-Encoding': 'identity' }, headers, data ? { 'Content-Length': Buffer.byteLength(data) } : {}), timeout: 30000 }, r => { const bs = []; r.on('data', c => bs.push(c)); r.on('end', () => { let b = Buffer.concat(bs); const ht = r.headers; if (/chunked/i.test(ht['transfer-encoding'] || '')) b = dc(b); res({ status: r.statusCode, body: b.toString('utf8') }); }); });
+    const req = https.request({ hostname: host, path, method, headers: Object.assign({ 'Accept-Encoding': 'identity' }, headers, data ? { 'Content-Length': Buffer.byteLength(data) } : {}), timeout: 30000 }, r => { const bs = []; r.on('data', c => bs.push(c)); r.on('end', () => { const b = Buffer.concat(bs); res({ status: r.statusCode, body: b.toString('utf8') }); }); });
     req.on('error', rej); req.on('timeout', () => { req.destroy(new Error('timeout')); });
     if (data) req.write(data); req.end();
   });
