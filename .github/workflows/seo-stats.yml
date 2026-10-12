@@ -17,15 +17,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Debug Yandex connectivity
-        run: |
-          echo "== DNS =="
-          getent hosts api.webmaster.yandex.net || echo "no getent"
-          echo "== IPv4 =="
-          curl -4 -sS -m 20 -o /dev/null -w "IPv4 code=%{http_code}\n" -H "Authorization: OAuth ${{ secrets.YANDEX_TOKEN }}" "https://api.webmaster.yandex.net/v4/user/2336934622/hosts/https:carvalautopart.com:443/summary/" || echo "IPv4 curl exit=$?"
-          echo "== IPv6 =="
-          curl -6 -sS -m 15 -o /dev/null -w "IPv6 code=%{http_code}\n" -H "Authorization: OAuth ${{ secrets.YANDEX_TOKEN }}" "https://api.webmaster.yandex.net/v4/user/2336934622/hosts/https:carvalautopart.com:443/summary/" || echo "IPv6 curl exit=$?"
-
       - name: Generate SEO stats (3 platforms x ranges)
         env:
           GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
