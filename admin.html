@@ -1344,6 +1344,8 @@
             var catDisplay = cat.toUpperCase();
             var name = (x.name || x.title || '未命名').toString();
             var oem = x.oem || x.oemCode || '';
+            var vids = Array.isArray(x.videos) ? x.videos.slice() : (x.video ? String(x.video).split(',') : []);
+            vids = vids.map(function(u){ return String(u || '').trim(); }).filter(Boolean);
             
             // 提取精准车型 (兼容精简版: 直接用 brands 字段; 完整版: 从 fitmentTable 提取)
             var fitmentDisplay = '';
@@ -1372,6 +1374,7 @@
                         (fitmentDisplay ? '<span class="product-tag" style="background:rgba(230,57,70,0.2);color:#ff6b7a;">' + fitmentDisplay + '</span>' : '') +
                         '<span class="product-tag">' + catDisplay + '</span>' + 
                         (oem ? '<span class="product-tag oem">OEM: ' + oem.substring(0, 15) + '</span>' : '') + 
+                        (vids.length ? '<a href="' + vids[0].replace(/"/g, '&quot;') + '" target="_blank" rel="noopener" class="product-tag" style="background:rgba(52,152,219,0.2);color:#5dade2;text-decoration:none;">🎬 视频</a>' : '') +
                     '</div>' +
                     '<div class="product-actions">' +
                         '<button class="btn btn-edit" onclick="openEditModalById(' + String(x.id) + ')"><i class="fas fa-edit"></i> 编辑</button>' +
@@ -3913,6 +3916,8 @@ var CATEGORY_CONTENT = {
         container.innerHTML = filteredPendingProducts.map(function(p) {
             var name = p.name || p.title || '未命名';
             var oem = p.oem || p.oemCode || '';
+            var vids = Array.isArray(p.videos) ? p.videos.slice() : (p.video ? String(p.video).split(',') : []);
+            vids = vids.map(function(u){ return String(u || '').trim(); }).filter(Boolean);
             var imgs = (p.image || '').toString().split(',').map(function(s){return s.trim();}).filter(Boolean);
             var firstImg = imgs[0] || 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>No Img</text></svg>';
             return '<div class="product-card">' +
@@ -3923,6 +3928,7 @@ var CATEGORY_CONTENT = {
                         '<span class="product-tag" style="background:rgba(243,156,18,0.2);color:#f39c12;">待审核</span>' +
                         (oem ? '<span class="product-tag oem">OEM: ' + htmlEsc(oem).slice(0, 20) + '</span>' : '') +
                         '<span class="product-tag">' + imgs.length + ' 图</span>' +
+                        (vids.length ? '<a href="' + vids[0].replace(/"/g, '&quot;') + '" target="_blank" rel="noopener" class="product-tag" style="background:rgba(52,152,219,0.2);color:#5dade2;text-decoration:none;">🎬 视频</a>' : '') +
                     '</div>' +
                     '<div class="product-actions">' +
                         '<button class="btn btn-success" onclick="previewAndEditPendingSEOPage(\'' + String(p.id).replace(/'/g, "\\'") + '\')"><i class="fas fa-check"></i> 审核通过</button>' +
