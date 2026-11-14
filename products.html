@@ -384,6 +384,10 @@
             <div class="modal-images">
                 <img loading="lazy" decoding="async" id="modalMainImg" class="modal-main-img" src="" alt="" onclick="openLightbox(0)">
                 <div class="modal-thumbs" id="modalThumbs"></div>
+                <div id="modalVideoWrap" style="display:none;margin-top:14px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--steel-dk);margin-bottom:6px;"><i class="fas fa-video"></i> Product Video</div>
+                    <video id="modalVideoEl" controls preload="metadata" playsinline style="width:100%;max-height:360px;background:#000;border-radius:6px;"></video>
+                </div>
             </div>
             <div class="modal-info">
                 <div class="modal-category" id="modalCategory"></div>
@@ -706,6 +710,25 @@ function openProduct(id) {
         mainImg.src = carouselImages[0]; mainImg.style.display = 'block';
         thumbsEl.innerHTML = carouselImages.map(function(img, i) { return '<img loading="lazy" decoding="async" class="modal-thumb' + (i === 0 ? ' active' : '') + '" src="' + img + '" onclick="switchImg(' + i + ')">'; }).join('');
     } else { mainImg.style.display = 'none'; thumbsEl.innerHTML = ''; }
+
+    // 产品视频
+    var modalVideos = [];
+    if (Array.isArray(p.videos)) modalVideos = p.videos.slice();
+    else if (p.video) modalVideos = String(p.video).split(',');
+    modalVideos = modalVideos.map(function(s) { return String(s || '').trim(); }).filter(Boolean);
+    var videoWrap = document.getElementById('modalVideoWrap');
+    var videoEl = document.getElementById('modalVideoEl');
+    if (videoWrap && videoEl) {
+        if (modalVideos.length) {
+            videoEl.src = modalVideos[0];
+            videoWrap.style.display = 'block';
+        } else {
+            try { videoEl.pause(); } catch (e) {}
+            videoEl.removeAttribute('src');
+            try { videoEl.load(); } catch (e) {}
+            videoWrap.style.display = 'none';
+        }
+    }
     
     document.getElementById('modalCategory').textContent = categoryLabels[p.category] || p.category || 'Other';
     document.getElementById('modalTitle').textContent = p.name || p.title || 'Product';
@@ -743,6 +766,7 @@ function switchImg(index) { currentImgIndex = index; document.getElementById('mo
 function closeProductModal() { 
     document.getElementById('productModal').classList.remove('show'); 
     document.body.style.overflow = ''; 
+    var _mv = document.getElementById('modalVideoEl'); if (_mv) { try { _mv.pause(); } catch (e) {} }
     // 移除历史记录状态
     if (window.history.state && window.history.state.modal) {
         window.history.back();
