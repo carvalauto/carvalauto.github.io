@@ -2102,6 +2102,8 @@
         var makes = {}, models = {}, years = {};
         for (var i = 0; i < productData.fitmentTable.length; i++) {
             var f = productData.fitmentTable[i];
+            if (!f) continue;
+            if (/(^|\b)other(\b|$)/i.test(String(f.make || '') + ' ' + String(f.model || ''))) continue;
             if (f.make) makes[f.make] = true;
             if (f.model) models[f.model] = true;
             if (f.year) years[String(f.year).slice(0, 4)] = true;
@@ -2283,6 +2285,7 @@
             for (var ui = 0; ui < productData.fitmentTable.length; ui++) {
                 var rw = productData.fitmentTable[ui];
                 if (!rw || !rw.make || !rw.model) continue;
+                if (/(^|\b)other(\b|$)/i.test(String(rw.make) + ' ' + String(rw.model))) continue;
                 var kk = rw.make + '|' + rw.model + '|' + (rw.year || '');
                 if (seenK[kk]) continue;
                 seenK[kk] = true;
