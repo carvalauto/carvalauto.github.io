@@ -229,6 +229,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/parts/climate-control.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/parts/clutches.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -763,6 +769,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/parts/windshields.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/parts/wipers-washer.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -776,6 +788,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/parts/valves/toyota.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/consoles/toyota.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -817,6 +835,24 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/parts/window-switches/chevrolet.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/window-switches/lexus.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/window-switches/nissan.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/parts/window-switches/toyota.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -830,6 +866,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/parts/grilles/honda.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/grilles/lexus.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1009,6 +1051,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/parts/switches/nissan.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/parts/switches/toyota.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -1070,6 +1118,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/parts/tail-lights/wuling.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/dashboards/chevrolet.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/parts/dashboards/lexus.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1891,7 +1951,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/chevrolet/malibu.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/chevrolet/silverado.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/chevrolet/tahoe.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2155,6 +2227,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/toyota/accent.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/toyota/accord.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -2227,6 +2305,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/toyota/innova.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/toyota/jazz.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -2246,6 +2330,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/brands/toyota/land-cruiser.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/toyota/note.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2821,6 +2911,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/lexus/fit.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/lexus/land-cruiser.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -3043,6 +3139,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/brands/opel/fit.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/brands/opel/focus.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -3128,6 +3230,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/brands/audi/touareg.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/brands/byd/corolla.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -6655,6 +6763,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ac-conditional-vent-dashboard-middle-grille-for-2011-2016-innova-55680-0k020-55670-0k020-1794678629339.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ac-electric-heater-24v-blower-motor-8ew351029041-0038300508-for-mercedes-benz-actros-1791380011440.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -6751,6 +6865,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/air-conditioning-outlet-ac-outlet-vent-55660-12350-for-toyota-allex-e120-corolla-kunx-corolla-fielde-1794670707417.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/air-conditioning-outlet-ac-outlet-vent-rhd-for-2002-2007-isuzu-d-max-rhd-1794543068438.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -6824,6 +6944,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/air-suspension-solenoid-valve-block-air-compressor-air-pump-for-audi-q7-jeep-grand-cherokee-porsche-cayenne-touareg-68087233aa-91.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/air-vent-outlet-for-chevrolet-sail-lova-06-12-96602404-96602410-1794676867124.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/air-vent-outlet-nozzel-for-gm-chevy-aveo-sedan-t300-sonic-12-19-95280207-1794676833686.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -7843,6 +7975,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/center-console-control-panel-for-toyota-camry-2012-2017-55900-06410-1794670462994.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/center-console-interior-air-conditioner-ac-control-panel-button-for-toyota-land-cruiser-2007-2015-1794679944252.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ceramic-brake-pads-d1024-front-disc-for-audi-a6-a8-s6-s8-vw-phaeton-oe-4e0698151a-no-noise-spare-1-y-1789186388107.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -8287,6 +8431,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/dashboard-panel-trims-cover-panel-dvd-video-head-units-frame-for-2011-2016-toyota-innova-1794679915434.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/dashboard-trim-air-conditional-vent-frame-for-toyota-2003-2008-toyota-crown-majesta-grs180-184-1794677493397.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/datong-g10-g20-t60-t90v90-engine-middle-cylinder-assembly-wi-1782032327941.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -8365,7 +8521,19 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/door-armrest-base-panel-leather-woven-cover-for-toyota-hilux-revo-2015-2024-1794676791618.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/dps6-tcu-a2c30743100-automatic-dct-control-unit-tcm-for-focusescortecosport-remanufactured-oem-standard-132.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/dual-usb-type-c-charger-pd-qc30-for-toyota-corolla-levin-and-sienna-1794556974954.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -9079,6 +9247,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/fits-for-toyota-allex-e120-corolla-kunx-2001-2006-corolla-altis-2000-2008-middle-and-leftright-side--1794679992798.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/fits-for-toyota-land-cruiser-lc100-1998-2007-accessories-center-shifer-gear-panel-bezelmanual-transm-1794670632481.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/for-4-series-g22g23g26g80g82-m3m4-laser-headlight-h1-right-oem-5a1937104-1788695444338.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -9277,6 +9457,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/for-kia-forte-cerato-koup-2008-2013-interior-dash-vent-air-conditioner-vent-ac-outlet-airvent-1794675735969.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/for-kia-optima-ex-lx-front-bumper-86511-4c000-2012-2013-ki1000161-auto-car-front-face-bar-spare-parts-475.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -9290,6 +9476,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/for-mercedes-5x1-liter-mb-spec-23610-red-automatic-transmission-fluid-oil-atf-1778856685769.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/for-msignia-2009-2017-interior-accessories-seat-side-trim-panel-black-color-oe13325198-33-083-9475-1794678669801.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -9343,6 +9535,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/for-toyota-camry-2021-2023-interior-accessories-dvd-panel-oe55422-06040-55405-06220-1794677692464.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/for-toyota-corolla-ae100-1992-1994-front-bumper-oem-52119-1e010-52119-ae100-m-171.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -9350,6 +9548,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/for-toyota-for-corolla-ra-v-front-upper-control-arm-bushing-suspension-system-1789186492221.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/for-toyota-land-cruiser-lc200-2008-2015-interior-center-console-armrest-handle-oe58978-60020-58971-6-1794677655288.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/for-toyota-land-cruiser-lc200-lc300-sport-type-carbon-fibre-wooden-leather-steering-wheel-switch-1794556447559.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -9638,6 +9848,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/front-wheel-hub-bearing-43550-47010-for-prius-2010-2012-hub-bearing-1789114584287.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/front-windshield-fender-seal-cover-wiper-seal-cover-for-toyota-hilux-revo-2015-2024-53866-0k050-1794677477763.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -10022,6 +10238,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/good-quality-cooling-radiator-fans-for-baojun-310-12-for-dual-23894356-272.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/gray-color-fits-for-lexus-es350-240-250-300-2006-2012-interior-left-and-right-side-air-conditioner-a-1794674049933.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -10729,7 +10951,49 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/interior-2-door-window-switch-panel-for-hilux-vigo-2004-2015-1794675374929.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-a-c-air-vent-frame-cover-storage-box-cover-for-nissan-altima-2005-2006-1794679867022.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-accessories-ac-central-control-combination-switch-button-for-land-cruiser-2007-2015-1794680418939.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-accessories-air-conditioner-ac-vent-outlet-for-lexus-gs300-gs350-2005-2011-2006-2007-gs430--1794676910683.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/interior-accessories-air-vent-grille-for-2000-2007-ls430-55670-50050-55650-50060-1794543638722.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-accessories-black-inner-armrest-panel-cover-locks-for-2008-2015-toyota-land-cruiser-lc200-1794677878329.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-accessories-door-armrest-for-toyota-hilux-2015-2024-black-leather-1794670823153.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-accessories-for-chevrolet-sonic-aveo-t300-2012-2019-air-condition-ac-vent-outlet-1794674036872.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -10741,7 +11005,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/interior-accessories-for-toyota-camry-2021-2023-middle-air-conditioner-ac-vent-and-emergency-switch-1794679669815.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-accessories-seat-adjust-switch-for-toyota-lexus-lx570-2012-2021-1794676237606.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/interior-air-outlet-vent-air-conditioning-grille-for-2012-2019-chevrolet-sonic-aveo-t300-95463834-54-1794543788531.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-armrest-box-cover-panel-handle-for-toyota-land-cruiser-lc200-08-15-1794679964081.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-black-color-air-conditional-vent-air-vent-grille-for-2016-2024-hilux-revo-1794673480906.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -10753,7 +11041,103 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/interior-black-cup-holder-for-hilux-vigo-2004-2015-55604-0k020-c0-1794673984708.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-bumper-fixed-support-bracket-panel-for-hyundai-elantra-1995-2000-1794675880911.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-center-console-air-outlet-grille-vent-for-toyota-camry-2007-2011-1794677901483.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-center-dash-vent-air-outlet-for-vauxhall-opel-astra-j-mk6-buik-verano-2009-2015-oe-07525-00-1794676990803.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-center-dash-vent-airvent-for-toyota-innova-2011-2016-55680-0k020-55670-0k020-1794676976563.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-clock-panel-for-2013-2018-kia-k3-kia-cerato-84745-b5000-1794676250049.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-dash-ac-air-vent-for-gmc-yukon-chevrolet-tahoe-suburban-1500-silverado-1500-cadillac-escala-1794676762199.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-dash-air-vent-or-innova-2011-2016-55680-0k030-55670-0k020-1794679411244.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/interior-dash-airvent-ac-air-vent-for-mitsubishi-lancer-2008-2015-1794542946915.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-dash-vent-ac-air-vent-airvent-outlet-grille-for-lexus-ls-400-ls400-lexus-1998-2000-74126-93-1794674128311.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-dash-vent-ac-airvent-air-vent-grille-for-2006-2012-yaris-2007-2013-vits-555686-2030-1794677667214.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-dash-vent-aiir-vent-grille-ac-outlet-vent-for-lexus-es240-es250-es300-es350-55660-33200-200-1794677002477.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-dash-vent-airvent-for-toyota-corolla-2002-2006-byd-f3-05-13-oe-55604-12160-1794677537950.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-dash-vent-for-gmc-yukon-chevrolet-tahoe-suburban-1500-silverado-1500-cadillac-escalade-1794676750314.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-dashboard-air-vent-cover-for-toyota-corolla-2008-2013-1794679705137.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-dashboard-airvent-panel-cover-for-hilux-2004-2015-55420-0k380-1794677678425.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-dashboard-decoration-panel-trim-cover-for-hilux-revo-2015-2024-55470-kk010-1794676818849.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -10771,7 +11155,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/interior-decoration-black-color-dvd-frame-for-land-cruiser-lc100-1998-2002-1794677634120.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-decoration-wood-color-window-switch-panel-for-toyota-corolla-2008-2013-1794676962159.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/interior-decorative-accessories-door-power-window-trim-panel-74232-60610-rhd-for-2009-2017-toyota-pr-1794543006688.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-door-window-switch-panel-armrest-panel-for-toyota-camry-2001-2006-1794675586674.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-for-2021-2023-toyota-camry-87201-33600-87201-06c30-55844-06300-33250-1794679383102.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -10783,7 +11191,67 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/interior-for-toyota-camry-2021-2023-55417-06020-1794679325369.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/interior-front-dashboard-panel-assy-for-toyota-hilux-revo-2015-2024-55302-kk110-1794543139442.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-middle-dashboard-air-conditioning-side-bezel-vent-outlet-97462-17000-for-2001-2005-hyundai--1794675983811.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-middle-seat-a-c-outlet-airvent-for-2011-2015-lexus-lx570-2008-2021-lc200-55883-60010-1794670535028.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-rear-air-vent-grille-for-2014-2017-camry-58860-33051-1794677505054.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-rhd-upper-dashboard-plastic-cover-with-for-hilux-vigo-2011-2015-oe-50540-0k010-1794675220925.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-rhd-upper-dashboard-plastic-cover-with-for-hilux-vigo-2011-2015-oe-50540-0k010-1794677705155.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-roof-air-outlet-grille-for-06-12-chevrolet-aveo-96446908-57619-1794676165976.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-roof-dome-lamp-reading-light-for-camry-03-06-customization-1794679928300.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-side-air-vent-grille-with-chrome-for-land-cruiser-lc200-1794675339294.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interior-silver-color-gear-panel-for-2007-2011-camry-aurion-gn62105520-1794675391771.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -10801,7 +11269,37 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/interior-wood-color-air-vent-grille-frame-for-toyota-hilux-vigo-2005-2014-1794673968538.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/interiors-dash-airvent-grille-for-toyota-lexus-is350-is250-2005-2013-55650-53041-1794499398263.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interiors-door-armrest-window-switch-bezel-panel-cover-for-2002-2006-corolla-altis-2005-2013-byd-f3-1794681343326.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interiors-for-hilux-vigo-cup-holder-2006-2015-55604-0k010-red-grey-black-color-1794674062467.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interiors-roof-lamp-for-nissan-leaf-patrol-y62-x-trail-sentra-altima-murano-teana-bluebird-dome-read-1794679687577.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/interiors-window-switch-bezel-trim-set-for-2-door-nissan-patrol-y61-gu4-zd30-2004-2023-1794675656517.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -10904,6 +11402,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/lhd-dashboard-airvent-air-outlet-for-isuzu-dmax-d-max-02-07-1794541089393.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/lhd-oe55650-0k030-55660-0k030-interor-for-toyota-innova-2004-2016-air-condition-ac-vent-outlet-1794671770229.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/license-plate-lights-for-toyota-hilux-vigo-2005-2015-oe-81270-0k010-1794673837129.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -11911,13 +12421,55 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/oe376020-for-scanian-truck-interior-accessories-switch-assembly-panel-dark-gray-color-1794677608416.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/oe55650-33170-55670-33180-interior-air-condition-ac-vent-outlet-for-lexus-es350-240-250-300-2006-201-1794676900321.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/oe58804-20370-for-toyota-premio-zzt240-2001-2007-interior-gear-shift-panel-1794537547874.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/oe58921-kk010-interior-accessories-leftright-door-audio-cover-for-toyota-hilux-2015-2024-1794673764983.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/oe8-97299-274-0-8-97299-273-0-080430-080428-interior-for-isuzu-d-max-2007-2011-air-condition-ac-vent-1794543675625.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/oe84010-60172-interior-accessories-for-toyota-land-cruiser-1998-2002-air-condition-panel-frame-black-1794677618774.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/oe9038354car-interior-accessories-for-chevrolet-chevy-sail-lova-2009-2014-storage-box-cover-1794668510191.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/oe97422-17000-97432-17000-interior-accessories-for-hyundai-matrix-2002-2012-middle-air-condition-ac--1794674003009.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/oe97482-17000-97462-17000-fits-for-hyundai-matrix-2002-2012-left-and-right-side-air-conditioner-ac-v-1794674021331.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -12943,6 +13495,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/radio-fascia-frame-video-dash-panel-dvd-trim-68260-4af0a-for-2012-nissan-sylphy-1794679902406.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/rear-brake-light-rear-tail-light-for-wuling-hongguang-n300-sgmw-automotive-lighting-system-1777821326298.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -12986,6 +13544,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/rear-water-pipe-for-land-rover-jaguar-xe-xf-xj-f-pace-30sc-306ps-aj126-c2z31644-aj814006-aj814053-lr041788-lr122710-lr109401-312.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/red-color-interior-roof-light-for-nissan-sunny-26410-0v000-1794677863666.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -13046,6 +13610,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/rhd-interior-side-air-vent-grille-for-land-cruiser-fj100-lc100-lexus-lx470-1998-2007-1794542973411.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/rhd-oe55660-0k020-55650-0k020-interor-for-toyota-innova-2004-2016-air-condition-ac-vent-outlet-1794672934010.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/rhd-two-door-window-switch-panel-armrest-base-panel-land-cruiser-99-07-lc70-76-75-1794670118240.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -13357,6 +13933,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/side-air-conditioner-outlet-vent-for-2005-2011-lexus-gs300-gs350-2006-2007-gs430-2008-2011-gs460-556-1794676929292.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/spare-1445915-1385379-belt-tensioner-6c1q6a228bb-6c1q6a228bc-for-ford-transit-24-tdci-rwd-32-tdci-rw-1791208006705.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -13370,6 +13952,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/spare-engine-oil-filter-68079744ab-for-chrysler-1793886459117.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/spare-interiors-black-speaker-cover-for-toyota-hilux-2016-2024-67492-0k160-1794677521009.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -13442,6 +14030,24 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/steering-rod-inner-tie-rod-for-changan-deepal-s7-sl03-1791645386085.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/steering-wheel-and-switch-button-kit-for-land-cruiser-lc250-2024-1794556344060.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/steering-wheel-control-button-for-2021-2023-toyota-landcruiser-lc300-1794556360753.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/steering-wheel-control-button-for-2021-up-toyota-landcruiser-lc300-lc200-1794556468996.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -14288,6 +14894,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/widely-used-4d56-d4bb-2-5t-engine-assembly-gasoline-car-engi-1782023368056.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/wood-color-dvd-frame-for-2011-2016-innova-55420-0k510-1794677934889.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -15835,6 +16447,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/ac-conditional-vent-dashboard-middle-grille-for-2011-2016-innova-55680-0k020-55670-0k020-1794678629339.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/ac-electric-heater-24v-blower-motor-8ew351029041-0038300508-for-mercedes-benz-actros-1791380011440.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -15919,6 +16537,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/air-conditioning-outlet-ac-outlet-vent-55660-12350-for-toyota-allex-e120-corolla-kunx-corolla-fielde-1794670707417.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/air-conditioning-outlet-ac-outlet-vent-rhd-for-2002-2007-isuzu-d-max-rhd-1794543068438.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -15992,6 +16616,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/air-suspension-solenoid-valve-block-air-compressor-air-pump-for-audi-q7-jeep-grand-cherokee-porsche-cayenne-touareg-68087233aa-91.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/air-vent-outlet-for-chevrolet-sail-lova-06-12-96602404-96602410-1794676867124.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/air-vent-outlet-nozzel-for-gm-chevy-aveo-sedan-t300-sonic-12-19-95280207-1794676833686.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -16891,6 +17527,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/center-console-control-panel-for-toyota-camry-2012-2017-55900-06410-1794670462994.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/center-console-interior-air-conditioner-ac-control-panel-button-for-toyota-land-cruiser-2007-2015-1794679944252.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/ceramic-brake-pads-d1024-front-disc-for-audi-a6-a8-s6-s8-vw-phaeton-oe-4e0698151a-no-noise-spare-1-y-1789186388107.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -17275,6 +17923,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/dashboard-panel-trims-cover-panel-dvd-video-head-units-frame-for-2011-2016-toyota-innova-1794679915434.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/dashboard-trim-air-conditional-vent-frame-for-toyota-2003-2008-toyota-crown-majesta-grs180-184-1794677493397.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/datong-g10g20t60t90v90-engine-middle-cylinder-assembly-with-crankshaft-sc20m163q6a-oliver-car-fitmen-1782032327942.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -17341,7 +18001,19 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/door-armrest-base-panel-leather-woven-cover-for-toyota-hilux-revo-2015-2024-1794676791618.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/dps6-tcu-a2c30743100-automatic-dct-control-unit-tcm-for-focusescortecosport-remanufactured-oem-standard-132.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/dual-usb-type-c-charger-pd-qc30-for-toyota-corolla-levin-and-sienna-1794556974954.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -17881,6 +18553,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/fits-for-toyota-allex-e120-corolla-kunx-2001-2006-corolla-altis-2000-2008-middle-and-leftright-side--1794679992798.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/fits-for-toyota-land-cruiser-lc100-1998-2007-accessories-center-shifer-gear-panel-bezelmanual-transm-1794670632481.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/for-4-series-g22g23g26g80g82-m3m4-laser-headlight-h1-right-oem-5a1937104-1788695444338.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -18067,6 +18751,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/for-kia-forte-cerato-koup-2008-2013-interior-dash-vent-air-conditioner-vent-ac-outlet-airvent-1794675735969.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/for-kia-optima-ex-lx-front-bumper-86511-4c000-2012-2013-ki1000161-auto-car-front-face-bar-spare-parts-475.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -18080,6 +18770,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/for-mercedes-5x1-liter-mb-spec-23610-red-automatic-transmission-fluid-oil-atf-1778856685769.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/for-msignia-2009-2017-interior-accessories-seat-side-trim-panel-black-color-oe13325198-33-083-9475-1794678669801.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -18127,6 +18823,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/for-toyota-camry-2021-2023-interior-accessories-dvd-panel-oe55422-06040-55405-06220-1794677692464.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/for-toyota-corolla-ae100-1992-1994-front-bumper-oem-52119-1e010-52119-ae100-m-171.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -18134,6 +18836,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/for-toyota-for-corolla-ra-v-front-upper-control-arm-bushing-suspension-system-1789186492221.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/for-toyota-land-cruiser-lc200-2008-2015-interior-center-console-armrest-handle-oe58978-60020-58971-6-1794677655288.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/for-toyota-land-cruiser-lc200-lc300-sport-type-carbon-fibre-wooden-leather-steering-wheel-switch-1794556447559.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -18386,6 +19100,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/front-wheel-hub-bearing-43550-47010-for-prius-2010-2012-hub-bearing-1789114584287.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/front-windshield-fender-seal-cover-wiper-seal-cover-for-toyota-hilux-revo-2015-2024-53866-0k050-1794677477763.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -18746,6 +19466,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/good-quality-cooling-radiator-fans-for-baojun-310-12-for-dual-23894356-272.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/gray-color-fits-for-lexus-es350-240-250-300-2006-2012-interior-left-and-right-side-air-conditioner-a-1794674049933.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19357,7 +20083,49 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/interior-2-door-window-switch-panel-for-hilux-vigo-2004-2015-1794675374929.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-a-c-air-vent-frame-cover-storage-box-cover-for-nissan-altima-2005-2006-1794679867022.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-accessories-ac-central-control-combination-switch-button-for-land-cruiser-2007-2015-1794680418939.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-accessories-air-conditioner-ac-vent-outlet-for-lexus-gs300-gs350-2005-2011-2006-2007-gs430--1794676910683.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/interior-accessories-air-vent-grille-for-2000-2007-ls430-55670-50050-55650-50060-1794543638722.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-accessories-black-inner-armrest-panel-cover-locks-for-2008-2015-toyota-land-cruiser-lc200-1794677878329.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-accessories-door-armrest-for-toyota-hilux-2015-2024-black-leather-1794670823153.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-accessories-for-chevrolet-sonic-aveo-t300-2012-2019-air-condition-ac-vent-outlet-1794674036872.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19369,7 +20137,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/interior-accessories-for-toyota-camry-2021-2023-middle-air-conditioner-ac-vent-and-emergency-switch-1794679669815.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-accessories-seat-adjust-switch-for-toyota-lexus-lx570-2012-2021-1794676237606.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/interior-air-outlet-vent-air-conditioning-grille-for-2012-2019-chevrolet-sonic-aveo-t300-95463834-54-1794543788531.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-armrest-box-cover-panel-handle-for-toyota-land-cruiser-lc200-08-15-1794679964081.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-black-color-air-conditional-vent-air-vent-grille-for-2016-2024-hilux-revo-1794673480906.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19381,7 +20173,103 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/interior-black-cup-holder-for-hilux-vigo-2004-2015-55604-0k020-c0-1794673984708.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-bumper-fixed-support-bracket-panel-for-hyundai-elantra-1995-2000-1794675880911.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-center-console-air-outlet-grille-vent-for-toyota-camry-2007-2011-1794677901483.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-center-dash-vent-air-outlet-for-vauxhall-opel-astra-j-mk6-buik-verano-2009-2015-oe-07525-00-1794676990803.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-center-dash-vent-airvent-for-toyota-innova-2011-2016-55680-0k020-55670-0k020-1794676976563.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-clock-panel-for-2013-2018-kia-k3-kia-cerato-84745-b5000-1794676250049.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-dash-ac-air-vent-for-gmc-yukon-chevrolet-tahoe-suburban-1500-silverado-1500-cadillac-escala-1794676762199.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-dash-air-vent-or-innova-2011-2016-55680-0k030-55670-0k020-1794679411244.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/interior-dash-airvent-ac-air-vent-for-mitsubishi-lancer-2008-2015-1794542946915.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-dash-vent-ac-air-vent-airvent-outlet-grille-for-lexus-ls-400-ls400-lexus-1998-2000-74126-93-1794674128311.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-dash-vent-ac-airvent-air-vent-grille-for-2006-2012-yaris-2007-2013-vits-555686-2030-1794677667214.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-dash-vent-aiir-vent-grille-ac-outlet-vent-for-lexus-es240-es250-es300-es350-55660-33200-200-1794677002477.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-dash-vent-airvent-for-toyota-corolla-2002-2006-byd-f3-05-13-oe-55604-12160-1794677537950.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-dash-vent-for-gmc-yukon-chevrolet-tahoe-suburban-1500-silverado-1500-cadillac-escalade-1794676750314.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-dashboard-air-vent-cover-for-toyota-corolla-2008-2013-1794679705137.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-dashboard-airvent-panel-cover-for-hilux-2004-2015-55420-0k380-1794677678425.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-dashboard-decoration-panel-trim-cover-for-hilux-revo-2015-2024-55470-kk010-1794676818849.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19399,7 +20287,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/interior-decoration-black-color-dvd-frame-for-land-cruiser-lc100-1998-2002-1794677634120.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-decoration-wood-color-window-switch-panel-for-toyota-corolla-2008-2013-1794676962159.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/interior-decorative-accessories-door-power-window-trim-panel-74232-60610-rhd-for-2009-2017-toyota-pr-1794543006688.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-door-window-switch-panel-armrest-panel-for-toyota-camry-2001-2006-1794675586674.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-for-2021-2023-toyota-camry-87201-33600-87201-06c30-55844-06300-33250-1794679383102.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19411,7 +20323,67 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/interior-for-toyota-camry-2021-2023-55417-06020-1794679325369.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/interior-front-dashboard-panel-assy-for-toyota-hilux-revo-2015-2024-55302-kk110-1794543139442.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-middle-dashboard-air-conditioning-side-bezel-vent-outlet-97462-17000-for-2001-2005-hyundai--1794675983811.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-middle-seat-a-c-outlet-airvent-for-2011-2015-lexus-lx570-2008-2021-lc200-55883-60010-1794670535028.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-rear-air-vent-grille-for-2014-2017-camry-58860-33051-1794677505054.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-rhd-upper-dashboard-plastic-cover-with-for-hilux-vigo-2011-2015-oe-50540-0k010-1794675220925.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-rhd-upper-dashboard-plastic-cover-with-for-hilux-vigo-2011-2015-oe-50540-0k010-1794677705155.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-roof-air-outlet-grille-for-06-12-chevrolet-aveo-96446908-57619-1794676165976.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-roof-dome-lamp-reading-light-for-camry-03-06-customization-1794679928300.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-side-air-vent-grille-with-chrome-for-land-cruiser-lc200-1794675339294.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interior-silver-color-gear-panel-for-2007-2011-camry-aurion-gn62105520-1794675391771.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19429,7 +20401,37 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/interior-wood-color-air-vent-grille-frame-for-toyota-hilux-vigo-2005-2014-1794673968538.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/interiors-dash-airvent-grille-for-toyota-lexus-is350-is250-2005-2013-55650-53041-1794499398263.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interiors-door-armrest-window-switch-bezel-panel-cover-for-2002-2006-corolla-altis-2005-2013-byd-f3-1794681343326.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interiors-for-hilux-vigo-cup-holder-2006-2015-55604-0k010-red-grey-black-color-1794674062467.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interiors-roof-lamp-for-nissan-leaf-patrol-y62-x-trail-sentra-altima-murano-teana-bluebird-dome-read-1794679687577.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/interiors-window-switch-bezel-trim-set-for-2-door-nissan-patrol-y61-gu4-zd30-2004-2023-1794675656517.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19526,6 +20528,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/lhd-dashboard-airvent-air-outlet-for-isuzu-dmax-d-max-02-07-1794541089393.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/lhd-oe55650-0k030-55660-0k030-interor-for-toyota-innova-2004-2016-air-condition-ac-vent-outlet-1794671770229.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/license-plate-lights-for-toyota-hilux-vigo-2005-2015-oe-81270-0k010-1794673837129.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -20401,13 +21415,55 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/oe376020-for-scanian-truck-interior-accessories-switch-assembly-panel-dark-gray-color-1794677608416.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/oe55650-33170-55670-33180-interior-air-condition-ac-vent-outlet-for-lexus-es350-240-250-300-2006-201-1794676900321.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/oe58804-20370-for-toyota-premio-zzt240-2001-2007-interior-gear-shift-panel-1794537547874.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/oe58921-kk010-interior-accessories-leftright-door-audio-cover-for-toyota-hilux-2015-2024-1794673764983.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/oe8-97299-274-0-8-97299-273-0-080430-080428-interior-for-isuzu-d-max-2007-2011-air-condition-ac-vent-1794543675625.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/oe84010-60172-interior-accessories-for-toyota-land-cruiser-1998-2002-air-condition-panel-frame-black-1794677618774.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/oe9038354car-interior-accessories-for-chevrolet-chevy-sail-lova-2009-2014-storage-box-cover-1794668510191.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/oe97422-17000-97432-17000-interior-accessories-for-hyundai-matrix-2002-2012-middle-air-condition-ac--1794674003009.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/oe97482-17000-97462-17000-fits-for-hyundai-matrix-2002-2012-left-and-right-side-air-conditioner-ac-v-1794674021331.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -21313,6 +22369,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/radio-fascia-frame-video-dash-panel-dvd-trim-68260-4af0a-for-2012-nissan-sylphy-1794679902406.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/rear-brake-light-rear-tail-light-for-wuling-hongguang-n300-sgmw-automotive-lighting-system-1777821326298.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -21356,6 +22418,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/rear-water-pipe-for-land-rover-jaguar-xe-xf-xj-f-pace-30sc-306ps-aj126-c2z31644-aj814006-aj814053-lr041788-lr122710-lr109401-312.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/red-color-interior-roof-light-for-nissan-sunny-26410-0v000-1794677863666.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -21416,6 +22484,18 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/rhd-interior-side-air-vent-grille-for-land-cruiser-fj100-lc100-lexus-lx470-1998-2007-1794542973411.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/rhd-oe55660-0k020-55650-0k020-interor-for-toyota-innova-2004-2016-air-condition-ac-vent-outlet-1794672934010.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/rhd-two-door-window-switch-panel-armrest-base-panel-land-cruiser-99-07-lc70-76-75-1794670118240.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -21703,6 +22783,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://carvalautopart.com/products/ru/side-air-conditioner-outlet-vent-for-2005-2011-lexus-gs300-gs350-2006-2007-gs430-2008-2011-gs460-556-1794676929292.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://carvalautopart.com/products/ru/spare-1445915-1385379-belt-tensioner-6c1q6a228bb-6c1q6a228bc-for-ford-transit-24-tdci-rwd-32-tdci-rw-1791208006705.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -21716,6 +22802,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/spare-engine-oil-filter-68079744ab-for-chrysler-1793886459117.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/spare-interiors-black-speaker-cover-for-toyota-hilux-2016-2024-67492-0k160-1794677521009.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -21782,6 +22874,24 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/steering-rod-inner-tie-rod-for-changan-deepal-s7-sl03-1791645386085.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/steering-wheel-and-switch-button-kit-for-land-cruiser-lc250-2024-1794556344060.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/steering-wheel-control-button-for-2021-2023-toyota-landcruiser-lc300-1794556360753.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/steering-wheel-control-button-for-2021-up-toyota-landcruiser-lc300-lc200-1794556468996.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -22562,6 +23672,12 @@
   </url>
   <url>
     <loc>https://carvalautopart.com/products/ru/wholesales-advance-fully-synthetic-5l-5w40-motor-oils-5w30-vehicle-automotive-lubricant-engine-oil-for-refined-formula-1778404686712.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://carvalautopart.com/products/ru/wood-color-dvd-frame-for-2011-2016-innova-55420-0k510-1794677934889.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
