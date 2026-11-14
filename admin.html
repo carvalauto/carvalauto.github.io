@@ -400,6 +400,7 @@
                 <option value="korean">韩系</option>
                 <option value="german">德系</option>
                 <option value="chinese">国产</option>
+                <option value="american">美系</option>
                 <option value="oil">机油</option>
                 <option value="other">其他</option>
             </select>
@@ -2012,6 +2013,7 @@
         if (has(['headlight', 'head lamp', 'headlamp', 'tail light', 'taillight', 'fog light', 'signal light', 'corner light'])) return 'light';
         if (has(['engine oil', 'motor oil', 'lubricant', 'gear oil', 'transmission oil', 'transmission fluid', 'atf', 'atf+', 'dexron', 'mercon', 'cvt fluid', 'dct fluid', 'cvt oil', 'dct oil', '5w-', '5w30', '5w40', '5w-30', '5w-40', '0w-', '0w20', '0w30', '0w40', '10w-', '10w40', '15w-', '15w40', '20w-', '20w50', ' synthetic oil', 'semi-synthetic oil', 'full synthetic oil', 'engine fluid', 'cvt', 'mercon v', 'mercon lv', 'dexron vi', 'dexron iii', 'afw+', 'lifetime warranty'])) return 'oil';
         if (has(['air vent', 'airvent', 'dash vent', 'dashboard vent', 'vent grille', 'interior trim', 'door trim', 'dashboard trim', 'bezel', 'switch panel', 'trim panel', 'interior'])) return 'interior';
+        if (has(['ford', 'chevrolet', 'chevy', 'gmc', 'dodge', 'jeep', 'tesla', 'cadillac', 'buick', 'lincoln', 'chrysler', 'hummer', 'rivian', 'silverado', 'f-150', 'mustang', 'wrangler'])) return 'american';
         if (has(['bumper', 'grille', 'fender', 'hood', 'door panel', 'tailgate'])) return 'body';
         if (has(['intake manifold', 'throttle body', 'air filter housing'])) return 'intake';
         if (has(['radiator', 'cooling fan', 'thermostat', 'coolant tank'])) return 'cooling';
@@ -3648,6 +3650,90 @@ var CATEGORY_CONTENT = {
         faq_q1: "Will this interior part fit my vehicle?",
         faq_a1: "It is designed as a direct-fit replacement for the vehicle applications listed in the fitment table. Confirm the part number and the shape of your original trim before ordering.",
         related_parts_hint: "Customers who order interior trim parts also frequently order these related items:",
+      },
+      american: {
+        app_cards: [
+          [
+            "🇺🇸 American Vehicle Fit",
+            [
+              "Designed for Ford, Chevrolet, GMC, Dodge, Jeep and RAM applications",
+              "Fits the vehicle models listed in the fitment table",
+              "Matches original mounting points and connector types",
+              "Restores factory function and reliability",
+            ],
+          ],
+          [
+            "🔧 Replacement Use Cases",
+            [
+              "Replacing a worn or failed original component",
+              "Restoring factory performance after repair",
+              "Collision or maintenance repair jobs",
+              "Fleet and workshop service parts",
+            ],
+          ],
+          [
+            "🚗 Driving Scenarios",
+            [
+              "Daily city and highway driving",
+              "Towing and hauling with trucks and SUVs",
+              "Work truck and fleet duty",
+              "Off-road and rough-road use where applicable",
+            ],
+          ],
+          [
+            "🌍 Target Markets",
+            [
+              "Auto parts distributors and wholesalers",
+              "Independent repair shops and garages",
+              "Dealership parts departments",
+              "Fleet maintenance operations",
+            ],
+          ],
+        ],
+        symptoms_title: "⚠️ Symptoms of a Failing American-Vehicle Component",
+        symptoms_intro: "If you notice any of the following, the component may need replacement:",
+        symptoms: [
+          "Visible damage, wear, or leaks on the component",
+          "Unusual noises from the affected system",
+          "Reduced performance or poor engine/transmission behavior",
+          "Warning lights or diagnostic trouble codes",
+          "Vibration, rough operation, or intermittent failure",
+          "Fluid leaks or contamination",
+          "Component no longer operates correctly",
+        ],
+        symptoms_warning: "Driving with a failed or worn component can lead to further damage and expensive repairs. Replace it promptly to restore factory function and reliability.",
+        install_time: "30-90 minutes",
+        install_skill: "Beginner to Intermediate",
+        install_tools: "Socket wrench set, screwdrivers, pliers",
+        install_steps: [
+          [
+            "Prepare the vehicle",
+            "Park on a level surface, disconnect the battery if working on electrical parts, and let the vehicle cool down.",
+          ],
+          [
+            "Access the component",
+            "Remove covers, shields, or adjacent parts needed to reach the failed component. Document hardware positions for reassembly.",
+          ],
+          [
+            "Disconnect connections",
+            "Label and disconnect electrical connectors, hoses, or linkages, then remove the mounting hardware.",
+          ],
+          [
+            "Remove the old component",
+            "Carefully remove the old part without damaging surrounding components. Compare it with the new part before installation.",
+          ],
+          [
+            "Install the new component",
+            "Position the new part, reinstall the mounting hardware, and torque fasteners to the manufacturer specification.",
+          ],
+          [
+            "Reassemble and test",
+            "Reconnect all connections, reinstall covers, and test the component operation before driving.",
+          ],
+        ],
+        faq_q1: "What vehicles is this American-vehicle part compatible with?",
+        faq_a1: "It is designed for the Ford, Chevrolet, GMC, Dodge, Jeep and RAM applications listed in the fitment table. Confirm your vehicle's make, model, year, and engine before ordering.",
+        related_parts_hint: "Customers who order this part also frequently order these related parts:",
       },
       general: {
         app_cards: [
