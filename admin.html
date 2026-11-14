@@ -1757,9 +1757,22 @@
                             if (Array.isArray(removedProduct.images)) {
                                 removedProduct.images.forEach(function(u){ if (u && imgs.indexOf(u)===-1) imgs.push(u); });
                             }
+                            // 其他产品仍在引用的图片不能删（避免误删共享图）
+                            var otherImgRefs = {};
+                            (allProducts || []).forEach(function(prod) {
+                                if (String(prod.id) === String(targetId)) return;
+                                var arr = [];
+                                if (Array.isArray(prod.images)) arr = arr.concat(prod.images);
+                                if (prod.image) arr = arr.concat(String(prod.image).split(',').map(function(s){return s.trim();}));
+                                arr.forEach(function(u) { if (u) otherImgRefs[u] = true; });
+                            });
                             for (var ii = 0; ii < imgs.length; ii++) {
                                 try {
                                     var imgUrl = imgs[ii];
+                                    if (otherImgRefs[imgUrl]) {
+                                        console.log('[Admin Delete] 图片仍被其他产品引用，跳过删除:', imgUrl);
+                                        continue;
+                                    }
                                     // 提取 OSS 文件路径（去掉 endpoint 前缀）
                                     var filename = imgUrl;
                                     if (imgUrl.indexOf(OSS_CONFIG.endpoint) === 0) {
@@ -1779,8 +1792,14 @@
                         
                         // 端口 3：GitHub 删 SEO HTML
                         try {
-                            var safeId = String(targetId).replace(/[^a-zA-Z0-9-_]/g, '_');
-                            var filePath = 'products/' + safeId + '.html';
+                            var seoName = '';
+                            if (removedProduct && removedProduct.seo_url) {
+                                seoName = String(removedProduct.seo_url).split('?')[0].split('/').pop();
+                            }
+                            if (!seoName || seoName.indexOf('.html') === -1) {
+                                seoName = generateSlug(removedProduct ? (removedProduct.name || removedProduct.title || '') : '', targetId) + '.html';
+                            }
+                            var filePath = 'products/' + seoName;
                             var checkUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
                             var checkResp = await githubApiRequest(checkUrl, { method: 'GET' }, 2, 1500);
                             if (checkResp.ok) {
@@ -1807,6 +1826,29 @@
                             console.warn('[Admin Delete] GitHub 删除异常:', ghErr.message);
                         }
                         
+                        // 端口 3b：GitHub 删俄语 SEO HTML（如果有）
+                        if (removedProduct && removedProduct.seo_ru_url) {
+                            try {
+                                var ruName = String(removedProduct.seo_ru_url).split('?')[0].split('/').pop();
+                                if (ruName && ruName.indexOf('.html') !== -1) {
+                                    var ruPath = 'products/ru/' + ruName;
+                                    var ruUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + ruPath + '?t=' + Date.now();
+                                    var ruResp = await githubApiRequest(ruUrl, { method: 'GET' }, 2, 1500);
+                                    if (ruResp.ok) {
+                                        var ruData = await ruResp.json();
+                                        await githubApiRequest('https://api.github.com/repos/' + GH_REPO + '/contents/' + ruPath, {
+                                            method: 'DELETE',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ message: 'Delete RU SEO: ' + (removedProduct.name || targetId), sha: ruData.sha, branch: GH_BRANCH })
+                                        }, 3, 2000);
+                                        console.log('[Admin Delete] GitHub RU SEO 已删除:', ruPath);
+                                    }
+                                }
+                            } catch(ruErr) {
+                                console.warn('[Admin Delete] GitHub RU 删除异常:', ruErr.message);
+                            }
+                        }
+
                         // 端口 4：OSS version.json
                         var newVersion = Date.now();
                         var versionData = {
@@ -3907,26 +3949,37 @@ var CATEGORY_CONTENT = {
             }
             product.image = imgs.join(',');
 
-            // 3) OSS 删图（用 OSS SDK）
-            try {
-                var ossClient = new OSS({
-                    region: 'oss-cn-hangzhou',
-                    accessKeyId: OSS_CONFIG.accessKeyId,
-                    accessKeySecret: OSS_CONFIG.accessKeySecret,
-                    bucket: 'carvalauto-products',
-                    secure: true
-                });
-                var filename = imageUrl;
-                if (imageUrl.indexOf(OSS_CONFIG.endpoint) === 0) {
-                    filename = imageUrl.substring(OSS_CONFIG.endpoint.length + 1);
-                } else {
-                    var slashIdx = imageUrl.lastIndexOf('/');
-                    filename = slashIdx >= 0 ? imageUrl.substring(slashIdx + 1) : imageUrl;
+            // 3) OSS 删图（用 OSS SDK）—— 其他产品仍引用该图时跳过，避免误删
+            var sharedElsewhere = (products || []).some(function(prod) {
+                if (String(prod.id) === String(productId)) return false;
+                var arr = [];
+                if (Array.isArray(prod.images)) arr = arr.concat(prod.images);
+                if (prod.image) arr = arr.concat(String(prod.image).split(',').map(function(s){return s.trim();}));
+                return arr.filter(Boolean).indexOf(imageUrl) !== -1;
+            });
+            if (sharedElsewhere) {
+                console.log('[v2.3.0] 图片仍被其他产品引用，跳过 OSS 删除:', imageUrl);
+            } else {
+                try {
+                    var ossClient = new OSS({
+                        region: 'oss-cn-hangzhou',
+                        accessKeyId: OSS_CONFIG.accessKeyId,
+                        accessKeySecret: OSS_CONFIG.accessKeySecret,
+                        bucket: 'carvalauto-products',
+                        secure: true
+                    });
+                    var filename = imageUrl;
+                    if (imageUrl.indexOf(OSS_CONFIG.endpoint) === 0) {
+                        filename = imageUrl.substring(OSS_CONFIG.endpoint.length + 1);
+                    } else {
+                        var slashIdx = imageUrl.lastIndexOf('/');
+                        filename = slashIdx >= 0 ? imageUrl.substring(slashIdx + 1) : imageUrl;
+                    }
+                    await ossClient.delete(filename);
+                    console.log('[v2.3.0] OSS 删图成功:', filename);
+                } catch(ossErr) {
+                    console.warn('[v2.3.0] OSS 删图失败 (非致命):', ossErr.message);
                 }
-                await ossClient.delete(filename);
-                console.log('[v2.3.0] OSS 删图成功:', filename);
-            } catch(ossErr) {
-                console.warn('[v2.3.0] OSS 删图失败 (非致命):', ossErr.message);
             }
 
             // 4) 若产品已发布 SEO → 重新生成该产品的 HTML（保留 SEO 页面，仅移除被删的图）
@@ -3936,8 +3989,14 @@ var CATEGORY_CONTENT = {
                     var catKey = detectCategory(product.name || product.title || '');
                     var baseContent = CATEGORY_CONTENT[catKey] || CATEGORY_CONTENT['general'];
                     var catContent = mergeProductContentAI(baseContent, aiContent);
-                    var safeId = String(productId).replace(/[^a-zA-Z0-9-_]/g, '_');
-                    var filePath = 'products/' + safeId + '.html';
+                    var seoName = '';
+                    if (product.seo_url) {
+                        seoName = String(product.seo_url).split('?')[0].split('/').pop();
+                    }
+                    if (!seoName || seoName.indexOf('.html') === -1) {
+                        seoName = generateSlug(product.name || product.title || '', productId) + '.html';
+                    }
+                    var filePath = 'products/' + seoName;
                     var url = 'https://carvalautopart.com/' + filePath;
                     var productSchema = buildProductSchema(product, url, catContent);
                     var howtoSchema = buildHowToSchema(product, catContent);
