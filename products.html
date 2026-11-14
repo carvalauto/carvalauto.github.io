@@ -743,9 +743,13 @@ function openProduct(id) {
     document.getElementById('modalSpecs').innerHTML = specsHtml;
     
     var fitmentHtml = '';
-    if (p.fitmentTable && p.fitmentTable.length > 0) {
-        fitmentHtml = '<div class="modal-fitment-title"><i class="fas fa-car-side"></i> Compatible Vehicles (' + p.fitmentTable.length + ')</div><div class="fitment-wrap"><table class="fitment-table"><thead><tr><th>Car Fitment</th><th>Model</th><th>Year</th></tr></thead><tbody>';
-        p.fitmentTable.forEach(function(item) {
+    var fitmentRows = (p.fitmentTable || []).filter(function(item) {
+        if (!item) return false;
+        return !/(^|\b)other(\b|$)/i.test(String(item.make || '') + ' ' + String(item.model || ''));
+    });
+    if (fitmentRows.length > 0) {
+        fitmentHtml = '<div class="modal-fitment-title"><i class="fas fa-car-side"></i> Compatible Vehicles (' + fitmentRows.length + ')</div><div class="fitment-wrap"><table class="fitment-table"><thead><tr><th>Car Fitment</th><th>Model</th><th>Year</th></tr></thead><tbody>';
+        fitmentRows.forEach(function(item) {
             fitmentHtml += '<tr><td>' + (item.make || item.brand || '-') + '</td><td>' + (item.model || '-') + '</td><td>' + (item.year || '-') + '</td></tr>';
         });
         fitmentHtml += '</tbody></table></div>';
