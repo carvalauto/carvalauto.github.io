@@ -900,10 +900,11 @@ window.addEventListener('popstate', function(e) {
 
 // GitHub配置（分段存储，保护Token）
 var GH_REPO = 'carvalauto/carvalauto.github.io';
-var GH_TOKEN = ['ghp_oWLm0san81c','Xqv3navRKnYZKo9','mYNU2pMhFf'].join('');
+var GH_TOKEN = '';  // 不再写死在公开页面
 
 // 保存询盘到GitHub（后台显示）
 async function saveInquiryToGitHub(inquiryData) {
+    if (!GH_TOKEN) return; // 公开页面不再保存 Token，询盘仍通过表单提交
     try {
         // 1. 获取现有的inquiries.json
         var r1 = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), {
