@@ -305,6 +305,7 @@
             var OSS_ACCESS_KEY_SECRET = OSS_CONFIG.accessKeySecret;
             var OSS_BUCKET = 'carvalauto-products';
             var OSS_REGION = 'oss-cn-hangzhou';
+            if (!ensureOSSConfig()) throw new Error('请先配置 OSS AccessKey');
             
             var client = new OSS({
                 region: OSS_REGION,
@@ -734,22 +735,32 @@
     // ===== v2.3.0: 5 PAT 轮换 + 统一 OSS 凭证（与扩展 EMBEDDED_CONFIG.oss 同组）=====
     var GH_REPO = 'carvalauto/carvalauto.github.io';
     var GH_BRANCH = 'main';
-    var GITHUB_TOKENS = [
-      ['ghp_7w1qq4LIrZgXCBVX', 'T9XRMz6jCHs6HH4bfaa', 'C'].join(''),
-      ['ghp_JUlaYJBAg1wWFXi6w', '70UGkWmoE1X871dH9F', '7'].join(''),
-      ['ghp_7w1qq4LIrZgXCBVX', 'T9XRMz6jCHs6HH4bfaa', 'C'].join(''),
-      ['ghp_JUlaYJBAg1wWFXi6w', '70UGkWmoE1X871dH9F', '7'].join(''),
-      ['ghp_7w1qq4LIrZgXCBVX', 'T9XRMz6jCHs6HH4bfaa', 'C'].join('')
-    ];
+    var GITHUB_TOKENS = [];
     var activePatIndex = 0;
-    var GH_TOKEN = GITHUB_TOKENS[activePatIndex];  // 兼容旧代码
-    // OSS配置 - admin.html 和扩展用同一组凭证（和插件 EMBEDDED_CONFIG.oss 一致）
+    var GH_TOKEN = '';  // 兼容旧代码；实际 Token 只在 localStorage 中
+    // OSS配置（密钥不写死，首次使用时输入并保存在本浏览器）
     var OSS_CONFIG = {
       endpoint: 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com',
       productsUrl: 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json',
-      accessKeyId: ['LTAI5t', '6J7yx17mKc8ps', 'EdqFp'].join(''),
-      accessKeySecret: ['uXIGY7vhf62', 'Ep1Hjj9MtgkKLKq6', 'LTo'].join('')
+      accessKeyId: '',
+      accessKeySecret: ''
     };
+    try {
+      var _ossCfg = JSON.parse(localStorage.getItem('carval_oss_config') || '{}');
+      if (_ossCfg.accessKeyId) OSS_CONFIG.accessKeyId = _ossCfg.accessKeyId;
+      if (_ossCfg.accessKeySecret) OSS_CONFIG.accessKeySecret = _ossCfg.accessKeySecret;
+    } catch (e) {}
+    function ensureOSSConfig() {
+      if (OSS_CONFIG.accessKeyId && OSS_CONFIG.accessKeySecret) return true;
+      var id = prompt('请输入 OSS AccessKeyId（仅保存在本浏览器，不会上传）：');
+      if (!id) return false;
+      var sk = prompt('请输入 OSS AccessKeySecret（仅保存在本浏览器）：');
+      if (!sk) return false;
+      OSS_CONFIG.accessKeyId = id.trim();
+      OSS_CONFIG.accessKeySecret = sk.trim();
+      try { localStorage.setItem('carval_oss_config', JSON.stringify({ accessKeyId: OSS_CONFIG.accessKeyId, accessKeySecret: OSS_CONFIG.accessKeySecret })); } catch (e) {}
+      return true;
+    }
     var GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
     var GA_PROPERTY_ID = '529242507';
     
@@ -1660,6 +1671,7 @@
     
     // 生成OSS签名（新增函数）
     async function generateOSSAuth(method, objectKey, contentLength) {
+        if (!ensureOSSConfig()) throw new Error('请先配置 OSS AccessKey');
         var date = new Date().toUTCString();
         window.__ossAuthDate = date; // 关键：请求头复用同一时间，避免签名与 x-oss-date 跨秒不一致导致 403
         // OSS v1 签名：CanonicalizedOSSHeaders 必须按字母排序（这里只有 x-oss-date 一项）
@@ -1741,6 +1753,7 @@
                     try {
                         var OSS_ACCESS_KEY_ID = OSS_CONFIG.accessKeyId;
                         var OSS_ACCESS_KEY_SECRET = OSS_CONFIG.accessKeySecret;
+                        if (!ensureOSSConfig()) throw new Error('请先配置 OSS AccessKey');
                         var ossClient = new OSS({
                             region: 'oss-cn-hangzhou',
                             accessKeyId: OSS_ACCESS_KEY_ID,
@@ -4083,6 +4096,7 @@ var CATEGORY_CONTENT = {
                 console.log('[v2.3.0] 图片仍被其他产品引用，跳过 OSS 删除:', imageUrl);
             } else {
                 try {
+                    if (!ensureOSSConfig()) throw new Error('请先配置 OSS AccessKey');
                     var ossClient = new OSS({
                         region: 'oss-cn-hangzhou',
                         accessKeyId: OSS_CONFIG.accessKeyId,
