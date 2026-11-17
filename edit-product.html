@@ -252,13 +252,29 @@
     <div class="toast" id="toast"></div>
     
     <script>
-    // ===== 配置信息 =====
+    // ===== 配置信息（密钥不再写死在源码，首次使用时输入并保存在本浏览器） =====
     var OSS_CONFIG = {
         endpoint: 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com',
         productsUrl: 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json',
-        accessKeyId: 'LTAI5tKCovsg5dJWKxoXwDr2',
-        accessKeySecret: 'vDdWLEKBnnmFFZwOeLzX73vRo8k0WW'
+        accessKeyId: '',
+        accessKeySecret: ''
     };
+    try {
+        var _ossCfg = JSON.parse(localStorage.getItem('carval_oss_config') || '{}');
+        if (_ossCfg.accessKeyId) OSS_CONFIG.accessKeyId = _ossCfg.accessKeyId;
+        if (_ossCfg.accessKeySecret) OSS_CONFIG.accessKeySecret = _ossCfg.accessKeySecret;
+    } catch (e) {}
+    function ensureOSSConfig() {
+        if (OSS_CONFIG.accessKeyId && OSS_CONFIG.accessKeySecret) return true;
+        var id = prompt('请输入 OSS AccessKeyId（仅保存在本浏览器，不会上传）：');
+        if (!id) return false;
+        var sk = prompt('请输入 OSS AccessKeySecret（仅保存在本浏览器）：');
+        if (!sk) return false;
+        OSS_CONFIG.accessKeyId = id.trim();
+        OSS_CONFIG.accessKeySecret = sk.trim();
+        try { localStorage.setItem('carval_oss_config', JSON.stringify({ accessKeyId: OSS_CONFIG.accessKeyId, accessKeySecret: OSS_CONFIG.accessKeySecret })); } catch (e) {}
+        return true;
+    }
     
     var productId = null;
     var productData = null;
@@ -452,6 +468,7 @@
     }
 
     async function deleteVideoNow(url) {
+        if (!ensureOSSConfig()) { showToast('请先配置 OSS AccessKey', true); return; }
         showToast('正在删除视频...', false);
 
         // 1) 更新 products.json
@@ -552,6 +569,7 @@
     // 保存（使用和 admin.html 完全相同的逻辑）
     async function saveProductEdit() {
         if (!editingProductId) return;
+        if (!ensureOSSConfig()) { showToast('请先配置 OSS AccessKey', true); return; }
         if (isSubmitting) { showToast('正在处理中，请稍候...', true); return; }
         
         isSubmitting = true;
