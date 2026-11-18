@@ -1923,7 +1923,7 @@
             var stored = localStorage.getItem(PAT_STORAGE_KEY);
             if (stored) {
                 var arr = JSON.parse(stored);
-                if (Array.isArray(arr) && arr.length >= 1 && arr.every(function(t) { return t && t.indexOf('ghp_') === 0; })) {
+                if (Array.isArray(arr) && arr.length >= 1 && arr.every(function(t) { return t && (t.indexOf('ghp_') === 0 || t.indexOf('github_pat_') === 0); })) {
                     GITHUB_TOKENS = arr;
                     console.log('[v2.3.0] 从 localStorage 加载 PAT (' + arr.length + ' 个)');
                 }
@@ -1945,9 +1945,9 @@
             'Token 仅保存到当前浏览器 localStorage，不会上传。'
         );
         if (!input) return false;
-        var arr = input.split(/\n/).map(function(s) { return s.trim(); }).filter(function(s) { return s.indexOf('ghp_') === 0; });
+        var arr = input.split(/\n/).map(function(s) { return s.trim(); }).filter(function(s) { return s.indexOf('ghp_') === 0 || s.indexOf('github_pat_') === 0; });
         if (arr.length < 1) {
-            alert('至少需要 1 个 ghp_ 开头的 PAT');
+            alert('至少需要 1 个 GitHub Token（ghp_ 或 github_pat_ 开头）');
             return false;
         }
         try {
