@@ -3,6 +3,8 @@ Allow: /
 
 # 屏蔽管理后台
 Disallow: /admin.html
+Disallow: /edit-product.html
+Disallow: /ai-batch.html
 Disallow: /contents/
 Disallow: /cdn-cgi/
 
@@ -13,3 +15,4 @@ Disallow: /page/*
 
 # 提交站点地图地址
 Sitemap: https://carvalautopart.com/sitemap.xml
+Sitemap: https://carvalautopart.com/sitemap-images.xml
