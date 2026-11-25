@@ -252,29 +252,15 @@
     <div class="toast" id="toast"></div>
     
     <script>
-    // ===== 配置信息（密钥不再写死在源码，首次使用时输入并保存在本浏览器） =====
+    // Worker 模式：Key 在 Cloudflare Worker，浏览器不存
+    window.__USE_WORKER = true;
     var OSS_CONFIG = {
-        endpoint: 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com',
-        productsUrl: 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json',
-        accessKeyId: '',
-        accessKeySecret: ''
+        endpoint: 'https://carvalautopart.com/api/oss',
+        productsUrl: 'https://carvalautopart.com/api/oss/products.json',
+        accessKeyId: 'worker',
+        accessKeySecret: 'worker'
     };
-    try {
-        var _ossCfg = JSON.parse(localStorage.getItem('carval_oss_config') || '{}');
-        if (_ossCfg.accessKeyId) OSS_CONFIG.accessKeyId = _ossCfg.accessKeyId;
-        if (_ossCfg.accessKeySecret) OSS_CONFIG.accessKeySecret = _ossCfg.accessKeySecret;
-    } catch (e) {}
-    function ensureOSSConfig() {
-        if (OSS_CONFIG.accessKeyId && OSS_CONFIG.accessKeySecret) return true;
-        var id = prompt('请输入 OSS AccessKeyId（仅保存在本浏览器，不会上传）：');
-        if (!id) return false;
-        var sk = prompt('请输入 OSS AccessKeySecret（仅保存在本浏览器）：');
-        if (!sk) return false;
-        OSS_CONFIG.accessKeyId = id.trim();
-        OSS_CONFIG.accessKeySecret = sk.trim();
-        try { localStorage.setItem('carval_oss_config', JSON.stringify({ accessKeyId: OSS_CONFIG.accessKeyId, accessKeySecret: OSS_CONFIG.accessKeySecret })); } catch (e) {}
-        return true;
-    }
+    function ensureOSSConfig() { return true; }
     
     var productId = null;
     var productData = null;
@@ -526,15 +512,18 @@
     }
 
     async function removeVideoFromSeoPage(p) {
-        var token = '';
-        try {
-            var arr = JSON.parse(localStorage.getItem('carval_gh_pats') || '[]');
-            if (Array.isArray(arr) && arr.length && arr[0]) token = arr[0];
-        } catch (e) {}
-        if (!token) { console.warn('[视频] 未找到 GitHub PAT，跳过 SEO 页更新'); return; }
+        var token = 'worker';
+        if (!window.__USE_WORKER) {
+            token = '';
+            try {
+                var arr = JSON.parse(localStorage.getItem('carval_gh_pats') || '[]');
+                if (Array.isArray(arr) && arr.length && arr[0]) token = arr[0];
+            } catch (e) {}
+            if (!token) { console.warn('[视频] 未找到 GitHub PAT，跳过 SEO 页更新'); return; }
+        }
         var fileName = String(p.seo_url || '').split('?')[0].split('/').pop();
         if (!fileName || fileName.indexOf('.html') === -1) return;
-        var api = 'https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/products/' + fileName;
+        var api = 'https://carvalautopart.com/api/github/repos/carvalauto/carvalauto.github.io/contents/products/' + fileName;
         var headers = { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json', 'User-Agent': 'carval-edit' };
         var g = await fetch(api + '?t=' + Date.now(), { headers: headers });
         if (!g.ok) return;

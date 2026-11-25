@@ -278,11 +278,11 @@
         
         try {
             // 获取 GitHub 的最新数据
-            var productsResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/products.json?t=' + Date.now(), { 
+            var productsResp = await fetch('https://carvalautopart.com/api/github/repos/carvalauto/carvalauto.github.io/contents/products.json?t=' + Date.now(), { 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
             });
             
-            var inquiriesResp = await fetch('https://api.github.com/repos/carvalauto/carvalauto.github.io/contents/inquiries.json?t=' + Date.now(), { 
+            var inquiriesResp = await fetch('https://carvalautopart.com/api/github/repos/carvalauto/carvalauto.github.io/contents/inquiries.json?t=' + Date.now(), { 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
             });
             
@@ -300,34 +300,15 @@
             showToast('✅ 已从 GitHub 获取数据！', false);
             showToast('正在同步到 OSS...', false);
             
-            // 上传到 OSS
-            var OSS_ACCESS_KEY_ID = OSS_CONFIG.accessKeyId;
-            var OSS_ACCESS_KEY_SECRET = OSS_CONFIG.accessKeySecret;
-            var OSS_BUCKET = 'carvalauto-products';
-            var OSS_REGION = 'oss-cn-hangzhou';
-            if (!ensureOSSConfig()) throw new Error('请先配置 OSS AccessKey');
-            
-            var client = new OSS({
-                region: OSS_REGION,
-                accessKeyId: OSS_ACCESS_KEY_ID,
-                accessKeySecret: OSS_ACCESS_KEY_SECRET,
-                bucket: OSS_BUCKET,
-                secure: true
-            });
-            
-            // 上传 products.json
-            await client.put('products.json', new Blob([productsContent], { type: 'application/json' }));
-            
-            // 上传 inquiries.json
-            await client.put('inquiries.json', new Blob([inquiriesContent], { type: 'application/json' }));
-            
-            // 更新 version.json
+            // 上传到 OSS（通过 Worker）
+            await workerPut('products.json', productsContent, 'application/json');
+            await workerPut('inquiries.json', inquiriesContent, 'application/json');
             var versionData = {
                 version: Date.now(),
                 timestamp: new Date().toISOString(),
                 source: 'manual_sync'
             };
-            await client.put('version.json', new Blob([JSON.stringify(versionData, null, 2)], { type: 'application/json' }));
+            await workerPut('version.json', JSON.stringify(versionData, null, 2), 'application/json');
             
             showToast('✅ 已同步到 OSS！', false);
             
@@ -735,32 +716,36 @@
     // ===== v2.3.0: 5 PAT 轮换 + 统一 OSS 凭证（与扩展 EMBEDDED_CONFIG.oss 同组）=====
     var GH_REPO = 'carvalauto/carvalauto.github.io';
     var GH_BRANCH = 'main';
-    var GITHUB_TOKENS = [];
+    window.__USE_WORKER = true;
+    var GITHUB_TOKENS = ['ghp_worker'];
     var activePatIndex = 0;
-    var GH_TOKEN = '';  // 兼容旧代码；实际 Token 只在 localStorage 中
-    // OSS配置（密钥不写死，首次使用时输入并保存在本浏览器）
+    var GH_TOKEN = 'ghp_worker';  // Worker 模式：真正的 PAT 在 Worker 服务端
+    // Worker 模式：后台通过 /api/* 调用 Cloudflare Worker，Key 不在浏览器
     var OSS_CONFIG = {
-      endpoint: 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com',
-      productsUrl: 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json',
-      accessKeyId: '',
-      accessKeySecret: ''
+      endpoint: 'https://carvalautopart.com/api/oss',
+      productsUrl: 'https://carvalautopart.com/api/oss/products.json',
+      accessKeyId: 'worker',
+      accessKeySecret: 'worker'
     };
-    try {
-      var _ossCfg = JSON.parse(localStorage.getItem('carval_oss_config') || '{}');
-      if (_ossCfg.accessKeyId) OSS_CONFIG.accessKeyId = _ossCfg.accessKeyId;
-      if (_ossCfg.accessKeySecret) OSS_CONFIG.accessKeySecret = _ossCfg.accessKeySecret;
-    } catch (e) {}
-    function ensureOSSConfig() {
-      if (OSS_CONFIG.accessKeyId && OSS_CONFIG.accessKeySecret) return true;
-      var id = prompt('请输入 OSS AccessKeyId（仅保存在本浏览器，不会上传）：');
-      if (!id) return false;
-      var sk = prompt('请输入 OSS AccessKeySecret（仅保存在本浏览器）：');
-      if (!sk) return false;
-      OSS_CONFIG.accessKeyId = id.trim();
-      OSS_CONFIG.accessKeySecret = sk.trim();
-      try { localStorage.setItem('carval_oss_config', JSON.stringify({ accessKeyId: OSS_CONFIG.accessKeyId, accessKeySecret: OSS_CONFIG.accessKeySecret })); } catch (e) {}
-      return true;
+    function ossKeyFromUrl(u) {
+      try {
+        var x = new URL(u);
+        if (/aliyuncs\.com$/i.test(x.hostname)) return decodeURIComponent(x.pathname.replace(/^\/+/, ''));
+      } catch (e) {}
+      var parts = String(u || '').split('?')[0].split('/').filter(Boolean);
+      return parts.slice(-2).join('/');
     }
+    async function workerPut(key, body, contentType) {
+      var r = await fetch('/api/oss/' + key, { method: 'PUT', headers: { 'Content-Type': contentType || 'application/json' }, body: body });
+      if (!r.ok) throw new Error('Worker OSS PUT ' + r.status);
+      return r;
+    }
+    async function workerDelete(key) {
+      var r = await fetch('/api/oss/' + key, { method: 'DELETE' });
+      if (!r.ok) throw new Error('Worker OSS DELETE ' + r.status);
+      return r;
+    }
+    function ensureOSSConfig() { return true; }
     var GA_CLIENT_ID = '559377365954-4eutm6cufnggnskn8v35139vpo11opbo.apps.googleusercontent.com';
     var GA_PROPERTY_ID = '529242507';
     
@@ -1751,20 +1736,9 @@
                 // 2) 4 端口同步（后台跑，不阻塞）
                 (async function() {
                     try {
-                        var OSS_ACCESS_KEY_ID = OSS_CONFIG.accessKeyId;
-                        var OSS_ACCESS_KEY_SECRET = OSS_CONFIG.accessKeySecret;
-                        if (!ensureOSSConfig()) throw new Error('请先配置 OSS AccessKey');
-                        var ossClient = new OSS({
-                            region: 'oss-cn-hangzhou',
-                            accessKeyId: OSS_ACCESS_KEY_ID,
-                            accessKeySecret: OSS_ACCESS_KEY_SECRET,
-                            bucket: 'carvalauto-products',
-                            secure: true
-                        });
-                        
-                        // 端口 1：OSS 同步 products.json
+                        // 端口 1：OSS 同步 products.json（通过 Worker）
                         var newProductsData = JSON.stringify(allProducts);
-                        await ossClient.put('products.json', new Blob([newProductsData], { type: 'application/json' }));
+                        await workerPut('products.json', newProductsData, 'application/json');
                         console.log('[Admin Delete] OSS products.json 已同步');
                         
                         // 端口 2：OSS 删除该产品所有图片
@@ -1790,16 +1764,8 @@
                                         console.log('[Admin Delete] 图片仍被其他产品引用，跳过删除:', imgUrl);
                                         continue;
                                     }
-                                    // 提取 OSS 文件路径（去掉 endpoint 前缀）
-                                    var filename = imgUrl;
-                                    if (imgUrl.indexOf(OSS_CONFIG.endpoint) === 0) {
-                                        filename = imgUrl.substring(OSS_CONFIG.endpoint.length + 1);
-                                    } else {
-                                        // 尝试从 URL 提取 basename
-                                        var slashIdx = imgUrl.lastIndexOf('/');
-                                        filename = slashIdx >= 0 ? imgUrl.substring(slashIdx + 1) : imgUrl;
-                                    }
-                                    await ossClient.delete(filename);
+                                    var filename = ossKeyFromUrl(imgUrl);
+                                    await workerDelete(filename);
                                     console.log('[Admin Delete] OSS 删图成功:', filename);
                                 } catch(imgErr) {
                                     console.warn('[Admin Delete] OSS 删图失败:', imgs[ii], imgErr.message);
@@ -1817,11 +1783,11 @@
                                 seoName = generateSlug(removedProduct ? (removedProduct.name || removedProduct.title || '') : '', targetId) + '.html';
                             }
                             var filePath = 'products/' + seoName;
-                            var checkUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
+                            var checkUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
                             var checkResp = await githubApiRequest(checkUrl, { method: 'GET' }, 2, 1500);
                             if (checkResp.ok) {
                                 var fileData = await checkResp.json();
-                                var delUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + filePath;
+                                var delUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + filePath;
                                 var delResp = await githubApiRequest(delUrl, {
                                     method: 'DELETE',
                                     headers: { 'Content-Type': 'application/json' },
@@ -1849,11 +1815,11 @@
                                 var ruName = String(removedProduct.seo_ru_url).split('?')[0].split('/').pop();
                                 if (ruName && ruName.indexOf('.html') !== -1) {
                                     var ruPath = 'products/ru/' + ruName;
-                                    var ruUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + ruPath + '?t=' + Date.now();
+                                    var ruUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + ruPath + '?t=' + Date.now();
                                     var ruResp = await githubApiRequest(ruUrl, { method: 'GET' }, 2, 1500);
                                     if (ruResp.ok) {
                                         var ruData = await ruResp.json();
-                                        await githubApiRequest('https://api.github.com/repos/' + GH_REPO + '/contents/' + ruPath, {
+                                        await githubApiRequest('https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + ruPath, {
                                             method: 'DELETE',
                                             headers: { 'Content-Type': 'application/json' },
                                             body: JSON.stringify({ message: 'Delete RU SEO: ' + (removedProduct.name || targetId), sha: ruData.sha, branch: GH_BRANCH })
@@ -1873,7 +1839,7 @@
                             timestamp: new Date(newVersion).toISOString(),
                             source: 'admin_delete_4ports'
                         };
-                        await ossClient.put('version.json', new Blob([JSON.stringify(versionData, null, 2)], { type: 'application/json' }));
+                        await workerPut('version.json', JSON.stringify(versionData, null, 2), 'application/json');
                         console.log('[Admin Delete] OSS version.json 已同步');
                         
                         showToast('✅ 4 端口同步完成', false);
@@ -1918,6 +1884,7 @@
     var PAT_STORAGE_KEY = 'carval_gh_pats';
 
     function initGitHubTokens() {
+        if (window.__USE_WORKER) { GITHUB_TOKENS = ['ghp_worker']; GH_TOKEN = 'ghp_worker'; return true; }
         // 优先从 localStorage 读 5 个 PAT（用户首次输入后存起来）
         try {
             var stored = localStorage.getItem(PAT_STORAGE_KEY);
@@ -3997,7 +3964,7 @@ var CATEGORY_CONTENT = {
             var html = buildSEOHtml(product, catContent, productSchema, howtoSchema, faqSchema);
 
             // 4) GitHub PUT (先 GET 拿 sha，存在则覆盖)
-            var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
+            var apiUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
             var sha = null;
             try {
                 var checkResp = await githubApiRequest(apiUrl, { method: 'GET' }, 1, 1000);
@@ -4096,22 +4063,8 @@ var CATEGORY_CONTENT = {
                 console.log('[v2.3.0] 图片仍被其他产品引用，跳过 OSS 删除:', imageUrl);
             } else {
                 try {
-                    if (!ensureOSSConfig()) throw new Error('请先配置 OSS AccessKey');
-                    var ossClient = new OSS({
-                        region: 'oss-cn-hangzhou',
-                        accessKeyId: OSS_CONFIG.accessKeyId,
-                        accessKeySecret: OSS_CONFIG.accessKeySecret,
-                        bucket: 'carvalauto-products',
-                        secure: true
-                    });
-                    var filename = imageUrl;
-                    if (imageUrl.indexOf(OSS_CONFIG.endpoint) === 0) {
-                        filename = imageUrl.substring(OSS_CONFIG.endpoint.length + 1);
-                    } else {
-                        var slashIdx = imageUrl.lastIndexOf('/');
-                        filename = slashIdx >= 0 ? imageUrl.substring(slashIdx + 1) : imageUrl;
-                    }
-                    await ossClient.delete(filename);
+                    var filename = ossKeyFromUrl(imageUrl);
+                    await workerDelete(filename);
                     console.log('[v2.3.0] OSS 删图成功:', filename);
                 } catch(ossErr) {
                     console.warn('[v2.3.0] OSS 删图失败 (非致命):', ossErr.message);
@@ -4138,7 +4091,7 @@ var CATEGORY_CONTENT = {
                     var howtoSchema = buildHowToSchema(product, catContent);
                     var faqSchema = buildFAQSchema(product, catContent, aiContent && aiContent.faq);
                     var html = buildSEOHtml(product, catContent, productSchema, howtoSchema, faqSchema);
-                    var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
+                    var apiUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
                     var sha = null;
                     try {
                         var checkResp = await githubApiRequest(apiUrl, { method: 'GET' }, 1, 1000);
@@ -4568,7 +4521,7 @@ var CATEGORY_CONTENT = {
     async function markInquiryRead(id) {
         if (!checkToken()) return;
         try {
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
+            var r = await fetch('https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
             });
             
@@ -4595,7 +4548,7 @@ var CATEGORY_CONTENT = {
                 sha: j.sha 
             };
             
-            var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
+            var updateR = await fetch('https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
                 method: 'PUT', 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
                 body: JSON.stringify(body) 
@@ -4620,7 +4573,7 @@ var CATEGORY_CONTENT = {
         if (!checkToken()) return;
         
         try {
-            var r = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
+            var r = await fetch('https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' } 
             });
             
@@ -4650,7 +4603,7 @@ var CATEGORY_CONTENT = {
                 sha: j.sha 
             };
             
-            var updateR = await fetch('https://api.github.com/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
+            var updateR = await fetch('https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/inquiries.json?t=' + Date.now(), { 
                 method: 'PUT', 
                 headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, 
                 body: JSON.stringify(body) 
@@ -4791,10 +4744,11 @@ var CATEGORY_CONTENT = {
     }
 
     // ===== v2.4.5: DeepSeek 一键生成 SEO（标题/描述/关键词/H2/产品描述）=====
-    var AI_SEO_ENDPOINT = 'https://api.deepseek.com/chat/completions';
+    var AI_SEO_ENDPOINT = 'https://carvalautopart.com/api/deepseek';
     var aiGenerating = false;
 
     function getAIKey() {
+        if (window.__USE_WORKER) return 'worker';
         var k = localStorage.getItem('deepseek_api_key');
         if (!k) {
             k = prompt('请输入 DeepSeek API Key（仅存于你浏览器本地，不会上传）：');
@@ -4891,6 +4845,7 @@ var CATEGORY_CONTENT = {
     // ===== v2.6.1-ai: 产品专属 SEO 文案（应用/症状/安装/FAQ），AI 失败回退分类模板 =====
     var __productContentCache = {};
     function getAIKeySilent() {
+        if (window.__USE_WORKER) return 'worker';
         try { return localStorage.getItem('deepseek_api_key') || ''; } catch (e) { return ''; }
     }
     async function generateProductContentAI(product, apiKey) {
@@ -5234,7 +5189,7 @@ var CATEGORY_CONTENT = {
             var tr = await ruTranslateAI(product);
             if (!tr) tr = ruDefaultTexts(product);
             var ruHtml = buildRUPageHtml(product, tr, ruUrl, enUrl);
-            var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + ruFilePath + '?t=' + Date.now();
+            var apiUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + ruFilePath + '?t=' + Date.now();
             var sha = null;
             try {
                 var checkResp = await githubApiRequest(apiUrl, { method: 'GET' }, 1, 1000);
@@ -5289,7 +5244,7 @@ var CATEGORY_CONTENT = {
 
     async function uploadEnglishPage(item) {
         var filePath = item.filePath;
-        var apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
+        var apiUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
         var sha = null;
         try {
             var checkResp = await githubApiRequest(apiUrl, { method: 'GET' }, 1, 1000);
