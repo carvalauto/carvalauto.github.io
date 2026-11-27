@@ -782,6 +782,152 @@
         localStorage.setItem('cached_products', JSON.stringify({ data: light, sha: Date.now(), full: false }));
       } catch (e) { console.warn('[Cache] 更新失败:', e); }
     }
+    // ===== products index (fast list cache) =====
+    function buildProductsIndex(list) {
+      return (list || []).map(function(p) {
+        var imgs = [];
+        if (Array.isArray(p.images)) imgs = p.images.slice();
+        else if (p.image) imgs = String(p.image).split(',');
+        imgs = imgs.map(function(s) { return String(s || '').trim(); }).filter(Boolean);
+        var brands = '';
+        var ft = p.fitmentTable || [];
+        if (ft.length) {
+          var seen = {};
+          for (var i = 0; i < ft.length; i++) {
+            var m = (ft[i].make || '').toUpperCase();
+            if (m && !seen[m]) { seen[m] = 1; brands += (brands ? ',' : '') + m; }
+          }
+        }
+        var vids = Array.isArray(p.videos) ? p.videos.slice() : (p.video ? String(p.video).split(',') : []);
+        vids = vids.map(function(s) { return String(s || '').trim(); }).filter(Boolean);
+        return {
+          id: p.id,
+          name: p.name || p.title || '',
+          category: p.category || 'other',
+          oem: p.oem || p.oemCode || '',
+          image: imgs[0] || '',
+          imageCount: imgs.length,
+          video: vids[0] || '',
+          brands: brands || p.brands || '',
+          fileName: p.fileName || '',
+          seo_status: p.seo_status || '',
+          seo_url: p.seo_url || '',
+          seo_ru_url: p.seo_ru_url || '',
+          seo_published_at: p.seo_published_at || ''
+        };
+      });
+    }
+    function uploadIndexArray(arr) {
+      try {
+        return workerPut('products-index.json', JSON.stringify(arr), 'application/json').catch(function(e) {
+          console.warn('[Index] 上传失败（不影响使用）:', e.message);
+        });
+      } catch (e) { return Promise.resolve(); }
+    }
+    function invalidateIndexCache() {
+      try {
+        var c = JSON.parse(localStorage.getItem('cached_products') || 'null');
+        if (c) { c.version = ''; localStorage.setItem('cached_products', JSON.stringify(c)); }
+      } catch (e) {}
+    }
+    function updateLocalIndexEntry(id, patch) {
+      try {
+        var i = (allProducts || []).findIndex(function(x) { return String(x.id) === String(id); });
+        if (i !== -1) {
+          Object.keys(patch || {}).forEach(function(k) { allProducts[i][k] = patch[k]; });
+        }
+        var c = JSON.parse(localStorage.getItem('cached_products') || 'null');
+        if (c && Array.isArray(c.data)) {
+          var j = c.data.findIndex(function(x) { return String(x.id) === String(id); });
+          if (j !== -1) {
+            Object.keys(patch || {}).forEach(function(k2) { c.data[j][k2] = patch[k2]; });
+            c.version = '';
+            localStorage.setItem('cached_products', JSON.stringify(c));
+          }
+        }
+      } catch (e) {}
+    }
+    async function fetchFullProductsJson() {
+      try {
+        var r = await fetch('/api/products.json?t=' + Date.now());
+        if (r.ok) return await r.json();
+      } catch (e) {}
+      var r2 = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
+      if (!r2.ok) throw new Error('读取 products.json 失败: ' + r2.status);
+      return await r2.json();
+    }
+    async function fetchFullProduct(id) {
+      try {
+        var r = await fetch('/api/product?id=' + encodeURIComponent(id) + '&t=' + Date.now());
+        if (r.ok) {
+          var j = await r.json();
+          if (j && j.ok && j.product) return j.product;
+        }
+      } catch (e) { console.warn('[Product] 单条接口不可用，回退完整读取:', e.message); }
+      var list = await fetchFullProductsJson();
+      var p = list.find(function(x) { return String(x.id) === String(id); });
+      if (!p) throw new Error('未找到产品 ID=' + id);
+      return p;
+    }
+    async function applyProductChange(id, set, extra) {
+      var body = Object.assign({ id: String(id), set: set || {}, source: (extra && extra.source) || 'admin' }, extra || {});
+      try {
+        var r = await fetch('/api/product/patch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        var j = null;
+        try { j = await r.json(); } catch (e) {}
+        if (!r.ok || !j || !j.ok) throw new Error((j && j.error) || ('HTTP ' + r.status));
+      } catch (e) {
+        console.warn('[Patch] 单条更新失败，回退完整写入:', e.message);
+        var list = await fetchFullProductsJson();
+        var p = list.find(function(x) { return String(x.id) === String(id); });
+        if (!p) throw new Error('未找到产品 ID=' + id);
+        Object.assign(p, set || {});
+        if (extra && Array.isArray(extra.videos)) { p.videos = extra.videos; p.video = extra.videos[0] || ''; }
+        await workerPut('products.json', JSON.stringify(list), 'application/json');
+      }
+      updateLocalIndexEntry(id, set || {});
+      invalidateIndexCache();
+    }
+    function saveIndexCache(idx, version) {
+      try { localStorage.setItem('cached_products', JSON.stringify({ data: idx, version: version || '', sha: Date.now(), full: false })); } catch (e) {}
+    }
+    var __indexPromise = null;
+    async function loadProductsIndexOrFull() {
+      if (__indexPromise) return __indexPromise;
+      __indexPromise = (async function() {
+        var cached = null;
+        try { cached = JSON.parse(localStorage.getItem('cached_products') || 'null'); } catch (e) {}
+        var ver = null;
+        try {
+          var vr = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/version.json?t=' + Date.now());
+          if (vr.ok) ver = await vr.json();
+        } catch (e) {}
+        var v = ver && (ver.version || ver.timestamp) ? String(ver.version || ver.timestamp) : '';
+        if (cached && Array.isArray(cached.data) && cached.data.length && v && String(cached.version || '') === v) {
+          return { list: cached.data, source: 'cache' };
+        }
+        try {
+          var ir = await fetch('/api/products-index?t=' + Date.now());
+          if (ir.ok) {
+            var idx = await ir.json();
+            if (Array.isArray(idx) && idx.length) {
+              saveIndexCache(idx, v);
+              return { list: idx, source: 'index' };
+            }
+          }
+        } catch (e) {}
+        var full = await fetchFullProductsJson();
+        var idx2 = buildProductsIndex(full);
+        saveIndexCache(idx2, v);
+        uploadIndexArray(idx2);
+        return { list: idx2, source: 'full+rebuild' };
+      })();
+      try { return await __indexPromise; } catch (e) { __indexPromise = null; throw e; }
+    }
     async function workerDelete(key) {
       var r = await fetch('/api/oss/' + key, { method: 'DELETE' });
       if (!r.ok) throw new Error('Worker OSS DELETE ' + r.status);
@@ -1264,63 +1410,28 @@
             c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         }
         
-        // 后台静默加载 OSS 数据
+        // 后台加载：优先版本缓存 → 索引 → 完整文件（自动重建索引）
         setTimeout(async function() {
             try {
-                var OSS_URL = 'https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now();
-                var controller = new AbortController();
-                var timeoutId = setTimeout(function() { controller.abort(); }, 30000);
-                var r = await fetch(OSS_URL, { signal: controller.signal });
-                clearTimeout(timeoutId);
-
-                if (!r.ok) throw new Error('OSS请求失败: ' + r.status);
-
-                var jsonData = await r.json();
-                if (!Array.isArray(jsonData)) throw new Error('OSS返回非数组 (' + (typeof jsonData) + ')');
-
-                allProducts = jsonData;
+                if (window.__productsLoaded && Array.isArray(allProducts) && allProducts.length) {
+                    currentProductPage = (_pageFromUrl > 0 && _pageFromUrl <= Math.ceil(allProducts.length / productsPerPage)) ? _pageFromUrl : 1;
+                    renderProducts();
+                    return;
+                }
+                var res = await loadProductsIndexOrFull();
+                allProducts = res.list;
+                window.__productsLoaded = true;
                 currentProductPage = (_pageFromUrl > 0 && _pageFromUrl <= Math.ceil(allProducts.length / productsPerPage)) ? _pageFromUrl : 1;
                 renderProducts();
-                // ===== 2026-06-21 修复: 只存精简版到 localStorage (3.3MB -> ~60KB) =====
-                // 不然超 5MB 配额静默失败 -> 下次进 admin.html 还是没缓存 -> 又要重新拉 OSS 慢
-                try {
-                    var lightProducts = allProducts.map(function(p) {
-                        var imgs = (p.image || p.images || '').toString().split(',');
-                        var firstImg = imgs[0] || (Array.isArray(p.images) ? p.images[0] : '') || '';
-                        var brands = '';
-                        var ft = p.fitmentTable || [];
-                        if (ft.length) {
-                            var seen = {};
-                            for (var i = 0; i < ft.length; i++) {
-                                var m = (ft[i].make || '').toUpperCase();
-                                if (m && !seen[m]) { seen[m] = 1; brands += (brands ? ',' : '') + m; }
-                            }
-                        }
-                        return {
-                            id: p.id,
-                            name: p.name || p.title || '',
-                            category: p.category || 'other',
-                            oem: p.oem || p.oemCode || '',
-                            image: firstImg,
-                            fileName: p.fileName || '',
-                            brands: brands
-                        };
-                    });
-                    localStorage.setItem('cached_products', JSON.stringify({data: lightProducts, sha: Date.now(), full: false}));
-                    console.log('[Products] 精简缓存已存,产品数:', lightProducts.length, ',原 3.3MB -> 精简后估算', Math.round(JSON.stringify(lightProducts).length/1024) + 'KB');
-                } catch(e) {
-                    console.warn('[Products] 精简缓存写入失败:', e);
-                }
-                console.log('[Products] OSS加载完成，产品数:', allProducts.length);
+                console.log('[Products] 数据源:', res.source, '产品数:', allProducts.length);
             } catch(e) {
-                console.error('[Products] OSS加载失败:', e);
+                console.error('[Products] 加载失败:', e);
                 if (!hasCache) {
-                    var errMsg = e.name === 'AbortError' ? '加载超时(>10秒)' : (e.message || '未知错误');
-                    var hint = location.protocol === 'file:' ? '<p style="font-size:12px;margin-top:8px;color:var(--text-muted);">提示：file:// 协议下 CORS 会阻塞，请用 https://carvalauto.github.io/admin.html 打开</p>' : '';
-                    c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);font-size:32px;"></i><p>加载失败: ' + errMsg + '</p>' + hint + '</div>';
+                    var errMsg = e.name === 'AbortError' ? '加载超时' : (e.message || '未知错误');
+                    c.innerHTML = '<div class="loading"><i class="fas fa-exclamation-circle" style="color:var(--accent);font-size:32px;"></i><p>加载失败: ' + errMsg + '</p></div>';
                 }
             }
-        }, hasCache ? 500 : 0);
+        }, hasCache ? 300 : 0);
     }
     
     function renderProducts() {
@@ -1562,24 +1673,15 @@
             var removedImages = oldImages.filter(function(u) { return images.indexOf(u) === -1; });
             console.log('[Admin Edit] 旧图数:', oldImages.length, '新图数:', images.length, '被删图数:', removedImages.length);
             
-            // 生成OSS签名
-            var jsonData = JSON.stringify(allProducts, null, 2);
-            var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
-            
-            // 上传到OSS
-            var updateR = await fetch(OSS_CONFIG.productsUrl, { 
-                method: 'PUT', 
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': auth,
-                    'x-oss-date': window.__ossAuthDate
-                }, 
-                body: jsonData 
-            });
-            
-            if (!updateR.ok) {
-                throw new Error('保存失败: ' + updateR.status);
-            }
+            // 单条更新（不再上传整个 products.json）
+            await applyProductChange(editingProductId, {
+                name: title,
+                title: title,
+                oem: oem,
+                oemCode: oem,
+                image: imageStr,
+                images: images
+            }, { source: 'admin_edit' });
             
             // 4 端口同步：被删的图 -> OSS 删图 + 若已发布 SEO 则重生成
             if (removedImages.length > 0) {
@@ -1600,36 +1702,11 @@
             showToast('保存成功！', false);
             closeEditModal();
 
-            // ===== 2026-06-21 修复: 保存后立即写精简版 localStorage 缓存 + 同步 currentVersion =====
-            // 不然下次切回商品 tab 还得重新拉 OSS 3.3MB (跨网慢) -> 卡 40秒+ "加载中..."
-            // 精简版只存渲染列表需要的字段 (3.3MB -> ~60KB), 轻松放 5MB 配额
+            // 保存后同步索引缓存
             try {
-                var lightProducts2 = allProducts.map(function(p) {
-                    var imgs2 = (p.image || p.images || '').toString().split(',');
-                    var firstImg2 = imgs2[0] || (Array.isArray(p.images) ? p.images[0] : '') || '';
-                    var brands2 = '';
-                    var ft2 = p.fitmentTable || [];
-                    if (ft2.length) {
-                        var seen2 = {};
-                        for (var j = 0; j < ft2.length; j++) {
-                            var m2 = (ft2[j].make || '').toUpperCase();
-                            if (m2 && !seen2[m2]) { seen2[m2] = 1; brands2 += (brands2 ? ',' : '') + m2; }
-                        }
-                    }
-                    return {
-                        id: p.id,
-                        name: p.name || p.title || '',
-                        category: p.category || 'other',
-                        oem: p.oem || p.oemCode || '',
-                        image: firstImg2,
-                        fileName: p.fileName || '',
-                        brands: brands2
-                    };
-                });
-                localStorage.setItem('cached_products', JSON.stringify({data: lightProducts2, sha: Date.now(), full: false}));
-                if (typeof currentVersion !== 'undefined') { currentVersion = Date.now(); }
-                console.log('[Admin Edit] 精简缓存已更新,产品数:', lightProducts2.length);
-            } catch(e) { console.warn('[Admin Edit] 精简缓存更新失败:', e); }
+                saveIndexCache(allProducts, '');
+                uploadIndexArray(allProducts);
+            } catch(e) { console.warn('[Admin Edit] 索引更新失败:', e); }
 
             
             // 只更新当前页面上被编辑的那个卡片，不重新渲染所有卡片
@@ -1754,10 +1831,7 @@
             var newList = null;
             try {
                 // 1) 拉最新 products.json
-                var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
-                if (!r.ok) throw new Error('获取产品数据失败: ' + r.status);
-
-                var p = await r.json();
+                var p = await fetchFullProductsJson();
                 var beforeCount = p.length;
                 var targetIdStr = String(targetId);
                 removedProduct = p.find(function(x) { return String(x.id) === targetIdStr; });
@@ -1769,8 +1843,10 @@
                 await workerPut('products.json', JSON.stringify(newList), 'application/json');
 
                 // 3) 持久化成功后再更新界面和本地缓存
-                allProducts = newList;
-                saveSlimProductsCache();
+                var idxAfterDelete = buildProductsIndex(newList);
+                allProducts = idxAfterDelete;
+                saveIndexCache(idxAfterDelete, '');
+                uploadIndexArray(idxAfterDelete);
                 renderProducts();
                 broadcastDataChange('delete', targetId);
                 showSuccessModal('删除成功！', '商品已从网站移除');
@@ -1791,7 +1867,7 @@
                             removedProduct.images.forEach(function(u){ if (u && imgs.indexOf(u) === -1) imgs.push(u); });
                         }
                         var otherImgRefs = {};
-                        (allProducts || []).forEach(function(prod) {
+                        (newList || []).forEach(function(prod) {
                             if (String(prod.id) === String(targetId)) return;
                             var arr = [];
                             if (Array.isArray(prod.images)) arr = arr.concat(prod.images);
@@ -3863,10 +3939,10 @@ var CATEGORY_CONTENT = {
         var container = document.getElementById('pendingList');
         container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载待审核商品...</p></div>';
         try {
-            // 强制刷新：加时间戳避免 CDN 缓存
-            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
-            if (!r.ok) throw new Error('OSS 请求失败: ' + r.status);
-            var allProds = await r.json();
+            var res;
+            if (window.__productsLoaded && allProducts && allProducts.length) res = { list: allProducts };
+            else { res = await loadProductsIndexOrFull(); allProducts = res.list; window.__productsLoaded = true; }
+            var allProds = res.list;
             allPendingProducts = (allProds || []).filter(function(p) { return p.seo_status === 'pending'; });
             filteredPendingProducts = allPendingProducts.slice();
             updatePendingStats(allProds);
@@ -3923,6 +3999,7 @@ var CATEGORY_CONTENT = {
             var vids = Array.isArray(p.videos) ? p.videos.slice() : (p.video ? String(p.video).split(',') : []);
             vids = vids.map(function(u){ return String(u || '').trim(); }).filter(Boolean);
             var imgs = (p.image || '').toString().split(',').map(function(s){return s.trim();}).filter(Boolean);
+            var imgCount = p.imageCount || imgs.length;
             var firstImg = imgs[0] || 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>No Img</text></svg>';
             return '<div class="product-card">' +
                 '<img class="product-card-img" src="' + firstImg + '" alt="" onerror="this.src=&#39;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><rect fill=%22%232a2a2a%22 width=%2260%22 height=%2260%22/><text x=%2230%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2210%22>Error</text></svg>&#39;">' +
@@ -3931,7 +4008,7 @@ var CATEGORY_CONTENT = {
                     '<div class="product-meta">' +
                         '<span class="product-tag" style="background:rgba(243,156,18,0.2);color:#f39c12;">待审核</span>' +
                         (oem ? '<span class="product-tag oem">OEM: ' + htmlEsc(oem).slice(0, 20) + '</span>' : '') +
-                        '<span class="product-tag">' + imgs.length + ' 图</span>' +
+                        '<span class="product-tag">' + imgCount + ' 图</span>' +
                         (vids.length ? '<a href="' + vids[0].replace(/"/g, '&quot;') + '" target="_blank" rel="noopener" class="product-tag" style="background:rgba(52,152,219,0.2);color:#5dade2;text-decoration:none;">🎬 视频</a>' : '') +
                     '</div>' +
                     '<div class="product-actions">' +
@@ -3956,12 +4033,8 @@ var CATEGORY_CONTENT = {
         isSubmitting = true;
         showToast('正在生成 SEO 页面...', false);
         try {
-            // 1) 从 OSS 拉 products.json
-            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
-            if (!r.ok) throw new Error('拉 products.json 失败: ' + r.status);
-            var products = await r.json();
-            var product = products.find(function(p) { return String(p.id) === String(productId); });
-            if (!product) throw new Error('未找到产品 ID=' + productId);
+            // 只取这一个产品（约 2KB）
+            var product = await fetchFullProduct(productId);
 
             // 2) 检测品类 + AI 产品专属文案 + 3 Schema
             var aiKey = getAIKeySilent() || getAIKey();
@@ -4012,33 +4085,15 @@ var CATEGORY_CONTENT = {
                 throw new Error('GitHub PUT 失败: ' + putResp.status + ' - ' + errText.slice(0, 200));
             }
 
-            // 5) 回写 products.json: seo_status='published' + seo_url + seo_published_at
-            product.seo_status = 'published';
-            product.seo_url = url;
-            product.seo_published_at = new Date().toISOString();
-            // 同步更新 allProducts 里这一条
-            var localIdx = allProducts.findIndex(function(x) { return String(x.id) === String(productId); });
-            if (localIdx !== -1) { allProducts[localIdx].seo_status = 'published'; }
+            // 5) 只更新这一条（服务端修改，不再传整个文件）
+            var seoPatch = { seo_status: 'published', seo_url: url, seo_published_at: new Date().toISOString() };
+            await applyProductChange(productId, seoPatch, { source: 'admin_publish_seo' });
 
-            // 6) 上传新 products.json 到 OSS
-            var jsonData = JSON.stringify(products, null, 2);
-            var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
-            var ossR = await fetch(OSS_CONFIG.productsUrl, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': window.__ossAuthDate },
-                body: jsonData
-            });
-            if (!ossR.ok) throw new Error('OSS 上传 products.json 失败: ' + ossR.status);
-
-            // 7) 写 version.json
+            // 6) version.json
             var newVersion = Date.now();
             var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_publish_seo' };
-            var versionAuth = await generateOSSAuth('PUT', '/version.json', JSON.stringify(versionData).length);
-            var vR = await fetch(OSS_CONFIG.endpoint + '/version.json', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': versionAuth, 'x-oss-date': window.__ossAuthDate },
-                body: JSON.stringify(versionData, null, 2)
-            });
+            try { await workerPut('version.json', JSON.stringify(versionData, null, 2), 'application/json'); } catch (e) {}
+            uploadIndexArray(allProducts);
 
             showSuccessModal('SEO 页面已发布！', url);
             console.log('[v2.3.0] SEO 已发布:', url);
@@ -4057,10 +4112,8 @@ var CATEGORY_CONTENT = {
         skipGhHtml = skipGhHtml || false;
         console.log('[v2.3.0] deleteImageFromProduct:', productId, imageUrl);
         try {
-            // 1) 拉 products.json
-            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
-            if (!r.ok) throw new Error('拉 products.json 失败: ' + r.status);
-            var products = await r.json();
+            // 1) 拉 products.json（经 Worker，gzip 传输）
+            var products = await fetchFullProductsJson();
             var product = products.find(function(p) { return String(p.id) === String(productId); });
             if (!product) { console.warn('[v2.3.0] 产品不存在，跳过:', productId); return; }
 
@@ -4139,32 +4192,14 @@ var CATEGORY_CONTENT = {
                 }
             }
 
-            // 5) 写回 products.json 到 OSS
-            var jsonData = JSON.stringify(products, null, 2);
-            var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
-            var ossR = await fetch(OSS_CONFIG.productsUrl, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': window.__ossAuthDate },
-                body: jsonData
-            });
-            if (!ossR.ok) throw new Error('OSS 上传 products.json 失败: ' + ossR.status);
+            // 5) 只更新这一条（不再上传整个 products.json）
+            await applyProductChange(productId, { image: product.image, images: product.images }, { source: 'admin_delete_image' });
+            uploadIndexArray(allProducts);
 
-            // 6) 同步本地 allProducts
-            var localIdx = allProducts.findIndex(function(x) { return String(x.id) === String(productId); });
-            if (localIdx !== -1) {
-                allProducts[localIdx].image = product.image;
-                allProducts[localIdx].images = product.images;
-            }
-
-            // 7) version.json
+            // 6) version.json
             var newVersion = Date.now();
             var versionData = { version: newVersion, timestamp: new Date(newVersion).toISOString(), source: 'admin_delete_image' };
-            var versionAuth = await generateOSSAuth('PUT', '/version.json', JSON.stringify(versionData).length);
-            await fetch(OSS_CONFIG.endpoint + '/version.json', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': versionAuth, 'x-oss-date': window.__ossAuthDate },
-                body: JSON.stringify(versionData, null, 2)
-            });
+            try { await workerPut('version.json', JSON.stringify(versionData, null, 2), 'application/json'); } catch (e) {}
             broadcastDataChange('edit', productId);
             console.log('[v2.3.0] 删图 4 端口同步完成');
         } catch(e) {
@@ -4654,12 +4689,8 @@ var CATEGORY_CONTENT = {
     async function previewAndEditPendingSEOPage(productId) {
         if (isSubmitting) { showToast('正在处理中，请稍候...', true); return; }
         try {
-            // 1) 拉 products.json
-            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
-            if (!r.ok) throw new Error('拉 products.json 失败: ' + r.status);
-            var products = await r.json();
-            var product = products.find(function(p) { return String(p.id) === String(productId); });
-            if (!product) throw new Error('未找到产品 ID=' + productId);
+            // 只取这一个产品（约 2KB），不再下载整个 products.json
+            var product = await fetchFullProduct(productId);
 
             // 2) 检测品类 + AI 产品专属文案 + 3 Schema
             var aiKey = getAIKeySilent() || getAIKey();
@@ -5334,25 +5365,25 @@ var CATEGORY_CONTENT = {
         if (!ids.length) { showToast('没有需要同步的改动'); return; }
         isSyncing = true; renderQueueUI();
         try {
-            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
-            if (!r.ok) throw new Error('拉 products.json 失败 ' + r.status);
-            var products = await r.json();
             var applied = 0;
-            ids.forEach(function(id) {
-                var idx = products.findIndex(function(p){ return String(p.id) === String(id); });
-                if (idx !== -1) { Object.assign(products[idx], publishChanges[id]); applied++; }
-                delete publishChanges[id];
-            });
-            var jsonData = JSON.stringify(products, null, 2);
-            var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
-            var ossR = await fetch(OSS_CONFIG.productsUrl, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': window.__ossAuthDate }, body: jsonData });
-            if (!ossR.ok) throw new Error('OSS 上传失败 ' + ossR.status);
+            var failed = 0;
+            for (var qi = 0; qi < ids.length; qi++) {
+                var qid = ids[qi];
+                try {
+                    await applyProductChange(qid, publishChanges[qid], { source: 'admin_publish_seo_batch' });
+                    delete publishChanges[qid];
+                    applied++;
+                } catch (e) {
+                    failed++;
+                    console.warn('[同步] 单条失败:', qid, e.message);
+                }
+            }
             try {
                 var nv = Date.now(); var vd = { version: nv, timestamp: new Date(nv).toISOString(), source: 'admin_publish_seo_batch' };
-                var va = await generateOSSAuth('PUT', '/version.json', JSON.stringify(vd).length);
-                await fetch(OSS_CONFIG.endpoint + '/version.json', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': va, 'x-oss-date': window.__ossAuthDate }, body: JSON.stringify(vd, null, 2) });
+                await workerPut('version.json', JSON.stringify(vd, null, 2), 'application/json');
             } catch (e) {}
-            showToast('✅ products.json 已同步（' + applied + ' 个产品）');
+            uploadIndexArray(allProducts);
+            showToast('✅ 已同步（' + applied + ' 个产品' + (failed ? '，失败 ' + failed : '') + '）');
             if (typeof loadPendingProducts === 'function') loadPendingProducts();
         } catch (e) {
             console.error('[同步] 失败:', e);
@@ -5406,9 +5437,10 @@ var CATEGORY_CONTENT = {
         var c = document.getElementById('publishedList');
         c.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>';
         try {
-            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
-            if (!r.ok) throw new Error('拉 products.json 失败: ' + r.status);
-            var products = await r.json();
+            var res;
+            if (window.__productsLoaded && allProducts && allProducts.length) res = { list: allProducts };
+            else { res = await loadProductsIndexOrFull(); allProducts = res.list; window.__productsLoaded = true; }
+            var products = res.list;
             allPublishedProducts = products.filter(function(p) { return p.seo_status === 'published' && p.seo_url; });
             // 倒序：最新发布在前
             allPublishedProducts.sort(function(a, b) {
@@ -5444,7 +5476,7 @@ var CATEGORY_CONTENT = {
             return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
         }).length;
         document.getElementById('published_this_month').textContent = thisMonthCount;
-        var withImages = allPublishedProducts.filter(function(p) { return p.images && p.images.length > 0; }).length;
+        var withImages = allPublishedProducts.filter(function(p) { return (p.imageCount || (p.images ? p.images.length : 0) || (p.image ? 1 : 0)) > 0; }).length;
         document.getElementById('published_with_images').textContent = withImages;
     }
 
@@ -5467,6 +5499,7 @@ var CATEGORY_CONTENT = {
         container.innerHTML = filteredPublishedProducts.map(function(p) {
             var name = p.name || p.title || '未命名';
             var imgs = (p.image || '').toString().split(',').map(function(s){return s.trim();}).filter(Boolean);
+            var imgCount = p.imageCount || imgs.length;
             var firstImg = imgs[0] || 'data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 60 60\"><rect fill=\"#2a2a2a\" width=\"60\" height=\"60\"/><text x=\"30\" y=\"35\" text-anchor=\"middle\" fill=\"#666\" font-size=\"10\">No Img</text></svg>';
             var publishedAt = p.seo_published_at ? new Date(p.seo_published_at).toLocaleDateString('zh-CN') : '';
             var safeId = String(p.id).replace(/'/g, "\\'");
@@ -5478,7 +5511,7 @@ var CATEGORY_CONTENT = {
                     '<div class="product-meta">' +
                         '<span class="product-tag" style="background:rgba(46,204,113,0.2);color:#2ecc71;">已发布</span>' +
                         (publishedAt ? '<span class="product-tag">' + publishedAt + '</span>' : '') +
-                        '<span class="product-tag">' + imgs.length + ' 图</span>' +
+                        '<span class="product-tag">' + imgCount + ' 图</span>' +
                     '</div>' +
                     '<div class="product-actions">' +
                         '<button class="btn btn-edit btn-sm" onclick="viewPublishedSEOPage(\'' + safeId + '\')"><i class="fas fa-eye"></i> 查看</button>' +
@@ -5491,11 +5524,7 @@ var CATEGORY_CONTENT = {
 
     async function viewPublishedSEOPage(productId) {
         try {
-            var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
-            if (!r.ok) throw new Error('拉 products.json 失败: ' + r.status);
-            var products = await r.json();
-            var product = products.find(function(p) { return String(p.id) === String(productId); });
-            if (!product) throw new Error('未找到产品 ID=' + productId);
+            var product = await fetchFullProduct(productId);
             if (!product.seo_url) throw new Error('产品没有 seo_url');
 
             document.getElementById('viewPublishedTitle').textContent = '查看 - ' + (product.name || product.title || productId).slice(0, 60);
