@@ -736,9 +736,51 @@
       return parts.slice(-2).join('/');
     }
     async function workerPut(key, body, contentType) {
-      var r = await fetch('/api/oss/' + key, { method: 'PUT', headers: { 'Content-Type': contentType || 'application/json' }, body: body });
-      if (!r.ok) throw new Error('Worker OSS PUT ' + r.status);
-      return r;
+      var controller = new AbortController();
+      var timeoutId = setTimeout(function() { controller.abort(); }, 120000);
+      try {
+        var r = await fetch('/api/oss/' + key, {
+          method: 'PUT',
+          headers: { 'Content-Type': contentType || 'application/json' },
+          body: body,
+          signal: controller.signal
+        });
+        if (!r.ok) {
+          var detail = '';
+          try { detail = (await r.text()).slice(0, 160); } catch (e) {}
+          throw new Error('Worker OSS PUT ' + r.status + (detail ? ' - ' + detail : ''));
+        }
+        return r;
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    }
+    function saveSlimProductsCache() {
+      try {
+        var light = (allProducts || []).map(function(p) {
+          var imgs = (p.image || p.images || '').toString().split(',');
+          var firstImg = imgs[0] || (Array.isArray(p.images) ? p.images[0] : '') || '';
+          var brands = '';
+          var ft = p.fitmentTable || [];
+          if (ft.length) {
+            var seen = {};
+            for (var i = 0; i < ft.length; i++) {
+              var m = (ft[i].make || '').toUpperCase();
+              if (m && !seen[m]) { seen[m] = 1; brands += (brands ? ',' : '') + m; }
+            }
+          }
+          return {
+            id: p.id,
+            name: p.name || p.title || '',
+            category: p.category || 'other',
+            oem: p.oem || p.oemCode || '',
+            image: firstImg,
+            fileName: p.fileName || '',
+            brands: brands
+          };
+        });
+        localStorage.setItem('cached_products', JSON.stringify({ data: light, sha: Date.now(), full: false }));
+      } catch (e) { console.warn('[Cache] 更新失败:', e); }
     }
     async function workerDelete(key) {
       var r = await fetch('/api/oss/' + key, { method: 'DELETE' });
@@ -1702,159 +1744,138 @@
         
         if (targetType === 'product') {
             if (!initGitHubTokens()) { showToast('需要GitHub Token', true); return; }
-            
+
             isSubmitting = true;
             var deleteBtn = document.getElementById('confirmDeleteBtn');
             if (deleteBtn) deleteBtn.disabled = true;
-            
-            showToast('正在删除 (4 端口同步)...', false);
-            
+            showToast('正在删除...', false);
+
+            var removedProduct = null;
+            var newList = null;
             try {
-                // 1) 拉 products.json
+                // 1) 拉最新 products.json
                 var r = await fetch('https://carvalauto-products.oss-cn-hangzhou.aliyuncs.com/products.json?t=' + Date.now());
-                if (!r.ok) { throw new Error('获取产品数据失败: ' + r.status); }
-                
-                var content = await r.text();
-                var p = JSON.parse(content);
+                if (!r.ok) throw new Error('获取产品数据失败: ' + r.status);
+
+                var p = await r.json();
                 var beforeCount = p.length;
                 var targetIdStr = String(targetId);
-                var removedProduct = p.find(function(x) { return String(x.id) === targetIdStr; });
-                p = p.filter(function(x) { return String(x.id) !== targetIdStr; });
-                
-                if (beforeCount === p.length) { 
-                    showToast('未找到该商品', true); 
-                    isSubmitting = false;
-                    if (deleteBtn) deleteBtn.disabled = false;
-                    return; 
-                }
-                
-                allProducts = p;
+                removedProduct = p.find(function(x) { return String(x.id) === targetIdStr; });
+                newList = p.filter(function(x) { return String(x.id) !== targetIdStr; });
+                if (beforeCount === newList.length) throw new Error('未找到该商品');
+
+                // 2) 关键：先写回 OSS，成功后才提示删除成功
+                showToast('正在同步到 OSS（约 ' + Math.round(JSON.stringify(newList).length / 1048576) + 'MB）...', false);
+                await workerPut('products.json', JSON.stringify(newList), 'application/json');
+
+                // 3) 持久化成功后再更新界面和本地缓存
+                allProducts = newList;
+                saveSlimProductsCache();
                 renderProducts();
                 broadcastDataChange('delete', targetId);
-                showSuccessModal('删除成功！', '商品已从网站移除 (4 端口同步)');
-                
-                // 2) 4 端口同步（后台跑，不阻塞）
-                (async function() {
-                    try {
-                        // 端口 1：OSS 同步 products.json（通过 Worker）
-                        var newProductsData = JSON.stringify(allProducts);
-                        await workerPut('products.json', newProductsData, 'application/json');
-                        console.log('[Admin Delete] OSS products.json 已同步');
-                        
-                        // 端口 2：OSS 删除该产品所有图片
-                        if (removedProduct) {
-                            var imgs = (removedProduct.image || '').toString().split(',').map(function(s){return s.trim();}).filter(Boolean);
-                            // 也兼容 images 数组
-                            if (Array.isArray(removedProduct.images)) {
-                                removedProduct.images.forEach(function(u){ if (u && imgs.indexOf(u)===-1) imgs.push(u); });
-                            }
-                            // 其他产品仍在引用的图片不能删（避免误删共享图）
-                            var otherImgRefs = {};
-                            (allProducts || []).forEach(function(prod) {
-                                if (String(prod.id) === String(targetId)) return;
-                                var arr = [];
-                                if (Array.isArray(prod.images)) arr = arr.concat(prod.images);
-                                if (prod.image) arr = arr.concat(String(prod.image).split(',').map(function(s){return s.trim();}));
-                                arr.forEach(function(u) { if (u) otherImgRefs[u] = true; });
-                            });
-                            for (var ii = 0; ii < imgs.length; ii++) {
-                                try {
-                                    var imgUrl = imgs[ii];
-                                    if (otherImgRefs[imgUrl]) {
-                                        console.log('[Admin Delete] 图片仍被其他产品引用，跳过删除:', imgUrl);
-                                        continue;
-                                    }
-                                    var filename = ossKeyFromUrl(imgUrl);
-                                    await workerDelete(filename);
-                                    console.log('[Admin Delete] OSS 删图成功:', filename);
-                                } catch(imgErr) {
-                                    console.warn('[Admin Delete] OSS 删图失败:', imgs[ii], imgErr.message);
-                                }
-                            }
-                        }
-                        
-                        // 端口 3：GitHub 删 SEO HTML
-                        try {
-                            var seoName = '';
-                            if (removedProduct && removedProduct.seo_url) {
-                                seoName = String(removedProduct.seo_url).split('?')[0].split('/').pop();
-                            }
-                            if (!seoName || seoName.indexOf('.html') === -1) {
-                                seoName = generateSlug(removedProduct ? (removedProduct.name || removedProduct.title || '') : '', targetId) + '.html';
-                            }
-                            var filePath = 'products/' + seoName;
-                            var checkUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
-                            var checkResp = await githubApiRequest(checkUrl, { method: 'GET' }, 2, 1500);
-                            if (checkResp.ok) {
-                                var fileData = await checkResp.json();
-                                var delUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + filePath;
-                                var delResp = await githubApiRequest(delUrl, {
-                                    method: 'DELETE',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                        message: 'Delete SEO: ' + (removedProduct ? (removedProduct.name || removedProduct.title) : targetId),
-                                        sha: fileData.sha,
-                                        branch: GH_BRANCH
-                                    })
-                                }, 3, 2000);
-                                if (delResp.ok) {
-                                    console.log('[Admin Delete] GitHub SEO HTML 已删除:', filePath);
-                                } else {
-                                    console.warn('[Admin Delete] GitHub SEO HTML 删除失败:', delResp.status);
-                                }
-                            } else {
-                                console.log('[Admin Delete] 该产品无 SEO 页面，跳过:', filePath);
-                            }
-                        } catch(ghErr) {
-                            console.warn('[Admin Delete] GitHub 删除异常:', ghErr.message);
-                        }
-                        
-                        // 端口 3b：GitHub 删俄语 SEO HTML（如果有）
-                        if (removedProduct && removedProduct.seo_ru_url) {
-                            try {
-                                var ruName = String(removedProduct.seo_ru_url).split('?')[0].split('/').pop();
-                                if (ruName && ruName.indexOf('.html') !== -1) {
-                                    var ruPath = 'products/ru/' + ruName;
-                                    var ruUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + ruPath + '?t=' + Date.now();
-                                    var ruResp = await githubApiRequest(ruUrl, { method: 'GET' }, 2, 1500);
-                                    if (ruResp.ok) {
-                                        var ruData = await ruResp.json();
-                                        await githubApiRequest('https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + ruPath, {
-                                            method: 'DELETE',
-                                            headers: { 'Content-Type': 'application/json' },
-                                            body: JSON.stringify({ message: 'Delete RU SEO: ' + (removedProduct.name || targetId), sha: ruData.sha, branch: GH_BRANCH })
-                                        }, 3, 2000);
-                                        console.log('[Admin Delete] GitHub RU SEO 已删除:', ruPath);
-                                    }
-                                }
-                            } catch(ruErr) {
-                                console.warn('[Admin Delete] GitHub RU 删除异常:', ruErr.message);
-                            }
-                        }
-
-                        // 端口 4：OSS version.json
-                        var newVersion = Date.now();
-                        var versionData = {
-                            version: newVersion,
-                            timestamp: new Date(newVersion).toISOString(),
-                            source: 'admin_delete_4ports'
-                        };
-                        await workerPut('version.json', JSON.stringify(versionData, null, 2), 'application/json');
-                        console.log('[Admin Delete] OSS version.json 已同步');
-                        
-                        showToast('✅ 4 端口同步完成', false);
-                    } catch(ossError) {
-                        console.warn('[Admin Delete] 4 端口同步异常:', ossError);
-                        showToast('部分端口同步失败: ' + ossError.message, true);
-                    }
-                })();
-                
-            } catch(e) { 
-                showToast('删除失败: ' + e.message, true); 
+                showSuccessModal('删除成功！', '商品已从网站移除');
+            } catch (e) {
+                showToast('删除失败: ' + e.message, true);
+                return;
             } finally {
                 isSubmitting = false;
                 if (deleteBtn) deleteBtn.disabled = false;
             }
+
+            // 4) 后台清理图片 / SEO 页面 / version.json（不阻塞界面）
+            (async function() {
+                try {
+                    if (removedProduct) {
+                        var imgs = (removedProduct.image || '').toString().split(',').map(function(s){return s.trim();}).filter(Boolean);
+                        if (Array.isArray(removedProduct.images)) {
+                            removedProduct.images.forEach(function(u){ if (u && imgs.indexOf(u) === -1) imgs.push(u); });
+                        }
+                        var otherImgRefs = {};
+                        (allProducts || []).forEach(function(prod) {
+                            if (String(prod.id) === String(targetId)) return;
+                            var arr = [];
+                            if (Array.isArray(prod.images)) arr = arr.concat(prod.images);
+                            if (prod.image) arr = arr.concat(String(prod.image).split(',').map(function(s){return s.trim();}));
+                            arr.forEach(function(u) { if (u) otherImgRefs[u] = true; });
+                        });
+                        for (var ii = 0; ii < imgs.length; ii++) {
+                            try {
+                                var imgUrl = imgs[ii];
+                                if (otherImgRefs[imgUrl]) continue;
+                                var filename = ossKeyFromUrl(imgUrl);
+                                await workerDelete(filename);
+                                console.log('[Admin Delete] OSS 删图成功:', filename);
+                            } catch (imgErr) {
+                                console.warn('[Admin Delete] OSS 删图失败:', imgs[ii], imgErr.message);
+                            }
+                        }
+                    }
+
+                    try {
+                        var seoName = '';
+                        if (removedProduct && removedProduct.seo_url) {
+                            seoName = String(removedProduct.seo_url).split('?')[0].split('/').pop();
+                        }
+                        if (!seoName || seoName.indexOf('.html') === -1) {
+                            seoName = generateSlug(removedProduct ? (removedProduct.name || removedProduct.title || '') : '', targetId) + '.html';
+                        }
+                        var filePath = 'products/' + seoName;
+                        var checkUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + filePath + '?t=' + Date.now();
+                        var checkResp = await githubApiRequest(checkUrl, { method: 'GET' }, 2, 1500);
+                        if (checkResp.ok) {
+                            var fileData = await checkResp.json();
+                            var delUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + filePath;
+                            var delResp = await githubApiRequest(delUrl, {
+                                method: 'DELETE',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    message: 'Delete SEO: ' + (removedProduct ? (removedProduct.name || removedProduct.title) : targetId),
+                                    sha: fileData.sha,
+                                    branch: GH_BRANCH
+                                })
+                            }, 3, 2000);
+                            if (delResp.ok) console.log('[Admin Delete] GitHub SEO HTML 已删除:', filePath);
+                            else console.warn('[Admin Delete] GitHub SEO HTML 删除失败:', delResp.status);
+                        }
+                    } catch (ghErr) {
+                        console.warn('[Admin Delete] GitHub 删除异常:', ghErr.message);
+                    }
+
+                    if (removedProduct && removedProduct.seo_ru_url) {
+                        try {
+                            var ruName = String(removedProduct.seo_ru_url).split('?')[0].split('/').pop();
+                            if (ruName && ruName.indexOf('.html') !== -1) {
+                                var ruPath = 'products/ru/' + ruName;
+                                var ruUrl = 'https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + ruPath + '?t=' + Date.now();
+                                var ruResp = await githubApiRequest(ruUrl, { method: 'GET' }, 2, 1500);
+                                if (ruResp.ok) {
+                                    var ruData = await ruResp.json();
+                                    await githubApiRequest('https://carvalautopart.com/api/github/repos/' + GH_REPO + '/contents/' + ruPath, {
+                                        method: 'DELETE',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ message: 'Delete RU SEO: ' + (removedProduct.name || targetId), sha: ruData.sha, branch: GH_BRANCH })
+                                    }, 3, 2000);
+                                    console.log('[Admin Delete] GitHub RU SEO 已删除:', ruPath);
+                                }
+                            }
+                        } catch (ruErr) {
+                            console.warn('[Admin Delete] GitHub RU 删除异常:', ruErr.message);
+                        }
+                    }
+
+                    var newVersion = Date.now();
+                    var versionData = {
+                        version: newVersion,
+                        timestamp: new Date(newVersion).toISOString(),
+                        source: 'admin_delete_4ports'
+                    };
+                    await workerPut('version.json', JSON.stringify(versionData, null, 2), 'application/json');
+                    console.log('[Admin Delete] OSS version.json 已同步');
+                    showToast('✅ 删除完成', false);
+                } catch (syncErr) {
+                    console.warn('[Admin Delete] 后台清理异常:', syncErr);
+                }
+            })();
         }
     }
     
