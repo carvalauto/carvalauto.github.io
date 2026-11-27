@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>编辑商品 - Carval Auto</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --primary: #0f4c81; --accent: #e63946; --bg-dark: #0f0f0f; --bg-card: #1a1a1a; --text: #f5f5f5; --text-muted: #888; --border: #333; }
@@ -277,6 +278,21 @@
     }
     
     // 加载产品数据
+    // Fast path: Worker returns only this product. Falls back to full products.json.
+    async function fetchProductById(id) {
+        try {
+            var fr = await fetch('https://carvalautopart.com/api/product?id=' + encodeURIComponent(id) + '&t=' + Date.now());
+            if (fr.ok) {
+                var fj = await fr.json();
+                if (fj && fj.ok && fj.product) return { product: fj.product, all: null };
+            }
+        } catch (e) {}
+        var r = await fetch(OSS_CONFIG.productsUrl + '?t=' + Date.now());
+        if (!r.ok) throw new Error('读取数据失败');
+        var list = await r.json();
+        return { product: list.find(function(x) { return String(x.id) === String(id); }), all: list };
+    }
+
     async function loadProductData() {
         productId = getProductId();
         editingProductId = productId;
@@ -287,11 +303,9 @@
         
         try {
             // 从 OSS 读取数据
-            var r = await fetch(OSS_CONFIG.productsUrl + '?t=' + Date.now());
-            if (!r.ok) throw new Error('读取数据失败');
-            
-            allProducts = await r.json();
-            productData = allProducts.find(function(x) { return String(x.id) === String(productId); });
+            var _fast = await fetchProductById(productId);
+            allProducts = _fast.all || [];
+            productData = _fast.product;
             
             if (!productData) {
                 throw new Error('未找到该商品');
@@ -430,7 +444,7 @@
         sec.style.display = 'block';
         editor.innerHTML = vids.map(function(url, i) {
             return '<div class="video-item" style="display:flex;gap:12px;align-items:flex-start;background:var(--bg-dark);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px;">' +
-                '<video src="' + url + '" controls preload="metadata" style="width:240px;max-height:150px;background:#000;border-radius:4px;flex-shrink:0;"></video>' +
+                '<video src="' + url + '" controls preload="none" style="width:240px;max-height:150px;background:#000;border-radius:4px;flex-shrink:0;"></video>' +
                 '<div style="flex:1;min-width:0;">' +
                     '<input type="text" value="' + url + '" readonly style="width:100%;padding:6px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:11px;">' +
                     '<div style="font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5;">播放检查：有 logo / 水印就点右侧删除；没有就保留。</div>' +
@@ -453,22 +467,50 @@
         }
     }
 
-    async function deleteVideoNow(url) {
-        if (!ensureOSSConfig()) { showToast('请先配置 OSS AccessKey', true); return; }
-        showToast('正在删除视频...', false);
+    function ossKeyFromUrl(url) {
+        if (url.indexOf(OSS_CONFIG.endpoint + '/') === 0) {
+            return url.substring(OSS_CONFIG.endpoint.length + 1).split('?')[0];
+        }
+        try { return decodeURIComponent(new URL(url).pathname.replace(/^\/+/, '')); }
+        catch (e) { return ''; }
+    }
 
-        // 1) 更新 products.json
+    async function deleteVideoNow(url) {
+        showToast('正在删除视频...', false);
+        var list = (productData._videos || getProductVideos()).filter(function(u) { return u !== url; });
+        var key = ossKeyFromUrl(url);
+        var done = false;
+        try {
+            var pr = await fetch('https://carvalautopart.com/api/product/patch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: String(editingProductId), videos: list, deleteKeys: key ? [key] : [], source: 'edit_delete_video' })
+            });
+            if (pr.ok) { var pj = await pr.json(); done = !!(pj && pj.ok); }
+        } catch (e) { console.warn('fast delete failed:', e.message); }
+        if (!done) await deleteVideoLegacy(url, list);
+
+        productData.videos = list;
+        productData.video = list[0] || '';
+        productData._videos = list;
+        renderVideos();
+        showToast('视频已删除', false);
+        if (productData.seo_url) {
+            removeVideoFromSeoPage(productData).then(function() {
+                showToast('视频已删除，SEO 页面已同步', false);
+            }).catch(function(e) { console.warn('SEO 页面视频移除失败:', e.message); });
+        }
+    }
+
+    // Fallback for an older Worker (full products.json read + write).
+    async function deleteVideoLegacy(url, list) {
         var r = await fetch(OSS_CONFIG.productsUrl + '?t=' + Date.now());
-        if (!r.ok) throw new Error('获取产品数据失败: ' + r.status);
+        if (!r.ok) throw new Error('读取产品数据失败: ' + r.status);
         var products = await r.json();
         var idx = products.findIndex(function(x) { return String(x.id) === String(editingProductId); });
-        if (idx === -1) throw new Error('未找到该商品');
-        var p = products[idx];
-        var list = Array.isArray(p.videos) ? p.videos.slice() : (p.video ? String(p.video).split(',') : []);
-        list = list.map(function(s) { return String(s || '').trim(); }).filter(Boolean).filter(function(u) { return u !== url; });
-        p.videos = list;
-        p.video = list[0] || '';
-
+        if (idx === -1) throw new Error('未找到该产品');
+        products[idx].videos = list;
+        products[idx].video = list[0] || '';
         var jsonData = JSON.stringify(products, null, 2);
         var auth = await generateOSSAuth('PUT', '/products.json', jsonData.length);
         var put = await fetch(OSS_CONFIG.productsUrl, {
@@ -476,20 +518,14 @@
             headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-oss-date': window.__ossAuthDate },
             body: jsonData
         });
-        if (!put.ok) throw new Error('products.json 更新失败: ' + put.status);
-
-        // 2) 删除 OSS 视频文件
-        var key = url.indexOf(OSS_CONFIG.endpoint) === 0
-            ? url.substring(OSS_CONFIG.endpoint.length + 1)
-            : url.split('/').slice(-2).join('/');
+        if (!put.ok) throw new Error('products.json 保存失败: ' + put.status);
+        var key = ossKeyFromUrl(url);
+        if (!key) return;
         var delAuth = await generateOSSAuth('DELETE', '/' + key);
-        var del = await fetch(OSS_CONFIG.endpoint + '/' + key, {
+        await fetch(OSS_CONFIG.endpoint + '/' + key, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json', 'Authorization': delAuth, 'x-oss-date': window.__ossAuthDate }
         });
-        if (!del.ok && del.status !== 204) console.warn('OSS 删除视频失败:', del.status);
-
-        // 3) 更新 version.json
         var ver = { version: Date.now(), timestamp: new Date().toISOString(), source: 'edit_delete_video' };
         var vAuth = await generateOSSAuth('PUT', '/version.json', JSON.stringify(ver).length);
         await fetch(OSS_CONFIG.endpoint + '/version.json', {
@@ -497,18 +533,6 @@
             headers: { 'Content-Type': 'application/json', 'Authorization': vAuth, 'x-oss-date': window.__ossAuthDate },
             body: JSON.stringify(ver, null, 2)
         });
-
-        // 4) 已发布的 SEO 页面：移除视频区块和 VideoObject
-        if (p.seo_url) {
-            try { await removeVideoFromSeoPage(p); } catch (e) { console.warn('SEO 页视频移除失败:', e.message); }
-        }
-
-        // 5) 更新本地界面
-        productData.videos = list;
-        productData.video = list[0] || '';
-        productData._videos = list;
-        renderVideos();
-        showToast('视频已删除，4 端口同步完成', false);
     }
 
     async function removeVideoFromSeoPage(p) {
@@ -576,6 +600,31 @@
         
         try {
             // 从OSS读取products.json
+            var fitmentsFast = [];
+            document.querySelectorAll('.fitment-item').forEach(function(item) {
+                var ins = item.querySelectorAll('input');
+                var mk = ins[0].value.trim(), md = ins[1].value.trim(), yr = ins[2].value.trim();
+                if (mk || md || yr) fitmentsFast.push({ make: mk, model: md, year: yr });
+            });
+            var patchSet = { category: category, oem: oem, oemCode: oem, image: imageStr, images: images, fitmentTable: fitmentsFast };
+            if (title) { patchSet.name = title; patchSet.title = title; }
+            var patched = false;
+            try {
+                var patchResp = await fetch('https://carvalautopart.com/api/product/patch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: String(editingProductId), set: patchSet, source: 'edit_save' })
+                });
+                if (patchResp.ok) { var patchJson = await patchResp.json(); patched = !!(patchJson && patchJson.ok); }
+            } catch (e) { console.warn('fast save failed, using legacy:', e.message); }
+            if (patched) {
+                showToast('保存成功！', false);
+                setTimeout(function() {
+                    var _pp = new URLSearchParams(window.location.search).get('page');
+                    window.location.href = 'admin.html' + (_pp ? '?page=' + _pp : '');
+                }, 800);
+                return;
+            }
             var r = await fetch(OSS_CONFIG.productsUrl + '?t=' + Date.now());
             
             if (!r.ok) {
